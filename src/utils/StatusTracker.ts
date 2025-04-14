@@ -1,6 +1,6 @@
 import { WAHASessionStatus } from '../structures/enums.dto';
 
-const STUCK_IN_STARTING_THRESHOLD = 20;
+const STUCK_IN_STARTING_THRESHOLD = 60;
 
 /**
  * Keeps track of session statuses (with timestamps) for the last `trackPeriodMs` milliseconds.
