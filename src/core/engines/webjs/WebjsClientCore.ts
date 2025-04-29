@@ -210,8 +210,17 @@ export class WebjsClientCore extends Client {
           const loadedMessages =
             // @ts-ignore
             await window.Store.ConversationMsgs.loadEarlierMsgs(chat);
-          if (!loadedMessages || !loadedMessages.length) break;
+          if (!loadedMessages || loadedMessages.length == 0) break;
+
           msgs = [...loadedMessages.filter(msgFilter), ...msgs];
+          msgs = msgs.sort((a, b) => b.t - a.t);
+
+          // Check if the earliest message is already outside the timerange filter
+          const earliest = msgs[msgs.length - 1];
+          if (earliest.t < (filter['filter.timestamp.gte'] || Infinity)) {
+            // Add only messages that pass the filter and stop loading more
+            break;
+          }
         }
 
         if (msgs.length > pagination.limit + pagination.offset) {
