@@ -914,7 +914,14 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       id: key.id,
       participant: participant,
     };
-    return this.sock.readMessages([data]);
+    const result = await this.sock.readMessages([data]);
+    this.sock?.ev.emit('messages.update', [
+      {
+        key: key,
+        update: { status: WAMessageAck.READ + 1 },
+      },
+    ]);
+    return result;
   }
 
   async startTyping(request: ChatRequest) {
