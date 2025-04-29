@@ -391,6 +391,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     this.sock = await this.makeSocket();
 
     this.issueMessageUpdateOnEdits();
+    this.fixMessageUpsertStatus();
     this.issuePresenceUpdateOnMessageUpsert();
     if (this.isDebugEnabled()) {
       this.listenEngineEventsInDebugMode();
@@ -558,6 +559,17 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
     await this.end();
     await this.store?.close();
+  }
+
+  private fixMessageUpsertStatus() {
+    // If no status - set it to WAMessageAck.DEVICE + 1
+    this.sock.ev.on('messages.upsert', ({ messages }) => {
+      for (const message of messages) {
+        if (message.status == null) {
+          message.status = WAMessageAck.DEVICE + 1;
+        }
+      }
+    });
   }
 
   private issueMessageUpdateOnEdits() {
