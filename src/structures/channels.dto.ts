@@ -195,5 +195,5 @@ export class PreviewChannelMessages {
 
   @IsNumber()
   @Type(() => Number)
-  limit: number = 100;
+  limit: number = 10;
 }

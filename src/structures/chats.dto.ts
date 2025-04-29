@@ -62,7 +62,7 @@ export class GetChatMessagesQuery {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit: number = 100;
+  limit: number = 10;
 
   @IsNumber()
   @IsOptional()
