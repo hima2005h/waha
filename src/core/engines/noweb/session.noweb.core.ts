@@ -1699,7 +1699,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       // @ts-ignore
       filter(
         (message) =>
-          message.message.protocolMessage?.type ===
+          message.message?.protocolMessage?.type ===
           proto.Message.ProtocolMessage.Type.REVOKE,
       ),
       mergeMap(async (message): Promise<WAMessageRevokedBody> => {
@@ -1976,12 +1976,12 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     if (message.message.call?.callKey) return;
     // Ignore revoke, we have a dedicated handler for that
     if (
-      message.message.protocolMessage?.type ===
+      message.message?.protocolMessage?.type ===
       proto.Message.ProtocolMessage.Type.REVOKE
     )
       return;
     if (
-      message.message.protocolMessage?.type ===
+      message.message?.protocolMessage?.type ===
       proto.Message.ProtocolMessage.Type.EPHEMERAL_SYNC_RESPONSE
     )
       return;
