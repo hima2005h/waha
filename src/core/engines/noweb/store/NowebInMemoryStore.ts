@@ -2,7 +2,6 @@ import makeWASocket, {
   Chat,
   Contact,
   GroupMetadata,
-  makeInMemoryStore,
   proto,
 } from '@adiwajshing/baileys';
 import { Label } from '@adiwajshing/baileys/lib/Types/Label';
@@ -12,6 +11,7 @@ import { PaginationParams } from '@waha/structures/pagination.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
 
 import { INowebStore } from './INowebStore';
+import makeInMemoryStore from './memory/make-in-memory-store';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const logger = require('pino')();
