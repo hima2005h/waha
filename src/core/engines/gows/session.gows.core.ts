@@ -1,4 +1,5 @@
 import {
+  aggregateMessageKeysNotFromMe,
   getContentType,
   getUrlFromDirectPath,
   isJidGroup,
@@ -130,6 +131,7 @@ import { promisify } from 'util';
 import * as gows from './types';
 import MessageServiceClient = messages.MessageServiceClient;
 import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import { ExtractMessageKeysForRead } from '@waha/core/engines/utils';
 import { ReplyToMessage } from '@waha/structures/message.dto';
 
 enum WhatsMeowEvent {
@@ -703,15 +705,18 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   }
 
   async sendSeen(request: SendSeenRequest) {
-    const key = parseMessageIdSerialized(request.messageId);
-    const req = new messages.MarkReadRequest({
-      session: this.session,
-      jid: key.remoteJid,
-      messageIds: [key.id],
-      sender: key.fromMe ? this.me.id : key.participant,
-    });
-    const response = await promisify(this.client.MarkRead)(req);
-    response.toObject();
+    const keys = ExtractMessageKeysForRead(request);
+    const receipts = aggregateMessageKeysNotFromMe(keys);
+    for (const receipt of receipts) {
+      const req = new messages.MarkReadRequest({
+        session: this.session,
+        jid: receipt.jid,
+        messageIds: receipt.messageIds,
+        sender: receipt.participant,
+      });
+      const response = await promisify(this.client.MarkRead)(req);
+      response.toObject();
+    }
     return;
   }
 
