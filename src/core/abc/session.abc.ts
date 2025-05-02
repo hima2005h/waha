@@ -1,4 +1,6 @@
 import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import { MessagesForRead } from '@waha/core/utils/convertors';
+import { isJidNewsletter } from '@waha/core/utils/jids';
 import {
   Channel,
   ChannelListResult,
@@ -14,6 +16,8 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  ReadChatMessagesQuery,
+  ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
 import { BinaryFile, RemoteFile } from '@waha/structures/files.dto';
@@ -483,8 +487,33 @@ export abstract class WhatsappSession {
     chatId: string,
     query: GetChatMessagesQuery,
     filter: GetChatMessagesFilter,
-  ) {
+  ): Promise<WAMessage[]> {
     throw new NotImplementedByEngineError();
+  }
+
+  abstract readChatMessages(
+    chatId: string,
+    request: ReadChatMessagesQuery,
+  ): Promise<ReadChatMessagesResponse>;
+
+  protected async readChatMessagesWSImpl(
+    chatId: string,
+    request: ReadChatMessagesQuery,
+  ): Promise<ReadChatMessagesResponse> {
+    const { query, filter } = MessagesForRead(chatId, request);
+    const messages = await this.getChatMessages(chatId, query, filter);
+    this.logger.debug(`Found ${messages.length} messages to read`);
+    if (messages.length === 0) {
+      return { ids: [] };
+    }
+    const ids = messages.map((m) => m.id);
+    const seen: SendSeenRequest = {
+      chatId: chatId,
+      messageIds: ids,
+      session: '',
+    };
+    await this.sendSeen(seen);
+    return { ids: ids };
   }
 
   public getChatMessage(
@@ -607,7 +636,7 @@ export abstract class WhatsappSession {
     let fn: Promise<string>;
     if (isJidBroadcast(id)) {
       return null;
-    } else if (isNewsletter(id)) {
+    } else if (isJidNewsletter(id)) {
       fn = this.channelsGetChannel(id).then(
         (channel: Channel) => channel.picture || channel.preview,
       );
@@ -923,10 +952,6 @@ export abstract class WhatsappSession {
     const api = this.sentMessageIds.has(id);
     return api ? MessageSource.API : MessageSource.APP;
   }
-}
-
-export function isNewsletter(jid: string) {
-  return jid.endsWith('@newsletter');
 }
 
 export function getGroupInviteLink(code: string) {

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { ChannelsInfoServiceCore } from '@waha/core/services/ChannelsInfoServiceCore';
+import { isJidNewsletter } from '@waha/core/utils/jids';
 import {
   SessionApiParam,
   WorkingSessionParam,
@@ -35,7 +36,6 @@ import {
 
 import { SessionManager } from '../core/abc/manager.abc';
 import {
-  isNewsletter,
   parseChannelInviteLink,
   WhatsappSession,
 } from '../core/abc/session.abc';
@@ -93,7 +93,7 @@ export class ChannelsController {
     @WorkingSessionParam session: WhatsappSession,
     @Param('id') id: string,
   ): Promise<Channel> {
-    if (isNewsletter(id)) {
+    if (isJidNewsletter(id)) {
       return session.channelsGetChannel(id);
     } else {
       const inviteCode = parseChannelInviteLink(id);
@@ -126,7 +126,7 @@ export class ChannelsController {
     @Param('id') code: string,
     @Query() query: PreviewChannelMessages,
   ): Promise<ChannelMessage[]> {
-    if (isNewsletter(code)) {
+    if (isJidNewsletter(code)) {
       const channel = await session.channelsGetChannel(code);
       code = parseChannelInviteLink(channel.invite);
     }

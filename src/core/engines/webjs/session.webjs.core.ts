@@ -36,6 +36,8 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  ReadChatMessagesQuery,
+  ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
 import {
   ChatRequest,
@@ -689,6 +691,17 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     let result = await Promise.all(promises);
     result = result.filter(Boolean);
     return result;
+  }
+
+  public async readChatMessages(
+    chatId: string,
+    request: ReadChatMessagesQuery,
+  ): Promise<ReadChatMessagesResponse> {
+    const chat: Chat = await this.whatsapp.getChatById(
+      this.ensureSuffix(chatId),
+    );
+    await chat.sendSeen();
+    return { ids: null };
   }
 
   public async getChatMessage(

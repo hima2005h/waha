@@ -46,7 +46,6 @@ import {
   ensureSuffix,
   getChannelInviteLink,
   getPublicUrlFromDirectPath,
-  isNewsletter,
   WhatsappSession,
 } from '@waha/core/abc/session.abc';
 import {
@@ -66,6 +65,9 @@ import { toVcard } from '@waha/core/helpers';
 import { createAgentProxy } from '@waha/core/helpers.proxy';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
+import { ExtractMessageKeysForRead } from '@waha/core/utils/convertors';
+import { parseMessageIdSerialized } from '@waha/core/utils/ids';
+import { isJidNewsletter, toJID } from '@waha/core/utils/jids';
 import { flipObject, splitAt } from '@waha/helpers';
 import { PairingCodeResponse } from '@waha/structures/auth.dto';
 import { CallData } from '@waha/structures/calls.dto';
@@ -86,6 +88,8 @@ import {
   GetChatMessagesFilter,
   GetChatMessagesQuery,
   PinDuration,
+  ReadChatMessagesQuery,
+  ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
 import {
@@ -174,15 +178,13 @@ import {
   share,
 } from 'rxjs';
 import { map } from 'rxjs/operators';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const promiseRetry = require('promise-retry');
-
-import { ExtractMessageKeysForRead } from '@waha/core/engines/utils';
 
 import { INowebStore } from './store/INowebStore';
 import { NowebPersistentStore } from './store/NowebPersistentStore';
 import { NowebStorageFactoryCore } from './store/NowebStorageFactoryCore';
 import { ensureNumber, extractMediaContent } from './utils';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const promiseRetry = require('promise-retry');
 
 export const BaileysEvents = {
   CONNECTION_UPDATE: 'connection.update',
@@ -955,6 +957,13 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     return result;
   }
 
+  public readChatMessages(
+    chatId: string,
+    request: ReadChatMessagesQuery,
+  ): Promise<ReadChatMessagesResponse> {
+    return this.readChatMessagesWSImpl(chatId, request);
+  }
+
   public async getChatMessage(
     chatId: string,
     messageId: string,
@@ -996,7 +1005,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   async setReaction(request: MessageReactionRequest) {
     const key = parseMessageIdSerialized(request.messageId);
-    if (isNewsletter(key.remoteJid)) {
+    if (isJidNewsletter(key.remoteJid)) {
       let serverId = Number(key.id);
       if (!serverId) {
         const msg = await this.store.getMessageById(key.remoteJid, key.id);
@@ -2389,7 +2398,7 @@ export function toCusFormat(remoteJid) {
   if (isLidUser(remoteJid)) {
     return remoteJid;
   }
-  if (isNewsletter(remoteJid)) {
+  if (isJidNewsletter(remoteJid)) {
     return remoteJid;
   }
   if (!remoteJid) {
@@ -2407,27 +2416,6 @@ export function toCusFormat(remoteJid) {
 export const ALL_JID = 'all@s.whatsapp.net';
 
 /**
- * Convert from 11111111111@c.us to 11111111111@s.whatsapp.net
- * @param chatId
- */
-export function toJID(chatId) {
-  if (isJidGroup(chatId)) {
-    return chatId;
-  }
-  if (isJidBroadcast(chatId)) {
-    return chatId;
-  }
-  if (isNewsletter(chatId)) {
-    return chatId;
-  }
-  if (isLidUser(chatId)) {
-    return chatId;
-  }
-  const number = chatId.split('@')[0];
-  return number + '@s.whatsapp.net';
-}
-
-/**
  * Build WAHA message id from engine one
  * {id: "AAA", remoteJid: "11111111111@s.whatsapp.net", "fromMe": false}
  * false_11111111111@c.us_AA
@@ -2439,38 +2427,6 @@ function buildMessageId({ id, remoteJid, fromMe, participant }: WAMessageKey) {
     parts.push(toCusFormat(participant));
   }
   return parts.join('_');
-}
-
-/**
- * Parse message id from WAHA to engine
- * false_11111111111@c.us_AAA
- * {id: "AAA", remoteJid: "11111111111@s.whatsapp.net", "fromMe": false}
- */
-export function parseMessageIdSerialized(
-  messageId: string,
-  soft: boolean = false,
-): WAMessageKey {
-  if (!messageId.includes('_') && soft) {
-    return { id: messageId };
-  }
-
-  const parts = messageId.split('_');
-  if (parts.length != 3 && parts.length != 4) {
-    throw new Error(
-      'Message id be in format false_11111111111@c.us_AAAAAAAAAAAAAAAAAAAA[_participant]',
-    );
-  }
-  const fromMe = parts[0] == 'true';
-  const chatId = parts[1];
-  const remoteJid = toJID(chatId);
-  const id = parts[2];
-  const participant = parts[3] ? toJID(parts[3]) : undefined;
-  return {
-    fromMe: fromMe,
-    id: id,
-    remoteJid: remoteJid,
-    participant: participant,
-  };
 }
 
 function getId(object) {

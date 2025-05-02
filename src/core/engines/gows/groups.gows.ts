@@ -4,7 +4,7 @@ import {
   GroupInfoFull,
   JoinedGroupEvent,
 } from '@waha/core/engines/gows/types.group';
-import { toJID } from '@waha/core/engines/noweb/session.noweb.core';
+import { toJID } from '@waha/core/utils/jids';
 import {
   GroupId,
   GroupInfo,

@@ -6,6 +6,7 @@ import {
   jidNormalizedUser,
   normalizeMessageContent,
 } from '@adiwajshing/baileys';
+import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import * as grpc from '@grpc/grpc-js';
 import { connectivityState } from '@grpc/grpc-js';
 import { UnprocessableEntityException } from '@nestjs/common';
@@ -31,11 +32,7 @@ import {
   statusToAck,
 } from '@waha/core/engines/gows/helpers';
 import { GowsAuthFactoryCore } from '@waha/core/engines/gows/store/GowsAuthFactoryCore';
-import {
-  parseMessageIdSerialized,
-  toCusFormat,
-  toJID,
-} from '@waha/core/engines/noweb/session.noweb.core';
+import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import { extractMediaContent } from '@waha/core/engines/noweb/utils';
 import {
   AvailableInPlusVersion,
@@ -43,6 +40,9 @@ import {
 } from '@waha/core/exceptions';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
+import { ExtractMessageKeysForRead } from '@waha/core/utils/convertors';
+import { parseMessageIdSerialized } from '@waha/core/utils/ids';
+import { toJID } from '@waha/core/utils/jids';
 import {
   Channel,
   ChannelListResult,
@@ -60,6 +60,8 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  ReadChatMessagesQuery,
+  ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
 import {
   ChatRequest,
@@ -93,6 +95,7 @@ import {
   ParticipantsRequest,
   SettingsSecurityChangeInfo,
 } from '@waha/structures/groups.dto';
+import { ReplyToMessage } from '@waha/structures/message.dto';
 import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
 import {
   WAHAChatPresences,
@@ -107,7 +110,6 @@ import { MeInfo, ProxyConfig } from '@waha/structures/sessions.dto';
 import {
   BROADCAST_ID,
   DeleteStatusRequest,
-  StatusRequest,
   TextStatus,
 } from '@waha/structures/status.dto';
 import { EnginePayload, WAMessageAckBody } from '@waha/structures/webhooks.dto';
@@ -130,10 +132,8 @@ import { map } from 'rxjs/operators';
 import { promisify } from 'util';
 
 import * as gows from './types';
+import { MessageStatus } from './types';
 import MessageServiceClient = messages.MessageServiceClient;
-import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
-import { ExtractMessageKeysForRead } from '@waha/core/engines/utils';
-import { ReplyToMessage } from '@waha/structures/message.dto';
 
 enum WhatsMeowEvent {
   CONNECTED = 'gows.ConnectedEventData',
@@ -350,10 +350,18 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
 
     let [messagesFromMe$, messagesFromOthers$] = partition(messages$, isMine);
     messagesFromMe$ = messagesFromMe$.pipe(
+      map((msg) => {
+        msg.Status = MessageStatus.ServerAck;
+        return msg;
+      }),
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
     );
     messagesFromOthers$ = messagesFromOthers$.pipe(
+      map((msg) => {
+        msg.Status = MessageStatus.DeliveryAck;
+        return msg;
+      }),
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
     );
@@ -1367,6 +1375,13 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     return result;
   }
 
+  public readChatMessages(
+    chatId: string,
+    request: ReadChatMessagesQuery,
+  ): Promise<ReadChatMessagesResponse> {
+    return this.readChatMessagesWSImpl(chatId, request);
+  }
+
   public async getChatMessage(
     chatId: string,
     messageId: string,
@@ -1425,11 +1440,11 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const id = buildMessageId(message);
     const body = this.extractBody(message.Message);
     const replyTo = this.extractReplyTo(message.Message);
-    let ack;
-    if (message.Status) {
-      ack = statusToAck(message.Status);
-    } else {
-      ack = message.Info.IsFromMe ? WAMessageAck.SERVER : WAMessageAck.DEVICE;
+    let ack = statusToAck(message.Status);
+    if (ack === WAMessageAck.ERROR) {
+      // GOWS error because of how golang treats it as null
+      // It'll be UNKNOWN instead of ERROR
+      ack = null;
     }
     const mediaContent = extractMediaContent(message.Message);
     const source = this.getSourceDeviceByMsg(message);

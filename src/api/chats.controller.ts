@@ -1,3 +1,4 @@
+import { isJidGroup } from '@adiwajshing/baileys';
 import {
   Body,
   Controller,
@@ -31,6 +32,8 @@ import {
   GetChatMessagesQuery,
   OverviewPaginationParams,
   PinMessageRequest,
+  ReadChatMessagesQuery,
+  ReadChatMessagesResponse,
   transformAck,
 } from '../structures/chats.dto';
 import { EditMessageRequest } from '../structures/chatting.dto';
@@ -103,6 +106,19 @@ class ChatsController {
   ) {
     filter = transformAck(filter);
     return session.getChatMessages(chatId, query, filter);
+  }
+
+  @Get(':chatId/messages/read')
+  @SessionApiParam
+  @ApiOperation({ summary: 'Read unread messages in the chat' })
+  @ChatIdApiParam
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  readChatMessages(
+    @Query() query: ReadChatMessagesQuery,
+    @WorkingSessionParam session: WhatsappSession,
+    @Param('chatId') chatId: string,
+  ): Promise<ReadChatMessagesResponse> {
+    return session.readChatMessages(chatId, query);
   }
 
   @Get(':chatId/messages/:messageId')

@@ -106,6 +106,35 @@ export class GetChatMessagesQuery {
   downloadMedia: boolean = true;
 }
 
+export class ReadChatMessagesQuery {
+  @ApiProperty({
+    example: 30,
+    required: false,
+    description: 'How much messages to read (latest first)',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  messages: number;
+
+  @ApiProperty({
+    required: false,
+    description: 'How much days to read (latest first)',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  days: number = 7;
+}
+
+export class ReadChatMessagesResponse {
+  @ApiProperty({
+    required: false,
+    description: 'Messages IDs that have been read',
+  })
+  ids?: string[];
+}
+
 export class GetChatMessageQuery {
   @ApiProperty({
     example: true,
