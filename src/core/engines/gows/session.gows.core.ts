@@ -706,8 +706,14 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
 
   async sendSeen(request: SendSeenRequest) {
     const keys = ExtractMessageKeysForRead(request);
+    if (keys.length === 0) {
+      return;
+    }
     const receipts = aggregateMessageKeysNotFromMe(keys);
     for (const receipt of receipts) {
+      if (receipt.messageIds.length === 0) {
+        return;
+      }
       const req = new messages.MarkReadRequest({
         session: this.session,
         jid: receipt.jid,

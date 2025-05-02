@@ -908,6 +908,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   async sendSeen(request: SendSeenRequest) {
     const keys = ExtractMessageKeysForRead(request);
+    if (keys.length === 0) {
+      return;
+    }
 
     // Send read
     await this.sock.readMessages(keys);
