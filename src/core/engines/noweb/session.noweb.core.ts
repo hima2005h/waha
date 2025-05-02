@@ -177,6 +177,8 @@ import { map } from 'rxjs/operators';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const promiseRetry = require('promise-retry');
 
+import { ExtractMessageKeysForRead } from '@waha/core/engines/utils';
+
 import { INowebStore } from './store/INowebStore';
 import { NowebPersistentStore } from './store/NowebPersistentStore';
 import { NowebStorageFactoryCore } from './store/NowebStorageFactoryCore';
@@ -905,23 +907,17 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   async sendSeen(request: SendSeenRequest) {
-    const key = parseMessageIdSerialized(request.messageId);
-    const participant = request.participant
-      ? toJID(this.ensureSuffix(request.participant))
-      : undefined;
-    const data = {
-      remoteJid: key.remoteJid,
-      id: key.id,
-      participant: participant,
-    };
-    const result = await this.sock.readMessages([data]);
-    this.sock?.ev.emit('messages.update', [
-      {
-        key: key,
-        update: { status: WAMessageAck.READ + 1 },
-      },
-    ]);
-    return result;
+    const keys = ExtractMessageKeysForRead(request);
+
+    // Send read
+    await this.sock.readMessages(keys);
+
+    // Emit events for our reads
+    const updates = keys.map((key) => ({
+      key: key,
+      update: { status: WAMessageAck.READ + 1 },
+    }));
+    this.sock?.ev.emit('messages.update', updates);
   }
 
   async startTyping(request: ChatRequest) {
