@@ -36,3 +36,7 @@ export function ExtractMessageKeysForRead(
   }
   return keys;
 }
+
+export function isJidCus(jid: string) {
+  return jid?.endsWith('@c.us');
+}
