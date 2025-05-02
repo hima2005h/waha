@@ -4,6 +4,7 @@ import {
   getUrlFromDirectPath,
   isJidGroup,
   jidNormalizedUser,
+  normalizeMessageContent,
 } from '@adiwajshing/baileys';
 import * as grpc from '@grpc/grpc-js';
 import { connectivityState } from '@grpc/grpc-js';
@@ -1395,8 +1396,13 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     if (message.Message.pollUpdateMessage) return;
     // Ignore protocol messages
     if (message.Message.protocolMessage) return;
-    // Ignore key distribution messages
-    if (message.Message.senderKeyDistributionMessage) return;
+
+    const normalizedContent = normalizeMessageContent(message.Message);
+    const hasSomeContent = !!getContentType(normalizedContent);
+    if (!hasSomeContent) {
+      // Ignore key distribution messages
+      if (message.message.senderKeyDistributionMessage) return;
+    }
 
     if (downloadMedia) {
       try {
