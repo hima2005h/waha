@@ -47,6 +47,7 @@
     "adm-zip": "0.5.10",
     "agentkeepalive": "^4.5.0",
     "async-lock": "^1.4.1",
+    "audio-decode": "^2.2.2",
     "axios": "^1.7.7",
     "axios-retry": "^4.5.0",
     "better-sqlite3": "11.3.0",
