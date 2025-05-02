@@ -52,6 +52,9 @@ export class SqlMessagesMethods {
   }
 
   async getByJidById(jid: string, id: string): Promise<any> {
+    if (jid === ALL_JID) {
+      return this.repository.getBy({ id: id });
+    }
     return this.repository.getBy({ jid: jid, id: id });
   }
 
