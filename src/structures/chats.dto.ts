@@ -1,5 +1,7 @@
+import { BadRequestException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { BooleanString } from '@waha/nestjs/validation/BooleanString';
+import { WAMessageAck, WAMessageAckName } from '@waha/structures/enums.dto';
 import {
   LimitOffsetParams,
   PaginationParams,
@@ -39,6 +41,30 @@ export class GetChatMessagesFilter {
   @IsBoolean()
   @IsOptional()
   'filter.fromMe'?: boolean;
+
+  @ApiProperty({
+    required: false,
+    description: 'Filter messages by acknowledgment status',
+    enum: WAMessageAckName,
+  })
+  @IsEnum(WAMessageAckName)
+  @IsOptional()
+  'filter.ack'?: WAMessageAck;
+}
+
+export function transformAck(
+  filter: GetChatMessagesFilter,
+): GetChatMessagesFilter {
+  if (!filter) return filter;
+  if (!filter['filter.ack']) return filter;
+  const ackName = filter['filter.ack'];
+  // @ts-ignore
+  const ack: WAMessageAck = WAMessageAck[ackName];
+  if (ack == null) {
+    throw new BadRequestException(`Invalid ack: '${ackName}'`);
+  }
+  filter['filter.ack'] = ack;
+  return filter;
 }
 
 export class ChatPictureQuery {

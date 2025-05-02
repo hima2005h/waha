@@ -187,8 +187,8 @@ export class SqlKVRepository<Entity> {
   /**
    * JSON helpers
    */
-  public filterJson(field: string, key: string): string {
-    return this.jsonQuery.filter(field, key);
+  public filterJson(field: string, key: string, value: any): [string, string] {
+    return this.jsonQuery.filter(field, key, value);
   }
 
   protected stringify(data: any): string {

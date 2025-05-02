@@ -10,7 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { WAHAValidationPipe } from '@waha/nestjs/pipes/WAHAValidationPipe';
-import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
+import {
+  GetChatMessagesFilter,
+  transformAck,
+} from '@waha/structures/chats.dto';
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
 
 import { SessionManager } from '../core/abc/manager.abc';
@@ -223,6 +226,7 @@ export class ChattingController {
     @Query() query: GetMessageQuery,
     @Query() filter: GetChatMessagesFilter,
   ) {
+    filter = transformAck(filter);
     const whatsapp = await this.manager.getWorkingSession(query.session);
     return whatsapp.getChatMessages(query.chatId, query, filter);
   }

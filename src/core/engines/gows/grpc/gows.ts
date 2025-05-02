@@ -3983,9 +3983,10 @@ export namespace messages {
             sender?: string;
             messageId?: string;
             type?: ReceiptType;
+            messageIds?: string[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [6], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("session" in data && data.session != undefined) {
                     this.session = data.session;
@@ -4001,6 +4002,9 @@ export namespace messages {
                 }
                 if ("type" in data && data.type != undefined) {
                     this.type = data.type;
+                }
+                if ("messageIds" in data && data.messageIds != undefined) {
+                    this.messageIds = data.messageIds;
                 }
             }
         }
@@ -4037,12 +4041,19 @@ export namespace messages {
         set type(value: ReceiptType) {
             pb_1.Message.setField(this, 5, value);
         }
+        get messageIds() {
+            return pb_1.Message.getFieldWithDefault(this, 6, []) as string[];
+        }
+        set messageIds(value: string[]) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             jid?: string;
             sender?: string;
             messageId?: string;
             type?: ReceiptType;
+            messageIds?: string[];
         }): MarkReadRequest {
             const message = new MarkReadRequest({});
             if (data.session != null) {
@@ -4060,6 +4071,9 @@ export namespace messages {
             if (data.type != null) {
                 message.type = data.type;
             }
+            if (data.messageIds != null) {
+                message.messageIds = data.messageIds;
+            }
             return message;
         }
         toObject() {
@@ -4069,6 +4083,7 @@ export namespace messages {
                 sender?: string;
                 messageId?: string;
                 type?: ReceiptType;
+                messageIds?: string[];
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -4084,6 +4099,9 @@ export namespace messages {
             }
             if (this.type != null) {
                 data.type = this.type;
+            }
+            if (this.messageIds != null) {
+                data.messageIds = this.messageIds;
             }
             return data;
         }
@@ -4101,6 +4119,8 @@ export namespace messages {
                 writer.writeString(4, this.messageId);
             if (this.type != ReceiptType.READ)
                 writer.writeEnum(5, this.type);
+            if (this.messageIds.length)
+                writer.writeRepeatedString(6, this.messageIds);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -4124,6 +4144,9 @@ export namespace messages {
                         break;
                     case 5:
                         message.type = reader.readEnum();
+                        break;
+                    case 6:
+                        pb_1.Message.addToRepeatedField(message, 6, reader.readString());
                         break;
                     default: reader.skipField();
                 }
@@ -6934,6 +6957,7 @@ export namespace messages {
             timestampGte?: OptionalUInt64;
             timestampLte?: OptionalUInt64;
             fromMe?: OptionalBool;
+            status?: OptionalUInt32;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -6949,6 +6973,9 @@ export namespace messages {
                 }
                 if ("fromMe" in data && data.fromMe != undefined) {
                     this.fromMe = data.fromMe;
+                }
+                if ("status" in data && data.status != undefined) {
+                    this.status = data.status;
                 }
             }
         }
@@ -6988,11 +7015,21 @@ export namespace messages {
         get has_fromMe() {
             return pb_1.Message.getField(this, 4) != null;
         }
+        get status() {
+            return pb_1.Message.getWrapperField(this, OptionalUInt32, 5) as OptionalUInt32;
+        }
+        set status(value: OptionalUInt32) {
+            pb_1.Message.setWrapperField(this, 5, value);
+        }
+        get has_status() {
+            return pb_1.Message.getField(this, 5) != null;
+        }
         static fromObject(data: {
             jid?: ReturnType<typeof OptionalString.prototype.toObject>;
             timestampGte?: ReturnType<typeof OptionalUInt64.prototype.toObject>;
             timestampLte?: ReturnType<typeof OptionalUInt64.prototype.toObject>;
             fromMe?: ReturnType<typeof OptionalBool.prototype.toObject>;
+            status?: ReturnType<typeof OptionalUInt32.prototype.toObject>;
         }): MessageFilters {
             const message = new MessageFilters({});
             if (data.jid != null) {
@@ -7007,6 +7044,9 @@ export namespace messages {
             if (data.fromMe != null) {
                 message.fromMe = OptionalBool.fromObject(data.fromMe);
             }
+            if (data.status != null) {
+                message.status = OptionalUInt32.fromObject(data.status);
+            }
             return message;
         }
         toObject() {
@@ -7015,6 +7055,7 @@ export namespace messages {
                 timestampGte?: ReturnType<typeof OptionalUInt64.prototype.toObject>;
                 timestampLte?: ReturnType<typeof OptionalUInt64.prototype.toObject>;
                 fromMe?: ReturnType<typeof OptionalBool.prototype.toObject>;
+                status?: ReturnType<typeof OptionalUInt32.prototype.toObject>;
             } = {};
             if (this.jid != null) {
                 data.jid = this.jid.toObject();
@@ -7027,6 +7068,9 @@ export namespace messages {
             }
             if (this.fromMe != null) {
                 data.fromMe = this.fromMe.toObject();
+            }
+            if (this.status != null) {
+                data.status = this.status.toObject();
             }
             return data;
         }
@@ -7042,6 +7086,8 @@ export namespace messages {
                 writer.writeMessage(3, this.timestampLte, () => this.timestampLte.serialize(writer));
             if (this.has_fromMe)
                 writer.writeMessage(4, this.fromMe, () => this.fromMe.serialize(writer));
+            if (this.has_status)
+                writer.writeMessage(5, this.status, () => this.status.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -7062,6 +7108,9 @@ export namespace messages {
                         break;
                     case 4:
                         reader.readMessage(message.fromMe, () => message.fromMe = OptionalBool.deserialize(reader));
+                        break;
+                    case 5:
+                        reader.readMessage(message.status, () => message.status = OptionalUInt32.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

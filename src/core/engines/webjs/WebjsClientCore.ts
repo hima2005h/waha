@@ -199,6 +199,9 @@ export class WebjsClientCore extends Client {
           ) {
             return false;
           }
+          if (filter['filter.ack'] != null && m.ack !== filter['filter.ack']) {
+            return false;
+          }
           return true;
         };
 

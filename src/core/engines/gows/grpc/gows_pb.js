@@ -905,7 +905,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.messages.MarkReadRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.messages.MarkReadRequest.repeatedFields_, null);
 };
 goog.inherits(proto.messages.MarkReadRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -8962,6 +8962,13 @@ proto.messages.SubscribePresenceRequest.prototype.setJid = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.messages.MarkReadRequest.repeatedFields_ = [6];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -8997,7 +9004,8 @@ proto.messages.MarkReadRequest.toObject = function(includeInstance, msg) {
     jid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     sender: jspb.Message.getFieldWithDefault(msg, 3, ""),
     messageid: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    type: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    type: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    messageidsList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -9054,6 +9062,10 @@ proto.messages.MarkReadRequest.deserializeBinaryFromReader = function(msg, reade
     case 5:
       var value = /** @type {!proto.messages.ReceiptType} */ (reader.readEnum());
       msg.setType(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMessageids(value);
       break;
     default:
       reader.skipField();
@@ -9117,6 +9129,13 @@ proto.messages.MarkReadRequest.serializeBinaryToWriter = function(message, write
   if (f !== 0.0) {
     writer.writeEnum(
       5,
+      f
+    );
+  }
+  f = message.getMessageidsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      6,
       f
     );
   }
@@ -9229,6 +9248,43 @@ proto.messages.MarkReadRequest.prototype.getType = function() {
  */
 proto.messages.MarkReadRequest.prototype.setType = function(value) {
   return jspb.Message.setProto3EnumField(this, 5, value);
+};
+
+
+/**
+ * repeated string messageIds = 6;
+ * @return {!Array<string>}
+ */
+proto.messages.MarkReadRequest.prototype.getMessageidsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.messages.MarkReadRequest} returns this
+ */
+proto.messages.MarkReadRequest.prototype.setMessageidsList = function(value) {
+  return jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.messages.MarkReadRequest} returns this
+ */
+proto.messages.MarkReadRequest.prototype.addMessageids = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.messages.MarkReadRequest} returns this
+ */
+proto.messages.MarkReadRequest.prototype.clearMessageidsList = function() {
+  return this.setMessageidsList([]);
 };
 
 
@@ -14523,7 +14579,8 @@ proto.messages.MessageFilters.toObject = function(includeInstance, msg) {
     jid: (f = msg.getJid()) && proto.messages.OptionalString.toObject(includeInstance, f),
     timestampgte: (f = msg.getTimestampgte()) && proto.messages.OptionalUInt64.toObject(includeInstance, f),
     timestamplte: (f = msg.getTimestamplte()) && proto.messages.OptionalUInt64.toObject(includeInstance, f),
-    fromme: (f = msg.getFromme()) && proto.messages.OptionalBool.toObject(includeInstance, f)
+    fromme: (f = msg.getFromme()) && proto.messages.OptionalBool.toObject(includeInstance, f),
+    status: (f = msg.getStatus()) && proto.messages.OptionalUInt32.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -14579,6 +14636,11 @@ proto.messages.MessageFilters.deserializeBinaryFromReader = function(msg, reader
       var value = new proto.messages.OptionalBool;
       reader.readMessage(value,proto.messages.OptionalBool.deserializeBinaryFromReader);
       msg.setFromme(value);
+      break;
+    case 5:
+      var value = new proto.messages.OptionalUInt32;
+      reader.readMessage(value,proto.messages.OptionalUInt32.deserializeBinaryFromReader);
+      msg.setStatus(value);
       break;
     default:
       reader.skipField();
@@ -14639,6 +14701,14 @@ proto.messages.MessageFilters.serializeBinaryToWriter = function(message, writer
       4,
       f,
       proto.messages.OptionalBool.serializeBinaryToWriter
+    );
+  }
+  f = message.getStatus();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.messages.OptionalUInt32.serializeBinaryToWriter
     );
   }
 };
@@ -14789,6 +14859,43 @@ proto.messages.MessageFilters.prototype.clearFromme = function() {
  */
 proto.messages.MessageFilters.prototype.hasFromme = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional OptionalUInt32 status = 5;
+ * @return {?proto.messages.OptionalUInt32}
+ */
+proto.messages.MessageFilters.prototype.getStatus = function() {
+  return /** @type{?proto.messages.OptionalUInt32} */ (
+    jspb.Message.getWrapperField(this, proto.messages.OptionalUInt32, 5));
+};
+
+
+/**
+ * @param {?proto.messages.OptionalUInt32|undefined} value
+ * @return {!proto.messages.MessageFilters} returns this
+*/
+proto.messages.MessageFilters.prototype.setStatus = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.messages.MessageFilters} returns this
+ */
+proto.messages.MessageFilters.prototype.clearStatus = function() {
+  return this.setStatus(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.messages.MessageFilters.prototype.hasStatus = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 

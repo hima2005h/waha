@@ -31,6 +31,7 @@ import {
   GetChatMessagesQuery,
   OverviewPaginationParams,
   PinMessageRequest,
+  transformAck,
 } from '../structures/chats.dto';
 import { EditMessageRequest } from '../structures/chatting.dto';
 
@@ -100,6 +101,7 @@ class ChatsController {
     @WorkingSessionParam session: WhatsappSession,
     @Param('chatId') chatId: string,
   ) {
+    filter = transformAck(filter);
     return session.getChatMessages(chatId, query, filter);
   }
 

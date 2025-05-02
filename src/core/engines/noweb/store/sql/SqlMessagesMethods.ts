@@ -35,8 +35,17 @@ export class SqlMessagesMethods {
     }
     if (filter['filter.fromMe'] != null) {
       // filter by data json inside
-      const sql = this.repository.filterJson('data', 'key.fromMe');
-      query = query.whereRaw(sql, [filter['filter.fromMe'] ? 'true' : 'false']);
+      const [sql, value] = this.repository.filterJson(
+        'data',
+        'key.fromMe',
+        filter['filter.fromMe'],
+      );
+      query = query.whereRaw(sql, [value]);
+    }
+    if (filter['filter.ack'] != null) {
+      const status = filter['filter.ack'] + 1;
+      const [sql, value] = this.repository.filterJson('data', 'status', status);
+      query = query.whereRaw(sql, [value]);
     }
     query = this.repository.pagination(query, pagination);
     return this.repository.all(query);

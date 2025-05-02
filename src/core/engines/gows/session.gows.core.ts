@@ -1322,6 +1322,8 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       });
     }
 
+    const status =
+      filter['filter.ack'] != null ? filter['filter.ack'] + 1 : null;
     const request = new messages.GetMessagesRequest({
       session: this.session,
       filters: new messages.MessageFilters({
@@ -1335,6 +1337,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
           messages.OptionalUInt64,
         ),
         fromMe: optional(filter['filter.fromMe'], messages.OptionalBool),
+        status: optional(status, messages.OptionalUInt32),
       }),
       pagination: new messages.Pagination({
         limit: query.limit,

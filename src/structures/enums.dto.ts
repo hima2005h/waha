@@ -68,4 +68,13 @@ export enum WAMessageAck {
   PLAYED = 4,
 }
 
+export enum WAMessageAckName {
+  ERROR = 'ERROR',
+  PENDING = 'PENDING',
+  SERVER = 'SERVER',
+  DEVICE = 'DEVICE',
+  READ = 'READ',
+  PLAYED = 'PLAYED',
+}
+
 export const ACK_UNKNOWN = 'UNKNOWN';
