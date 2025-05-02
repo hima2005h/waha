@@ -707,7 +707,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const req = new messages.MarkReadRequest({
       session: this.session,
       jid: key.remoteJid,
-      messageId: key.id,
+      messageIds: [key.id],
       sender: key.fromMe ? this.me.id : key.participant,
     });
     const response = await promisify(this.client.MarkRead)(req);
