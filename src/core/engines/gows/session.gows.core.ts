@@ -119,8 +119,10 @@ import { onlyEvent } from '@waha/utils/reactive/ops/onlyEvent';
 import * as NodeCache from 'node-cache';
 import {
   debounceTime,
+  distinct,
   filter,
   groupBy,
+  interval,
   merge,
   mergeMap,
   Observable,
@@ -372,13 +374,10 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const receipt$ = all$.pipe(onlyEvent(WhatsMeowEvent.RECEIPT));
     const messageAck$ = receipt$.pipe(
       mergeMap(this.receiptToMessageAck.bind(this)),
-      // Create a composite key for deduplication
-      groupBy((message) => `${message.id}-${message.ack}`),
-      mergeMap((group$) =>
-        group$.pipe(
-          debounceTime(1000), // Wait 1 second for deduplication
-          map((message) => message), // Pass the latest message after debounce
-        ),
+      // emit only if we haven’t seen this key since the last flush
+      distinct(
+        (msg: WAMessageAckBody) => `${msg.id}-${msg.ack}-${msg.participant}`,
+        interval(60_000),
       ),
     );
     this.events2.get(WAHAEvents.MESSAGE_ACK).switch(messageAck$);
