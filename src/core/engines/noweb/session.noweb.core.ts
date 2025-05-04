@@ -1952,7 +1952,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     if (!message.message.reactionMessage) return null;
 
     const id = buildMessageId(message.key);
-    const fromToParticipant = getFromToParticipant(message);
+    const fromToParticipant = getFromToParticipant(message.key);
     const reactionMessage = message.message.reactionMessage;
     const messageId = buildMessageId(reactionMessage.key);
     const source = this.getMessageSource(message.key.id);
@@ -2021,7 +2021,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   protected toWAMessage(message): Promise<WAMessage> {
-    const fromToParticipant = getFromToParticipant(message);
+    const fromToParticipant = getFromToParticipant(message.key);
     const id = buildMessageId(message.key);
     const body = this.extractBody(message.message);
     const replyTo = this.extractReplyTo(message.message);
@@ -2112,7 +2112,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   protected convertMessageUpdateToMessageAck(event): WAMessageAckBody {
     const message = event;
-    const fromToParticipant = getFromToParticipant(message);
+    const fromToParticipant = getFromToParticipant(message.key);
     const id = buildMessageId(message.key);
     const ack = message.update.status - 1;
     const body: WAMessageAckBody = {
@@ -2128,7 +2128,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   protected convertMessageReceiptUpdateToMessageAck(event): WAMessageAckBody {
-    const fromToParticipant = getFromToParticipant(event);
+    const fromToParticipant = getFromToParticipant(event.key);
     const id = buildMessageId(event.key);
 
     const receipt = event.receipt;
@@ -2445,15 +2445,15 @@ function isAckUpdateMessageEvent(event) {
   return event?.update.status != null;
 }
 
-function getFromToParticipant(message) {
-  const isGroupMessage = Boolean(message.key.participant);
+export function getFromToParticipant(key) {
+  const isGroupMessage = Boolean(key.participant);
   let participant: string;
   let to: string;
   if (isGroupMessage) {
-    participant = message.key.participant;
-    to = message.key.remoteJid;
+    participant = key.participant;
+    to = key.remoteJid;
   }
-  const from = message.key.remoteJid;
+  const from = key.remoteJid;
   return {
     from: from,
     to: to,

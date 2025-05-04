@@ -32,3 +32,9 @@ export function parseMessageIdSerialized(
     participant: participant,
   };
 }
+
+export function SerializeMessageKey(key: WAMessageKey) {
+  const { fromMe, id, remoteJid, participant } = key;
+  const participantStr = participant ? `_${participant}` : '';
+  return `${fromMe ? 'true' : 'false'}_${remoteJid}_${id}${participantStr}`;
+}

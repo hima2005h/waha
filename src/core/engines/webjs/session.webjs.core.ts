@@ -1,8 +1,17 @@
+import { isJidGroup, isJidStatusBroadcast } from '@adiwajshing/baileys';
 import { UnprocessableEntityException } from '@nestjs/common';
 import {
   getChannelInviteLink,
   WhatsappSession,
 } from '@waha/core/abc/session.abc';
+import {
+  getFromToParticipant,
+  toCusFormat,
+} from '@waha/core/engines/noweb/session.noweb.core';
+import {
+  ReceiptEvent,
+  TagReceiptNodeToReceiptEvent,
+} from '@waha/core/engines/webjs/ack.webjs';
 import {
   ToGroupV2JoinEvent,
   ToGroupV2LeaveEvent,
@@ -21,6 +30,10 @@ import {
 } from '@waha/core/exceptions';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
+import {
+  parseMessageIdSerialized,
+  SerializeMessageKey,
+} from '@waha/core/utils/ids';
 import { splitAt } from '@waha/helpers';
 import { PairingCodeResponse } from '@waha/structures/auth.dto';
 import {
@@ -89,6 +102,7 @@ import { MeInfo } from '@waha/structures/sessions.dto';
 import { StatusRequest, TextStatus } from '@waha/structures/status.dto';
 import {
   EnginePayload,
+  WAMessageAckBody,
   WAMessageRevokedBody,
 } from '@waha/structures/webhooks.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
@@ -96,7 +110,17 @@ import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
 import { SingleDelayedJobRunner } from '@waha/utils/SingleDelayedJobRunner';
 import * as lodash from 'lodash';
 import { ProtocolError } from 'puppeteer';
-import { filter, fromEvent, merge, mergeMap, Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinct,
+  filter,
+  fromEvent,
+  groupBy,
+  interval,
+  merge,
+  mergeMap,
+  Observable,
+} from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   Call,
@@ -110,6 +134,7 @@ import {
   Label as WEBJSLabel,
   Location,
   Message,
+  MessageAck,
   MessageMedia,
   Reaction,
   WAState,
@@ -1275,18 +1300,37 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     );
     this.events2.get(WAHAEvents.MESSAGE_REACTION).switch(messagesReaction$);
 
-    const messageAck$ = fromEvent(
+    const messageAckWEBJS$ = fromEvent(
       this.whatsapp,
       Events.MESSAGE_ACK,
       (message, ack) => {
         return { message, ack };
       },
     );
-    const messagesAck$ = messageAck$.pipe(
+    const messagesAckDM$ = messageAckWEBJS$.pipe(
       map((event) => event.message),
-      map(this.toWAMessage.bind(this)),
+      map<any, WAMessage>(this.toWAMessage.bind(this)),
+      filter((ack) => !isJidGroup(ack.to) && !isJidStatusBroadcast(ack.to)),
     );
-    this.events2.get(WAHAEvents.MESSAGE_ACK).switch(messagesAck$);
+    const tagReceiptNode$ = fromEvent(this.whatsapp, Events.TAG_RECEIPT);
+    const messageAckGroups$ = tagReceiptNode$.pipe(
+      mergeMap((node) =>
+        TagReceiptNodeToReceiptEvent(node as any, this.getSessionMeInfo()),
+      ),
+      mergeMap(this.TagReceiptToMessageAck.bind(this)),
+      filter((ack) => isJidGroup(ack.to) || isJidStatusBroadcast(ack.to)),
+    );
+
+    const messageAckAll$ = merge(messagesAckDM$, messageAckGroups$);
+
+    const messageAck$ = messageAckAll$.pipe(
+      // emit only if we haven’t seen this key since the last flush
+      distinct(
+        (msg: WAMessageAckBody) => `${msg.id}-${msg.ack}-${msg.participant}`,
+        interval(60_000),
+      ),
+    );
+    this.events2.get(WAHAEvents.MESSAGE_ACK).switch(messageAck$);
 
     //
     // Others
@@ -1418,15 +1462,44 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     };
   }
 
+  protected TagReceiptToMessageAck(receipt: ReceiptEvent): WAMessageAckBody[] {
+    const ids = receipt.messageIds;
+    const acks = [];
+    for (const id_ of ids) {
+      const messageKey = {
+        fromMe: receipt.key.fromMe,
+        remoteJid: toCusFormat(receipt.key.remoteJid),
+        participant: toCusFormat(receipt.key.participant),
+        id: id_,
+      };
+      const fromToParticipant = getFromToParticipant(messageKey);
+      const id = SerializeMessageKey(messageKey);
+      const ack = receipt.status - 1;
+      acks.push({
+        id: id,
+        from: fromToParticipant.from,
+        to: fromToParticipant.to,
+        participant: toCusFormat(receipt.participant),
+        fromMe: !receipt.key.fromMe, // reverted, it's right
+        ack: ack,
+        ackName: WAMessageAck[ack] || ACK_UNKNOWN,
+        _data: receipt._node,
+      });
+    }
+    return acks;
+  }
+
   protected toWAMessage(message: Message): WAMessage {
     const replyTo = this.extractReplyTo(message);
     const source = this.getMessageSource(message.id.id);
+    const key = parseMessageIdSerialized(message.id._serialized);
     // @ts-ignore
     return {
       id: message.id._serialized,
       timestamp: message.timestamp,
       from: message.from,
       fromMe: message.fromMe,
+      participant: toCusFormat(key.participant),
       source: source,
       to: message.to,
       body: message.body,
