@@ -12,6 +12,10 @@ import {
 import { LocalAuth } from '@waha/core/engines/webjs/LocalAuth';
 import { WebjsClientCore } from '@waha/core/engines/webjs/WebjsClientCore';
 import {
+  CallErrorEvent,
+  PAGE_CALL_ERROR_EVENT,
+} from '@waha/core/engines/webjs/WPage';
+import {
   AvailableInPlusVersion,
   NotImplementedByEngineError,
 } from '@waha/core/exceptions';
@@ -91,6 +95,7 @@ import { PaginatorInMemory } from '@waha/utils/Paginator';
 import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
 import { SingleDelayedJobRunner } from '@waha/utils/SingleDelayedJobRunner';
 import * as lodash from 'lodash';
+import { ProtocolError } from 'puppeteer';
 import { filter, fromEvent, merge, mergeMap, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -240,11 +245,28 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
           this.logger.error('The browser has been disconnected');
           this.failed();
         });
+
         // Listen for page close event
         this.whatsapp.pupPage.on('close', () => {
           this.logger.error('The WhatsApp Web page has been closed');
           this.failed();
         });
+
+        // Listen for function call errors
+        this.whatsapp.events.on(
+          PAGE_CALL_ERROR_EVENT,
+          (event: CallErrorEvent) => {
+            if (event.error instanceof ProtocolError) {
+              this.logger.error(
+                `ProtocolError when calling page method: ${String(
+                  event.method,
+                )}, restarting client...`,
+              );
+              this.logger.error(event.error);
+              this.failed();
+            }
+          },
+        );
 
         // Listen for page error event
         if (this.isDebugEnabled()) {

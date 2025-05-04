@@ -4,9 +4,12 @@ import { PaginationParams } from '@waha/structures/pagination.dto';
 import { TextStatus } from '@waha/structures/status.dto';
 import { EventEmitter } from 'events';
 import * as lodash from 'lodash';
+import { Page } from 'puppeteer';
 import { Client, Events } from 'whatsapp-web.js';
 import { Message } from 'whatsapp-web.js/src/structures';
 import { exposeFunctionIfAbsent } from 'whatsapp-web.js/src/util/Puppeter';
+
+import { CallErrorEvent, PAGE_CALL_ERROR_EVENT, WPage } from './WPage';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { LoadWAHA } = require('./_WAHA.js');
@@ -22,6 +25,7 @@ const ChatFactory = require('whatsapp-web.js/src/factories/ChatFactory');
 
 export class WebjsClientCore extends Client {
   public events = new EventEmitter();
+  private wpage: WPage = null;
 
   constructor(options) {
     super(options);
@@ -30,6 +34,18 @@ export class WebjsClientCore extends Client {
       await this.attachCustomEventListeners();
       await this.injectWaha();
     });
+  }
+
+  async initialize() {
+    const result = await super.initialize();
+    if (this.pupPage && !(this.pupPage instanceof WPage)) {
+      this.wpage = new WPage(this.pupPage);
+      this.wpage.on(PAGE_CALL_ERROR_EVENT as any, (event: CallErrorEvent) => {
+        this.events.emit(PAGE_CALL_ERROR_EVENT as any, event);
+      });
+      this.pupPage = this.wpage as any as Page;
+    }
+    return result;
   }
 
   async injectWaha() {
@@ -51,6 +67,7 @@ export class WebjsClientCore extends Client {
 
   async destroy() {
     this.events.removeAllListeners();
+    this.wpage?.removeAllListeners();
     await super.destroy();
   }
 
