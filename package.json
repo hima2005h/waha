@@ -96,7 +96,7 @@
   "resolutions": {
     "bufferutil": "^4.0.8",
     "ws": "^8.18.0",
-    "puppeteer": "^23.6.0",
+    "puppeteer": "^24.7.2",
     "whatwg-url": "13.0.0",
     "libsignal": "github:devlikeapro/libsignal-node#fork-master"
   },
