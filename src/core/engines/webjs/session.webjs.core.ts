@@ -758,6 +758,19 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   ): Promise<null | WAMessage> {
     const message = await this.whatsapp.getMessageById(messageId);
     if (!message) return null;
+    if (
+      isJidGroup(message.id.remote) ||
+      isJidStatusBroadcast(message.id.remote)
+    ) {
+      // @ts-ignore
+      message.rawData.receipts = await message.getInfo().catch((error) => {
+        this.logger.error(
+          { error: error, msg: message.id._serialized },
+          'Failed to get receipts',
+        );
+        return null;
+      });
+    }
     return await this.processIncomingMessage(message, query.downloadMedia);
   }
 
