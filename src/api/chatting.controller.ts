@@ -12,6 +12,7 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { WAHAValidationPipe } from '@waha/nestjs/pipes/WAHAValidationPipe';
 import {
   GetChatMessagesFilter,
+  ReadChatMessagesQuery,
   transformAck,
 } from '@waha/structures/chats.dto';
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
@@ -139,6 +140,15 @@ export class ChattingController {
 
   @Post('/sendSeen')
   async sendSeen(@Body() chat: SendSeenRequest) {
+    const hasMessageId = chat.messageIds?.length > 0 || Boolean(chat.messageId);
+    if (!hasMessageId) {
+      const whatsapp = await this.manager.getWorkingSession(chat.session);
+      const query: ReadChatMessagesQuery = {
+        messages: null,
+        days: 7,
+      };
+      return whatsapp.readChatMessages(chat.chatId, query);
+    }
     const whatsapp = await this.manager.getWorkingSession(chat.session);
     return whatsapp.sendSeen(chat);
   }
