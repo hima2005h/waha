@@ -108,7 +108,7 @@ class ChatsController {
     return session.getChatMessages(chatId, query, filter);
   }
 
-  @Get(':chatId/messages/read')
+  @Post(':chatId/messages/read')
   @SessionApiParam
   @ApiOperation({ summary: 'Read unread messages in the chat' })
   @ChatIdApiParam
