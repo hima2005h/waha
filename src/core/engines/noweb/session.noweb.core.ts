@@ -2133,7 +2133,6 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   protected convertMessageReceiptUpdateToMessageAck(event): WAMessageAckBody {
     const fromToParticipant = getFromToParticipant(event.key);
-    const id = buildMessageId(event.key);
 
     const receipt = event.receipt;
     let ack;
@@ -2144,6 +2143,15 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     } else if (receipt.readTimestamp) {
       ack = WAMessageAck.READ;
     }
+
+    const key = { ...event.key };
+    if (key.fromMe) {
+      key.participant = this.getSessionMeInfo()?.id;
+    } else {
+      key.participant = event.receipt.userJid;
+    }
+    const id = buildMessageId(key);
+
     const body: WAMessageAckBody = {
       id: id,
       from: toCusFormat(fromToParticipant.from),
@@ -2152,6 +2160,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       fromMe: event.key.fromMe,
       ack: ack,
       ackName: WAMessageAck[ack] || ACK_UNKNOWN,
+      _data: event,
     };
     return body;
   }
