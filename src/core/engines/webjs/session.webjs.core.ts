@@ -35,6 +35,7 @@ import {
   parseMessageIdSerialized,
   SerializeMessageKey,
 } from '@waha/core/utils/ids';
+import { DistinctAck } from '@waha/core/utils/reactive';
 import { splitAt } from '@waha/helpers';
 import { PairingCodeResponse } from '@waha/structures/auth.dto';
 import {
@@ -111,17 +112,7 @@ import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
 import { SingleDelayedJobRunner } from '@waha/utils/SingleDelayedJobRunner';
 import * as lodash from 'lodash';
 import { ProtocolError } from 'puppeteer';
-import {
-  debounceTime,
-  distinct,
-  filter,
-  fromEvent,
-  groupBy,
-  interval,
-  merge,
-  mergeMap,
-  Observable,
-} from 'rxjs';
+import { filter, fromEvent, merge, mergeMap, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   Call,
@@ -1337,13 +1328,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
 
     const messageAckAll$ = merge(messagesAckDM$, messageAckGroups$);
 
-    const messageAck$ = messageAckAll$.pipe(
-      // emit only if we haven’t seen this key since the last flush
-      distinct(
-        (msg: WAMessageAckBody) => `${msg.id}-${msg.ack}-${msg.participant}`,
-        interval(60_000),
-      ),
-    );
+    const messageAck$ = messageAckAll$.pipe(DistinctAck());
     this.events2.get(WAHAEvents.MESSAGE_ACK).switch(messageAck$);
 
     //
