@@ -69,6 +69,7 @@ import { AckToStatus, StatusToAck } from '@waha/core/utils/acks';
 import { ExtractMessageKeysForRead } from '@waha/core/utils/convertors';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
 import { isJidNewsletter, toJID } from '@waha/core/utils/jids';
+import { DistinctAck } from '@waha/core/utils/reactive';
 import { flipObject, splitAt } from '@waha/helpers';
 import { PairingCodeResponse } from '@waha/structures/auth.dto';
 import { CallData } from '@waha/structures/calls.dto';
@@ -1756,7 +1757,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       filter(isMine), // ack comes only for MY messages
       map(this.convertMessageReceiptUpdateToMessageAck.bind(this)),
     );
-    const messageAck$ = merge(messageAckDirect$, messageAckGroups$);
+    const messageAck$ = merge(messageAckDirect$, messageAckGroups$).pipe(
+      DistinctAck(),
+    );
     this.events2.get(WAHAEvents.MESSAGE_ACK).switch(messageAck$);
 
     //
