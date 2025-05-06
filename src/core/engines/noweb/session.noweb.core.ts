@@ -65,6 +65,7 @@ import { toVcard } from '@waha/core/helpers';
 import { createAgentProxy } from '@waha/core/helpers.proxy';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
+import { AckToStatus, StatusToAck } from '@waha/core/utils/acks';
 import { ExtractMessageKeysForRead } from '@waha/core/utils/convertors';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
 import { isJidNewsletter, toJID } from '@waha/core/utils/jids';
@@ -566,11 +567,11 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   private fixMessageUpsertStatus() {
-    // If no status - set it to WAMessageAck.DEVICE + 1
+    // If no status - set it to WAMessageAck.DEVICE
     this.sock.ev.on('messages.upsert', ({ messages }) => {
       for (const message of messages) {
         if (message.status == null) {
-          message.status = WAMessageAck.DEVICE + 1;
+          message.status = AckToStatus(WAMessageAck.DEVICE);
         }
       }
     });
@@ -920,7 +921,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     // Emit events for our reads
     const updates = keys.map((key) => ({
       key: key,
-      update: { status: WAMessageAck.READ + 1 },
+      update: { status: AckToStatus(WAMessageAck.READ) },
     }));
     this.sock?.ev.emit('messages.update', updates);
   }
@@ -2025,7 +2026,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const id = buildMessageId(message.key);
     const body = this.extractBody(message.message);
     const replyTo = this.extractReplyTo(message.message);
-    const ack = message.ack || message.status - 1;
+    const ack = message.ack || StatusToAck(message.status);
     const mediaContent = extractMediaContent(message.message);
     const source = this.getMessageSource(message.key.id);
     return Promise.resolve({
@@ -2114,7 +2115,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const message = event;
     const fromToParticipant = getFromToParticipant(message.key);
     const id = buildMessageId(message.key);
-    const ack = message.update.status - 1;
+    const ack = StatusToAck(message.update.status);
     const body: WAMessageAckBody = {
       id: id,
       from: toCusFormat(fromToParticipant.from),

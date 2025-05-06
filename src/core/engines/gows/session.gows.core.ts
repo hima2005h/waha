@@ -136,6 +136,7 @@ import { promisify } from 'util';
 import * as gows from './types';
 import { MessageStatus } from './types';
 import MessageServiceClient = messages.MessageServiceClient;
+import { AckToStatus } from '@waha/core/utils/acks';
 
 enum WhatsMeowEvent {
   CONNECTED = 'gows.ConnectedEventData',
@@ -1342,7 +1343,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     }
 
     const status =
-      filter['filter.ack'] != null ? filter['filter.ack'] + 1 : null;
+      filter['filter.ack'] != null ? AckToStatus(filter['filter.ack']) : null;
     const request = new messages.GetMessagesRequest({
       session: this.session,
       filters: new messages.MessageFilters({

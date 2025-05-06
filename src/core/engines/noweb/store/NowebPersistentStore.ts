@@ -194,6 +194,11 @@ export class NowebPersistentStore implements INowebStore {
       const jid = jidNormalizedUser(update.key.remoteJid!);
       const message = await this.messagesRepo.getByJidById(jid, update.key.id);
       if (!message) {
+        this.logger.warn(
+          `got update for non-existent message. update: '${JSON.stringify(
+            update,
+          )}'`,
+        );
         continue;
       }
       const fields = { ...update.update };

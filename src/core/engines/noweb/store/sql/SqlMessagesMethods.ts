@@ -1,5 +1,6 @@
 import { ALL_JID } from '@waha/core/engines/noweb/session.noweb.core';
 import { SqlKVRepository } from '@waha/core/storage/sql/SqlKVRepository';
+import { AckToStatus } from '@waha/core/utils/acks';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 
@@ -43,7 +44,7 @@ export class SqlMessagesMethods {
       query = query.whereRaw(sql, [value]);
     }
     if (filter['filter.ack'] != null) {
-      const status = filter['filter.ack'] + 1;
+      const status = AckToStatus(filter['filter.ack']);
       const [sql, value] = this.repository.filterJson('data', 'status', status);
       query = query.whereRaw(sql, [value]);
     }

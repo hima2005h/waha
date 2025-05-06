@@ -30,6 +30,7 @@ import {
 } from '@waha/core/exceptions';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
+import { StatusToAck } from '@waha/core/utils/acks';
 import {
   parseMessageIdSerialized,
   SerializeMessageKey,
@@ -1487,7 +1488,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       };
       const fromToParticipant = getFromToParticipant(messageKey);
       const id = SerializeMessageKey(messageKey);
-      const ack = receipt.status - 1;
+      const ack = StatusToAck(receipt.status);
       acks.push({
         id: id,
         from: fromToParticipant.from,
