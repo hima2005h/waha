@@ -36,11 +36,11 @@ import {
   LabelAssociationType,
 } from '@adiwajshing/baileys/lib/Types/LabelAssociation';
 import { MessageUserReceiptUpdate } from '@adiwajshing/baileys/lib/Types/Message';
+import { ILogger } from '@adiwajshing/baileys/lib/Utils/logger';
 import {
   isJidBroadcast,
   isLidUser,
 } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
-import { Logger as BaileysLogger } from '@adiwajshing/baileys/node_modules/pino';
 import { UnprocessableEntityException } from '@nestjs/common';
 import {
   ensureSuffix,
@@ -220,7 +220,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   private autoRestartJob: SinglePeriodicJobRunner;
   private msgRetryCounterCache: NodeCache;
   private placeholderResendCache: NodeCache;
-  protected engineLogger: BaileysLogger;
+  protected engineLogger: ILogger;
 
   private authNOWEBStore: any;
 
@@ -248,7 +248,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
     this.engineLogger = this.loggerBuilder.child({
       name: 'NOWEBEngine',
-    }) as unknown as BaileysLogger;
+    }) as unknown as ILogger;
 
     // Restart job if session failed
     this.startDelayedJob = new SingleDelayedJobRunner(
@@ -2336,7 +2336,7 @@ function hasPath(url: string) {
 }
 
 export class NOWEBEngineMediaProcessor implements IMediaEngineProcessor<any> {
-  private readonly logger: BaileysLogger;
+  private readonly logger: ILogger;
 
   constructor(
     public session: WhatsappSessionNoWebCore,
@@ -2344,7 +2344,7 @@ export class NOWEBEngineMediaProcessor implements IMediaEngineProcessor<any> {
   ) {
     this.logger = loggerBuilder.child({
       name: NOWEBEngineMediaProcessor.name,
-    }) as unknown as BaileysLogger;
+    }) as unknown as ILogger;
   }
 
   hasMedia(message: any): boolean {
