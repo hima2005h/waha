@@ -202,6 +202,18 @@ export class NowebPersistentStore implements INowebStore {
         continue;
       }
       const fields = { ...update.update };
+      // check if fields has only "status" field
+      const onlyStatusField =
+        Object.keys(fields).length === 1 &&
+        'status' in fields &&
+        fields.status !== null;
+      if (onlyStatusField) {
+        // if so, check the message don't have a newer status
+        if (message.status >= fields.status) {
+          continue;
+        }
+      }
+
       // It can overwrite the key, so we need to delete it
       delete fields['key'];
       Object.assign(message, fields);
