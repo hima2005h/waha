@@ -4,6 +4,7 @@ import { ISQLEngine } from '@waha/core/storage/sql/ISQLEngine';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { KnexPaginator } from '@waha/utils/Paginator';
 import Knex from 'knex';
+import * as lodash from 'lodash';
 
 export type Migration = string;
 
@@ -79,7 +80,16 @@ export class SqlKVRepository<Entity> {
   }
 
   private async upsertBatch(entities: Entity[]): Promise<void> {
-    const data = entities.map((entity) => this.dump(entity));
+    const all = entities.map((entity) => this.dump(entity));
+    // make it unique by .id
+    const data = lodash.uniqBy(all, (d: any) => d.id);
+    if (data.length != all.length) {
+      console.warn(
+        `WARNING - Duplicated entities for upsert batch: ${JSON.stringify(
+          entities,
+        )}`,
+      );
+    }
     const columns = this.columns.map((c) => `"${c.fieldName}"`);
     const values = data.map((d) => Object.values(d)).flat();
     const sql = `INSERT INTO "${this.table}" (${columns.join(', ')})
