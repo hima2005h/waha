@@ -11,4 +11,8 @@ export interface IContactRepository {
   deleteById(id: string): Promise<void>;
 
   save(contact: Contact): Promise<void>;
+
+  upsertMany(contacts: Contact[]): Promise<void>;
+
+  getEntitiesByIds(ids: string[]): Promise<Map<string, Contact | null>>;
 }

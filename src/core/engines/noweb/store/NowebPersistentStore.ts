@@ -350,15 +350,19 @@ export class NowebPersistentStore implements INowebStore {
   }
 
   private async onContactsUpsert(contacts: Contact[]) {
+    const upserts = [];
+    const ids = contacts.map((c) => c.id);
+    const contactById = await this.contactRepo.getEntitiesByIds(ids);
     for (const update of contacts) {
-      const contact = await this.contactRepo.getById(update.id);
+      const contact = contactById.get(update.id) || {};
       // remove undefined from data
       Object.keys(update).forEach(
         (key) => update[key] === undefined && delete update[key],
       );
-      const result = { ...(contact || {}), ...update };
-      await this.contactRepo.save(result);
+      const result = { ...contact, ...update };
+      upserts.push(result);
     }
+    await this.contactRepo.upsertMany(upserts);
   }
 
   private async onContactUpdate(updates: Partial<Contact>[]) {

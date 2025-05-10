@@ -119,8 +119,34 @@ export class SqlKVRepository<Entity> {
     return this.all(query);
   }
 
-  getAllByIds(ids: string[]) {
-    return this.all(this.select().whereIn('id', ids));
+  async getAllByIds(ids: string[]) {
+    const entitiesMap = await this.getEntitiesByIds(ids);
+    return Array.from(entitiesMap.values()).filter(
+      (entity) => entity !== null,
+    ) as Entity[];
+  }
+
+  async getEntitiesByIds(ids: string[]): Promise<Map<string, Entity | null>> {
+    if (ids.length === 0) {
+      return new Map();
+    }
+
+    const rows = await this.engine.all(this.select().whereIn('id', ids));
+    const entitiesMap = new Map<string, Entity | null>();
+
+    // Initialize a map with null values for all requested IDs
+    for (const id of ids) {
+      entitiesMap.set(id, null);
+    }
+
+    // Fill in the map with found entities
+    for (const row of rows) {
+      if (row && row.id) {
+        entitiesMap.set(row.id, this.parse(row));
+      }
+    }
+
+    return entitiesMap;
   }
 
   getById(id: string): Promise<Entity | null> {
