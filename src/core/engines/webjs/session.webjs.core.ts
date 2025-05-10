@@ -115,6 +115,7 @@ import { ProtocolError } from 'puppeteer';
 import { filter, fromEvent, merge, mergeMap, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
+  AuthStrategy,
   Call,
   Channel as WEBJSChannel,
   Chat,
@@ -343,10 +344,11 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
 
   private async end() {
     this.engineStateCheckDelayedJob.cancel();
+    this.whatsapp?.removeAllListeners();
+    this.whatsapp?.pupBrowser?.removeAllListeners();
+    this.whatsapp?.pupPage?.removeAllListeners();
+
     try {
-      this.whatsapp?.removeAllListeners();
-      this.whatsapp?.pupBrowser?.removeAllListeners();
-      this.whatsapp?.pupPage?.removeAllListeners();
       // It's possible that browser yet starting
       await waitUntil(
         async () => {
@@ -357,11 +359,30 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
         1_000,
         10_000,
       );
-      this.whatsapp?.destroy().catch((error) => {
-        this.logger.warn(error, 'Failed to destroy the client');
-      });
+      this.logger.debug(
+        'Successfully waited for browser to be ready for closing',
+      );
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(
+        error,
+        'Failed while waiting for browser to be ready for closing',
+      );
+    }
+
+    try {
+      await this.whatsapp?.destroy();
+      this.logger.debug('Successfully destroyed whatsapp client');
+    } catch (error) {
+      this.logger.error(error, 'Failed to destroy whatsapp client');
+    }
+
+    try {
+      // @ts-ignore
+      const strategy: AuthStrategy = this.whatsapp?.authStrategy;
+      await strategy?.destroy();
+      this.logger.debug('Successfully destroyed auth strategy');
+    } catch (error) {
+      this.logger.error(error, 'Failed to destroy auth strategy');
     }
   }
 
