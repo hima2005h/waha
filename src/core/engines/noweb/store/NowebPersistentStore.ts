@@ -243,8 +243,8 @@ export class NowebPersistentStore implements INowebStore {
     for (const chat of chats) {
       delete chat['messages'];
       chat.conversationTimestamp = toNumber(chat.conversationTimestamp) || null;
-      await this.chatRepo.save(chat);
     }
+    await this.chatRepo.upsertMany(chats);
     this.logger.info(`store sync - '${chats.length}' synced chats`);
   }
 

@@ -18,4 +18,6 @@ export interface IChatRepository {
   deleteById(id: string): Promise<void>;
 
   save(chat: Chat): Promise<void>;
+
+  upsertMany(chats: Chat[]): Promise<void>;
 }
