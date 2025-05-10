@@ -24,8 +24,8 @@ export class PaginatorInMemory extends Paginator {
     }
     return lodash.orderBy(
       data,
-      this.pagination.sortBy,
-      this.pagination.sortOrder || 'asc',
+      [this.NullLast(this.pagination.sortBy)],
+      [this.pagination.sortOrder || 'asc'],
     );
   }
 
@@ -36,6 +36,16 @@ export class PaginatorInMemory extends Paginator {
     const offset = this.pagination.offset || 0;
     const limit = this.pagination.limit || Infinity;
     return data.slice(offset, offset + limit);
+  }
+
+  NullLast(field) {
+    return (item) => {
+      const value = item?.[field];
+      if (value == null) {
+        return -Infinity;
+      }
+      return value;
+    };
   }
 }
 

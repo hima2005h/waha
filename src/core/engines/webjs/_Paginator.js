@@ -17,7 +17,7 @@ exports.LoadPaginator = () => {
       }
       return window.lodash.orderBy(
         data,
-        [this.pagination.sortBy],
+        [this.NullLast(this.pagination.sortBy)],
         [this.pagination.sortOrder || 'asc'],
       );
     }
@@ -29,6 +29,16 @@ exports.LoadPaginator = () => {
       const offset = this.pagination.offset || 0;
       const limit = this.pagination.limit || Infinity;
       return data.slice(offset, offset + limit);
+    }
+
+    NullLast(field) {
+      return (item) => {
+        const value = item?.[field];
+        if (value == null) {
+          return -Infinity;
+        }
+        return value;
+      };
     }
   }
   window.Paginator = Paginator;
