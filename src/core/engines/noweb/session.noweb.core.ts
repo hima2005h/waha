@@ -2,6 +2,7 @@ import makeWASocket, {
   Browsers,
   Chat,
   Contact,
+  decryptPollVote,
   DisconnectReason,
   downloadMediaMessage,
   extractMessageContent,
@@ -397,6 +398,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     this.sock = await this.makeSocket();
 
     this.issueMessageUpdateOnEdits();
+    this.issueMessageUpdateOnPoll();
     this.fixMessageUpsertStatus();
     this.issuePresenceUpdateOnMessageUpsert();
     if (this.isDebugEnabled()) {
@@ -599,6 +601,67 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
               update: { message: protocolMsg.editedMessage },
             },
           ]);
+        }
+      }
+    });
+  }
+
+  private issueMessageUpdateOnPoll() {
+    // Fix for https://github.com/devlikeapro/waha/issues/960
+    this.sock.ev.on('messages.upsert', async ({ messages }) => {
+      const meId = this.getSessionMeInfo().id;
+      if (!meId) {
+        return;
+      }
+      for (const message of messages) {
+        const content = normalizeMessageContent(message.message);
+        if (!content.pollUpdateMessage) {
+          continue;
+        }
+        const creationMsgKey = content.pollUpdateMessage.pollCreationMessageKey;
+        // we need to fetch the poll creation message to get the poll enc key
+        const pollMsg = await this.getMessage(creationMsgKey);
+        if (!pollMsg) {
+          this.logger.warn(
+            { creationMsgKey },
+            'poll creation message not found, cannot decrypt update',
+          );
+          continue;
+        }
+
+        const meIdNormalised = jidNormalizedUser(meId);
+        const pollCreatorJid = getKeyAuthor(creationMsgKey, meIdNormalised);
+        const voterJid = getKeyAuthor(message.key, meIdNormalised);
+        const pollEncKey = pollMsg.messageContextInfo?.messageSecret;
+
+        try {
+          const voteMsg = decryptPollVote(content.pollUpdateMessage.vote, {
+            pollEncKey,
+            pollCreatorJid,
+            pollMsgId: creationMsgKey.id,
+            voterJid,
+          });
+          this.sock.ev.emit('messages.update', [
+            {
+              key: creationMsgKey,
+              update: {
+                pollUpdates: [
+                  {
+                    pollUpdateMessageKey: message.key,
+                    vote: voteMsg,
+                    senderTimestampMs: (
+                      content.pollUpdateMessage.senderTimestampMs as Long
+                    ).toNumber(),
+                  },
+                ],
+              },
+            },
+          ]);
+        } catch (err) {
+          this.logger.warn(
+            { err, creationMsgKey },
+            'failed to decrypt poll vote',
+          );
         }
       }
     });
