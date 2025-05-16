@@ -1409,7 +1409,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const hasSomeContent = !!getContentType(normalizedContent);
     if (!hasSomeContent) {
       // Ignore key distribution messages
-      if (message.message.senderKeyDistributionMessage) return;
+      if (message?.Message?.senderKeyDistributionMessage) return;
     }
 
     if (downloadMedia) {

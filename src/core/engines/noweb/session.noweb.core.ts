@@ -2002,7 +2002,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const hasSomeContent = !!getContentType(normalizedContent);
     if (!hasSomeContent) {
       // Ignore key distribution messages
-      if (message.message.senderKeyDistributionMessage) return;
+      if (message?.message?.senderKeyDistributionMessage) return;
     }
 
     if (downloadMedia) {
