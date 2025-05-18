@@ -67,6 +67,7 @@ import {
   ChatRequest,
   CheckNumberStatusQuery,
   EditMessageRequest,
+  MessageContactVcardRequest,
   MessageFileRequest,
   MessageForwardRequest,
   MessageImageRequest,
@@ -132,6 +133,7 @@ import { promisify } from 'util';
 import * as gows from './types';
 import { MessageStatus } from './types';
 import MessageServiceClient = messages.MessageServiceClient;
+import { toVcard } from '@waha/core/helpers';
 import { AckToStatus } from '@waha/core/utils/acks';
 import { DistinctAck } from '@waha/core/utils/reactive';
 
@@ -583,6 +585,20 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       linkPreviewHighQuality: request.linkPreviewHighQuality,
     });
     const response = await promisify(this.client.EditMessage)(message);
+    const data = response.toObject();
+    return this.messageResponse(jid, data);
+  }
+
+  async sendContactVCard(request: MessageContactVcardRequest) {
+    const jid = toJID(this.ensureSuffix(request.chatId));
+    const contacts = request.contacts.map((el) => ({ vcard: toVcard(el) }));
+    const message = new messages.MessageRequest({
+      jid: jid,
+      session: this.session,
+      replyTo: getMessageIdFromSerialized(request.reply_to),
+      contacts: contacts.map((contact) => new messages.vCardContact(contact)),
+    });
+    const response = await promisify(this.client.SendMessage)(message);
     const data = response.toObject();
     return this.messageResponse(jid, data);
   }

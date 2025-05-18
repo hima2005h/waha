@@ -2671,6 +2671,96 @@ export namespace messages {
             return LinkPreview.deserialize(bytes);
         }
     }
+    export class vCardContact extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            displayName?: string;
+            vcard?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("displayName" in data && data.displayName != undefined) {
+                    this.displayName = data.displayName;
+                }
+                if ("vcard" in data && data.vcard != undefined) {
+                    this.vcard = data.vcard;
+                }
+            }
+        }
+        get displayName() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set displayName(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get vcard() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set vcard(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            displayName?: string;
+            vcard?: string;
+        }): vCardContact {
+            const message = new vCardContact({});
+            if (data.displayName != null) {
+                message.displayName = data.displayName;
+            }
+            if (data.vcard != null) {
+                message.vcard = data.vcard;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                displayName?: string;
+                vcard?: string;
+            } = {};
+            if (this.displayName != null) {
+                data.displayName = this.displayName;
+            }
+            if (this.vcard != null) {
+                data.vcard = this.vcard;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.displayName.length)
+                writer.writeString(1, this.displayName);
+            if (this.vcard.length)
+                writer.writeString(3, this.vcard);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): vCardContact {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new vCardContact();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.displayName = reader.readString();
+                        break;
+                    case 3:
+                        message.vcard = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): vCardContact {
+            return vCardContact.deserialize(bytes);
+        }
+    }
     export class MessageRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -2686,9 +2776,10 @@ export namespace messages {
             id?: string;
             participants?: string[];
             preview?: LinkPreview;
+            contacts?: vCardContact[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [11], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [11, 13], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("session" in data && data.session != undefined) {
                     this.session = data.session;
@@ -2725,6 +2816,9 @@ export namespace messages {
                 }
                 if ("preview" in data && data.preview != undefined) {
                     this.preview = data.preview;
+                }
+                if ("contacts" in data && data.contacts != undefined) {
+                    this.contacts = data.contacts;
                 }
             }
         }
@@ -2815,6 +2909,12 @@ export namespace messages {
         get has_preview() {
             return pb_1.Message.getField(this, 12) != null;
         }
+        get contacts() {
+            return pb_1.Message.getRepeatedWrapperField(this, vCardContact, 13) as vCardContact[];
+        }
+        set contacts(value: vCardContact[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 13, value);
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             jid?: string;
@@ -2828,6 +2928,7 @@ export namespace messages {
             id?: string;
             participants?: string[];
             preview?: ReturnType<typeof LinkPreview.prototype.toObject>;
+            contacts?: ReturnType<typeof vCardContact.prototype.toObject>[];
         }): MessageRequest {
             const message = new MessageRequest({});
             if (data.session != null) {
@@ -2866,6 +2967,9 @@ export namespace messages {
             if (data.preview != null) {
                 message.preview = LinkPreview.fromObject(data.preview);
             }
+            if (data.contacts != null) {
+                message.contacts = data.contacts.map(item => vCardContact.fromObject(item));
+            }
             return message;
         }
         toObject() {
@@ -2882,6 +2986,7 @@ export namespace messages {
                 id?: string;
                 participants?: string[];
                 preview?: ReturnType<typeof LinkPreview.prototype.toObject>;
+                contacts?: ReturnType<typeof vCardContact.prototype.toObject>[];
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -2919,6 +3024,9 @@ export namespace messages {
             if (this.preview != null) {
                 data.preview = this.preview.toObject();
             }
+            if (this.contacts != null) {
+                data.contacts = this.contacts.map((item: vCardContact) => item.toObject());
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2949,6 +3057,8 @@ export namespace messages {
                 writer.writeRepeatedString(11, this.participants);
             if (this.has_preview)
                 writer.writeMessage(12, this.preview, () => this.preview.serialize(writer));
+            if (this.contacts.length)
+                writer.writeRepeatedMessage(13, this.contacts, (item: vCardContact) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -2993,6 +3103,9 @@ export namespace messages {
                         break;
                     case 12:
                         reader.readMessage(message.preview, () => message.preview = LinkPreview.deserialize(reader));
+                        break;
+                    case 13:
+                        reader.readMessage(message.contacts, () => pb_1.Message.addToRepeatedWrapperField(message, 13, vCardContact.deserialize(reader), vCardContact));
                         break;
                     default: reader.skipField();
                 }
