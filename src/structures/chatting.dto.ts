@@ -164,6 +164,9 @@ export class MessageContactVcardRequest extends ChatRequest {
     ],
   })
   contacts: (VCardContact | Contact)[];
+
+  @ReplyToProperty()
+  reply_to?: string;
 }
 
 export class MessageTextRequest extends ChatRequest {
