@@ -133,9 +133,20 @@ import { promisify } from 'util';
 import * as gows from './types';
 import { MessageStatus } from './types';
 import MessageServiceClient = messages.MessageServiceClient;
+import { isFromFullSync } from '@waha/core/engines/gows/appstate';
 import { toVcard } from '@waha/core/helpers';
 import { AckToStatus } from '@waha/core/utils/acks';
 import { DistinctAck } from '@waha/core/utils/reactive';
+import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
+import { exclude } from '@waha/utils/reactive/ops/exclude';
+import * as lodash from 'lodash';
+
+import {
+  eventToLabelChatAssociationDTO,
+  eventToLabelDTO,
+  isLabelChatAddedEvent,
+  isLabelUpsertEvent,
+} from './labels.gows';
 
 enum WhatsMeowEvent {
   CONNECTED = 'gows.ConnectedEventData',
@@ -152,6 +163,9 @@ enum WhatsMeowEvent {
   // Groups
   GROUP_INFO = 'events.GroupInfo',
   JOINED_GROUP = 'events.JoinedGroup',
+  // Labels
+  LABEL_EDIT = 'events.LabelEdit',
+  LABEL_ASSOCIATION_CHAT = 'events.LabelAssociationChat',
 }
 
 const gRPCClientConfig = {
@@ -421,6 +435,51 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       filter(Boolean),
     );
     this.events2.get(WAHAEvents.GROUP_V2_UPDATE).switch(groupV2Update$);
+
+    // Label Events
+    // First, create streams for the raw label events
+    const labelEditEvents$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.LABEL_EDIT),
+      exclude(isFromFullSync),
+    );
+
+    // Split the raw label edit events into upsert and deleted events
+    const [labelUpsertEvents$, labelDeletedEvents$] = partition(
+      labelEditEvents$,
+      isLabelUpsertEvent,
+    );
+
+    // Convert the events to DTOs
+    const labelUpsert$ = labelUpsertEvents$.pipe(map(eventToLabelDTO));
+
+    const labelDeleted$ = labelDeletedEvents$.pipe(map(eventToLabelDTO));
+
+    this.events2.get(WAHAEvents.LABEL_UPSERT).switch(labelUpsert$);
+    this.events2.get(WAHAEvents.LABEL_DELETED).switch(labelDeleted$);
+
+    // Handle label association events
+    const labelAssociationEvents$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.LABEL_ASSOCIATION_CHAT),
+      exclude(isFromFullSync),
+    );
+
+    // Split the raw label association events into added and deleted events
+    const [labelChatAddedEvents$, labelChatDeletedEvents$] = partition(
+      labelAssociationEvents$,
+      isLabelChatAddedEvent,
+    );
+
+    // Convert the events to DTOs
+    const labelChatAdded$ = labelChatAddedEvents$.pipe(
+      map(eventToLabelChatAssociationDTO),
+    );
+
+    const labelChatDeleted$ = labelChatDeletedEvents$.pipe(
+      map(eventToLabelChatAssociationDTO),
+    );
+
+    this.events2.get(WAHAEvents.LABEL_CHAT_ADDED).switch(labelChatAdded$);
+    this.events2.get(WAHAEvents.LABEL_CHAT_DELETED).switch(labelChatDeleted$);
   }
 
   async fetchContactProfilePicture(id: string): Promise<string> {
@@ -1404,6 +1463,119 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const response = await promisify(this.client.GetMessageById)(request);
     const msg = parseJson(response);
     return this.processIncomingMessage(msg, query.downloadMedia);
+  }
+
+  /**
+   * Labels methods
+   */
+
+  public async getLabels(): Promise<Label[]> {
+    const request = new messages.GetLabelsRequest({
+      session: this.session,
+    });
+    const response = await promisify(this.client.GetLabels)(request);
+    const labels = parseJsonList(response);
+    return labels.map(this.toLabel);
+  }
+
+  public async createLabel(labelDto: LabelDTO): Promise<Label> {
+    const labels = await this.getLabels();
+    const highestLabelId = lodash.max(
+      labels.map((label) => parseInt(label.id)),
+    );
+    const labelId = highestLabelId ? highestLabelId + 1 : 1;
+    const label: Label = {
+      id: labelId.toString(),
+      name: labelDto.name,
+      color: labelDto.color,
+      colorHex: Label.toHex(labelDto.color),
+    };
+    return this.updateLabel(label);
+  }
+
+  protected toLabel(label: any): Label {
+    const color = label.color;
+    return {
+      id: label.id,
+      name: label.name,
+      color: color,
+      colorHex: Label.toHex(color),
+    };
+  }
+
+  public async updateLabel(label: Label): Promise<Label> {
+    const request = new messages.UpsertLabelRequest({
+      session: this.session,
+      label: new messages.Label({
+        id: label.id,
+        name: label.name,
+        color: label.color,
+      }),
+    });
+    await promisify(this.client.UpsertLabel)(request);
+    return label;
+  }
+
+  public async deleteLabel(label: Label): Promise<void> {
+    const request = new messages.DeleteLabelRequest({
+      session: this.session,
+      label: new messages.Label({
+        id: label.id,
+        name: label.name,
+        color: label.color,
+      }),
+    });
+    await promisify(this.client.DeleteLabel)(request);
+  }
+
+  public async getChatsByLabelId(labelId: string) {
+    const request = new messages.EntityByIdRequest({
+      session: this.session,
+      id: labelId,
+    });
+    const response = await promisify(this.client.GetChatsByLabelId)(request);
+    const ids = parseJsonList(response);
+    return ids.map((jid) => {
+      return {
+        id: toCusFormat(jid),
+      };
+    });
+  }
+
+  public async getChatLabels(chatId: string): Promise<Label[]> {
+    const jid = toJID(chatId);
+    const request = new messages.EntityByIdRequest({
+      session: this.session,
+      id: jid,
+    });
+    const response = await promisify(this.client.GetLabelsByJid)(request);
+    const labels = parseJsonList(response);
+    return labels.map(this.toLabel);
+  }
+
+  public async putLabelsToChat(chatId: string, labels: LabelID[]) {
+    const jid = toJID(chatId);
+    const labelsIds = labels.map((label) => label.id);
+    const currentLabels = await this.getChatLabels(jid);
+    const currentLabelsIds = currentLabels.map((label) => label.id);
+    const addLabelsIds = lodash.difference(labelsIds, currentLabelsIds);
+    const removeLabelsIds = lodash.difference(currentLabelsIds, labelsIds);
+    for (const labelId of addLabelsIds) {
+      const request = new messages.ChatLabelRequest({
+        session: this.session,
+        labelId: labelId,
+        chatId: jid,
+      });
+      await promisify(this.client.AddChatLabel)(request);
+    }
+    for (const labelId of removeLabelsIds) {
+      const request = new messages.ChatLabelRequest({
+        session: this.session,
+        labelId: labelId,
+        chatId: jid,
+      });
+      await promisify(this.client.RemoveChatLabel)(request);
+    }
   }
 
   //

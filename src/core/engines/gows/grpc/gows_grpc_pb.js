@@ -15,6 +15,17 @@ function deserialize_messages_ButtonReplyRequest(buffer_arg) {
   return gows_pb.ButtonReplyRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_messages_ChatLabelRequest(arg) {
+  if (!(arg instanceof gows_pb.ChatLabelRequest)) {
+    throw new Error('Expected argument of type messages.ChatLabelRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_ChatLabelRequest(buffer_arg) {
+  return gows_pb.ChatLabelRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_messages_ChatPresenceRequest(arg) {
   if (!(arg instanceof gows_pb.ChatPresenceRequest)) {
     throw new Error('Expected argument of type messages.ChatPresenceRequest');
@@ -68,6 +79,17 @@ function serialize_messages_CreateNewsletterRequest(arg) {
 
 function deserialize_messages_CreateNewsletterRequest(buffer_arg) {
   return gows_pb.CreateNewsletterRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_messages_DeleteLabelRequest(arg) {
+  if (!(arg instanceof gows_pb.DeleteLabelRequest)) {
+    throw new Error('Expected argument of type messages.DeleteLabelRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_DeleteLabelRequest(buffer_arg) {
+  return gows_pb.DeleteLabelRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_messages_DownloadMediaRequest(arg) {
@@ -156,6 +178,17 @@ function serialize_messages_GetContactsRequest(arg) {
 
 function deserialize_messages_GetContactsRequest(buffer_arg) {
   return gows_pb.GetContactsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_messages_GetLabelsRequest(arg) {
+  if (!(arg instanceof gows_pb.GetLabelsRequest)) {
+    throw new Error('Expected argument of type messages.GetLabelsRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_GetLabelsRequest(buffer_arg) {
+  return gows_pb.GetLabelsRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_messages_GetMessagesRequest(arg) {
@@ -574,6 +607,17 @@ function serialize_messages_UpdateParticipantsRequest(arg) {
 
 function deserialize_messages_UpdateParticipantsRequest(buffer_arg) {
   return gows_pb.UpdateParticipantsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_messages_UpsertLabelRequest(arg) {
+  if (!(arg instanceof gows_pb.UpsertLabelRequest)) {
+    throw new Error('Expected argument of type messages.UpsertLabelRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_UpsertLabelRequest(buffer_arg) {
+  return gows_pb.UpsertLabelRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 
@@ -1088,6 +1132,86 @@ getSubscribedNewsletters: {
     requestDeserialize: deserialize_messages_NewsletterToggleFollowRequest,
     responseSerialize: serialize_messages_Empty,
     responseDeserialize: deserialize_messages_Empty,
+  },
+  //
+// Labels
+//
+getLabels: {
+    path: '/messages.MessageService/GetLabels',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.GetLabelsRequest,
+    responseType: gows_pb.JsonList,
+    requestSerialize: serialize_messages_GetLabelsRequest,
+    requestDeserialize: deserialize_messages_GetLabelsRequest,
+    responseSerialize: serialize_messages_JsonList,
+    responseDeserialize: deserialize_messages_JsonList,
+  },
+  upsertLabel: {
+    path: '/messages.MessageService/UpsertLabel',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.UpsertLabelRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_UpsertLabelRequest,
+    requestDeserialize: deserialize_messages_UpsertLabelRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
+  },
+  deleteLabel: {
+    path: '/messages.MessageService/DeleteLabel',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.DeleteLabelRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_DeleteLabelRequest,
+    requestDeserialize: deserialize_messages_DeleteLabelRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
+  },
+  addChatLabel: {
+    path: '/messages.MessageService/AddChatLabel',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.ChatLabelRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_ChatLabelRequest,
+    requestDeserialize: deserialize_messages_ChatLabelRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
+  },
+  removeChatLabel: {
+    path: '/messages.MessageService/RemoveChatLabel',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.ChatLabelRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_ChatLabelRequest,
+    requestDeserialize: deserialize_messages_ChatLabelRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
+  },
+  getLabelsByJid: {
+    path: '/messages.MessageService/GetLabelsByJid',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.EntityByIdRequest,
+    responseType: gows_pb.JsonList,
+    requestSerialize: serialize_messages_EntityByIdRequest,
+    requestDeserialize: deserialize_messages_EntityByIdRequest,
+    responseSerialize: serialize_messages_JsonList,
+    responseDeserialize: deserialize_messages_JsonList,
+  },
+  getChatsByLabelId: {
+    path: '/messages.MessageService/GetChatsByLabelId',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.EntityByIdRequest,
+    responseType: gows_pb.JsonList,
+    requestSerialize: serialize_messages_EntityByIdRequest,
+    requestDeserialize: deserialize_messages_EntityByIdRequest,
+    responseSerialize: serialize_messages_JsonList,
+    responseDeserialize: deserialize_messages_JsonList,
   },
   //
 // Media

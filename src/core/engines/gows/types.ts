@@ -39,3 +39,31 @@ export enum MessageStatus {
   Read = 4,
   Played = 5,
 }
+
+export interface LabelEditAction {
+  name: string;
+  color: number;
+  deleted: boolean;
+  orderIndex: number;
+  isActive: boolean;
+  type: number;
+}
+
+export interface LabelEdit {
+  Timestamp: string;
+  LabelID: string;
+  Action: LabelEditAction;
+  FromFullSync: boolean;
+}
+
+export interface LabelAssociationChatAction {
+  labeled: boolean;
+}
+
+export interface LabelAssociationChat {
+  JID: string;
+  Timestamp: string;
+  LabelID: string;
+  Action: LabelAssociationChatAction;
+  FromFullSync: boolean;
+}
