@@ -15,6 +15,17 @@ function deserialize_messages_ButtonReplyRequest(buffer_arg) {
   return gows_pb.ButtonReplyRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_messages_CancelEventMessageRequest(arg) {
+  if (!(arg instanceof gows_pb.CancelEventMessageRequest)) {
+    throw new Error('Expected argument of type messages.CancelEventMessageRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_CancelEventMessageRequest(buffer_arg) {
+  return gows_pb.CancelEventMessageRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_messages_ChatLabelRequest(arg) {
   if (!(arg instanceof gows_pb.ChatLabelRequest)) {
     throw new Error('Expected argument of type messages.ChatLabelRequest');
@@ -1212,6 +1223,20 @@ getLabels: {
     requestDeserialize: deserialize_messages_EntityByIdRequest,
     responseSerialize: serialize_messages_JsonList,
     responseDeserialize: deserialize_messages_JsonList,
+  },
+  //
+// Events
+//
+cancelEventMessage: {
+    path: '/messages.MessageService/CancelEventMessage',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.CancelEventMessageRequest,
+    responseType: gows_pb.MessageResponse,
+    requestSerialize: serialize_messages_CancelEventMessageRequest,
+    requestDeserialize: deserialize_messages_CancelEventMessageRequest,
+    responseSerialize: serialize_messages_MessageResponse,
+    responseDeserialize: deserialize_messages_MessageResponse,
   },
   //
 // Media

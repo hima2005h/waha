@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CallData } from '@waha/structures/calls.dto';
+import { EventResponsePayload } from '@waha/structures/events.dto';
 import { Label, LabelChatAssociation } from '@waha/structures/labels.dto';
 
 import { ChatArchiveEvent } from './chats.dto';
@@ -342,6 +343,25 @@ export class WAHAWebhookLabelChatDeleted extends WAHAWebhook {
 export class EnginePayload {
   event: string;
   data: any;
+}
+
+export class WAHAWebhookEventResponse extends WAHAWebhook {
+  @ApiProperty({
+    description: 'The event is triggered when the event response is received.',
+  })
+  event = WAHAEvents.EVENT_RESPONSE;
+
+  payload: EventResponsePayload;
+}
+
+export class WAHAWebhookEventResponseFailed extends WAHAWebhook {
+  @ApiProperty({
+    description:
+      'The event is triggered when the event response is failed to decrypt.',
+  })
+  event = WAHAEvents.EVENT_RESPONSE_FAILED;
+
+  payload: EventResponsePayload;
 }
 
 export class WAHAWebhookEngineEvent extends WAHAWebhook {

@@ -31,6 +31,7 @@ import { AuthController } from '../api/auth.controller';
 import { ChatsController } from '../api/chats.controller';
 import { ChattingController } from '../api/chatting.controller';
 import { ContactsController } from '../api/contacts.controller';
+import { EventsController } from '../api/events.controller';
 import { GroupsController } from '../api/groups.controller';
 import { HealthController } from '../api/health.controller';
 import { LabelsController } from '../api/labels.controller';
@@ -132,6 +133,7 @@ export const CONTROLLERS = [
   GroupsController,
   PresenceController,
   ScreenshotController,
+  EventsController,
   PingController,
   HealthController,
   ServerController,

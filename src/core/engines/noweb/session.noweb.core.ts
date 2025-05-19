@@ -2561,7 +2561,7 @@ function getFrom(key, meId) {
   return key.remoteJid;
 }
 
-function getDestination(key, meId = undefined): MessageDestination {
+export function getDestination(key, meId = undefined): MessageDestination {
   return {
     id: buildMessageId(key),
     to: toCusFormat(getTo(key, meId)),

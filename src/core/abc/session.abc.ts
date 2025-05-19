@@ -76,6 +76,10 @@ import {
   WAHASessionStatus,
 } from '../../structures/enums.dto';
 import {
+  EventCancelRequest,
+  EventMessageRequest,
+} from '../../structures/events.dto';
+import {
   CreateGroupRequest,
   GroupField,
   GroupsListFields,
@@ -463,6 +467,14 @@ export abstract class WhatsappSession {
   abstract setReaction(request: MessageReactionRequest);
 
   setStar(request: MessageStarRequest): Promise<void> {
+    throw new NotImplementedByEngineError();
+  }
+
+  sendEvent(request: EventMessageRequest): Promise<WAMessage> {
+    throw new NotImplementedByEngineError();
+  }
+
+  cancelEvent(eventId: string): Promise<WAMessage> {
     throw new NotImplementedByEngineError();
   }
 

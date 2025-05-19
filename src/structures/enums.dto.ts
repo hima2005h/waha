@@ -26,6 +26,8 @@ export enum WAHAEvents {
   LABEL_DELETED = 'label.deleted',
   LABEL_CHAT_ADDED = 'label.chat.added',
   LABEL_CHAT_DELETED = 'label.chat.deleted',
+  EVENT_RESPONSE = 'event.response',
+  EVENT_RESPONSE_FAILED = 'event.response.failed',
   ENGINE_EVENT = 'engine.event',
 }
 

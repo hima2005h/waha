@@ -16,7 +16,7 @@ export enum MessageSource {
   APP = 'app',
 }
 
-class WAMessageBase {
+export class WAMessageBase {
   @MessageIdProperty()
   id: string;
 

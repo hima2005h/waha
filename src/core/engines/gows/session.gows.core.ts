@@ -5,6 +5,7 @@ import {
   isJidGroup,
   jidNormalizedUser,
   normalizeMessageContent,
+  WAMessageKey,
 } from '@adiwajshing/baileys';
 import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import * as grpc from '@grpc/grpc-js';
@@ -32,7 +33,10 @@ import {
   statusToAck,
 } from '@waha/core/engines/gows/helpers';
 import { GowsAuthFactoryCore } from '@waha/core/engines/gows/store/GowsAuthFactoryCore';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
+import {
+  getDestination,
+  toCusFormat,
+} from '@waha/core/engines/noweb/session.noweb.core';
 import { extractMediaContent } from '@waha/core/engines/noweb/utils';
 import {
   AvailableInPlusVersion,
@@ -68,6 +72,7 @@ import {
   CheckNumberStatusQuery,
   EditMessageRequest,
   MessageContactVcardRequest,
+  MessageDestination,
   MessageFileRequest,
   MessageForwardRequest,
   MessageImageRequest,
@@ -88,6 +93,12 @@ import {
   WAHASessionStatus,
   WAMessageAck,
 } from '@waha/structures/enums.dto';
+import {
+  EventCancelRequest,
+  EventMessageRequest,
+  EventResponse,
+  EventResponsePayload,
+} from '@waha/structures/events.dto';
 import { BinaryFile, RemoteFile } from '@waha/structures/files.dto';
 import {
   CreateGroupRequest,
@@ -136,6 +147,7 @@ import MessageServiceClient = messages.MessageServiceClient;
 import { isFromFullSync } from '@waha/core/engines/gows/appstate';
 import { toVcard } from '@waha/core/helpers';
 import { AckToStatus } from '@waha/core/utils/acks';
+import { ParseEventResponseType } from '@waha/core/utils/events';
 import { DistinctAck } from '@waha/core/utils/reactive';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
 import { exclude } from '@waha/utils/reactive/ops/exclude';
@@ -166,6 +178,8 @@ enum WhatsMeowEvent {
   // Labels
   LABEL_EDIT = 'events.LabelEdit',
   LABEL_ASSOCIATION_CHAT = 'events.LabelAssociationChat',
+  // Events
+  EVENT_MESSAGE_RESPONSE = 'gows.EventMessageResponse',
 }
 
 const gRPCClientConfig = {
@@ -456,6 +470,24 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
 
     this.events2.get(WAHAEvents.LABEL_UPSERT).switch(labelUpsert$);
     this.events2.get(WAHAEvents.LABEL_DELETED).switch(labelDeleted$);
+
+    // Handle event message response
+    const eventMessageResponse$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.EVENT_MESSAGE_RESPONSE),
+      map(this.toEventResponsePayload.bind(this)),
+      filter(Boolean),
+    );
+
+    // Split into successful and failed responses
+    const [eventResponseSuccess$, eventResponseFailed$] = partition(
+      eventMessageResponse$,
+      (payload: EventResponsePayload) => !!payload.eventResponse,
+    );
+
+    this.events2.get(WAHAEvents.EVENT_RESPONSE).switch(eventResponseSuccess$);
+    this.events2
+      .get(WAHAEvents.EVENT_RESPONSE_FAILED)
+      .switch(eventResponseFailed$);
 
     // Handle label association events
     const labelAssociationEvents$ = all$.pipe(
@@ -1019,6 +1051,59 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const response = await promisify(this.client.SendReaction)(message);
     const data = response.toObject();
     return this.messageResponse(key.remoteJid, data);
+  }
+
+  async sendEvent(request: EventMessageRequest): Promise<WAMessage> {
+    const jid = toJID(this.ensureSuffix(request.chatId));
+    const event = request.event;
+
+    // Create EventLocation if provided
+    let location = null;
+    if (event.location) {
+      location = new messages.EventLocation({
+        name: event.location.name,
+        // Doesn't work right now
+        degreesLatitude: 0,
+        degreesLongitude: 0,
+      });
+    }
+
+    // Create event payload
+    const eventMessage = new messages.EventMessage({
+      name: event.name,
+      description: event.description,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      location: location,
+      extraGuestsAllowed: event.extraGuestsAllowed,
+    });
+
+    // Create message
+    const message = new messages.MessageRequest({
+      jid: jid,
+      session: this.session,
+      event: eventMessage,
+      replyTo: getMessageIdFromSerialized(request.reply_to),
+    });
+
+    const response = await promisify(this.client.SendMessage)(message);
+    const data = response.toObject();
+    return this.messageResponse(jid, data) as any;
+  }
+
+  async cancelEvent(eventId: string): Promise<WAMessage> {
+    throw new Error('Method not implemented.');
+
+    const key = parseMessageIdSerialized(eventId, false);
+    const jid = key.remoteJid;
+    const request = new messages.CancelEventMessageRequest({
+      session: this.session,
+      jid: jid,
+      messageId: key.id,
+    });
+    const response = await promisify(this.client.CancelEventMessage)(request);
+    const data = response.toObject();
+    return this.messageResponse(jid, data) as any;
   }
 
   public async setPresence(presence: WAHAPresenceStatus, chatId?: string) {
@@ -1586,10 +1671,12 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     // if there is no text or media message
     if (!message) return;
     if (!message.Message) return;
-    // Ignore reactions, we have dedicated handler for that
+    // Ignore reactions, we have a dedicated handler for that
     if (message.Message.reactionMessage) return;
-    // Ignore poll votes, we have dedicated handler for that
+    // Ignore poll votes, we have a dedicated handler for that
     if (message.Message.pollUpdateMessage) return;
+    // Ignore event response, we have a dedicated handler for that
+    if (message.Message.encEventResponseMessage) return;
     // Ignore protocol messages
     if (message.Message.protocolMessage) return;
 
@@ -1649,6 +1736,37 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       ackName: WAMessageAck[ack] || ACK_UNKNOWN,
       replyTo: replyTo,
       _data: message,
+    };
+  }
+
+  private toEventResponsePayload(event: any): EventResponsePayload {
+    const msg = this.toWAMessage(event);
+    let response: EventResponse | null = null;
+    if (event.EventResponse) {
+      response = {
+        response: ParseEventResponseType(event.EventResponse.response),
+        timestampMs: event.EventResponse.timestampMS,
+        extraGuestCount: event.EventResponse.extraGuestCount || 0,
+      };
+    }
+
+    // Extract event creation message key from the message
+    const message = event.Message || event.message;
+    const eventCreationMessageKey =
+      message?.encEventResponseMessage?.eventCreationMessageKey;
+    const key: WAMessageKey = {
+      remoteJid: eventCreationMessageKey.remoteJID,
+      fromMe: eventCreationMessageKey.fromMe,
+      id: eventCreationMessageKey.ID,
+      participant: eventCreationMessageKey.participant,
+    };
+    const eventCreationKey = getDestination(key);
+
+    return {
+      ...msg,
+      eventCreationKey: eventCreationKey,
+      eventResponse: response,
+      _data: event,
     };
   }
 

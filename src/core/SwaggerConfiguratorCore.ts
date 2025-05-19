@@ -71,6 +71,7 @@ export class SwaggerConfiguratorCore {
       )
       .addTag('👥 Groups', `Groups methods.<br>`)
       .addTag('✅ Presence', `Presence information`)
+      .addTag('📅 Events', `Event Message`)
       .addTag(
         '🏷️ Labels',
         'Labels - available only for WhatsApp Business accounts',
