@@ -50,7 +50,12 @@ export class NowebPersistentStore implements INowebStore {
   private labelsRepo: ILabelsRepository;
   private labelAssociationsRepo: ILabelAssociationRepository;
   public presences: any;
-  private lock: any;
+
+  private lock: any = new AsyncLock({
+    maxPending: Infinity,
+    maxExecutionTime: 60_000,
+  });
+
   private groupsFetchLock: any = new AsyncLock({
     maxPending: Infinity,
     maxExecutionTime: 60_000,
@@ -72,7 +77,6 @@ export class NowebPersistentStore implements INowebStore {
     this.labelsRepo = storage.getLabelsRepository();
     this.labelAssociationsRepo = storage.getLabelAssociationRepository();
     this.presences = {};
-    this.lock = new AsyncLock({ maxPending: Infinity });
   }
 
   init(): Promise<void> {

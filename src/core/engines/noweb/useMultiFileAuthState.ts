@@ -18,7 +18,10 @@ const AsyncLock = require('async-lock');
 // https://github.com/nodejs/node/issues/26338
 // Default pending is 1000, set it to infinity
 // https://github.com/rogierschouten/async-lock/issues/63
-const fileLock = new AsyncLock({ maxPending: Infinity });
+const fileLock = new AsyncLock({
+  maxPending: Infinity,
+  maxExecutionTime: 30_000,
+});
 
 /**
  * stores the full authentication state in a single folder.

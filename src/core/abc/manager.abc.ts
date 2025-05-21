@@ -50,7 +50,6 @@ export abstract class SessionManager
   WAIT_SESSION_RUNNING_TIMEOUT = 5_000;
   WAIT_STATUS_INTERVAL = 500;
   WAIT_STATUS_TIMEOUT = 10_000;
-  LOCK_TIMEOUT = 10_000;
 
   protected constructor(
     protected log: PinoLogger,
@@ -59,7 +58,7 @@ export abstract class SessionManager
   ) {
     this.lock = new AsyncLock({
       maxPending: Infinity,
-      timeout: this.LOCK_TIMEOUT,
+      maxExecutionTime: 30_000,
     });
     this.log.setContext(SessionManager.name);
   }
