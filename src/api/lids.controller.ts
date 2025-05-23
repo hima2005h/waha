@@ -1,10 +1,8 @@
 import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import {
-  Body,
   Controller,
   Get,
   Param,
-  Post,
   Query,
   UnprocessableEntityException,
   UsePipes,
@@ -22,7 +20,6 @@ import {
   LidToPhoneNumber,
 } from '@waha/structures/lids.dto';
 import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
-import { assignWith } from 'lodash';
 
 import { SessionManager } from '../core/abc/manager.abc';
 
@@ -69,6 +66,10 @@ export class LidsController {
     @WorkingSessionParam session: WhatsappSession,
     @Param('lid') lid: string,
   ): Promise<LidToPhoneNumber> {
+    if (!lid.includes('@')) {
+      lid = lid + '@lid';
+    }
+
     if (!isLidUser(lid)) {
       throw new UnprocessableEntityException(
         'Invalid LID - it must end with @lid',
