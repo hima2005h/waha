@@ -5,6 +5,7 @@ import makeWASocket, {
   ChatUpdate,
   Contact,
   GroupParticipant,
+  isJidUser,
   isRealMessage,
   jidNormalizedUser,
   ParticipantAction,
@@ -18,13 +19,19 @@ import {
   LabelAssociation,
   LabelAssociationType,
 } from '@adiwajshing/baileys/lib/Types/LabelAssociation';
+import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import { IGroupRepository } from '@waha/core/engines/noweb/store/IGroupRepository';
 import { ILabelAssociationRepository } from '@waha/core/engines/noweb/store/ILabelAssociationsRepository';
 import { ILabelsRepository } from '@waha/core/engines/noweb/store/ILabelsRepository';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
-import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import {
+  LimitOffsetParams,
+  PaginationParams,
+  SortOrder,
+} from '@waha/structures/pagination.dto';
 import { DefaultMap } from '@waha/utils/DefaultMap';
-import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
+import { waitUntil } from '@waha/utils/promiseTimeout';
 import * as lodash from 'lodash';
 import { toNumber } from 'lodash';
 import { Logger } from 'pino';
@@ -32,6 +39,7 @@ import { Logger } from 'pino';
 import { IChatRepository } from './IChatRepository';
 import { IContactRepository } from './IContactRepository';
 import { IMessagesRepository } from './IMessagesRepository';
+import { INowebLidPNRepository, LidToPN } from './INowebLidPNRepository';
 import { INowebStorage } from './INowebStorage';
 import { INowebStore } from './INowebStore';
 
@@ -49,6 +57,7 @@ export class NowebPersistentStore implements INowebStore {
   private messagesRepo: IMessagesRepository;
   private labelsRepo: ILabelsRepository;
   private labelAssociationsRepo: ILabelAssociationRepository;
+  private lidRepo: INowebLidPNRepository;
   public presences: any;
 
   private lock: any = new AsyncLock({
@@ -76,6 +85,7 @@ export class NowebPersistentStore implements INowebStore {
     this.messagesRepo = storage.getMessagesRepository();
     this.labelsRepo = storage.getLabelsRepository();
     this.labelAssociationsRepo = storage.getLabelAssociationRepository();
+    this.lidRepo = storage.getLidPNRepository();
     this.presences = {};
   }
 
@@ -116,9 +126,16 @@ export class NowebPersistentStore implements INowebStore {
     ev.on('groups.upsert', (data) =>
       this.withLock('groups', () => this.onGroupUpsert(data)),
     );
-    ev.on('groups.update', (data) =>
-      this.withLock('groups', () => this.onGroupUpdate(data)),
-    );
+    ev.on('groups.update', (data) => {
+      this.withLock('groups', () => this.onGroupUpdate(data));
+      this.withLock('lids', async () => {
+        const participants = lodash.flatMap(data, (g) => g?.participants || []);
+        const lids = await this.handleLidPNUpdates(participants);
+        this.logger.debug(
+          `groups.update - '${lids.length}' synced lid to pn mapping`,
+        );
+      });
+    });
     ev.on('group-participants.update', (data) =>
       this.withLock(`group-${data.id}`, () =>
         this.onGroupParticipantsUpdate(data),
@@ -126,12 +143,24 @@ export class NowebPersistentStore implements INowebStore {
     );
 
     // Contacts
-    ev.on('contacts.upsert', (data) =>
-      this.withLock('contacts', () => this.onContactsUpsert(data)),
-    );
-    ev.on('contacts.update', (data) =>
-      this.withLock('contacts', () => this.onContactUpdate(data)),
-    );
+    ev.on('contacts.upsert', (data) => {
+      this.withLock('contacts', () => this.onContactsUpsert(data));
+      this.withLock('lids', async () => {
+        const lids = await this.handleLidPNUpdates(data);
+        this.logger.debug(
+          `contacts.upsert - '${lids.length}' synced lid to pn mapping`,
+        );
+      });
+    });
+    ev.on('contacts.update', (data) => {
+      this.withLock('contacts', () => this.onContactUpdate(data));
+      this.withLock('lids', async () => {
+        const lids = await this.handleLidPNUpdates(data);
+        this.logger.debug(
+          `contacts.update - '${lids.length}' synced lid to pn mapping`,
+        );
+      });
+    });
     ev.on('labels.edit', (data) => this.onLabelsEdit(data));
     ev.on('labels.association', ({ association, type }) =>
       this.onLabelsAssociation(association, type),
@@ -165,6 +194,12 @@ export class NowebPersistentStore implements INowebStore {
       this.withLock('contacts', async () => {
         await this.onContactsUpsert(contacts);
         this.logger.info(`history sync - '${contacts.length}' synced contacts`);
+      }),
+      this.withLock('lids', async () => {
+        const lids = await this.handleLidPNUpdates(contacts);
+        this.logger.info(
+          `history sync - '${lids.length}' synced lid to pn mapping`,
+        );
       }),
       this.withLock('chats', () => this.onChatUpsert(chats)),
       this.withLock('messages', () => this.syncMessagesHistory(messages)),
@@ -562,5 +597,65 @@ export class NowebPersistentStore implements INowebStore {
       await this.labelAssociationsRepo.getAssociationsByChatId(chatId);
     const ids = associations.map((association) => association.labelId);
     return await this.labelsRepo.getAllByIds(ids);
+  }
+
+  //
+  // Lid methods
+  //
+  private async handleLidPNUpdates(contacts: Array<Partial<Contact>>) {
+    let lids: LidToPN[] = [];
+    for (const contact of contacts) {
+      // contact.id = pn, contact.lid = lid
+      if (isJidUser(contact.id) && isLidUser(contact.lid)) {
+        lids.push({
+          pn: contact.id,
+          id: contact.lid,
+        });
+      }
+      // contact.pn = pn, contact.lid = lid
+      else if (isJidUser(contact.pn) && isLidUser(contact.lid)) {
+        lids.push({
+          pn: contact.pn,
+          id: contact.lid,
+        });
+      }
+      // contact.pn = pn, contact.id = lid
+      else if (isJidUser(contact.pn) && isLidUser(contact.id)) {
+        lids.push({
+          pn: contact.pn,
+          id: contact.id,
+        });
+      }
+    }
+    // make lids unique by id
+    lids = lodash.uniqBy(lids, 'id');
+    if (lids.length > 0) {
+      await this.lidRepo.saveLids(lids);
+    }
+    return lids;
+  }
+
+  async getAllLids(
+    pagination?: LimitOffsetParams,
+  ): Promise<LidToPhoneNumber[]> {
+    const lids = await this.lidRepo.getAllLids(pagination);
+    return lids.map((value) => {
+      return {
+        lid: value.id,
+        pn: value.pn,
+      };
+    });
+  }
+
+  getLidsCount(): Promise<number> {
+    return this.lidRepo.getLidsCount();
+  }
+
+  findPNByLid(lid: string): Promise<string | null> {
+    return this.lidRepo.findPNByLid(lid);
+  }
+
+  findLidByPN(pn: string): Promise<string | null> {
+    return this.lidRepo.findLidByPN(pn);
   }
 }

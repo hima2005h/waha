@@ -8720,6 +8720,76 @@ export namespace messages {
             return CancelEventMessageRequest.deserialize(bytes);
         }
     }
+    export class GetLidsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            session?: Session;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("session" in data && data.session != undefined) {
+                    this.session = data.session;
+                }
+            }
+        }
+        get session() {
+            return pb_1.Message.getWrapperField(this, Session, 1) as Session;
+        }
+        set session(value: Session) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_session() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            session?: ReturnType<typeof Session.prototype.toObject>;
+        }): GetLidsRequest {
+            const message = new GetLidsRequest({});
+            if (data.session != null) {
+                message.session = Session.fromObject(data.session);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                session?: ReturnType<typeof Session.prototype.toObject>;
+            } = {};
+            if (this.session != null) {
+                data.session = this.session.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_session)
+                writer.writeMessage(1, this.session, () => this.session.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetLidsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetLidsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.session, () => message.session = Session.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetLidsRequest {
+            return GetLidsRequest.deserialize(bytes);
+        }
+    }
     interface GrpcUnaryServiceInterface<P, R> {
         (message: P, metadata: grpc_1.Metadata, options: grpc_1.CallOptions, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
         (message: P, metadata: grpc_1.Metadata, callback: grpc_1.requestCallback<R>): grpc_1.ClientUnaryCall;
@@ -8840,6 +8910,42 @@ export namespace messages {
                 requestDeserialize: (bytes: Buffer) => SetProfilePictureRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: Empty) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => Empty.deserialize(new Uint8Array(bytes))
+            },
+            GetAllLids: {
+                path: "/messages.MessageService/GetAllLids",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetLidsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetLidsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: JsonList) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => JsonList.deserialize(new Uint8Array(bytes))
+            },
+            GetLidsCount: {
+                path: "/messages.MessageService/GetLidsCount",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: Session) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => Session.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: OptionalUInt64) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => OptionalUInt64.deserialize(new Uint8Array(bytes))
+            },
+            FindPNByLid: {
+                path: "/messages.MessageService/FindPNByLid",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: EntityByIdRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => EntityByIdRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: OptionalString) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => OptionalString.deserialize(new Uint8Array(bytes))
+            },
+            FindLIDByPhoneNumber: {
+                path: "/messages.MessageService/FindLIDByPhoneNumber",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: EntityByIdRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => EntityByIdRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: OptionalString) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => OptionalString.deserialize(new Uint8Array(bytes))
             },
             FetchGroups: {
                 path: "/messages.MessageService/FetchGroups",
@@ -9292,6 +9398,10 @@ export namespace messages {
         abstract SetProfileName(call: grpc_1.ServerUnaryCall<ProfileNameRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract SetProfileStatus(call: grpc_1.ServerUnaryCall<ProfileStatusRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract SetProfilePicture(call: grpc_1.ServerUnaryCall<SetProfilePictureRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
+        abstract GetAllLids(call: grpc_1.ServerUnaryCall<GetLidsRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
+        abstract GetLidsCount(call: grpc_1.ServerUnaryCall<Session, OptionalUInt64>, callback: grpc_1.sendUnaryData<OptionalUInt64>): void;
+        abstract FindPNByLid(call: grpc_1.ServerUnaryCall<EntityByIdRequest, OptionalString>, callback: grpc_1.sendUnaryData<OptionalString>): void;
+        abstract FindLIDByPhoneNumber(call: grpc_1.ServerUnaryCall<EntityByIdRequest, OptionalString>, callback: grpc_1.sendUnaryData<OptionalString>): void;
         abstract FetchGroups(call: grpc_1.ServerUnaryCall<Session, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract GetGroups(call: grpc_1.ServerUnaryCall<Session, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
         abstract GetGroupInfo(call: grpc_1.ServerUnaryCall<JidRequest, Json>, callback: grpc_1.sendUnaryData<Json>): void;
@@ -9369,6 +9479,18 @@ export namespace messages {
         };
         SetProfilePicture: GrpcUnaryServiceInterface<SetProfilePictureRequest, Empty> = (message: SetProfilePictureRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Empty>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Empty>, callback?: grpc_1.requestCallback<Empty>): grpc_1.ClientUnaryCall => {
             return super.SetProfilePicture(message, metadata, options, callback);
+        };
+        GetAllLids: GrpcUnaryServiceInterface<GetLidsRequest, JsonList> = (message: GetLidsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
+            return super.GetAllLids(message, metadata, options, callback);
+        };
+        GetLidsCount: GrpcUnaryServiceInterface<Session, OptionalUInt64> = (message: Session, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<OptionalUInt64>, options?: grpc_1.CallOptions | grpc_1.requestCallback<OptionalUInt64>, callback?: grpc_1.requestCallback<OptionalUInt64>): grpc_1.ClientUnaryCall => {
+            return super.GetLidsCount(message, metadata, options, callback);
+        };
+        FindPNByLid: GrpcUnaryServiceInterface<EntityByIdRequest, OptionalString> = (message: EntityByIdRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<OptionalString>, options?: grpc_1.CallOptions | grpc_1.requestCallback<OptionalString>, callback?: grpc_1.requestCallback<OptionalString>): grpc_1.ClientUnaryCall => {
+            return super.FindPNByLid(message, metadata, options, callback);
+        };
+        FindLIDByPhoneNumber: GrpcUnaryServiceInterface<EntityByIdRequest, OptionalString> = (message: EntityByIdRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<OptionalString>, options?: grpc_1.CallOptions | grpc_1.requestCallback<OptionalString>, callback?: grpc_1.requestCallback<OptionalString>): grpc_1.ClientUnaryCall => {
+            return super.FindLIDByPhoneNumber(message, metadata, options, callback);
         };
         FetchGroups: GrpcUnaryServiceInterface<Session, Empty> = (message: Session, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Empty>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Empty>, callback?: grpc_1.requestCallback<Empty>): grpc_1.ClientUnaryCall => {
             return super.FetchGroups(message, metadata, options, callback);

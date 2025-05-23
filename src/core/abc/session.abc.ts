@@ -22,7 +22,11 @@ import {
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
 import { BinaryFile, RemoteFile } from '@waha/structures/files.dto';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
-import { PaginationParams } from '@waha/structures/pagination.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import {
+  LimitOffsetParams,
+  PaginationParams,
+} from '@waha/structures/pagination.dto';
 import { MessageSource, WAMessage } from '@waha/structures/responses.dto';
 import { DefaultMap } from '@waha/utils/DefaultMap';
 import { generatePrefixedId } from '@waha/utils/ids';
@@ -624,6 +628,29 @@ export abstract class WhatsappSession {
   }
 
   public getContactAbout(query: ContactQuery): Promise<{ about: string }> {
+    throw new NotImplementedByEngineError();
+  }
+
+  /**
+   * Lid to Phone Number methods
+   */
+  public async getAllLids(
+    pagination: PaginationParams,
+  ): Promise<Array<LidToPhoneNumber>> {
+    throw new NotImplementedByEngineError();
+  }
+
+  public async getLidsCount(): Promise<number> {
+    throw new NotImplementedByEngineError();
+  }
+
+  public async findPNByLid(lid: string): Promise<LidToPhoneNumber> {
+    throw new NotImplementedByEngineError();
+  }
+
+  public async findLIDByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<LidToPhoneNumber> {
     throw new NotImplementedByEngineError();
   }
 

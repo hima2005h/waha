@@ -65,6 +65,15 @@ export const NowebLabelAssociationsSchema = new Schema(
   ],
 );
 
+export const NowebLidMapSchema = new Schema(
+  'lid_map',
+  [new Field('id', 'TEXT'), new Field('pn', 'TEXT'), new Field('data', 'TEXT')],
+  [
+    new Index('lid_map_id_index', ['id']),
+    new Index('lid_map_pn_index', ['pn']),
+  ],
+);
+
 export const NOWEB_STORE_SCHEMA = [
   NowebContactSchema,
   NowebChatSchema,
@@ -72,6 +81,7 @@ export const NOWEB_STORE_SCHEMA = [
   NowebMessagesSchema,
   NowebLabelsSchema,
   NowebLabelAssociationsSchema,
+  NowebLidMapSchema,
 ];
 
 export const Migrations: string[] = [
@@ -100,4 +110,8 @@ export const Migrations: string[] = [
   'CREATE INDEX IF NOT EXISTS label_assoc_type_label_index ON "labelAssociations" (type, "labelId")',
   'CREATE INDEX IF NOT EXISTS label_assoc_type_chat_index ON "labelAssociations" (type, "chatId")',
   'CREATE INDEX IF NOT EXISTS label_assoc_type_message_index ON "labelAssociations" (type, "messageId")',
+  // Lid Map
+  'CREATE TABLE IF NOT EXISTS lid_map (id TEXT PRIMARY KEY, pn TEXT, data TEXT)',
+  'CREATE UNIQUE INDEX IF NOT EXISTS lid_map_id_index ON lid_map (id)',
+  'CREATE INDEX IF NOT EXISTS lid_map_pn_index ON lid_map (pn)',
 ];

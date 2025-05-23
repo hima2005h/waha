@@ -1,5 +1,6 @@
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
 import { Label } from '@waha/structures/labels.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { TextStatus } from '@waha/structures/status.dto';
 import { EventEmitter } from 'events';
@@ -99,7 +100,7 @@ export class WebjsClientCore extends Client {
   }
 
   async createLabel(name: string, color: number): Promise<number> {
-    const labelId: number = await this.pupPage.evaluate(
+    const labelId: number = (await this.pupPage.evaluate(
       async (name, color) => {
         // @ts-ignore
         return await window.WAHA.WAWebBizLabelEditingAction.labelAddAction(
@@ -109,7 +110,7 @@ export class WebjsClientCore extends Client {
       },
       name,
       color,
-    );
+    )) as any;
     return labelId;
   }
 
@@ -261,5 +262,78 @@ export class WebjsClientCore extends Client {
     );
 
     return messages.map((m) => new Message(this, m));
+  }
+
+  public async getAllLids(
+    pagination: PaginationParams,
+  ): Promise<Array<LidToPhoneNumber>> {
+    const lids: Array<LidToPhoneNumber> = (await this.pupPage.evaluate(
+      async (pagination) => {
+        pagination.limit ||= Infinity;
+        pagination.offset ||= 0;
+        pagination.sortBy ||= 'lid';
+
+        // @ts-ignore
+        const WAWebApiContact = window.Store.LidUtils;
+
+        await WAWebApiContact.warmUpAllLidPnMappings();
+        const lidMap = WAWebApiContact.lidPnCache['$1'];
+        const values = Array.from(lidMap.values());
+        const result = values.map((map) => {
+          return {
+            // @ts-ignore
+            lid: map.lid._serialized,
+            // @ts-ignore
+            pn: map.phoneNumber._serialized,
+          };
+        });
+        // @ts-ignore
+        const paginator = new window.Paginator(pagination);
+        const page = paginator.apply(result);
+        return page;
+      },
+      pagination,
+    )) as any;
+    return lids;
+  }
+
+  public async getLidsCount(): Promise<number> {
+    const count: number = (await this.pupPage.evaluate(async () => {
+      // @ts-ignore
+      const WAWebApiContact = window.Store.LidUtils;
+
+      await WAWebApiContact.warmUpAllLidPnMappings();
+      const lidMap = WAWebApiContact.lidPnCache['$1'];
+      return lidMap.size;
+    })) as any;
+    return count;
+  }
+
+  public async findPNByLid(lid: string): Promise<string> {
+    const pn = await this.pupPage.evaluate(async (lid) => {
+      // @ts-ignore
+      const WAWebApiContact = window.Store.LidUtils;
+      // @ts-ignore
+      const WAWebWidFactory = window.Store.WidFactory;
+
+      const wid = WAWebWidFactory.createWid(lid);
+      const result = WAWebApiContact.getPhoneNumber(wid);
+      return result ? result._serialized : null;
+    }, lid);
+    return pn;
+  }
+
+  public async findLIDByPhoneNumber(phoneNumber: string): Promise<string> {
+    const lid: string = (await this.pupPage.evaluate(async (pn) => {
+      // @ts-ignore
+      const WAWebApiContact = window.Store.LidUtils;
+      // @ts-ignore
+      const WAWebWidFactory = window.Store.WidFactory;
+
+      const wid = WAWebWidFactory.createWid(pn);
+      const result = WAWebApiContact.getCurrentLid(wid);
+      return result ? result._serialized : null;
+    }, phoneNumber)) as any;
+    return lid;
   }
 }

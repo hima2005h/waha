@@ -95,11 +95,11 @@ export class SqlKVRepository<Entity> {
     const sql = `INSERT INTO "${this.table}" (${columns.join(', ')})
                  VALUES ${data
                    .map(() => `(${columns.map(() => '?').join(', ')})`)
-                   .join(', ')}
-                 ON CONFLICT(id) DO UPDATE
-                     SET ${columns
-                       .map((column) => `${column} = excluded.${column}`)
-                       .join(', ')}`;
+                   .join(', ')} ON CONFLICT(id) DO
+    UPDATE
+      SET ${columns
+        .map((column) => `${column} = excluded.${column}`)
+        .join(', ')}`;
     try {
       await this.raw(sql, values);
     } catch (err) {
@@ -117,6 +117,15 @@ export class SqlKVRepository<Entity> {
     let query = this.select();
     query = this.pagination(query, pagination);
     return this.all(query);
+  }
+
+  async getCount(): Promise<number> {
+    const query = this.select().count({ count: 'id' });
+    const row = await this.engine.get(query);
+    if (!row) {
+      return 0;
+    }
+    return parseInt(row.count, 10);
   }
 
   async getAllByIds(ids: string[]) {

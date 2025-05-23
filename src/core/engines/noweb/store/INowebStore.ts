@@ -7,7 +7,11 @@ import {
 import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
 import { Label } from '@adiwajshing/baileys/lib/Types/Label';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
-import { PaginationParams } from '@waha/structures/pagination.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import {
+  LimitOffsetParams,
+  PaginationParams,
+} from '@waha/structures/pagination.dto';
 
 export interface INowebStore {
   presences: any;
@@ -47,4 +51,13 @@ export interface INowebStore {
   getGroups(pagination: PaginationParams): Promise<GroupMetadata[]>;
 
   resetGroupsCache(): void;
+
+  // Lid Repository methods
+  getAllLids(pagination?: LimitOffsetParams): Promise<LidToPhoneNumber[]>;
+
+  getLidsCount(): Promise<number>;
+
+  findPNByLid(lid: string): Promise<string | null>;
+
+  findLidByPN(pn: string): Promise<string | null>;
 }

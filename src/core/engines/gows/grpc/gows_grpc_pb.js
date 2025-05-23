@@ -202,6 +202,17 @@ function deserialize_messages_GetLabelsRequest(buffer_arg) {
   return gows_pb.GetLabelsRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_messages_GetLidsRequest(arg) {
+  if (!(arg instanceof gows_pb.GetLidsRequest)) {
+    throw new Error('Expected argument of type messages.GetLidsRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_GetLidsRequest(buffer_arg) {
+  return gows_pb.GetLidsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_messages_GetMessagesRequest(arg) {
   if (!(arg instanceof gows_pb.GetMessagesRequest)) {
     throw new Error('Expected argument of type messages.GetMessagesRequest');
@@ -431,6 +442,17 @@ function serialize_messages_OptionalString(arg) {
 
 function deserialize_messages_OptionalString(buffer_arg) {
   return gows_pb.OptionalString.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_messages_OptionalUInt64(arg) {
+  if (!(arg instanceof gows_pb.OptionalUInt64)) {
+    throw new Error('Expected argument of type messages.OptionalUInt64');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_OptionalUInt64(buffer_arg) {
+  return gows_pb.OptionalUInt64.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_messages_PairCodeRequest(arg) {
@@ -744,6 +766,53 @@ setProfileName: {
     requestDeserialize: deserialize_messages_SetProfilePictureRequest,
     responseSerialize: serialize_messages_Empty,
     responseDeserialize: deserialize_messages_Empty,
+  },
+  //
+// Lids
+//
+getAllLids: {
+    path: '/messages.MessageService/GetAllLids',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.GetLidsRequest,
+    responseType: gows_pb.JsonList,
+    requestSerialize: serialize_messages_GetLidsRequest,
+    requestDeserialize: deserialize_messages_GetLidsRequest,
+    responseSerialize: serialize_messages_JsonList,
+    responseDeserialize: deserialize_messages_JsonList,
+  },
+  getLidsCount: {
+    path: '/messages.MessageService/GetLidsCount',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.Session,
+    responseType: gows_pb.OptionalUInt64,
+    requestSerialize: serialize_messages_Session,
+    requestDeserialize: deserialize_messages_Session,
+    responseSerialize: serialize_messages_OptionalUInt64,
+    responseDeserialize: deserialize_messages_OptionalUInt64,
+  },
+  findPNByLid: {
+    path: '/messages.MessageService/FindPNByLid',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.EntityByIdRequest,
+    responseType: gows_pb.OptionalString,
+    requestSerialize: serialize_messages_EntityByIdRequest,
+    requestDeserialize: deserialize_messages_EntityByIdRequest,
+    responseSerialize: serialize_messages_OptionalString,
+    responseDeserialize: deserialize_messages_OptionalString,
+  },
+  findLIDByPhoneNumber: {
+    path: '/messages.MessageService/FindLIDByPhoneNumber',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.EntityByIdRequest,
+    responseType: gows_pb.OptionalString,
+    requestSerialize: serialize_messages_EntityByIdRequest,
+    requestDeserialize: deserialize_messages_EntityByIdRequest,
+    responseSerialize: serialize_messages_OptionalString,
+    responseDeserialize: deserialize_messages_OptionalString,
   },
   //
 // Groups

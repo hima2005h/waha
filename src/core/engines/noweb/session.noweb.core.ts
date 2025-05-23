@@ -138,6 +138,7 @@ import {
   LabelDTO,
   LabelID,
 } from '@waha/structures/labels.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { ReplyToMessage } from '@waha/structures/message.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import {
@@ -1337,6 +1338,44 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   public async unblockContact(request: ContactRequest) {
     throw new NotImplementedByEngineError();
+  }
+
+  /**
+   * Lid to Phone Number methods
+   */
+  public async getAllLids(
+    pagination: PaginationParams,
+  ): Promise<Array<LidToPhoneNumber>> {
+    const lids = await this.store.getAllLids(pagination);
+    return lids.map((value) => {
+      return {
+        lid: value.lid,
+        pn: toCusFormat(value.pn),
+      };
+    });
+  }
+
+  public async getLidsCount(): Promise<number> {
+    return this.store.getLidsCount();
+  }
+
+  public async findPNByLid(lid: string): Promise<LidToPhoneNumber> {
+    const pn = await this.store.findPNByLid(lid);
+    return {
+      lid: lid,
+      pn: pn ? toCusFormat(pn) : null,
+    };
+  }
+
+  public async findLIDByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<LidToPhoneNumber> {
+    const pn = toJID(phoneNumber);
+    const lid = await this.store.findLidByPN(pn);
+    return {
+      lid: lid || null,
+      pn: toCusFormat(pn),
+    };
   }
 
   /**

@@ -150,6 +150,7 @@ import { AckToStatus } from '@waha/core/utils/acks';
 import { ParseEventResponseType } from '@waha/core/utils/events';
 import { DistinctAck } from '@waha/core/utils/reactive';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { exclude } from '@waha/utils/reactive/ops/exclude';
 import * as lodash from 'lodash';
 
@@ -1404,6 +1405,62 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const response = await promisify(this.client.GetContacts)(request);
     const data = parseJsonList(response);
     return data.map(this.toWAContact.bind(this));
+  }
+
+  /**
+   * Lid to Phone Number methods
+   */
+  public async getAllLids(
+    pagination: PaginationParams,
+  ): Promise<Array<LidToPhoneNumber>> {
+    const request = new messages.GetLidsRequest({
+      session: this.session,
+    });
+    const response = await promisify(this.client.GetAllLids)(request);
+    const data = parseJsonList(response);
+
+    const lids = data.map((item) => ({
+      lid: item.lid,
+      pn: toCusFormat(item.pn),
+    }));
+
+    // Use in-memory pagination
+    const paginator = new PaginatorInMemory(pagination);
+    return paginator.apply(lids);
+  }
+
+  public async getLidsCount(): Promise<number> {
+    const response = await promisify(this.client.GetLidsCount)(this.session);
+    return response?.value;
+  }
+
+  public async findPNByLid(lid: string): Promise<LidToPhoneNumber> {
+    const request = new messages.EntityByIdRequest({
+      session: this.session,
+      id: lid,
+    });
+    const response = await promisify(this.client.FindPNByLid)(request);
+    const phoneNumber = response?.value;
+    return {
+      lid: lid,
+      pn: phoneNumber ? toCusFormat(phoneNumber) : null,
+    };
+  }
+
+  public async findLIDByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<LidToPhoneNumber> {
+    const pn = toJID(phoneNumber);
+    const request = new messages.EntityByIdRequest({
+      session: this.session,
+      id: pn,
+    });
+    const response = await promisify(this.client.FindLIDByPhoneNumber)(request);
+    const lid = response.value;
+    return {
+      lid: lid || null,
+      pn: toCusFormat(pn),
+    };
   }
 
   /**

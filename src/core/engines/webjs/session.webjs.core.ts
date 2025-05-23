@@ -93,6 +93,7 @@ import {
   SettingsSecurityChangeInfo,
 } from '@waha/structures/groups.dto';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { ReplyToMessage } from '@waha/structures/message.dto';
 import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
 import {
@@ -924,6 +925,38 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       this.ensureSuffix(request.contactId),
     );
     await contact.unblock();
+  }
+
+  /**
+   * Lid to Phone Number methods
+   */
+  public async getAllLids(
+    pagination: PaginationParams,
+  ): Promise<Array<LidToPhoneNumber>> {
+    return this.whatsapp.getAllLids(pagination);
+  }
+
+  public async getLidsCount(): Promise<number> {
+    return this.whatsapp.getLidsCount();
+  }
+
+  public async findPNByLid(lid: string): Promise<LidToPhoneNumber> {
+    const phoneNumber = await this.whatsapp.findPNByLid(lid);
+    return {
+      lid: lid,
+      pn: phoneNumber,
+    };
+  }
+
+  public async findLIDByPhoneNumber(
+    phoneNumber: string,
+  ): Promise<LidToPhoneNumber> {
+    const pn = toCusFormat(phoneNumber);
+    const lid = await this.whatsapp.findLIDByPhoneNumber(pn);
+    return {
+      lid: lid,
+      pn: pn,
+    };
   }
 
   /**

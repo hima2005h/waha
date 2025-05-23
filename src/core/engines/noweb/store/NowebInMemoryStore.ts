@@ -7,7 +7,11 @@ import makeWASocket, {
 import { Label } from '@adiwajshing/baileys/lib/Types/Label';
 import { BadRequestException } from '@nestjs/common';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
-import { PaginationParams } from '@waha/structures/pagination.dto';
+import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import {
+  LimitOffsetParams,
+  PaginationParams,
+} from '@waha/structures/pagination.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
 
 import { INowebStore } from './INowebStore';
@@ -106,5 +110,24 @@ export class NowebInMemoryStore implements INowebStore {
 
   resetGroupsCache() {
     return;
+  }
+
+  //
+  // Lids methods
+  //
+  getAllLids(pagination?: LimitOffsetParams): Promise<LidToPhoneNumber[]> {
+    throw new BadRequestException(this.errorMessage);
+  }
+
+  findLidByPN(pn: string): Promise<string | null> {
+    throw new BadRequestException(this.errorMessage);
+  }
+
+  findPNByLid(lid: string): Promise<string | null> {
+    throw new BadRequestException(this.errorMessage);
+  }
+
+  getLidsCount(): Promise<number> {
+    throw new BadRequestException(this.errorMessage);
   }
 }
