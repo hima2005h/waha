@@ -87,6 +87,7 @@ export class PollVote extends MessageDestination {
 export class PollVotePayload {
   vote: PollVote;
   poll: MessageDestination;
+  _data?: any;
 }
 
 export class WAMessageRevokedBody {

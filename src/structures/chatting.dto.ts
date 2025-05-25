@@ -420,6 +420,7 @@ export class MessageDestination {
   to: string;
   from: string;
   fromMe: boolean;
+  participant?: string;
 }
 
 export class MessageButtonReply extends ChatRequest {

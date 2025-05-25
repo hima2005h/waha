@@ -72,12 +72,12 @@ import {
   CheckNumberStatusQuery,
   EditMessageRequest,
   MessageContactVcardRequest,
-  MessageDestination,
   MessageFileRequest,
   MessageForwardRequest,
   MessageImageRequest,
   MessageLinkCustomPreviewRequest,
   MessageLocationRequest,
+  MessagePollRequest,
   MessageReactionRequest,
   MessageReplyRequest,
   MessageTextRequest,
@@ -124,7 +124,11 @@ import {
   DeleteStatusRequest,
   TextStatus,
 } from '@waha/structures/status.dto';
-import { EnginePayload, WAMessageAckBody } from '@waha/structures/webhooks.dto';
+import {
+  EnginePayload,
+  PollVotePayload,
+  WAMessageAckBody,
+} from '@waha/structures/webhooks.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
 import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
 import { onlyEvent } from '@waha/utils/reactive/ops/onlyEvent';
@@ -181,6 +185,8 @@ enum WhatsMeowEvent {
   LABEL_ASSOCIATION_CHAT = 'events.LabelAssociationChat',
   // Events
   EVENT_MESSAGE_RESPONSE = 'gows.EventMessageResponse',
+  // Polls
+  POLL_VOTE_EVENT = 'gows.PollVoteEvent',
 }
 
 const gRPCClientConfig = {
@@ -472,7 +478,27 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     this.events2.get(WAHAEvents.LABEL_UPSERT).switch(labelUpsert$);
     this.events2.get(WAHAEvents.LABEL_DELETED).switch(labelDeleted$);
 
-    // Handle event message response
+    //
+    // Polls
+    //
+    const pollVoteEvent$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.POLL_VOTE_EVENT),
+      map(this.toPollVotePayload.bind(this)),
+      filter(Boolean),
+    );
+
+    // Split into successful and failed responses
+    const [pollVoteSuccess$, pollVoteFailed$] = partition(
+      pollVoteEvent$,
+      (payload: PollVotePayload) => !!payload.vote.selectedOptions,
+    );
+
+    this.events2.get(WAHAEvents.POLL_VOTE).switch(pollVoteSuccess$);
+    this.events2.get(WAHAEvents.POLL_VOTE_FAILED).switch(pollVoteFailed$);
+
+    //
+    // Event Message
+    //
     const eventMessageResponse$ = all$.pipe(
       onlyEvent(WhatsMeowEvent.EVENT_MESSAGE_RESPONSE),
       map(this.toEventResponsePayload.bind(this)),
@@ -490,6 +516,9 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       .get(WAHAEvents.EVENT_RESPONSE_FAILED)
       .switch(eventResponseFailed$);
 
+    //
+    // Labels
+    //
     // Handle label association events
     const labelAssociationEvents$ = all$.pipe(
       onlyEvent(WhatsMeowEvent.LABEL_ASSOCIATION_CHAT),
@@ -689,6 +718,23 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       session: this.session,
       replyTo: getMessageIdFromSerialized(request.reply_to),
       contacts: contacts.map((contact) => new messages.vCardContact(contact)),
+    });
+    const response = await promisify(this.client.SendMessage)(message);
+    const data = response.toObject();
+    return this.messageResponse(jid, data);
+  }
+
+  async sendPoll(request: MessagePollRequest) {
+    const jid = toJID(request.chatId);
+    const message = new messages.MessageRequest({
+      jid: jid,
+      session: this.session,
+      replyTo: getMessageIdFromSerialized(request.reply_to),
+      poll: new messages.PollMessage({
+        name: request.poll.name,
+        options: request.poll.options,
+        multipleAnswers: request.poll.multipleAnswers,
+      }),
     });
     const response = await promisify(this.client.SendMessage)(message);
     const data = response.toObject();
@@ -1793,6 +1839,32 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       ackName: WAMessageAck[ack] || ACK_UNKNOWN,
       replyTo: replyTo,
       _data: message,
+    };
+  }
+
+  private toPollVotePayload(event: any): PollVotePayload {
+    // Extract event creation message key from the message
+    const creationKey = event.Message?.pollUpdateMessage.pollCreationMessageKey;
+    const key: WAMessageKey = {
+      remoteJid: creationKey.remoteJID,
+      fromMe: creationKey.fromMe,
+      id: creationKey.ID,
+      participant: creationKey.participant,
+    };
+    const fromToParticipant = getFromToParticipant(event);
+    const pollCreationKey = getDestination(key);
+    return {
+      poll: pollCreationKey,
+      vote: {
+        id: buildMessageId(event),
+        from: toCusFormat(fromToParticipant.from),
+        fromMe: event.Info.IsFromMe,
+        to: toCusFormat(fromToParticipant.to),
+        participant: toCusFormat(fromToParticipant.participant),
+        selectedOptions: event.Votes,
+        timestamp: event.Message.pollUpdateMessage.senderTimestampMS,
+      },
+      _data: event,
     };
   }
 
