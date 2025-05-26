@@ -261,7 +261,11 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       .then(() => {
         // Listen for browser disconnected event
         this.whatsapp.pupBrowser.on('disconnected', () => {
-          this.logger.error('The browser has been disconnected');
+          if (this.shouldRestart) {
+            this.logger.error('The browser has been disconnected');
+          } else {
+            this.logger.info('The browser has been disconnected');
+          }
           this.failed();
         });
 
