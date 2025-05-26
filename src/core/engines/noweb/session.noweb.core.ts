@@ -616,7 +616,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       }
       for (const message of messages) {
         const content = normalizeMessageContent(message.message);
-        if (!content.pollUpdateMessage) {
+        if (!content?.pollUpdateMessage) {
           continue;
         }
         const creationMsgKey = content.pollUpdateMessage.pollCreationMessageKey;
