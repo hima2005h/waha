@@ -1604,10 +1604,12 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   }
 
   public async getEngineInfo() {
-    // Add 1 seconds timeout
+    if (!this.whatsapp || !this.whatsapp.pupPage) {
+      return null;
+    }
     return {
-      WWebVersion: await this.whatsapp?.getWWebVersion(),
-      state: await this.whatsapp?.getState(),
+      WWebVersion: await this.whatsapp.getWWebVersion(),
+      state: await this.whatsapp.getState(),
     };
   }
 
