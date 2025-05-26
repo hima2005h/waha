@@ -55,6 +55,26 @@ export class WebjsClientCore extends Client {
     await this.pupPage.evaluate(LoadWAHA);
   }
 
+  /**
+   * @result indicating whether the UX fresh look was successfully hidden.
+   */
+  hideUXFreshLook(): Promise<boolean> {
+    return this.pupPage.evaluate(() => {
+      const WAWebUserPrefsUiRefresh = window.require('WAWebUserPrefsUiRefresh');
+      if (!WAWebUserPrefsUiRefresh) {
+        return false;
+      }
+      if (WAWebUserPrefsUiRefresh.getUiRefreshNuxAcked()) {
+        return false;
+      }
+      WAWebUserPrefsUiRefresh.incrementNuxViewCount();
+      WAWebUserPrefsUiRefresh.setUiRefreshNuxAcked(true);
+      const WAWebModalManager = window.require('WAWebModalManager');
+      WAWebModalManager.ModalManager.close();
+      return true;
+    });
+  }
+
   async attachCustomEventListeners() {
     await exposeFunctionIfAbsent(
       this.pupPage,

@@ -99,6 +99,18 @@ export class WPage extends EventEmitter {
     }
   }
 
+  async reload(options?: any): Promise<any> {
+    try {
+      return await this.page.reload(options);
+    } catch (err) {
+      this.emit(PAGE_CALL_ERROR_EVENT, {
+        method: 'reload',
+        error: err,
+      });
+      throw err;
+    }
+  }
+
   on(event: string | symbol, listener: (...args: any[]) => void): this {
     if (event === PAGE_CALL_ERROR_EVENT) {
       super.on(event, listener);
