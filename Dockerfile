@@ -146,6 +146,9 @@ RUN  apt-get update \
      && apt-get install -y libc6 \
      && rm -rf /var/lib/apt/lists/*
 
+# Install tini for proper init process
+RUN apt-get update && apt-get install -y tini && rm -rf /var/lib/apt/lists/*
+
 # Set the ENV for docker image
 ENV WHATSAPP_DEFAULT_ENGINE=$WHATSAPP_DEFAULT_ENGINE
 
@@ -170,4 +173,6 @@ ENV WAHA_ZIPPER=ZIPUNZIP
 
 # Run command, etc
 EXPOSE 3000
+# Use tini as init system to handle zombie processes properly
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/entrypoint.sh"]
