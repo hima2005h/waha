@@ -233,6 +233,9 @@ class SessionsController {
     @Body() request: SessionStartDeprecatedRequest,
   ): Promise<SessionDTO> {
     const name = request.name;
+    if (!request.name) {
+      throw new UnprocessableEntityException('Session name is required');
+    }
     if (this.manager.isRunning(name)) {
       const msg = `Session '${name}' is already started.`;
       throw new UnprocessableEntityException(msg);
@@ -255,6 +258,9 @@ class SessionsController {
   async DEPRECATED_stop(
     @Body() request: SessionStopDeprecatedRequest,
   ): Promise<void> {
+    if (!request.name) {
+      throw new UnprocessableEntityException('Session name is required');
+    }
     const name = request.name;
     if (request.logout) {
       // Old API did remove the session complete
@@ -283,6 +289,9 @@ class SessionsController {
   async DEPRECATED_logout(
     @Body() request: SessionLogoutDeprecatedRequest,
   ): Promise<void> {
+    if (!request.name) {
+      throw new UnprocessableEntityException('Session name is required');
+    }
     const name = request.name;
     await this.withLock(name, async () => {
       await this.manager.unassign(name);
