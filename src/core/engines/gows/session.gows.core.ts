@@ -1214,13 +1214,13 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   }
 
   public async getPresence(chatId: string): Promise<WAHAChatPresences> {
-    const remoteJid = toJID(chatId);
-    if (!(remoteJid in this.presences.keys())) {
-      await this.subscribePresence(remoteJid);
+    const jid = toJID(chatId);
+    await this.subscribePresence(jid);
+    if (!(jid in this.presences.keys())) {
       await sleep(1000);
     }
-    const result = this.presences.get(remoteJid) || [];
-    return this.toWahaPresences(remoteJid, result);
+    const result = this.presences.get(jid) || [];
+    return this.toWahaPresences(jid, result);
   }
 
   async subscribePresence(chatId: string) {
