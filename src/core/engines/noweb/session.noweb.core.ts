@@ -469,7 +469,10 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       } else if (connection === 'open') {
         this.qr.save('');
         this.status = WAHASessionStatus.WORKING;
-        this.resubscribeToKnownPresences();
+        // Do we need to resubscribe?
+        // Ideally not, we need to explicitly call interesting
+        // jids every 1 minute
+        // this.resubscribeToKnownPresences();
         return;
       } else if (connection === 'close') {
         this.qr.save('');
