@@ -1,6 +1,7 @@
 import { Chat } from '@adiwajshing/baileys';
 import { NowebChatSchema } from '@waha/core/engines/noweb/store/schemas';
 import { SqlChatMethods } from '@waha/core/engines/noweb/store/sql/SqlChatMethods';
+import { OverviewFilter } from '@waha/structures/chats.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { KnexPaginator } from '@waha/utils/Paginator';
 
@@ -28,7 +29,8 @@ export class Sqlite3ChatRepository
   getAllWithMessages(
     pagination: PaginationParams,
     broadcast: boolean,
+    filter?: OverviewFilter,
   ): Promise<Chat[]> {
-    return this.methods.getAllWithMessages(pagination, broadcast);
+    return this.methods.getAllWithMessages(pagination, broadcast, filter);
   }
 }

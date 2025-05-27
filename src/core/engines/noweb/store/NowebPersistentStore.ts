@@ -23,7 +23,10 @@ import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import { IGroupRepository } from '@waha/core/engines/noweb/store/IGroupRepository';
 import { ILabelAssociationRepository } from '@waha/core/engines/noweb/store/ILabelAssociationsRepository';
 import { ILabelsRepository } from '@waha/core/engines/noweb/store/ILabelsRepository';
-import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
+import {
+  GetChatMessagesFilter,
+  OverviewFilter,
+} from '@waha/structures/chats.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import {
   LimitOffsetParams,
@@ -521,10 +524,14 @@ export class NowebPersistentStore implements INowebStore {
     return this.messagesRepo.getByJidById(chatId, messageId);
   }
 
-  getChats(pagination: PaginationParams, broadcast: boolean): Promise<Chat[]> {
+  getChats(
+    pagination: PaginationParams,
+    broadcast: boolean,
+    filter?: OverviewFilter,
+  ): Promise<Chat[]> {
     pagination.sortBy ||= 'conversationTimestamp';
     pagination.sortOrder ||= SortOrder.DESC;
-    return this.chatRepo.getAllWithMessages(pagination, broadcast);
+    return this.chatRepo.getAllWithMessages(pagination, broadcast, filter);
   }
 
   async getChat(jid: string): Promise<Chat | null> {

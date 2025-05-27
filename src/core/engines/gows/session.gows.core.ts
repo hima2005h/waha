@@ -64,6 +64,7 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  OverviewFilter,
   ReadChatMessagesQuery,
   ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
@@ -1514,6 +1515,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
    */
   public async getChatsOverview(
     pagination: PaginationParams,
+    filter?: OverviewFilter,
   ): Promise<ChatSummary[]> {
     if (!pagination.sortBy) {
       pagination.sortBy = 'timestamp';
@@ -1521,7 +1523,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     if (!pagination.sortOrder) {
       pagination.sortOrder = SortOrder.DESC;
     }
-    const chats = await this.getChats(pagination);
+    const chats = await this.getChats(pagination, filter);
 
     const promises = [];
     for (const chat of chats) {
@@ -1560,9 +1562,16 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     };
   }
 
-  public async getChats(pagination: PaginationParams) {
+  public async getChats(
+    pagination: PaginationParams,
+    filter: OverviewFilter | null = null,
+  ) {
     if (pagination.sortBy === ChatSortField.CONVERSATION_TIMESTAMP) {
       pagination.sortBy = 'timestamp';
+    }
+    let jids = [];
+    if (filter?.ids && filter.ids.length > 0) {
+      jids = filter.ids.map((id) => toJID(id));
     }
     const request = new messages.GetChatsRequest({
       session: this.session,
@@ -1576,6 +1585,9 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
           pagination.sortOrder === SortOrder.DESC
             ? messages.SortBy.Order.DESC
             : messages.SortBy.Order.ASC,
+      }),
+      filter: new messages.ChatFilter({
+        jids: jids,
       }),
     });
     const response = await promisify(this.client.GetChats)(request);

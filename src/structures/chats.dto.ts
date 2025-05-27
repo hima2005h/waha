@@ -7,8 +7,17 @@ import {
   PaginationParams,
 } from '@waha/structures/pagination.dto';
 import { ChatIdProperty } from '@waha/structures/properties.dto';
+import { SessionConfig } from '@waha/structures/sessions.dto';
 import { Transform, Type } from 'class-transformer';
-import { IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 /**
  * Queries
@@ -185,6 +194,29 @@ export class OverviewPaginationParams extends LimitOffsetParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 20;
+}
+
+export class OverviewFilter {
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
+  @ApiProperty({
+    description: 'Filter by chat ids',
+    required: false,
+    example: ['111111111@c.us'],
+  })
+  ids?: string[];
+}
+
+export class OverviewBodyRequest {
+  @ValidateNested()
+  @Type(() => OverviewPaginationParams)
+  pagination: OverviewPaginationParams;
+
+  @ValidateNested()
+  @Type(() => OverviewFilter)
+  filter: OverviewFilter;
 }
 
 export class ChatSummary {

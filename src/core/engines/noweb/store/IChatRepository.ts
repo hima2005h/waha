@@ -1,4 +1,5 @@
 import { Chat } from '@adiwajshing/baileys';
+import { OverviewFilter } from '@waha/structures/chats.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 
 export interface IChatRepository {
@@ -9,6 +10,7 @@ export interface IChatRepository {
   getAllWithMessages(
     pagination: PaginationParams,
     broadcast: boolean,
+    filter?: OverviewFilter,
   ): Promise<Chat[]>;
 
   getById(id: string): Promise<Chat | null>;

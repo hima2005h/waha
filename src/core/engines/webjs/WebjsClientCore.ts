@@ -157,7 +157,7 @@ export class WebjsClientCore extends Client {
     }, label);
   }
 
-  async getChats(pagination?: PaginationParams) {
+  async getChats(pagination?: PaginationParams, filter?: { ids?: string[] }) {
     if (lodash.isEmpty(pagination)) {
       return await super.getChats();
     }
@@ -166,10 +166,14 @@ export class WebjsClientCore extends Client {
     pagination.limit ||= Infinity;
     pagination.offset ||= 0;
 
-    const chats = await this.pupPage.evaluate(async (pagination) => {
-      // @ts-ignore
-      return await window.WAHA.getChats(pagination);
-    }, pagination);
+    const chats = await this.pupPage.evaluate(
+      async (pagination, filter) => {
+        // @ts-ignore
+        return await window.WAHA.getChats(pagination, filter);
+      },
+      pagination,
+      filter,
+    );
 
     return chats.map((chat) => ChatFactory.create(this, chat));
   }

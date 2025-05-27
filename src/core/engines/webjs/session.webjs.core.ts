@@ -55,6 +55,7 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  OverviewFilter,
   ReadChatMessagesQuery,
   ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
@@ -698,7 +699,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   /**
    * Chats methods
    */
-  getChats(pagination: PaginationParams) {
+  getChats(pagination: PaginationParams, filter: OverviewFilter | null = null) {
     switch (pagination.sortBy) {
       case ChatSortField.ID:
         pagination.sortBy = 'id._serialized';
@@ -707,18 +708,19 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
         pagination.sortBy = 't';
         break;
     }
-    return this.whatsapp.getChats(pagination);
+    return this.whatsapp.getChats(pagination, filter);
   }
 
   public async getChatsOverview(
     pagination: PaginationParams,
+    filter?: OverviewFilter,
   ): Promise<ChatSummary[]> {
     pagination = {
       ...pagination,
       sortBy: ChatSortField.CONVERSATION_TIMESTAMP,
       sortOrder: SortOrder.DESC,
     };
-    const chats = await this.getChats(pagination);
+    const chats = await this.getChats(pagination, filter);
 
     const promises = [];
     for (const chat of chats) {

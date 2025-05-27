@@ -8017,12 +8017,80 @@ export namespace messages {
             return GetContactsRequest.deserialize(bytes);
         }
     }
+    export class ChatFilter extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            jids?: string[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("jids" in data && data.jids != undefined) {
+                    this.jids = data.jids;
+                }
+            }
+        }
+        get jids() {
+            return pb_1.Message.getFieldWithDefault(this, 1, []) as string[];
+        }
+        set jids(value: string[]) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            jids?: string[];
+        }): ChatFilter {
+            const message = new ChatFilter({});
+            if (data.jids != null) {
+                message.jids = data.jids;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                jids?: string[];
+            } = {};
+            if (this.jids != null) {
+                data.jids = this.jids;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.jids.length)
+                writer.writeRepeatedString(1, this.jids);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatFilter {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatFilter();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        pb_1.Message.addToRepeatedField(message, 1, reader.readString());
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatFilter {
+            return ChatFilter.deserialize(bytes);
+        }
+    }
     export class GetChatsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             session?: Session;
             sortBy?: SortBy;
             pagination?: Pagination;
+            filter?: ChatFilter;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -8035,6 +8103,9 @@ export namespace messages {
                 }
                 if ("pagination" in data && data.pagination != undefined) {
                     this.pagination = data.pagination;
+                }
+                if ("filter" in data && data.filter != undefined) {
+                    this.filter = data.filter;
                 }
             }
         }
@@ -8065,10 +8136,20 @@ export namespace messages {
         get has_pagination() {
             return pb_1.Message.getField(this, 3) != null;
         }
+        get filter() {
+            return pb_1.Message.getWrapperField(this, ChatFilter, 4) as ChatFilter;
+        }
+        set filter(value: ChatFilter) {
+            pb_1.Message.setWrapperField(this, 4, value);
+        }
+        get has_filter() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             sortBy?: ReturnType<typeof SortBy.prototype.toObject>;
             pagination?: ReturnType<typeof Pagination.prototype.toObject>;
+            filter?: ReturnType<typeof ChatFilter.prototype.toObject>;
         }): GetChatsRequest {
             const message = new GetChatsRequest({});
             if (data.session != null) {
@@ -8080,6 +8161,9 @@ export namespace messages {
             if (data.pagination != null) {
                 message.pagination = Pagination.fromObject(data.pagination);
             }
+            if (data.filter != null) {
+                message.filter = ChatFilter.fromObject(data.filter);
+            }
             return message;
         }
         toObject() {
@@ -8087,6 +8171,7 @@ export namespace messages {
                 session?: ReturnType<typeof Session.prototype.toObject>;
                 sortBy?: ReturnType<typeof SortBy.prototype.toObject>;
                 pagination?: ReturnType<typeof Pagination.prototype.toObject>;
+                filter?: ReturnType<typeof ChatFilter.prototype.toObject>;
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -8096,6 +8181,9 @@ export namespace messages {
             }
             if (this.pagination != null) {
                 data.pagination = this.pagination.toObject();
+            }
+            if (this.filter != null) {
+                data.filter = this.filter.toObject();
             }
             return data;
         }
@@ -8109,6 +8197,8 @@ export namespace messages {
                 writer.writeMessage(2, this.sortBy, () => this.sortBy.serialize(writer));
             if (this.has_pagination)
                 writer.writeMessage(3, this.pagination, () => this.pagination.serialize(writer));
+            if (this.has_filter)
+                writer.writeMessage(4, this.filter, () => this.filter.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -8126,6 +8216,9 @@ export namespace messages {
                         break;
                     case 3:
                         reader.readMessage(message.pagination, () => message.pagination = Pagination.deserialize(reader));
+                        break;
+                    case 4:
+                        reader.readMessage(message.filter, () => message.filter = ChatFilter.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

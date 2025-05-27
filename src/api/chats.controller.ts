@@ -30,6 +30,8 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  OverviewBodyRequest,
+  OverviewFilter,
   OverviewPaginationParams,
   PinMessageRequest,
   ReadChatMessagesQuery,
@@ -65,8 +67,23 @@ class ChatsController {
   getChatsOverview(
     @WorkingSessionParam session: WhatsappSession,
     @Query() pagination: OverviewPaginationParams,
+    @Query() filter: OverviewFilter,
   ): Promise<ChatSummary[]> {
-    return session.getChatsOverview(pagination);
+    return session.getChatsOverview(pagination, filter);
+  }
+
+  @Post('overview')
+  @SessionApiParam
+  @ApiOperation({
+    summary:
+      'Get chats overview. Use POST if you have too many "ids" params - GET can limit it',
+  })
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  postChatsOverview(
+    @WorkingSessionParam session: WhatsappSession,
+    @Body() body: OverviewBodyRequest,
+  ): Promise<ChatSummary[]> {
+    return session.getChatsOverview(body.pagination, body.filter);
   }
 
   @Delete(':chatId')

@@ -16,6 +16,7 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  OverviewFilter,
   ReadChatMessagesQuery,
   ReadChatMessagesResponse,
 } from '@waha/structures/chats.dto';
@@ -491,6 +492,7 @@ export abstract class WhatsappSession {
 
   public getChatsOverview(
     pagination: PaginationParams,
+    filter?: OverviewFilter,
   ): Promise<ChatSummary[]> {
     throw new NotImplementedByEngineError();
   }

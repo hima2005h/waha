@@ -90,6 +90,7 @@ import {
   GetChatMessageQuery,
   GetChatMessagesFilter,
   GetChatMessagesQuery,
+  OverviewFilter,
   PinDuration,
   ReadChatMessagesQuery,
   ReadChatMessagesResponse,
@@ -1127,8 +1128,17 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   public async getChatsOverview(
     pagination: PaginationParams,
+    filter?: OverviewFilter,
   ): Promise<ChatSummary[]> {
-    const chats = await this.store.getChats(pagination, false);
+    // Convert customer format IDs to JID format if filter is provided
+    let jidFilter;
+    if (filter?.ids && filter.ids.length > 0) {
+      jidFilter = {
+        ids: filter.ids.map((id) => toJID(id)),
+      };
+    }
+
+    const chats = await this.store.getChats(pagination, false, jidFilter);
     // Remove unreadCount, it's not ready yet
     chats.forEach((chat) => delete chat.unreadCount);
 
