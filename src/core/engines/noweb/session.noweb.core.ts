@@ -387,7 +387,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   resubscribeToKnownPresences() {
     for (const jid in this.store.presences) {
-      this.sock.presenceSubscribe(jid);
+      this.subscribePresence(jid);
     }
   }
 
@@ -1522,14 +1522,14 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   public async getPresence(chatId: string): Promise<WAHAChatPresences> {
-    const remoteJid = toJID(chatId);
-    if (!(remoteJid in this.store.presences)) {
-      this.store.presences[remoteJid] = {};
-      await this.sock.presenceSubscribe(remoteJid);
+    const jid = toJID(chatId);
+    await this.subscribePresence(jid);
+    if (!(jid in this.store.presences)) {
+      this.store.presences[jid] = {};
       await sleep(1000);
     }
-    const result = this.store.presences[remoteJid];
-    return this.toWahaPresences(remoteJid, result);
+    const result = this.store.presences[jid];
+    return this.toWahaPresences(jid, result);
   }
 
   public subscribePresence(id: string): Promise<void> {
