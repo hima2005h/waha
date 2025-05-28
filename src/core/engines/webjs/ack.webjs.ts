@@ -23,7 +23,7 @@ interface Me {
   lid?: string;
 }
 
-function jid(field: any) {
+export function jid(field: any) {
   if (!field) {
     return field;
   }

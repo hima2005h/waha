@@ -1,8 +1,10 @@
+import { WebJSPresence } from '@waha/core/engines/webjs/types';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
 import { Label } from '@waha/structures/labels.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { TextStatus } from '@waha/structures/status.dto';
+import { sleep } from '@waha/utils/promiseTimeout';
 import { EventEmitter } from 'events';
 import * as lodash from 'lodash';
 import { Page } from 'puppeteer';
@@ -359,5 +361,56 @@ export class WebjsClientCore extends Client {
       return result ? result._serialized : null;
     }, phoneNumber)) as any;
     return lid;
+  }
+
+  /**
+   * Presences methods
+   */
+  public async subscribePresence(chatId: string): Promise<void> {
+    await this.pupPage.evaluate(async (chatId) => {
+      const d = require;
+      const WidFactory = d('WAWebWidFactory');
+
+      const wid = WidFactory.createWidFromWidLike(chatId);
+      const chat = d('WAWebChatCollection').ChatCollection.get(wid);
+      const tc = chat == null ? void 0 : chat.getTcToken();
+      await d('WAWebContactPresenceBridge').subscribePresence(wid, tc);
+    }, chatId);
+  }
+
+  private async getCurrentPresence(chatId: string): Promise<WebJSPresence[]> {
+    const result = await this.pupPage.evaluate(async (chatId) => {
+      const d = require;
+      const WidFactory = d('WAWebWidFactory');
+      const PresenceCollection = d(
+        'WAWebPresenceCollection',
+      ).PresenceCollection;
+      const wid = WidFactory.createWidFromWidLike(chatId);
+      const presence = PresenceCollection.get(wid);
+      if (!presence) {
+        return [];
+      }
+      let chatstates = [];
+      if (chatId.endsWith('@c.us')) {
+        chatstates = [presence.chatstate];
+      } else {
+        chatstates = presence.chatstates.getModelsArray();
+      }
+      return chatstates.map((chatstate) => {
+        return {
+          participant: chatstate.id._serialized,
+          lastSeen: chatstate.t,
+          state: chatstate.type,
+        };
+      });
+    }, chatId);
+    return result;
+  }
+
+  public async getPresence(chatId: string): Promise<WebJSPresence[]> {
+    await this.sendPresenceAvailable();
+    await this.subscribePresence(chatId);
+    await sleep(3_000);
+    return await this.getCurrentPresence(chatId);
   }
 }
