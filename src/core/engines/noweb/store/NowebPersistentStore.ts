@@ -234,6 +234,9 @@ export class NowebPersistentStore implements INowebStore {
     for (const update of updates) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const jid = jidNormalizedUser(update.key.remoteJid!);
+      if (!update.key.id) {
+        continue;
+      }
       const message = await this.messagesRepo.getByJidById(jid, update.key.id);
       if (!message) {
         this.logger.warn(
