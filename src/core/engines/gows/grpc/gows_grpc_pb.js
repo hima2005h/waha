@@ -671,7 +671,7 @@ var EventStreamService = exports.EventStreamService = {
   },
 };
 
-exports.EventStreamClient = grpc.makeGenericClientConstructor(EventStreamService);
+exports.EventStreamClient = grpc.makeGenericClientConstructor(EventStreamService, 'EventStream');
 var MessageServiceService = exports.MessageServiceService = {
   //
 // Session management
@@ -1381,4 +1381,4 @@ getMessageById: {
   },
 };
 
-exports.MessageServiceClient = grpc.makeGenericClientConstructor(MessageServiceService);
+exports.MessageServiceClient = grpc.makeGenericClientConstructor(MessageServiceService, 'MessageService');
