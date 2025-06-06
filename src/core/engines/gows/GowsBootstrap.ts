@@ -22,6 +22,7 @@ export async function isUnixSocket(socketPath: string): Promise<boolean> {
 export interface BootstrapConfig {
   path: string;
   socket: string;
+  pprof?: boolean;
 }
 
 export class GowsBootstrap implements EngineBootstrap {
@@ -44,6 +45,7 @@ export class GowsBootstrap implements EngineBootstrap {
       this.logger,
       this.config.path,
       this.config.socket,
+      this.config.pprof,
     );
     this.gows.start(() => {
       this.logger.info(`GOWS stopped, exiting...`);

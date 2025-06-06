@@ -14,13 +14,21 @@ export class GowsSubprocess {
     private logger: Logger,
     readonly path: string,
     readonly socket: string,
+    readonly pprof: boolean = false,
   ) {}
 
   start(onExit: (code: number) => void) {
     this.logger.info('Starting GOWS subprocess...');
     this.logger.debug(`GOWS path '${this.path}', socket: '${this.socket}'...`);
 
-    this.child = spawn(this.path, ['--socket', this.socket], {
+    const args = ['--socket', this.socket];
+    if (this.pprof) {
+      this.logger.info('Debug mode enabled, adding pprof flags');
+      args.push('--pprof');
+      args.push('--pprof-port=6060');
+    }
+
+    this.child = spawn(this.path, args, {
       detached: true,
     });
     this.logger.debug(`GOWS started with PID: ${this.child.pid}`);
