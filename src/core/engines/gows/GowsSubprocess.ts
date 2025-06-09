@@ -26,6 +26,7 @@ export class GowsSubprocess {
       this.logger.info('Debug mode enabled, adding pprof flags');
       args.push('--pprof');
       args.push('--pprof-port=6060');
+      args.push('--pprof-host=0.0.0.0');
     }
 
     this.child = spawn(this.path, args, {
