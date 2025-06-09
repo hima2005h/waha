@@ -1,3 +1,4 @@
+import { exposeFunctionIfAbsent } from '@waha/core/engines/webjs/Puppeteer';
 import { WebJSPresence } from '@waha/core/engines/webjs/types';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
 import { Label } from '@waha/structures/labels.dto';
@@ -10,7 +11,6 @@ import * as lodash from 'lodash';
 import { Page } from 'puppeteer';
 import { Client, Events } from 'whatsapp-web.js';
 import { Message } from 'whatsapp-web.js/src/structures';
-import { exposeFunctionIfAbsent } from 'whatsapp-web.js/src/util/Puppeter';
 
 import { CallErrorEvent, PAGE_CALL_ERROR_EVENT, WPage } from './WPage';
 
