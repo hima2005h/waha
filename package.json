@@ -88,7 +88,7 @@
     "sharp": "^0.33.4",
     "swagger-ui-express": "^4.1.4",
     "ulid": "^2.3.0",
-    "whatsapp-web.js": "github:devlikeapro/whatsapp-web.js#fork-main-channels",
+    "whatsapp-web.js": "github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09",
     "write-file-atomic": "^6.0.0"
   },
   "optionalDependencies": {
