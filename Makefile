@@ -41,7 +41,7 @@ up-noweb-libsignal:
 	. ${NVM_DIR}/nvm.sh && nvm exec yarn up libsignal@github:devlikeapro/libsignal-node#fork-master
 
 up-webjs:
-	. ${NVM_DIR}/nvm.sh && nvm exec yarn up whatsapp-web.js@github:devlikeapro/whatsapp-web.js#fork-main-channels
+	. ${NVM_DIR}/nvm.sh && nvm exec yarn up whatsapp-web.js@github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09
 
 start-proxy:
 	docker run --rm -d --name squid-container -e TZ=UTC -p 3128:3128 ubuntu/squid:5.2-22.04_beta
