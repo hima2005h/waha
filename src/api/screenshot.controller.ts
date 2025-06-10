@@ -21,8 +21,8 @@ export class ScreenshotController {
   constructor(private manager: SessionManager) {}
 
   @Get('/screenshot')
-  @UseInterceptors(new BufferResponseInterceptor())
-  @ApiFileAcceptHeader()
+  @UseInterceptors(new BufferResponseInterceptor('image/jpeg'))
+  @ApiFileAcceptHeader('image/jpeg')
   async screenshot(
     @Res({ passthrough: true }) res: Response,
     @Query() sessionQuery: SessionQuery,

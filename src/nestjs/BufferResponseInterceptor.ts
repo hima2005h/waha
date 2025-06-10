@@ -21,6 +21,11 @@ import { Base64File } from '../structures/files.dto';
 export class BufferResponseInterceptor<T>
   implements NestInterceptor<Buffer, Base64File | StreamableFile>
 {
+  constructor(
+    private mimetype: string,
+    private filename: string = null,
+  ) {}
+
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -28,27 +33,35 @@ export class BufferResponseInterceptor<T>
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
-    return next.handle().pipe(map(processBuffer));
 
-    function processBuffer(buffer: Buffer) {
-      // Check buffer is Buffer
-      if (!Buffer.isBuffer(buffer)) {
-        return buffer;
-      }
+    return next
+      .handle()
+      .pipe(map((buffer) => this.processBuffer(buffer, request, response)));
+  }
 
-      const accept = request.headers['accept'];
-      if (accept == 'application/json') {
-        return {
-          mimetype: 'image/png',
-          data: buffer.toString('base64'),
-        };
-      }
-      const file = new StreamableFile(buffer);
-      response.set({
-        'Content-Type': 'image/png',
-        'Content-Length': buffer.length,
-      });
-      return file;
+  processBuffer(buffer: Buffer, request: Request, response: Response) {
+    // Check buffer is Buffer
+    if (!Buffer.isBuffer(buffer)) {
+      return buffer;
     }
+
+    const accept = request.headers['accept'];
+    if (accept == 'application/json') {
+      return {
+        mimetype: this.mimetype,
+        data: buffer.toString('base64'),
+      };
+    }
+    const file = new StreamableFile(buffer);
+    response.set({
+      'Content-Type': this.mimetype,
+      'Content-Length': buffer.length,
+    });
+    if (this.filename) {
+      response.set({
+        'Content-Disposition': `attachment; filename="${this.filename}"`,
+      });
+    }
+    return file;
   }
 }

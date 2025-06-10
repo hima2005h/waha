@@ -39,3 +39,5 @@ export const VERSION: WAHAEnvironment = {
   browser:
     getEngineName() === WAHAEngine.WEBJS ? getBrowserExecutablePath() : null,
 };
+
+export const IsChrome = VERSION.browser?.includes('chrome');

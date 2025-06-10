@@ -11,7 +11,7 @@ function getRefSchemaPaths(models) {
 /**
  * Decorator to add a file accept header to the swagger documentation
  */
-export function ApiFileAcceptHeader(...models) {
+export function ApiFileAcceptHeader(mimetype: string, ...models) {
   models = models.length ? models : [Base64File];
   return applyDecorators(
     // Add extra models, otherwise it'll give a error
@@ -20,7 +20,7 @@ export function ApiFileAcceptHeader(...models) {
     ApiResponse({
       status: 200,
       content: {
-        'image/png': {
+        [mimetype]: {
           schema: {
             type: 'string',
             format: 'binary',

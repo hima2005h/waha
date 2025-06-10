@@ -36,6 +36,7 @@ import { EventsController } from '../api/events.controller';
 import { GroupsController } from '../api/groups.controller';
 import { HealthController } from '../api/health.controller';
 import { LabelsController } from '../api/labels.controller';
+import { MediaController } from '../api/media.controller';
 import { PingController } from '../api/ping.controller';
 import { PresenceController } from '../api/presence.controller';
 import { ScreenshotController } from '../api/screenshot.controller';
@@ -141,6 +142,7 @@ export const CONTROLLERS = [
   ServerController,
   ServerDebugController,
   VersionController,
+  MediaController,
 ];
 const PROVIDERS = [
   {

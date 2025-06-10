@@ -30,6 +30,14 @@ function ReplyToProperty() {
   });
 }
 
+export function ConvertApiProperty() {
+  return ApiProperty({
+    description:
+      'Convert the input file to the required format using ffmpeg before sending',
+    example: true,
+  });
+}
+
 export {
   ChatIdProperty,
   MessageIdOnlyProperty,

@@ -32,7 +32,11 @@ import {
   VoiceBinaryFile,
   VoiceRemoteFile,
 } from './files.dto';
-import { ChatIdProperty, ReplyToProperty } from './properties.dto';
+import {
+  ChatIdProperty,
+  ConvertApiProperty,
+  ReplyToProperty,
+} from './properties.dto';
 
 /**
  * Queries
@@ -320,6 +324,9 @@ export class MessageVoiceRequest extends ChatRequest {
 
   @ReplyToProperty()
   reply_to?: string;
+
+  @ConvertApiProperty()
+  convert: boolean;
 }
 
 @ApiExtraModels(VideoRemoteFile, VideoBinaryFile)
@@ -346,6 +353,9 @@ export class MessageVideoRequest extends ChatRequest {
     example: false,
   })
   asNote?: boolean;
+
+  @ConvertApiProperty()
+  convert: boolean;
 }
 
 export class MessageLinkPreviewRequest extends ChatRequest {

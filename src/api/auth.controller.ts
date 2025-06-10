@@ -36,8 +36,8 @@ class AuthController {
     summary: 'Get QR code for pairing WhatsApp API.',
   })
   @SessionApiParam
-  @ApiFileAcceptHeader(Base64File, QRCodeValue)
-  @UseInterceptors(new BufferResponseInterceptor())
+  @ApiFileAcceptHeader('image/png', Base64File, QRCodeValue)
+  @UseInterceptors(new BufferResponseInterceptor('image/png'))
   async getQR(
     @QRCodeSessionParam session: WhatsappSession,
     @Query() query: QRCodeQuery,

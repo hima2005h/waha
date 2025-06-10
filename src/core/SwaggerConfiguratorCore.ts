@@ -76,6 +76,7 @@ export class SwaggerConfiguratorCore {
         '🏷️ Labels',
         'Labels - available only for WhatsApp Business accounts',
       )
+      .addTag('🖼️ Media', 'Media methods')
       .addTag('🔍 Observability', 'Other methods')
       .addTag('🗄️ Storage', 'Storage methods')
       .addApiKey({

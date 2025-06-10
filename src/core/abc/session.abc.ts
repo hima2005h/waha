@@ -1,4 +1,8 @@
 import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import {
+  CoreMediaConverter,
+  IMediaConverter,
+} from '@waha/core/media/IConverter';
 import { MessagesForRead } from '@waha/core/utils/convertors';
 import { isJidNewsletter } from '@waha/core/utils/jids';
 import {
@@ -24,16 +28,15 @@ import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
 import { BinaryFile, RemoteFile } from '@waha/structures/files.dto';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
-import {
-  LimitOffsetParams,
-  PaginationParams,
-} from '@waha/structures/pagination.dto';
+import { PaginationParams } from '@waha/structures/pagination.dto';
 import { MessageSource, WAMessage } from '@waha/structures/responses.dto';
 import { DefaultMap } from '@waha/utils/DefaultMap';
 import { generatePrefixedId } from '@waha/utils/ids';
 import { LoggerBuilder } from '@waha/utils/logging';
 import { complete } from '@waha/utils/reactive/complete';
 import { SwitchObservable } from '@waha/utils/reactive/SwitchObservable';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import * as fs from 'fs';
 import * as lodash from 'lodash';
 import * as NodeCache from 'node-cache';
@@ -109,8 +112,11 @@ import { NotImplementedByEngineError } from '../exceptions';
 import { IMediaManager } from '../media/IMediaManager';
 import { QR } from '../QR';
 import { DataStore } from './DataStore';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const qrcode = require('qrcode-terminal');
+
+axiosRetry(axios, { retries: 3 });
 
 const CHROME_PATH = '/usr/bin/google-chrome-stable';
 const CHROMIUM_PATH = '/usr/bin/chromium';
@@ -167,6 +173,8 @@ export abstract class WhatsappSession {
   private sentMessageIds: NodeCache = new NodeCache({
     stdTTL: 10 * 60, // 10 minutes
   });
+
+  public mediaConverter: IMediaConverter = new CoreMediaConverter();
 
   public constructor({
     name,
@@ -992,6 +1000,15 @@ export abstract class WhatsappSession {
     }
     const api = this.sentMessageIds.has(id);
     return api ? MessageSource.API : MessageSource.APP;
+  }
+
+  /**
+   * Fetches the content from the specified URL and returns it as a Buffer.
+   */
+  public async fetch(url: string): Promise<Buffer> {
+    return axios.get(url, { responseType: 'arraybuffer' }).then((res) => {
+      return Buffer.from(res.data);
+    });
   }
 }
 

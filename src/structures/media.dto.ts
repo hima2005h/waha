@@ -35,3 +35,34 @@ export class WAMedia {
   // eslint-disable-next-line @typescript-eslint/ban-types
   error?: object;
 }
+
+export class FileDTO {
+  @ApiProperty({
+    description: 'The URL for the file',
+  })
+  url?: string;
+
+  @ApiProperty({
+    description: 'Base64 content of the file',
+    example: null,
+  })
+  data?: string;
+}
+
+export class VoiceFileDTO extends FileDTO {
+  @ApiProperty({
+    description: 'The URL for the voice file',
+    example:
+      'https://file-examples.com/storage/fe3e7fc7fe68462a19ac6ae/2017/11/file_example_MP3_2MG.mp3',
+  })
+  url?: string;
+}
+
+export class VideoFileDTO extends FileDTO {
+  @ApiProperty({
+    description: 'The URL for the video file',
+    example:
+      'https://file-examples.com/storage/fe3e7fc7fe68462a19ac6ae/2018/04/file_example_AVI_1280_1_5MG.avi',
+  })
+  url?: string;
+}

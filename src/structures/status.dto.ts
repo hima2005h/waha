@@ -1,4 +1,5 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { ConvertApiProperty } from '@waha/structures/properties.dto';
 
 import {
   BinaryFile,
@@ -63,6 +64,9 @@ export class VoiceStatus extends StatusRequest {
   file: VoiceRemoteFile | VoiceBinaryFile;
 
   backgroundColor: string = '#38b42f';
+
+  @ConvertApiProperty()
+  convert: boolean;
 }
 
 @ApiExtraModels(VideoRemoteFile, VideoBinaryFile)
@@ -76,6 +80,9 @@ export class VideoStatus extends StatusRequest {
   file: VideoRemoteFile | VideoBinaryFile;
 
   caption?: string;
+
+  @ConvertApiProperty()
+  convert: boolean;
 }
 
 export class DeleteStatusRequest extends StatusRequest {
