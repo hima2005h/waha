@@ -53,7 +53,8 @@ export class VoiceFileDTO extends FileDTO {
   @ApiProperty({
     description: 'The URL for the voice file',
     example:
-      'https://file-examples.com/storage/fe3e7fc7fe68462a19ac6ae/2017/11/file_example_MP3_2MG.mp3',
+      process.env.WHATSAPP_SWAGGER_VIDEO_EXAMPLE_URL ||
+      'https://github.com/devlikeapro/waha/raw/core/examples/voice.mp3',
   })
   url?: string;
 }
@@ -61,8 +62,7 @@ export class VoiceFileDTO extends FileDTO {
 export class VideoFileDTO extends FileDTO {
   @ApiProperty({
     description: 'The URL for the video file',
-    example:
-      'https://file-examples.com/storage/fe3e7fc7fe68462a19ac6ae/2018/04/file_example_AVI_1280_1_5MG.avi',
+    example: 'https://github.com/devlikeapro/waha/raw/core/examples/video.mp4',
   })
   url?: string;
 }
