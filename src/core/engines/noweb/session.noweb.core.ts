@@ -595,7 +595,8 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         if (
           protocolMsg !== null &&
           protocolMsg !== undefined &&
-          protocolMsg.editedMessage
+          protocolMsg.editedMessage &&
+          protocolMsg.key
         ) {
           this.sock?.ev.emit('messages.update', [
             {
