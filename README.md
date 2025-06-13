@@ -146,7 +146,7 @@ curl -d "{\"chatId\": \"${PHONE}@c.us\", \"text\": \"Hello from WhatsApp HTTP AP
 
 ## Start the project
 1. Clone the repository
-2. Make sure you're using node>=22
+2. Make sure you're using node>=22 (check [.nvmrc](/.nvmrc) to get the version)
 3. Run the following commands:
 ```bash
 # Install dependencies
