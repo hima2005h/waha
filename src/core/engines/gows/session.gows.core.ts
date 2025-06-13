@@ -129,6 +129,7 @@ import {
   EnginePayload,
   PollVotePayload,
   WAMessageAckBody,
+  WAMessageRevokedBody,
 } from '@waha/structures/webhooks.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
 import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
@@ -406,6 +407,25 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const messagesFromAll$ = merge(messagesFromMe$, messagesFromOthers$);
     this.events2.get(WAHAEvents.MESSAGE).switch(messagesFromOthers$);
     this.events2.get(WAHAEvents.MESSAGE_ANY).switch(messagesFromAll$);
+
+    // Handle revoked messages
+    const messagesRevoked$ = messages$.pipe(
+      filter((msg) => {
+        return (
+          msg?.Message?.protocolMessage?.type === 0 &&
+          msg?.Message?.protocolMessage?.key !== undefined
+        );
+      }),
+      mergeMap(async (message): Promise<WAMessageRevokedBody> => {
+        const afterMessage = await this.toWAMessage(message);
+        return {
+          after: afterMessage,
+          before: null,
+          _data: message,
+        };
+      }),
+    );
+    this.events2.get(WAHAEvents.MESSAGE_REVOKED).switch(messagesRevoked$);
 
     const receipt$ = all$.pipe(onlyEvent(WhatsMeowEvent.RECEIPT));
     const messageAck$ = receipt$.pipe(
