@@ -1449,7 +1449,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
         return {
           message: message,
           body: event.newBody,
-          originalMessageId: message._data?.id?.id,
+          editedMessageId: message._data?.id?.id,
           _data: event,
         };
       }),

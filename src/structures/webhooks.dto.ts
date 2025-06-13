@@ -111,7 +111,7 @@ export class WAMessageEditedBody {
     description: 'ID of the original message that was edited',
     example: 'A06CA7BB5DD8C8F705628CDB7E3A33C9',
   })
-  originalMessageId?: string;
+  editedMessageId?: string;
 
   _data?: any;
 }

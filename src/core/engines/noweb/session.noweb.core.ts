@@ -1859,11 +1859,11 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         const body =
           this.extractBody(message.message.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
-        const originalMessageId = message.message.protocolMessage.key?.id;
+        const editedMessageId = message.message.protocolMessage.key?.id;
         return {
           message: waMessage,
           body: body,
-          originalMessageId: originalMessageId,
+          editedMessageId: editedMessageId,
           _data: message,
         };
       }),

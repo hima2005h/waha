@@ -445,11 +445,11 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
         const body =
           this.extractBody(message.Message.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
-        const originalMessageId = message.Message.protocolMessage.key?.ID;
+        const editedMessageId = message.Message.protocolMessage.key?.ID;
         return {
           message: waMessage,
           body: body,
-          originalMessageId: originalMessageId,
+          editedMessageId: editedMessageId,
           _data: message,
         };
       }),
