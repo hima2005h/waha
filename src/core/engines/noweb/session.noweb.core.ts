@@ -159,6 +159,7 @@ import {
   PollVote,
   PollVotePayload,
   WAMessageAckBody,
+  WAMessageEditedBody,
   WAMessageRevokedBody,
 } from '@waha/structures/webhooks.dto';
 import { LoggerBuilder } from '@waha/utils/logging';
@@ -1839,6 +1840,33 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     );
     this.events2.get(WAHAEvents.MESSAGE_REVOKED).switch(messagesRevoked$);
 
+    // Handle edited messages
+    // @ts-ignore
+    const messagesEdited$ = messagesUpsert$.pipe(
+      filter(
+        (message) =>
+          // @ts-ignore
+          message.message?.protocolMessage?.type ===
+            proto.Message.ProtocolMessage.Type.MESSAGE_EDIT &&
+          message.message?.protocolMessage?.editedMessage !== undefined,
+      ),
+      mergeMap(async (message): Promise<WAMessageEditedBody> => {
+        const waMessage = await this.toWAMessage(message);
+        // Extract the body from editedMessage using extractBody function
+        const body =
+          this.extractBody(message.message.protocolMessage.editedMessage) || '';
+        // Extract the original message ID from protocolMessage.key
+        const originalMessageId = message.message.protocolMessage.key?.id;
+        return {
+          message: waMessage,
+          body: body,
+          originalMessageId: originalMessageId,
+          _data: message,
+        };
+      }),
+    );
+    this.events2.get(WAHAEvents.MESSAGE_EDITED).switch(messagesEdited$);
+
     //
     // Message Reactions
     //
@@ -2102,10 +2130,16 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     if (message.message.pollUpdateMessage) return;
     // Ignore calls, we have dedicated handler for that
     if (message.message.call?.callKey) return;
-    // Ignore revoke, we have a dedicated handler for that
+    // Ignore revoke, we have a dedicated event for that
     if (
       message.message?.protocolMessage?.type ===
       proto.Message.ProtocolMessage.Type.REVOKE
+    )
+      return;
+    // Ignore edit, we have a dedicated event for that
+    if (
+      message.message?.protocolMessage?.type ===
+      proto.Message.ProtocolMessage.Type.MESSAGE_EDIT
     )
       return;
     if (
