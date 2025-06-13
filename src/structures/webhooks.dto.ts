@@ -93,6 +93,13 @@ export class PollVotePayload {
 export class WAMessageRevokedBody {
   after?: WAMessage;
   before?: WAMessage;
+
+  @ApiProperty({
+    description: 'ID of the message that was revoked',
+    example: 'A06CA7BB5DD8C8F705628CDB7E3A33C9',
+  })
+  revokedMessageId?: string;
+
   _data?: any;
 }
 

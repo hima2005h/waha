@@ -419,9 +419,12 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       }),
       mergeMap(async (message): Promise<WAMessageRevokedBody> => {
         const afterMessage = await this.toWAMessage(message);
+        // Extract the revoked message ID from protocolMessage.key
+        const revokedMessageId = message.Message.protocolMessage.key?.ID;
         return {
           after: afterMessage,
           before: null,
+          revokedMessageId: revokedMessageId,
           _data: message,
         };
       }),
