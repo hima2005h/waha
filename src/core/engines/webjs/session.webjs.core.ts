@@ -111,6 +111,7 @@ import { StatusRequest, TextStatus } from '@waha/structures/status.dto';
 import {
   EnginePayload,
   WAMessageAckBody,
+  WAMessageEditedBody,
   WAMessageRevokedBody,
 } from '@waha/structures/webhooks.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
@@ -1434,6 +1435,26 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       map(this.processMessageReaction.bind(this)),
     );
     this.events2.get(WAHAEvents.MESSAGE_REACTION).switch(messagesReaction$);
+
+    const messageEdit$ = fromEvent(
+      this.whatsapp,
+      Events.MESSAGE_EDIT,
+      (message, newBody, prevBody) => {
+        return { message, newBody, prevBody };
+      },
+    );
+    const messagesEdit$ = messageEdit$.pipe(
+      map((event): WAMessageEditedBody => {
+        const message = this.toWAMessage(event.message);
+        return {
+          message: message,
+          body: event.newBody,
+          originalMessageId: message._data?.id?.id,
+          _data: event,
+        };
+      }),
+    );
+    this.events2.get(WAHAEvents.MESSAGE_EDITED).switch(messagesEdit$);
 
     const messageAckWEBJS$ = fromEvent(
       this.whatsapp,
