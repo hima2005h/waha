@@ -447,7 +447,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
         // Extract the original message ID from protocolMessage.key
         const editedMessageId = message.Message.protocolMessage.key?.ID;
         return {
-          message: waMessage,
+          ...waMessage,
           body: body,
           editedMessageId: editedMessageId,
           _data: message,

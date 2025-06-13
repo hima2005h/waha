@@ -103,17 +103,12 @@ export class WAMessageRevokedBody {
   _data?: any;
 }
 
-export class WAMessageEditedBody {
-  message: WAMessage;
-  body: string;
-
+export class WAMessageEditedBody extends WAMessage {
   @ApiProperty({
     description: 'ID of the original message that was edited',
     example: 'A06CA7BB5DD8C8F705628CDB7E3A33C9',
   })
   editedMessageId?: string;
-
-  _data?: any;
 }
 
 export class WASessionStatusBody {

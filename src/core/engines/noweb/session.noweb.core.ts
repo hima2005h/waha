@@ -1861,7 +1861,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         // Extract the original message ID from protocolMessage.key
         const editedMessageId = message.message.protocolMessage.key?.id;
         return {
-          message: waMessage,
+          ...waMessage,
           body: body,
           editedMessageId: editedMessageId,
           _data: message,

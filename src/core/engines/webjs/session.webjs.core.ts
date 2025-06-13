@@ -1447,7 +1447,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       map((event): WAMessageEditedBody => {
         const message = this.toWAMessage(event.message);
         return {
-          message: message,
+          ...message,
           body: event.newBody,
           editedMessageId: message._data?.id?.id,
           _data: event,
