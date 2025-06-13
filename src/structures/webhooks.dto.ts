@@ -96,6 +96,19 @@ export class WAMessageRevokedBody {
   _data?: any;
 }
 
+export class WAMessageEditedBody {
+  message: WAMessage;
+  body: string;
+
+  @ApiProperty({
+    description: 'ID of the original message that was edited',
+    example: 'A06CA7BB5DD8C8F705628CDB7E3A33C9',
+  })
+  originalMessageId?: string;
+
+  _data?: any;
+}
+
 export class WASessionStatusBody {
   @ApiProperty({
     example: 'default',
@@ -204,6 +217,16 @@ export class WAHAWebhookMessageRevoked extends WAHAWebhook {
   event = WAHAEvents.MESSAGE_REVOKED;
 
   payload: WAMessageRevokedBody;
+}
+
+export class WAHAWebhookMessageEdited extends WAHAWebhook {
+  @ApiProperty({
+    description:
+      'The event is triggered when a user edits a previously sent message.',
+  })
+  event = WAHAEvents.MESSAGE_EDITED;
+
+  payload: WAMessageEditedBody;
 }
 
 export class WAHAWebhookStateChange extends WAHAWebhook {

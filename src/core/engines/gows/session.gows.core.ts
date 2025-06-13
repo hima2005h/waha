@@ -129,6 +129,7 @@ import {
   EnginePayload,
   PollVotePayload,
   WAMessageAckBody,
+  WAMessageEditedBody,
   WAMessageRevokedBody,
 } from '@waha/structures/webhooks.dto';
 import { PaginatorInMemory } from '@waha/utils/Paginator';
@@ -426,6 +427,31 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       }),
     );
     this.events2.get(WAHAEvents.MESSAGE_REVOKED).switch(messagesRevoked$);
+
+    // Handle edited messages
+    const messagesEdited$ = messages$.pipe(
+      filter((msg) => {
+        return (
+          msg?.Message?.protocolMessage?.type === 14 &&
+          msg?.Message?.protocolMessage?.editedMessage !== undefined
+        );
+      }),
+      mergeMap(async (message): Promise<WAMessageEditedBody> => {
+        const waMessage = await this.toWAMessage(message);
+        // Extract the body from editedMessage using extractBody function
+        const body =
+          this.extractBody(message.Message.protocolMessage.editedMessage) || '';
+        // Extract the original message ID from protocolMessage.key
+        const originalMessageId = message.Message.protocolMessage.key?.ID;
+        return {
+          message: waMessage,
+          body: body,
+          originalMessageId: originalMessageId,
+          _data: message,
+        };
+      }),
+    );
+    this.events2.get(WAHAEvents.MESSAGE_EDITED).switch(messagesEdited$);
 
     const receipt$ = all$.pipe(onlyEvent(WhatsMeowEvent.RECEIPT));
     const messageAck$ = receipt$.pipe(
