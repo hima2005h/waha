@@ -1418,8 +1418,8 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
         const beforeMessage = event.before
           ? this.toWAMessage(event.before)
           : null;
-        // Extract the revoked message ID from the before message
-        const revokedMessageId = beforeMessage?.id;
+        // Extract the revoked message ID from the protocolMessageKey.id field
+        const revokedMessageId = afterMessage?._data?.protocolMessageKey?.id;
         return {
           after: afterMessage,
           before: beforeMessage,
