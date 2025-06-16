@@ -64,11 +64,13 @@ export class NowebPersistentStore implements INowebStore {
   public presences: any;
 
   private lock: any = new AsyncLock({
+    timeout: 5_000,
     maxPending: Infinity,
     maxExecutionTime: 60_000,
   });
 
   private groupsFetchLock: any = new AsyncLock({
+    timeout: 5_000,
     maxPending: Infinity,
     maxExecutionTime: 60_000,
   });

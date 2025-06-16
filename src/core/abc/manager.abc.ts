@@ -57,6 +57,7 @@ export abstract class SessionManager
     protected gowsConfigService: GowsEngineConfigService,
   ) {
     this.lock = new AsyncLock({
+      timeout: 5_000,
       maxPending: Infinity,
       maxExecutionTime: 30_000,
     });

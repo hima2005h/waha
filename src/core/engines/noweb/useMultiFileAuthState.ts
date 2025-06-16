@@ -19,6 +19,7 @@ const AsyncLock = require('async-lock');
 // Default pending is 1000, set it to infinity
 // https://github.com/rogierschouten/async-lock/issues/63
 const fileLock = new AsyncLock({
+  timeout: 5_000,
   maxPending: Infinity,
   maxExecutionTime: 30_000,
 });
