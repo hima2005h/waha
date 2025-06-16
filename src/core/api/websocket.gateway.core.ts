@@ -108,13 +108,13 @@ export class WebsocketGatewayCore
   // Cherry-pick from nestjs new version
   // https://github.com/nestjs/nest/pull/13531/files
   private async close(server: any) {
-    const closeEventSignal = new Promise((resolve, reject) =>
-      server.close((err) => (err ? reject(err) : resolve(undefined))),
-    );
+    // const closeEventSignal = new Promise((resolve, reject) =>
+    //   server.close((err) => (err ? reject(err) : resolve(undefined))),
+    // );
     for (const ws of server.clients) {
       ws.terminate();
     }
-    await closeEventSignal;
+    // await closeEventSignal;
   }
 
   afterInit(server: Server) {
