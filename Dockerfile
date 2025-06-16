@@ -119,6 +119,21 @@ RUN if [ "$USE_BROWSER" = "chromium" ] || [ "$USE_BROWSER" = "chrome" ]; then \
     && rm -rf /var/lib/apt/lists/*; \
     fi
 
+# Install xvfb
+RUN if [ "$USE_BROWSER" = "chromium" ] || [ "$USE_BROWSER" = "chrome" ]; then \
+    apt-get update && apt-get install -y --no-install-recommends \
+        xvfb \
+        libnss3 \
+        libxss1 \
+        libasound2 \
+        libatk-bridge2.0-0 \
+        libgtk-3-0 \
+        libdrm2 \
+        ca-certificates \
+        curl \
+        && rm -rf /var/lib/apt/lists/*; \
+    fi
+
 # Install Chromium
 RUN if [ "$USE_BROWSER" = "chromium" ]; then \
         apt-get update  \

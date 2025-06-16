@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Start virtual X server in the background
+Xvfb :99 -screen 0 1280x720x24 &
+export DISPLAY=:99
+sleep 2
+
 # Calculate UV_THREADPOOL_SIZE based on number of CPUs
 cpus=$(node -e "const os = require('os'); console.log(os.cpus().length);")
 uv_threadpool_size=$(($cpus * 1))
