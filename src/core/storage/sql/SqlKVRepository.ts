@@ -79,7 +79,7 @@ export class SqlKVRepository<Entity> {
     }
   }
 
-  private async upsertBatch(entities: Entity[]): Promise<void> {
+  protected async upsertBatch(entities: Entity[]): Promise<void> {
     const all = entities.map((entity) => this.dump(entity));
     // make it unique by .id
     const data = lodash.uniqBy(all, (d: any) => d.id);
