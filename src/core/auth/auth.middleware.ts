@@ -5,15 +5,15 @@ import {
 } from '@nestjs/common';
 import * as passport from 'passport';
 
-import { WhatsappConfigService } from '../../config.service';
+import { IApiKeyAuth } from './auth';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private config: WhatsappConfigService) {}
+  constructor(private auth: IApiKeyAuth) {}
 
   use(req: any, res: any, next: () => void) {
-    // No api key - skip the validation path
-    if (!this.config.getApiKey()) {
+    // Skip authentication if auth says so
+    if (this.auth.skipAuth()) {
       next();
       return;
     }

@@ -1,24 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { WhatsappConfigService } from '@waha/config.service';
 import { IncomingMessage } from 'http';
 import * as url from 'url';
 
-import { validateApiKey } from './apiKey.strategy';
+import { IApiKeyAuth } from './auth';
 
 @Injectable()
 export class WebSocketAuth {
-  private readonly key: string;
-
-  constructor(private config: WhatsappConfigService) {
-    this.key = this.config.getApiKey();
-  }
+  constructor(private auth: IApiKeyAuth) {}
 
   validateRequest(request: IncomingMessage) {
-    if (!this.key) {
+    if (this.auth.skipAuth()) {
       return true;
     }
     const provided = this.getKeyFromQueryParams(request);
-    return validateApiKey(provided, this.key);
+    return this.auth.isValid(provided);
   }
 
   private getKeyFromQueryParams(request: IncomingMessage) {

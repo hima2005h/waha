@@ -1,6 +1,7 @@
 import * as process from 'node:process';
 
 import { INestApplication, MiddlewareConsumer, Module } from '@nestjs/common';
+import { Provider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
@@ -15,6 +16,7 @@ import {
 } from '@waha/api/server.controller';
 import { WebsocketGatewayCore } from '@waha/core/api/websocket.gateway.core';
 import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
+import { IApiKeyAuth } from '@waha/core/auth/auth';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
 import { BasicAuthFunction } from '@waha/core/auth/basicAuth';
 import { WebSocketAuth } from '@waha/core/auth/WebSocketAuth';
@@ -34,6 +36,7 @@ import {
 import { noSlashAtTheEnd } from '@waha/utils/string';
 import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
+import { Logger as NestJSPinoLogger } from 'nestjs-pino';
 import { join } from 'path';
 import { Logger } from 'pino';
 
@@ -55,6 +58,7 @@ import { VersionController } from '../api/version.controller';
 import { WhatsappConfigService } from '../config.service';
 import { SessionManager } from './abc/manager.abc';
 import { WAHAHealthCheckService } from './abc/WAHAHealthCheckService';
+import { ApiKeyAuthFactory } from './auth/ApiKeyAuthFactory';
 import { DashboardConfigServiceCore } from './config/DashboardConfigServiceCore';
 import { EngineConfigService } from './config/EngineConfigService';
 import { SwaggerConfigServiceCore } from './config/SwaggerConfigServiceCore';
@@ -153,7 +157,7 @@ export const CONTROLLERS = [
   VersionController,
   MediaController,
 ];
-export const PROVIDERS_BASE = [
+export const PROVIDERS_BASE: Provider[] = [
   {
     provide: APP_INTERCEPTOR,
     useClass: BufferJsonReplacerInterceptor,
@@ -168,6 +172,11 @@ export const PROVIDERS_BASE = [
   MediaLocalStorageConfig,
   WebSocketAuth,
   ApiKeyStrategy,
+  {
+    provide: IApiKeyAuth,
+    useFactory: ApiKeyAuthFactory,
+    inject: [WhatsappConfigService, NestJSPinoLogger],
+  },
 ];
 
 const PROVIDERS = [
