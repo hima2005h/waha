@@ -12,6 +12,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { SessionManager } from '@waha/core/abc/manager.abc';
+import { WebSocketAuth } from '@waha/core/auth/WebSocketAuth';
 import { WebsocketHeartbeatJob } from '@waha/nestjs/ws/WebsocketHeartbeatJob';
 import { WebSocket } from '@waha/nestjs/ws/ws';
 import { WAHAEvents, WAHAEventsWild } from '@waha/structures/enums.dto';
@@ -24,6 +25,7 @@ import { Server } from 'ws';
 @WebSocketGateway({
   path: '/ws',
   cors: true,
+  verifyClient: new WebSocketAuth().verifyClient,
 })
 export class WebsocketGatewayCore
   implements
