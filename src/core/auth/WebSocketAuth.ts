@@ -6,7 +6,7 @@ export class WebSocketAuth {
   private key: string;
 
   constructor() {
-    this.key = process.env.WHATSAPP_API_KEY || '';
+    this.key = process.env.WHATSAPP_API_KEY || process.env.WAHA_API_KEY || '';
   }
 
   verifyClient = (info: any, callback: any) => {

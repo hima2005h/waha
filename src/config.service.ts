@@ -138,7 +138,10 @@ export class WhatsappConfigService implements OnApplicationBootstrap {
   }
 
   getApiKey(): string | undefined {
-    return this.configService.get('WHATSAPP_API_KEY', '');
+    return (
+      this.configService.get('WHATSAPP_API_KEY', '') ||
+      this.configService.get('WAHA_API_KEY', '')
+    );
   }
 
   getExcludedPaths(): string[] {

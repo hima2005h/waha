@@ -10,7 +10,7 @@ services:
       - './.sessions:/app/.sessions'
       - './.media:/app/.media'
     environment:
-      - WHATSAPP_API_KEY=321
+      - WAHA_API_KEY=321
       - WAHA_DASHBOARD_USERNAME=admin
       - WAHA_DASHBOARD_PASSWORD=admin
       - WHATSAPP_DEFAULT_ENGINE=WEBJS

@@ -29,7 +29,7 @@ services:
       # - WHATSAPP_HOOK_EVENTS=message
       # - WHATSAPP_API_HOSTNAME=localhost
       - WHATSAPP_DEFAULT_ENGINE=WEBJS
-      - WHATSAPP_API_KEY=321
+      - WAHA_API_KEY=321
       # Username and password for Swagger
       - WHATSAPP_SWAGGER_USERNAME=swagger
       - WHATSAPP_SWAGGER_PASSWORD=admin
@@ -55,7 +55,7 @@ services:
       # Environment variables from https://waha.devlike.pro/docs/how-to/config/
       # - WHATSAPP_HOOK_URL=https://webhook.site/11111111-1111-1111-1111-11111111
       # - WHATSAPP_HOOK_EVENTS=message
-      # - WHATSAPP_API_KEY=321
+      # - WAHA_API_KEY=321
       # - WHATSAPP_SWAGGER_USERNAME=admin
       # - WHATSAPP_SWAGGER_PASSWORD=123
       # - WAHA_DASHBOARD_USERNAME=admin
