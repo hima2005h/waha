@@ -1,30 +1,39 @@
+import { Injectable } from '@nestjs/common';
+import { WhatsappConfigService } from '@waha/config.service';
+import { IncomingMessage } from 'http';
 import * as url from 'url';
 
 import { validateApiKey } from './apiKey.strategy';
 
+@Injectable()
 export class WebSocketAuth {
-  private key: string;
+  private readonly key: string;
 
-  constructor() {
-    this.key = process.env.WHATSAPP_API_KEY || process.env.WAHA_API_KEY || '';
+  constructor(private config: WhatsappConfigService) {
+    this.key = this.config.getApiKey();
   }
 
-  verifyClient = (info: any, callback: any) => {
+  validateRequest(request: IncomingMessage) {
     if (!this.key) {
-      callback(true);
-      return;
+      return true;
     }
-    // Do something with the info
-    let query = url.parse(info.req.url, true).query;
-    // case insensitive
+    const provided = this.getKeyFromQueryParams(request);
+    return validateApiKey(provided, this.key);
+  }
+
+  private getKeyFromQueryParams(request: IncomingMessage) {
+    let query = url.parse(request.url, true).query;
+    // case-insensitive query params
     query = Object.keys(query).reduce((acc, key) => {
       acc[key.toLowerCase()] = query[key];
       return acc;
     }, {});
 
-    const apiKey = query['x-api-key'];
-    // @ts-ignore
-    const isValid = validateApiKey(apiKey, this.key);
-    callback(isValid);
-  };
+    const provided = query['x-api-key'];
+    // Check if it's array - return first
+    if (Array.isArray(provided)) {
+      return provided[0];
+    }
+    return provided;
+  }
 }

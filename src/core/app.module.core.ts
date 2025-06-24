@@ -16,6 +16,7 @@ import {
 import { WebsocketGatewayCore } from '@waha/core/api/websocket.gateway.core';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
 import { BasicAuthFunction } from '@waha/core/auth/basicAuth';
+import { WebSocketAuth } from '@waha/core/auth/WebSocketAuth';
 import { GowsEngineConfigService } from '@waha/core/config/GowsEngineConfigService';
 import { WebJSEngineConfigService } from '@waha/core/config/WebJSEngineConfigService';
 import { MediaLocalStorageModule } from '@waha/core/media/local/media.local.storage.module';
@@ -173,6 +174,7 @@ const PROVIDERS = [
   EngineConfigService,
   WebsocketGatewayCore,
   MediaLocalStorageConfig,
+  WebSocketAuth,
 ];
 
 @Module({

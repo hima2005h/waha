@@ -22,10 +22,18 @@ import { IncomingMessage } from 'http';
 import * as url from 'url';
 import { Server } from 'ws';
 
+export enum WebSocketCloseCode {
+  NORMAL = 1000,
+  GOING_AWAY = 1001,
+  PROTOCOL_ERROR = 1002,
+  UNSUPPORTED_DATA = 1003,
+  POLICY_VIOLATION = 1008,
+  INTERNAL_ERROR = 1011,
+}
+
 @WebSocketGateway({
   path: '/ws',
   cors: true,
-  verifyClient: new WebSocketAuth().verifyClient,
 })
 export class WebsocketGatewayCore
   implements
@@ -43,7 +51,10 @@ export class WebsocketGatewayCore
   private heartbeat: WebsocketHeartbeatJob;
   private eventUnmask = new EventWildUnmask(WAHAEvents, WAHAEventsWild);
 
-  constructor(private manager: SessionManager) {
+  constructor(
+    private manager: SessionManager,
+    private auth: WebSocketAuth,
+  ) {
     this.logger = new Logger('WebsocketGateway');
     this.heartbeat = new WebsocketHeartbeatJob(
       this.logger,
@@ -53,14 +64,23 @@ export class WebsocketGatewayCore
 
   handleConnection(socket: WebSocket, request: IncomingMessage, ...args): any {
     // wsc - websocket client
-    const id = generatePrefixedId('wsc');
-    socket.id = id;
-    this.logger.debug(`New client connected: ${request.url}`);
+    socket.id = generatePrefixedId('wsc');
+
+    if (!this.auth.validateRequest(request)) {
+      // Not authorized - close connection
+      socket.close(WebSocketCloseCode.POLICY_VIOLATION, 'Unauthorized');
+      this.logger.debug(
+        `Unauthorized websocket connection attempt: ${request.url} - ${socket.id}`,
+      );
+      return;
+    }
+
+    this.logger.debug(`New client connected: ${request.url} - ${socket.id}`);
     const params = this.getParams(request);
     const session: string = params.session;
     const events: WAHAEvents[] = params.events;
     this.logger.debug(
-      `Client connected to session: '${session}', events: ${events}, ${id}`,
+      `Client connected to session: '${session}', events: ${events}, ${socket.id}`,
     );
 
     const sub = this.manager
