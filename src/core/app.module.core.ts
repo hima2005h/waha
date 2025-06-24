@@ -14,6 +14,7 @@ import {
   ServerDebugController,
 } from '@waha/api/server.controller';
 import { WebsocketGatewayCore } from '@waha/core/api/websocket.gateway.core';
+import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
 import { BasicAuthFunction } from '@waha/core/auth/basicAuth';
 import { WebSocketAuth } from '@waha/core/auth/WebSocketAuth';
@@ -152,20 +153,11 @@ export const CONTROLLERS = [
   VersionController,
   MediaController,
 ];
-const PROVIDERS = [
-  {
-    provide: SessionManager,
-    useClass: SessionManagerCore,
-  },
-  {
-    provide: WAHAHealthCheckService,
-    useClass: WAHAHealthCheckServiceCore,
-  },
+export const PROVIDERS_BASE = [
   {
     provide: APP_INTERCEPTOR,
     useClass: BufferJsonReplacerInterceptor,
   },
-  ChannelsInfoServiceCore,
   DashboardConfigServiceCore,
   SwaggerConfigServiceCore,
   WebJSEngineConfigService,
@@ -175,6 +167,20 @@ const PROVIDERS = [
   WebsocketGatewayCore,
   MediaLocalStorageConfig,
   WebSocketAuth,
+  ApiKeyStrategy,
+];
+
+const PROVIDERS = [
+  {
+    provide: SessionManager,
+    useClass: SessionManagerCore,
+  },
+  {
+    provide: WAHAHealthCheckService,
+    useClass: WAHAHealthCheckServiceCore,
+  },
+  ChannelsInfoServiceCore,
+  ...PROVIDERS_BASE,
 ];
 
 @Module({
