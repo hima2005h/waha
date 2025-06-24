@@ -20,8 +20,8 @@ export class DashboardConfigServiceCore {
   }
 
   get credentials(): [string, string] | null {
-    const user = this.configService.get('WAHA_DASHBOARD_USERNAME', 'waha');
-    const password = this.configService.get('WAHA_DASHBOARD_PASSWORD', 'waha');
+    const user = this.configService.get('WAHA_DASHBOARD_USERNAME', 'admin');
+    const password = this.configService.get('WAHA_DASHBOARD_PASSWORD', 'admin');
     if (!user && !password) {
       return null;
     }
