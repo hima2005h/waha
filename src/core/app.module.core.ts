@@ -14,7 +14,7 @@ import {
   ServerController,
   ServerDebugController,
 } from '@waha/api/server.controller';
-import { WebsocketGatewayCore } from '@waha/core/api/websocket.gateway.core';
+import { WebsocketGatewayCore } from '@waha/api/websocket.gateway.core';
 import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
 import { IApiKeyAuth } from '@waha/core/auth/auth';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
