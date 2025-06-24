@@ -37,6 +37,9 @@ export class HashAuth implements IApiKeyAuth {
   }
 
   isValid(plain: string): boolean {
+    if (!plain) {
+      return false;
+    }
     const hash = crypto.createHash(this.algorithm).update(plain).digest('hex');
     return compare(hash, this.hash);
   }
