@@ -25,7 +25,13 @@ export function ApiKeyAuthFactory(
   setTimeout(() => {
     logger.warn('⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️');
     logger.warn(
-      'You are setting plain api key in WAHA_API_KEY (or WHATSAPP_API_KEY). Use hashed API key with "WAHA_API_KEY=sha512:{SHA512_HASH_FOR_YOUR_API_KEY}"️',
+      'WARNING: Plain text API key detected. This is a security risk.',
+    );
+    logger.warn(
+      'Your API key can be exposed in environment variables or process lists.',
+    );
+    logger.warn(
+      'For better security, use WAHA_API_KEY=sha512:{SHA512_HASH_FOR_YOUR_API_KEY}',
     );
     logger.warn('⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️');
   }, 2000);
