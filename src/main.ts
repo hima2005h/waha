@@ -47,31 +47,24 @@ process.on('SIGTERM', () => {
   logger.info('SIGTERM received');
 });
 
-async function loadModules(): Promise<
-  [typeof AppModuleCore, typeof SwaggerConfiguratorCore]
-> {
+async function loadModules(): Promise<typeof AppModuleCore> {
   const version = getWAHAVersion();
 
   if (version === WAHAVersion.CORE) {
     const { AppModuleCore } = await import('./core/app.module.core');
-    const { SwaggerConfiguratorCore } = await import(
-      './core/SwaggerConfiguratorCore'
-    );
-    return [AppModuleCore, SwaggerConfiguratorCore];
+    return AppModuleCore;
   }
-  // Ignore if it's core version - there's no plus module
+  // Ignore if it's a core version - there's no plus module
   // @ts-ignore
   const { AppModulePlus } = await import('./plus/app.module.plus');
   // @ts-ignore
-  const { SwaggerConfiguratorPlus } = await import('./plus/SwaggerConfiguratorPlus'); // prettier-ignore
-  // @ts-ignore
-  return [AppModulePlus, SwaggerConfiguratorPlus];
+  return AppModulePlus;
 }
 
 async function bootstrap() {
   const version = getWAHAVersion();
   logger.info(`WAHA (WhatsApp HTTP API) - Running ${version} version...`);
-  const [AppModule, SwaggerModule] = await loadModules();
+  const AppModule = await loadModules();
   const httpsOptions = AppModule.getHttpsOptions(logger);
   const app = await NestFactory.create(AppModule, {
     logger: getNestJSLogLevels(),
@@ -81,7 +74,7 @@ async function bootstrap() {
   });
   app.useLogger(app.get(NestJSPinoLogger));
 
-  // Print original stack, not pino one
+  // Print the original stack, not pino one
   // https://github.com/iamolegga/nestjs-pino?tab=readme-ov-file#expose-stack-trace-and-error-class-in-err-property
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
@@ -91,13 +84,13 @@ async function bootstrap() {
   // but for now we added it ValidationPipe on Controller or endpoint level
   // app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  // Allow to send big body - for images and attachments
+  // Allow sending big body - for images and attachments
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ limit: '50mb', extended: false }));
   app.useWebSocketAdapter(new WsAdapter(app));
 
   // Configure swagger
-  const swaggerConfigurator = new SwaggerModule(app);
+  const swaggerConfigurator = new SwaggerConfiguratorCore(app);
   swaggerConfigurator.configure(WAHA_WEBHOOKS);
 
   AppModule.appReady(app, logger);
