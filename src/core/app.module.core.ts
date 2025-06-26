@@ -76,6 +76,7 @@ export const IMPORTS_CORE = [
       autoLogging: {
         ignore: (req) => {
           return (
+            req.url.startsWith('/ping') ||
             req.url.startsWith('/dashboard/') ||
             req.url.startsWith('/api/files/') ||
             req.url.startsWith('/api/s3/')
