@@ -1,8 +1,11 @@
-import { UnprocessableEntityException } from '@nestjs/common';
+import {
+  NotImplementedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 export const DOCS_URL = 'https://waha.devlike.pro/';
 
-export class NotImplementedByEngineError extends UnprocessableEntityException {
+export class NotImplementedByEngineError extends NotImplementedException {
   constructor(msg = '') {
     let error = 'The method is not implemented by the engine.';
     if (msg) {
