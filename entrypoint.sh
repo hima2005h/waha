@@ -1,16 +1,5 @@
 #!/bin/sh
 
-#
-# Run Xvfb if exists
-#
-if command -v Xvfb > /dev/null 2>&1; then
-  # Start virtual X server in the background
-  Xvfb :99 -screen 0 1280x720x24 &
-  export DISPLAY=:99
-  sleep 2
-else
-  echo "Xvfb command not found, skipping virtual X server setup"
-fi
 
 #
 # Calculate UV_THREADPOOL_SIZE based on number of CPUs
@@ -54,6 +43,21 @@ if [ -n "$key" ]; then
 fi
 
 #
+# Check if xvfb-run works and set up virtual display
+#
+# Try to run xvfb-run with a test command
+if xvfb-run --auto-servernum echo "xvfb-run is working!"; then
+  USE_XVFB_RUN=true
+else
+  echo "xvfb-run test failed, falling back to manual Xvfb setup"
+  USE_XVFB_RUN=false
+fi
+
+#
 # Start your application using node with exec to ensure proper signal handling
 #
-exec node dist/main
+if [ "$USE_XVFB_RUN" = "true" ]; then
+  exec xvfb-run --auto-servernum node dist/main
+else
+  exec node dist/main
+fi

@@ -135,10 +135,11 @@ RUN if [ "$USE_BROWSER" = "chromium" ] || [ "$USE_BROWSER" = "chrome" ]; then \
     && rm -rf /var/lib/apt/lists/*; \
     fi
 
-# Install xvfb
+# Install xvfb, xauth
 RUN if [ "$USE_BROWSER" = "chromium" ] || [ "$USE_BROWSER" = "chrome" ]; then \
     apt-get update && apt-get install -y --no-install-recommends \
         xvfb \
+        xauth \
         libnss3 \
         libxss1 \
         libasound2 \
