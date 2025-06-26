@@ -47,17 +47,6 @@ if [ -n "$key" ]; then
     echo "WARNING: Plain text API key detected. Converting to hashed format for security."
     echo "For better security, use WAHA_API_KEY=sha512:{SHA512_HASH_FOR_YOUR_API_KEY}"
     echo "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
-
-    # Start a background task to display another warning after 5 seconds
-    (
-      sleep 5
-      echo "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
-      echo "SECURITY REMINDER: Your plain text API key has been hashed for this session."
-      echo "In the future, please use WAHA_API_KEY=sha512:{SHA512_HASH_FOR_YOUR_API_KEY}"
-      echo "to avoid exposing your API key in environment variables or process lists."
-      echo "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
-    ) &
-
     # Hash the key using sha512sum
     HASHED_KEY=$(echo -n "$key" | sha512sum | awk '{print $1}')
     export WAHA_API_KEY="sha512:$HASHED_KEY"
