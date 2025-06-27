@@ -13288,7 +13288,7 @@ __metadata:
     pretty-bytes: 5.6.0
     promise-retry: ^2.0.1
     protoc-gen-ts: ^0.8.7
-    puppeteer: ^23.6.0
+    puppeteer: ^24.10.0
     qrcode: ^1.5.1
     qrcode-terminal: ^0.12.0
     reflect-metadata: ^0.1.13
@@ -13399,7 +13399,7 @@ __metadata:
 
 "whatsapp-web.js@github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09":
   version: 1.30.1-alpha.2
-  resolution: "whatsapp-web.js@https://github.com/devlikeapro/whatsapp-web.js.git#commit=f0e8284c9a281fa15ce2086d5668c02011947416"
+  resolution: "whatsapp-web.js@https://github.com/devlikeapro/whatsapp-web.js.git#commit=5fbfd818c690b7f8885f8ffd130959cda3fdc18c"
   dependencies:
     "@pedroslopez/moduleraid": ^5.0.2
     archiver: ^5.3.1
@@ -13417,7 +13417,7 @@ __metadata:
       optional: true
     unzipper:
       optional: true
-  checksum: ad0b97ac3b5246801af33e4e7cc34ce34b8541a3737bb97f53322f4612b8eb435eec2b47a6ef9f7f794649324d70041e3f6f6f5453be8d4b74da0051334ee98e
+  checksum: 4ba7055efa3fe8c16815a35a0cdaabe0757af868d46716433b5d46e136660abe74430f9adbcc88abe42ddda59be1ebd9dae477a79d1ce1eddf51bebb55808096
   languageName: node
   linkType: hard
 
