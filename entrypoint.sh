@@ -43,20 +43,23 @@ if [ -n "$key" ]; then
 fi
 
 #
-# Check if xvfb-run works and set up virtual display
+# xvfb-run
 #
-# Try to run xvfb-run with a test command
-if xvfb-run --auto-servernum echo "xvfb-run is working!"; then
-  USE_XVFB_RUN=true
-else
-  echo "xvfb-run test failed, falling back to manual Xvfb setup"
-  USE_XVFB_RUN=false
+USE_XVFB=false
+if [ -z "$WHATSAPP_DEFAULT_ENGINE" ] || [ "$WHATSAPP_DEFAULT_ENGINE" = "WEBJS" ]; then
+  # Try to run xvfb-run with a test command
+  if xvfb-run --auto-servernum echo "xvfb-run is working!"; then
+    USE_XVFB=true
+  else
+    echo "xvfb-run test failed, do not run it"
+    USE_XVFB=false
+  fi
 fi
 
 #
 # Start your application using node with exec to ensure proper signal handling
 #
-if [ "$USE_XVFB_RUN" = "true" ]; then
+if [ "$USE_XVFB" = "true" ]; then
   exec xvfb-run --auto-servernum node dist/main
 else
   exec node dist/main
