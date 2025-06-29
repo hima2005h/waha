@@ -132,7 +132,6 @@ jobs:
             --health-retries 60 \
             --health-timeout 2s \
             --health-start-period 2s \
-            --health-start-interval 1s \
             --rm -p3000:3000 \
             ${{ vars.DOCKER_IMAGE }}:${{ matrix.tag }}
 
