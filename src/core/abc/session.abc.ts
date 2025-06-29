@@ -682,10 +682,17 @@ export abstract class WhatsappSession {
   }
 
   protected async refreshProfilePicture(id: string) {
-    let fn: Promise<string>;
-    if (isJidBroadcast(id)) {
+    this.logger.debug(`Refreshing profile picture for id "${id}"...`);
+    // Have no pictures
+    if (id === '0@c.us' || id === '0@s.whatsapp.net') {
       return null;
-    } else if (isJidNewsletter(id)) {
+    } else if (isJidBroadcast(id)) {
+      return null;
+    }
+
+    // Find the right method
+    let fn: Promise<string>;
+    if (isJidNewsletter(id)) {
       fn = this.channelsGetChannel(id).then(
         (channel: Channel) => channel.picture || channel.preview,
       );
