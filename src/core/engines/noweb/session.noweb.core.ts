@@ -1805,6 +1805,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const messagesUpsert$ = fromEvent(this.sock.ev, 'messages.upsert').pipe(
       map((event: BaileysEventMap['messages.upsert']) => event.messages),
       mergeAll(),
+      share(),
     );
     let [messagesFromMe$, messagesFromOthers$] = partition(
       messagesUpsert$,
@@ -1888,6 +1889,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     ).pipe(
       // @ts-ignore
       mergeAll(),
+      share(),
     );
     const messageAckDirect$ = messageUpdates$.pipe(
       filter(isMine), // ack comes only for MY messages
@@ -1898,6 +1900,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       fromEvent(this.sock.ev, 'message-receipt.update').pipe(
         // @ts-ignore
         mergeAll(),
+        share(),
       );
 
     const messageAckGroups$ = messageReceiptUpdate$.pipe(
@@ -1914,7 +1917,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     //
     this.events2
       .get(WAHAEvents.STATE_CHANGE)
-      .switch(fromEvent(this.sock.ev, 'connection.update'));
+      .switch(fromEvent(this.sock.ev, 'connection.update').pipe(share()));
 
     const groupsUpsert$: Observable<GroupMetadata> = fromEvent(
       this.sock.ev,
@@ -1922,6 +1925,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     ).pipe(
       // @ts-ignore
       mergeAll(),
+      share(),
     );
     const groupsUpdate$: Observable<Partial<GroupMetadata>> = fromEvent(
       this.sock.ev,
@@ -1929,11 +1933,12 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     ).pipe(
       // @ts-ignore
       mergeAll(),
+      share(),
     );
     const groupsParticipantsUpdate$: Observable<any> = fromEvent(
       this.sock.ev,
       'group-participants.update',
-    );
+    ).pipe(share());
 
     this.events2.get(WAHAEvents.GROUP_JOIN).switch(groupsUpsert$);
 
@@ -1960,13 +1965,12 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     );
     this.events2.get(WAHAEvents.GROUP_V2_LEAVE).switch(groupV2Leave$);
 
-    this.events2
-      .get(WAHAEvents.PRESENCE_UPDATE)
-      .switch(
-        fromEvent(this.sock.ev, 'presence.update').pipe(
-          map((data: any) => this.toWahaPresences(data.id, data.presences)),
-        ),
-      );
+    this.events2.get(WAHAEvents.PRESENCE_UPDATE).switch(
+      fromEvent(this.sock.ev, 'presence.update').pipe(
+        map((data: any) => this.toWahaPresences(data.id, data.presences)),
+        share(),
+      ),
+    );
 
     //
     // Poll votes
@@ -1993,7 +1997,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     //
     // @ts-ignore
     const calls$: Observable<WACallEvent[]> = fromEvent(this.sock.ev, 'call');
-    const call$ = calls$.pipe(mergeMap(identity));
+    const call$ = calls$.pipe(mergeMap(identity), share());
     this.events2.get(WAHAEvents.CALL_RECEIVED).switch(
       call$.pipe(
         filter((call: WACallEvent) => call.status === 'offer'),
@@ -2026,7 +2030,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const labelsEdit$: Observable<NOWEBLabel> = fromEvent(
       this.sock.ev,
       'labels.edit',
-    );
+    ).pipe(share());
     this.events2.get(WAHAEvents.LABEL_UPSERT).switch(
       labelsEdit$.pipe(
         exclude((data: NOWEBLabel) => data.deleted),
@@ -2039,7 +2043,10 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         map(this.toLabel.bind(this)),
       ),
     );
-    const labelsAssociation$ = fromEvent(this.sock.ev, 'labels.association');
+    const labelsAssociation$ = fromEvent(
+      this.sock.ev,
+      'labels.association',
+    ).pipe(share());
     const labelsAssociationAdd$: Observable<ChatLabelAssociation> =
       labelsAssociation$.pipe(
         filter(({ type }: any) => type === 'add'),
