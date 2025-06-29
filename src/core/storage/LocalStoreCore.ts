@@ -1,18 +1,16 @@
 import { safeJoin } from '@waha/utils/files';
 import * as fs from 'fs/promises';
+import Knex from 'knex';
 import * as path from 'path';
 
 import { LocalStore } from './LocalStore';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Database = require('better-sqlite3');
 
 export class LocalStoreCore extends LocalStore {
   protected readonly baseDirectory: string =
     process.env.WAHA_LOCAL_STORE_BASE_DIR || './.sessions';
 
   private readonly engine: string;
-  private db: any;
+  private knex: Knex.Knex;
 
   constructor(engine: string) {
     super();
@@ -21,6 +19,11 @@ export class LocalStoreCore extends LocalStore {
 
   async init(sessionName?: string) {
     await fs.mkdir(this.getEngineDirectory(), { recursive: true });
+    if (!this.knex) {
+      this.knex = this.buildKnex();
+      await this.knex.raw('PRAGMA journal_mode = WAL;');
+      await this.knex.raw('PRAGMA foreign_keys = ON;');
+    }
     if (sessionName) {
       await fs.mkdir(this.getSessionDirectory(sessionName), {
         recursive: true,
@@ -54,17 +57,24 @@ export class LocalStoreCore extends LocalStore {
     return safeJoin(this.getEngineDirectory(), name);
   }
 
-  getWAHADatabase(): any {
-    if (!this.db) {
-      const engineDir = this.getEngineDirectory();
-      const database = safeJoin(engineDir, 'waha.sqlite3');
-      this.db = new Database(database);
-      this.db.pragma('journal_mode = WAL;');
+  getWAHADatabase(): Knex.Knex {
+    if (!this.knex) {
+      throw new Error('Knex is not initialized, call LocalStore.init() first');
     }
-    return this.db;
+    return this.knex;
+  }
+
+  buildKnex(): Knex.Knex {
+    const engineDir = this.getEngineDirectory();
+    const database = path.join(engineDir, 'waha.sqlite3');
+    return Knex({
+      client: 'better-sqlite3',
+      connection: { filename: database },
+      useNullAsDefault: true,
+    });
   }
 
   async close() {
-    this.db?.close();
+    await this.knex.destroy();
   }
 }

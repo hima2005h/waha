@@ -1,20 +1,18 @@
 import { Schema } from '@waha/core/storage/Schema';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Database = require('better-sqlite3');
+import Knex from 'knex';
 
 export class Sqlite3SchemaValidation {
   constructor(
     private table: Schema,
-    private db,
+    private knex: Knex.Knex,
   ) {}
 
-  validate() {
+  async validate() {
     const table = this.table;
 
     // Check table has the columns
-    const columns = this.db.prepare(`PRAGMA table_info(${table.name})`).all();
-    // Check exact number of columns
+    const columns = await this.knex.raw(`PRAGMA table_info(${table.name})`);
+    // Check the exact number of columns
     if (columns.length !== table.columns.length) {
       throw new Error(
         `Table '${table.name}' does not have expected number of columns. Expected ${table.columns.length}, got ${columns.length}`,
@@ -37,7 +35,7 @@ export class Sqlite3SchemaValidation {
     }
 
     // Check table has expected indexes
-    const indexes = this.db.prepare(`PRAGMA index_list(${table.name})`).all();
+    const indexes = await this.knex.raw(`PRAGMA index_list(${table.name})`);
     const indexNames = indexes.map((index) => index.name);
     for (const index of table.indexes) {
       if (!indexNames.includes(index.name)) {

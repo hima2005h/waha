@@ -23,8 +23,8 @@ export class Sqlite3SessionWorkerRepository
   }
 
   constructor(store: LocalStore) {
-    const db = store.getWAHADatabase();
-    super(db);
+    const knex = store.getWAHADatabase();
+    super(knex);
   }
 
   assign(session: string, worker: string): Promise<void> {
@@ -45,7 +45,7 @@ export class Sqlite3SessionWorkerRepository
   }
 
   protected async validateSchema() {
-    const validation = new Sqlite3SchemaValidation(this.schema, this.db);
-    validation.validate();
+    const validation = new Sqlite3SchemaValidation(this.schema, this.knex);
+    await validation.validate();
   }
 }

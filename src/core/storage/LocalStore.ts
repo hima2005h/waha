@@ -1,3 +1,5 @@
+import Knex from 'knex';
+
 import { DataStore } from '../abc/DataStore';
 
 export abstract class LocalStore extends DataStore {
@@ -23,5 +25,5 @@ export abstract class LocalStore extends DataStore {
    */
   abstract getFilePath(session: string, file: string): string;
 
-  abstract getWAHADatabase(): any;
+  abstract getWAHADatabase(): Knex.Knex;
 }
