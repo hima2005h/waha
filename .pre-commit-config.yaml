@@ -39,6 +39,7 @@ repos:
           (?x)^(
               docs/.*|
               README.md|
+              tests/smoke/goss.yaml|
           )$
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
     rev: v1.1.2
