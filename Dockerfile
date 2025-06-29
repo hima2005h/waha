@@ -147,7 +147,6 @@ RUN if [ "$USE_BROWSER" = "chromium" ] || [ "$USE_BROWSER" = "chrome" ]; then \
         libgtk-3-0 \
         libdrm2 \
         ca-certificates \
-        curl \
         && rm -rf /var/lib/apt/lists/*; \
     fi
 
@@ -171,6 +170,11 @@ RUN if [ "$USE_BROWSER" = "chrome" ]; then \
           && rm /tmp/chrome.deb \
           && rm -rf /var/lib/apt/lists/*; \
     fi
+
+# curl
+RUN apt-get update  \
+    && apt-get install -y curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # GOWS requirements
 # libc6
