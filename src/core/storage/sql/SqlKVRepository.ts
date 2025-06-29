@@ -1,9 +1,8 @@
 import { Field, Schema } from '@waha/core/storage/Schema';
 import { IJsonQuery } from '@waha/core/storage/sql/IJsonQuery';
-import { ISQLEngine } from '@waha/core/storage/sql/ISQLEngine';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { KnexPaginator } from '@waha/utils/Paginator';
-import Knex from 'knex';
+import { Knex } from 'knex';
 import * as lodash from 'lodash';
 
 export type Migration = string;
@@ -26,10 +25,7 @@ export class SqlKVRepository<Entity> {
     return [];
   }
 
-  constructor(
-    private engine: ISQLEngine,
-    protected knex: Knex.Knex,
-  ) {}
+  constructor(protected knex: Knex) {}
 
   get columns(): Field[] {
     return this.schema.columns;
@@ -49,7 +45,7 @@ export class SqlKVRepository<Entity> {
 
   protected async applyMigrations() {
     for (const migration of this.migrations) {
-      await this.engine.exec(migration);
+      await this.knex.raw(migration);
     }
   }
 
@@ -119,7 +115,7 @@ export class SqlKVRepository<Entity> {
 
   async getCount(): Promise<number> {
     const query = this.select().count({ count: 'id' });
-    const row = await this.engine.get(query);
+    const row = await query.first();
     if (!row) {
       return 0;
     }
@@ -138,7 +134,7 @@ export class SqlKVRepository<Entity> {
       return new Map();
     }
 
-    const rows = await this.engine.all(this.select().whereIn('id', ids));
+    const rows = await this.select().whereIn('id', ids);
     const entitiesMap = new Map<string, Entity | null>();
 
     // Initialize a map with null values for all requested IDs
@@ -191,15 +187,15 @@ export class SqlKVRepository<Entity> {
    * SQL Implementation details
    */
   public async raw(sql: string, bindings: any[]): Promise<void> {
-    await this.engine.raw(sql, bindings);
+    await this.knex.raw(sql, bindings);
   }
 
   protected async run(query: Knex.QueryBuilder): Promise<void> {
-    await this.engine.run(query);
+    await query;
   }
 
   protected async get(query: Knex.QueryBuilder): Promise<Entity | null> {
-    const row = await this.engine.get(query);
+    const row = await query.first();
     if (!row) {
       return null;
     }
@@ -207,7 +203,7 @@ export class SqlKVRepository<Entity> {
   }
 
   public async all(query: Knex.QueryBuilder): Promise<Entity[]> {
-    const rows = await this.engine.all(query);
+    const rows = await query;
     return rows.map((row) => this.parse(row));
   }
 

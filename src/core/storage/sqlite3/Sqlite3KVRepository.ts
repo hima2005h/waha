@@ -3,8 +3,6 @@ import { Sqlite3JsonQuery } from '@waha/core/storage/sqlite3/Sqlite3JsonQuery';
 import { sleep } from '@waha/utils/promiseTimeout';
 import Knex from 'knex';
 
-import { KnexEngine } from '../sql/KnexEngine';
-
 /**
  * Key value repository with extra metadata
  */
@@ -13,8 +11,7 @@ export class Sqlite3KVRepository<Entity> extends SqlKVRepository<Entity> {
   protected jsonQuery = new Sqlite3JsonQuery();
 
   constructor(knex: Knex.Knex) {
-    const engine = new KnexEngine(knex);
-    super(engine, knex);
+    super(knex);
   }
 
   protected async upsertBatch(entities: Entity[]): Promise<void> {
