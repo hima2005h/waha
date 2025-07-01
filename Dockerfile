@@ -200,10 +200,9 @@ ENV WAHA_GOWS_SOCKET /tmp/gows.sock
 
 COPY entrypoint.sh /entrypoint.sh
 
-# Add healthcheck
+# Add healthcheck script
 COPY ping-check.sh /ping-check.sh
 RUN chmod +x /ping-check.sh
-HEALTHCHECK --interval=60s --timeout=10s --retries=3 --start-period=30s CMD ["/bin/bash", "/ping-check.sh"]
 
 # Chokidar options to monitor file changes
 ENV CHOKIDAR_USEPOLLING=1
