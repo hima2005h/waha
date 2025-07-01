@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Default port is 3000
-PORT=${WHATSAPP_API_PORT:-3000}
+# Try PORT first, then WHATSAPP_API_PORT, then default to 3000
+PORT=${PORT:-${WHATSAPP_API_PORT:-3000}}
 
 # Check if HTTPS is enabled
 if [[ "${WAHA_HTTPS_ENABLED}" == "true" || "${WAHA_HTTPS_ENABLED}" == "1" ]]; then
