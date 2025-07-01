@@ -1,13 +1,15 @@
 build:
 	docker build . -t devlikeapro/waha
 
+build-all: build-plus build-chrome build-gows build-noweb
+
 build-chrome:
 	docker build . -t devlikeapro/waha-plus:chrome --build-arg USE_BROWSER=chrome
 
 build-noweb:
 	docker build . -t devlikeapro/waha:noweb --build-arg USE_BROWSER=none --build-arg WHATSAPP_DEFAULT_ENGINE=NOWEB
 
-build-plus-gows:
+build-gows:
 	docker build . -t devlikeapro/waha-plus:gows --build-arg USE_BROWSER=none --build-arg WHATSAPP_DEFAULT_ENGINE=GOWS
 
 build-all: build build-chrome build-noweb
