@@ -194,11 +194,15 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     if (cacheType === 'local') {
       this.logger.info(`Using web version: '${webVersion}'`);
     }
+    const args = this.getBrowserArgsForPuppeteer();
+    // add at the start
+    args.unshift(`--a-waha-timestamp=${new Date()}`);
+    args.unshift(`--a-waha-session=${this.name}`);
     return {
       puppeteer: {
         headless: true,
         executablePath: this.getBrowserExecutablePath(),
-        args: this.getBrowserArgsForPuppeteer(),
+        args: args,
         dumpio: this.isDebugEnabled(),
       },
       userAgent:
