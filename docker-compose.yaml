@@ -8,6 +8,11 @@ services:
     # WAHA Core
     # image: devlikeapro/waha:latest
 
+    # Add "dns" if you have a problem with resolving "web.whatsapp.com"
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+
     logging:
       driver: 'json-file'
       options:
