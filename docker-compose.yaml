@@ -7,12 +7,6 @@ services:
     image: devlikeapro/waha-plus
     # WAHA Core
     # image: devlikeapro/waha:latest
-    healthcheck:
-      test: ['CMD', '/bin/bash', '/ping-check.sh']
-      interval: 60s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
     logging:
       driver: 'json-file'

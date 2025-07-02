@@ -5,11 +5,3 @@ http:
     no-follow-redirects: true
     timeout: 5000
     body: ['version']
-
-command:
-  docker smoke health:
-    exec: "docker inspect --format '{{`{{if .State.Health}}{{.State.Health.Status}}{{else}}no healthcheck{{end}}`}}' smoke"
-    exit-status: 0
-    stdout:
-      - 'healthy'
-    timeout: 5000
