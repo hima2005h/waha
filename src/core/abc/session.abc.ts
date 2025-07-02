@@ -285,7 +285,6 @@ export abstract class WhatsappSession {
       '--aggressive-cache-discard',
       '--disable-accelerated-2d-canvas',
       '--disable-application-cache',
-      // '--disable-background-networking', // COMMENTED to test WEBJS stability
       // DO NOT disable software rasterizer, it will break the video
       // https://github.com/devlikeapro/waha/issues/629
       // '--disable-software-rasterizer',
