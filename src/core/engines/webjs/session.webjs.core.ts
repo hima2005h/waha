@@ -106,7 +106,7 @@ import {
   WAHAPresenceData,
 } from '@waha/structures/presence.dto';
 import { WAMessage, WAMessageReaction } from '@waha/structures/responses.dto';
-import { BrowserTracingQuery } from '@waha/structures/server.debug.dto';
+import { BrowserTraceQuery } from '@waha/structures/server.debug.dto';
 import { MeInfo } from '@waha/structures/sessions.dto';
 import { StatusRequest, TextStatus } from '@waha/structures/status.dto';
 import {
@@ -522,10 +522,10 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   /**
    * START - Methods for API
    */
-  public async browserTracing(query: BrowserTracingQuery): Promise<string> {
+  public async browserTrace(query: BrowserTraceQuery): Promise<string> {
     const tmpdir = new TmpDir(
       this.logger,
-      `waha-browser-tracing-${this.name}`,
+      `waha-browser-trace-${this.name}`,
       (10 * query.seconds + 120) * 1000,
     );
     const page = this.whatsapp.pupPage;

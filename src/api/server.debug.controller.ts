@@ -18,7 +18,7 @@ import {
   WorkingSessionParam,
 } from '@waha/nestjs/params/SessionApiParam';
 import { WAHAValidationPipe } from '@waha/nestjs/pipes/WAHAValidationPipe';
-import { BrowserTracingQuery } from '@waha/structures/server.debug.dto';
+import { BrowserTraceQuery } from '@waha/structures/server.debug.dto';
 import { createReadStream } from 'fs';
 
 @ApiSecurity('api_key')
@@ -54,21 +54,21 @@ export class ServerDebugController {
     });
   }
 
-  @Get('browser/tracing/:session')
+  @Get('browser/trace/:session')
   @ApiOperation({
     summary: 'Collect and get a trace.json for Chrome DevTools ',
     description: 'Uses https://pptr.dev/api/puppeteer.tracing',
   })
   @SessionApiParam
   @UsePipes(new WAHAValidationPipe())
-  async browserTracing(
+  async browserTrace(
     @WorkingSessionParam session: WhatsappSession,
-    @Query() query: BrowserTracingQuery,
+    @Query() query: BrowserTraceQuery,
   ) {
     if (!this.enabled) {
       throw new NotFoundException('WAHA_DEBUG_MODE is disabled');
     }
-    const filepath = await session.browserTracing(query);
+    const filepath = await session.browserTrace(query);
     const stream = createReadStream(filepath);
     const filename = `trace - ${session.name} - ${new Date()}.json`;
     return new StreamableFile(stream, {
