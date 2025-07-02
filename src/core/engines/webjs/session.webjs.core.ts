@@ -106,6 +106,7 @@ import {
   WAHAPresenceData,
 } from '@waha/structures/presence.dto';
 import { WAMessage, WAMessageReaction } from '@waha/structures/responses.dto';
+import { BrowserTracingQuery } from '@waha/structures/server.debug.dto';
 import { MeInfo } from '@waha/structures/sessions.dto';
 import { StatusRequest, TextStatus } from '@waha/structures/status.dto';
 import {
@@ -117,7 +118,9 @@ import {
 import { PaginatorInMemory } from '@waha/utils/Paginator';
 import { sleep, waitUntil } from '@waha/utils/promiseTimeout';
 import { SingleDelayedJobRunner } from '@waha/utils/SingleDelayedJobRunner';
+import { TmpDir } from '@waha/utils/tmpdir';
 import * as lodash from 'lodash';
+import * as path from 'path';
 import { ProtocolError } from 'puppeteer';
 import { filter, fromEvent, merge, mergeMap, Observable, share } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -519,6 +522,23 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   /**
    * START - Methods for API
    */
+  public async browserTracing(query: BrowserTracingQuery): Promise<string> {
+    const tmpdir = new TmpDir(
+      this.logger,
+      `waha-browser-tracing-${this.name}`,
+      (10 * query.seconds + 120) * 1000,
+    );
+    const page = this.whatsapp.pupPage;
+    return await tmpdir.use(async (dir) => {
+      this.logger.info({ query }, `Starting browser tracing...`);
+      const filepath = path.join(dir, 'trace.json');
+      await page.tracing.start({ path: filepath });
+      await sleep(query.seconds * 1000);
+      await page.tracing.stop();
+      this.logger.info(`Browser tracing finished, saved to ${filepath}`);
+      return filepath;
+    });
+  }
 
   /**
    * Auth methods

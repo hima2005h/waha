@@ -119,4 +119,8 @@ export class WPage extends EventEmitter {
     this.page.on(event, listener);
     return this.page as any;
   }
+
+  get tracing() {
+    return this.page.tracing;
+  }
 }

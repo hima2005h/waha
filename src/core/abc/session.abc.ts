@@ -30,6 +30,7 @@ import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import { MessageSource, WAMessage } from '@waha/structures/responses.dto';
+import { BrowserTracingQuery } from '@waha/structures/server.debug.dto';
 import { DefaultMap } from '@waha/utils/DefaultMap';
 import { generatePrefixedId } from '@waha/utils/ids';
 import { LoggerBuilder } from '@waha/utils/logging';
@@ -348,6 +349,10 @@ export abstract class WhatsappSession {
   /**
    * START - Methods for API
    */
+
+  public browserTracing(query: BrowserTracingQuery): Promise<string> {
+    throw new NotImplementedByEngineError();
+  }
 
   /**
    * Auth methods
