@@ -525,7 +525,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   public async browserTrace(query: BrowserTraceQuery): Promise<string> {
     const tmpdir = new TmpDir(
       this.logger,
-      `waha-browser-trace-${this.name}`,
+      `waha-browser-trace-${this.name}-`,
       (10 * query.seconds + 120) * 1000,
     );
     const page = this.whatsapp.pupPage;
