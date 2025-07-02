@@ -319,7 +319,7 @@ export abstract class WhatsappSession {
       '--no-sandbox',
       '--no-zygote',
       '--password-store=basic',
-      // '--renderer-process-limit=2', // COMMENTED to test WEBJS stability
+      '--renderer-process-limit=1',
       '--safebrowsing-disable-auto-update',
       '--use-mock-keychain',
       '--window-size=1280,720',
