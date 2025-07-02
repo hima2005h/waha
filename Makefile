@@ -1,21 +1,19 @@
+build-all: build-plus build-chrome build-gows build-noweb
+
 build:
 	docker build . -t devlikeapro/waha
 
-build-all: build-plus build-chrome build-gows build-noweb
+build-plus:
+	docker build . -t devlikeapro/waha-plus
 
 build-chrome:
 	docker build . -t devlikeapro/waha-plus:chrome --build-arg USE_BROWSER=chrome
 
 build-noweb:
-	docker build . -t devlikeapro/waha:noweb --build-arg USE_BROWSER=none --build-arg WHATSAPP_DEFAULT_ENGINE=NOWEB
+	docker build . -t devlikeapro/waha-plus:noweb --build-arg USE_BROWSER=none --build-arg WHATSAPP_DEFAULT_ENGINE=NOWEB
 
 build-gows:
 	docker build . -t devlikeapro/waha-plus:gows --build-arg USE_BROWSER=none --build-arg WHATSAPP_DEFAULT_ENGINE=GOWS
-
-build-all: build build-chrome build-noweb
-
-build-plus:
-	docker build . -t devlikeapro/waha-plus
 
 build-ssh:
 	# check IMAGE provided
