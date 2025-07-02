@@ -1,4 +1,4 @@
-import v8 from 'node:v8';
+import * as v8 from 'node:v8';
 
 import {
   Controller,
