@@ -10,10 +10,8 @@ import { TerminusModule } from '@nestjs/terminus';
 import { ChannelsController } from '@waha/api/channels.controller';
 import { LidsController } from '@waha/api/lids.controller';
 import { ProfileController } from '@waha/api/profile.controller';
-import {
-  ServerController,
-  ServerDebugController,
-} from '@waha/api/server.controller';
+import { ServerController } from '@waha/api/server.controller';
+import { ServerDebugController } from '@waha/api/server.debug.controller';
 import { WebsocketGatewayCore } from '@waha/api/websocket.gateway.core';
 import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
 import { IApiKeyAuth } from '@waha/core/auth/auth';
