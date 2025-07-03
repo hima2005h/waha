@@ -2152,6 +2152,8 @@ export class GOWSEngineMediaProcessor implements IMediaEngineProcessor<any> {
       // double "session" it's not a mistake here
       session: this.session.session,
       message: data,
+      jid: message.Info.Chat,
+      messageId: message.Info.ID,
     });
     const response = await promisify(this.session.client.DownloadMedia)(
       request,

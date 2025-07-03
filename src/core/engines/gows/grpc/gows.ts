@@ -7031,6 +7031,8 @@ export namespace messages {
         constructor(data?: any[] | {
             session?: Session;
             message?: string;
+            jid?: string;
+            messageId?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -7040,6 +7042,12 @@ export namespace messages {
                 }
                 if ("message" in data && data.message != undefined) {
                     this.message = data.message;
+                }
+                if ("jid" in data && data.jid != undefined) {
+                    this.jid = data.jid;
+                }
+                if ("messageId" in data && data.messageId != undefined) {
+                    this.messageId = data.messageId;
                 }
             }
         }
@@ -7058,9 +7066,23 @@ export namespace messages {
         set message(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
+        get jid() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set jid(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get messageId() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set messageId(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             message?: string;
+            jid?: string;
+            messageId?: string;
         }): DownloadMediaRequest {
             const message = new DownloadMediaRequest({});
             if (data.session != null) {
@@ -7069,18 +7091,32 @@ export namespace messages {
             if (data.message != null) {
                 message.message = data.message;
             }
+            if (data.jid != null) {
+                message.jid = data.jid;
+            }
+            if (data.messageId != null) {
+                message.messageId = data.messageId;
+            }
             return message;
         }
         toObject() {
             const data: {
                 session?: ReturnType<typeof Session.prototype.toObject>;
                 message?: string;
+                jid?: string;
+                messageId?: string;
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
             }
             if (this.message != null) {
                 data.message = this.message;
+            }
+            if (this.jid != null) {
+                data.jid = this.jid;
+            }
+            if (this.messageId != null) {
+                data.messageId = this.messageId;
             }
             return data;
         }
@@ -7092,6 +7128,10 @@ export namespace messages {
                 writer.writeMessage(1, this.session, () => this.session.serialize(writer));
             if (this.message.length)
                 writer.writeString(2, this.message);
+            if (this.jid.length)
+                writer.writeString(3, this.jid);
+            if (this.messageId.length)
+                writer.writeString(4, this.messageId);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -7106,6 +7146,12 @@ export namespace messages {
                         break;
                     case 2:
                         message.message = reader.readString();
+                        break;
+                    case 3:
+                        message.jid = reader.readString();
+                        break;
+                    case 4:
+                        message.messageId = reader.readString();
                         break;
                     default: reader.skipField();
                 }

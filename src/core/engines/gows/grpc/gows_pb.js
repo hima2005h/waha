@@ -14889,7 +14889,9 @@ proto.messages.DownloadMediaRequest.prototype.toObject = function(opt_includeIns
 proto.messages.DownloadMediaRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     session: (f = msg.getSession()) && proto.messages.Session.toObject(includeInstance, f),
-    message: jspb.Message.getFieldWithDefault(msg, 2, "")
+    message: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    jid: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    messageid: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -14935,6 +14937,14 @@ proto.messages.DownloadMediaRequest.deserializeBinaryFromReader = function(msg, 
       var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setJid(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMessageid(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -14976,6 +14986,20 @@ proto.messages.DownloadMediaRequest.serializeBinaryToWriter = function(message, 
   if (f.length > 0) {
     writer.writeString(
       2,
+      f
+    );
+  }
+  f = message.getJid();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getMessageid();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -15034,6 +15058,42 @@ proto.messages.DownloadMediaRequest.prototype.getMessage = function() {
  */
 proto.messages.DownloadMediaRequest.prototype.setMessage = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string jid = 3;
+ * @return {string}
+ */
+proto.messages.DownloadMediaRequest.prototype.getJid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.messages.DownloadMediaRequest} returns this
+ */
+proto.messages.DownloadMediaRequest.prototype.setJid = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string messageId = 4;
+ * @return {string}
+ */
+proto.messages.DownloadMediaRequest.prototype.getMessageid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.messages.DownloadMediaRequest} returns this
+ */
+proto.messages.DownloadMediaRequest.prototype.setMessageid = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
