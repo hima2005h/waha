@@ -239,6 +239,14 @@ export class NowebPersistentStore implements INowebStore {
       if (!update.key.id) {
         continue;
       }
+      if (!jid) {
+        this.logger.warn(
+          `got message update for unknown jid. update: '${JSON.stringify(
+            update,
+          )}'`,
+        );
+        continue;
+      }
       const message = await this.messagesRepo.getByJidById(jid, update.key.id);
       if (!message) {
         this.logger.warn(
