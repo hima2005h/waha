@@ -633,16 +633,16 @@ export class NowebPersistentStore implements INowebStore {
         });
       }
       // contact.pn = pn, contact.lid = lid
-      else if (isJidUser(contact.pn) && isLidUser(contact.lid)) {
+      else if (isJidUser(contact.jid) && isLidUser(contact.lid)) {
         lids.push({
-          pn: contact.pn,
+          pn: contact.jid,
           id: contact.lid,
         });
       }
       // contact.pn = pn, contact.id = lid
-      else if (isJidUser(contact.pn) && isLidUser(contact.id)) {
+      else if (isJidUser(contact.jid) && isLidUser(contact.id)) {
         lids.push({
-          pn: contact.pn,
+          pn: contact.jid,
           id: contact.id,
         });
       }

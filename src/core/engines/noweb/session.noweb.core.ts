@@ -56,6 +56,10 @@ import {
   ToGroupV2UpdateEvent,
 } from '@waha/core/engines/noweb/groups.noweb';
 import { sendButtonMessage } from '@waha/core/engines/noweb/noweb.buttons';
+import {
+  NOWEBNewsletterMetadata,
+  toNewsletterMetadata,
+} from '@waha/core/engines/noweb/noweb.newsletter';
 import { NowebAuthFactoryCore } from '@waha/core/engines/noweb/NowebAuthFactoryCore';
 import { NowebInMemoryStore } from '@waha/core/engines/noweb/store/NowebInMemoryStore';
 import {
@@ -477,7 +481,8 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         return;
       } else if (connection === 'close') {
         this.qr.save('');
-        const statusCode = lastDisconnect.error?.output?.statusCode;
+        const error = lastDisconnect.error as any;
+        const statusCode = error?.output?.statusCode;
 
         // Restart required from the server
         const restartRequired = statusCode === DisconnectReason.restartRequired;
@@ -752,7 +757,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
     if (this.status == WAHASessionStatus.STARTING) {
       this.logger.debug('Waiting for connection update...');
-      await this.sock.waitForConnectionUpdate((update) => !!update.qr);
+      await this.sock.waitForConnectionUpdate(async (update) => !!update.qr);
     }
 
     if (this.status != WAHASessionStatus.SCAN_QR_CODE) {
@@ -1711,9 +1716,8 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     throw new AvailableInPlusVersion();
   }
 
-  protected toChannel(newsletter: NewsletterMetadata): Channel {
+  protected toChannel(newsletter: NOWEBNewsletterMetadata): Channel {
     const role =
-      // @ts-ignore
       newsletter.viewer_metadata?.role ||
       (newsletter.viewer_metadata?.view_role as ChannelRole) ||
       ChannelRole.GUEST;
@@ -1738,7 +1742,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   public async channelsList(query: ListChannelsQuery): Promise<Channel[]> {
     const newsletters = await this.sock.newsletterSubscribed();
-    let channels = newsletters.map(this.toChannel);
+    let channels = newsletters.map(toNewsletterMetadata).map(this.toChannel);
     if (query.role) {
       // @ts-ignore
       channels = channels.filter((channel) => channel.role === query.role);
@@ -1751,37 +1755,37 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       request.name,
       request.description,
     );
-    return this.toChannel(newsletter);
+    return this.toChannel(toNewsletterMetadata(newsletter));
   }
 
   public async channelsGetChannel(id: string) {
     const newsletter = await this.sock.newsletterMetadata('jid', id);
-    return this.toChannel(newsletter);
+    return this.toChannel(toNewsletterMetadata(newsletter));
   }
 
   public async channelsGetChannelByInviteCode(inviteCode: string) {
     const newsletter = await this.sock.newsletterMetadata('invite', inviteCode);
-    return this.toChannel(newsletter);
+    return this.toChannel(toNewsletterMetadata(newsletter));
   }
 
   public async channelsDeleteChannel(id: string) {
     return await this.sock.newsletterDelete(id);
   }
 
-  public async channelsFollowChannel(id: string): Promise<void> {
-    return await this.sock.newsletterAction(id, 'follow');
+  public async channelsFollowChannel(id: string): Promise<any> {
+    return await this.sock.newsletterFollow(id);
   }
 
-  public async channelsUnfollowChannel(id: string): Promise<void> {
-    return await this.sock.newsletterAction(id, 'unfollow');
+  public async channelsUnfollowChannel(id: string): Promise<any> {
+    return await this.sock.newsletterUnfollow(id);
   }
 
-  public async channelsMuteChannel(id: string): Promise<void> {
-    return await this.sock.newsletterAction(id, 'mute');
+  public async channelsMuteChannel(id: string): Promise<any> {
+    return await this.sock.newsletterMute(id);
   }
 
-  public async channelsUnmuteChannel(id: string): Promise<void> {
-    return await this.sock.newsletterAction(id, 'unmute');
+  public async channelsUnmuteChannel(id: string): Promise<any> {
+    return await this.sock.newsletterUnmute(id);
   }
 
   subscribeEngineEvents2() {

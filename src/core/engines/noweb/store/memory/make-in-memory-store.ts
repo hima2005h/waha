@@ -287,7 +287,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
               ev.emit('chats.upsert', [
                 {
                   id: jid,
-                  conversationTimestamp: toNumber(msg.messageTimestamp),
+                  conversationTimestamp: toNumber(msg.messageTimestamp as any),
                   unreadCount: 1,
                 },
               ]);
