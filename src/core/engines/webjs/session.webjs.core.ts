@@ -203,6 +203,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     args.unshift(`--a-waha-session=${this.name}`);
     return {
       puppeteer: {
+        protocolTimeout: 300_000,
         headless: true,
         executablePath: this.getBrowserExecutablePath(),
         args: args,
