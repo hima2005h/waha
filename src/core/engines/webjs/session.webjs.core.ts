@@ -238,6 +238,9 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       this.logger.debug(
         'Should not restart the client, ignoring restart request',
       );
+      this.end().catch((error) => {
+        this.logger.error(error, 'Failed to end() the client');
+      });
       return;
     }
 
@@ -469,15 +472,20 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     });
 
     this.whatsapp.on(Events.AUTHENTICATION_FAILURE, (args) => {
-      this.failed();
       this.qr.save('');
+      this.shouldRestart = false;
       this.logger.info({ args: args }, `Session has failed to authenticate!`);
+      this.failed();
     });
 
     this.whatsapp.on(Events.DISCONNECTED, (args) => {
-      this.failed();
+      if (args === 'LOGOUT') {
+        this.logger.warn({ args: args }, `Session has been logged out!`);
+        this.shouldRestart = false;
+      }
       this.qr.save('');
       this.logger.info({ args: args }, `Session has been disconnected!`);
+      this.failed();
     });
 
     this.whatsapp.on(Events.STATE_CHANGED, (state: WAState) => {
@@ -508,7 +516,8 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
         });
         log.setBindings({ currentState: currentState });
         if (!currentState) {
-          log.warn('Session has no current state, skip restarting.');
+          log.warn('Session has no current state, restarting...');
+          this.restartClient();
           return;
         } else if (badStates.includes(currentState)) {
           log.info('Session is still in bad state, restarting...');
