@@ -1509,6 +1509,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       mergeMap((node) =>
         TagReceiptNodeToReceiptEvent(node as any, this.getSessionMeInfo()),
       ),
+      filter(Boolean),
       mergeMap(this.TagReceiptToMessageAck.bind(this)),
       filter((ack) => isJidGroup(ack.to) || isJidStatusBroadcast(ack.to)),
     );
