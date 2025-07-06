@@ -12,6 +12,7 @@ import makeWASocket, {
   proto,
   updateMessageWithReaction,
   updateMessageWithReceipt,
+  WAMessage,
 } from '@adiwajshing/baileys';
 import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
 import { Label } from '@adiwajshing/baileys/lib/Types/Label';
@@ -64,7 +65,6 @@ export class NowebPersistentStore implements INowebStore {
   public presences: any;
 
   private lock: any = new AsyncLock({
-    timeout: 5_000,
     maxPending: Infinity,
     maxExecutionTime: 60_000,
   });
@@ -102,9 +102,43 @@ export class NowebPersistentStore implements INowebStore {
     // All
     ev.on('messaging-history.set', (data) => this.onMessagingHistorySet(data));
     // Messages
-    ev.on('messages.upsert', (data) =>
-      this.withLock('messages', () => this.onMessagesUpsert(data)),
-    );
+    ev.on('messages.upsert', (data) => {
+      this.withLock('messages', () => this.onMessagesUpsert(data));
+      this.withLock('lids', async () => {
+        const messages: WAMessage[] = data.messages;
+        if (!messages) {
+          return;
+        }
+        const contacts: Partial<Contact>[] = messages
+          .map((message) => {
+            if (!message.key) {
+              return null;
+            }
+            // Phone
+            let pn = message.key.senderPn || message.key.participantPn;
+            // 123 => 123@s.whatsapp.net
+            if (pn && !pn.includes('@')) {
+              pn = `${pn}@s.whatsapp.net`;
+            }
+            // 123@c.us => 123@s.whatsapp.net
+            if (pn && !isJidUser(pn)) {
+              pn = jidNormalizedUser(pn);
+            }
+            // 999@lid
+            const lid = message.key.senderLid || message.key.participantLid;
+            return {
+              id: message.key.remoteJid,
+              lid: lid,
+              jid: pn,
+            };
+          })
+          .filter(Boolean);
+        const lids = await this.handleLidPNUpdates(contacts);
+        this.logger.debug(
+          `messages.upsert - '${lids.length}' synced lid to pn mapping`,
+        );
+      });
+    });
     ev.on('messages.update', (data) =>
       this.withLock('messages', () => this.onMessageUpdate(data)),
     );
