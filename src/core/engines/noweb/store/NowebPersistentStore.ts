@@ -104,7 +104,7 @@ export class NowebPersistentStore implements INowebStore {
     // Messages
     ev.on('messages.upsert', (data) => {
       this.withLock('messages', () => this.onMessagesUpsert(data));
-      this.withLock('lids', async () => {
+      this.withNoLock('lids', async () => {
         const messages: WAMessage[] = data.messages;
         if (!messages) {
           return;
@@ -167,7 +167,7 @@ export class NowebPersistentStore implements INowebStore {
     );
     ev.on('groups.update', (data) => {
       this.withLock('groups', () => this.onGroupUpdate(data));
-      this.withLock('lids', async () => {
+      this.withNoLock('lids', async () => {
         const participants = lodash.flatMap(data, (g) => g?.participants || []);
         const lids = await this.handleLidPNUpdates(participants);
         this.logger.debug(
@@ -184,7 +184,7 @@ export class NowebPersistentStore implements INowebStore {
     // Contacts
     ev.on('contacts.upsert', (data) => {
       this.withLock('contacts', () => this.onContactsUpsert(data));
-      this.withLock('lids', async () => {
+      this.withNoLock('lids', async () => {
         const lids = await this.handleLidPNUpdates(data);
         this.logger.debug(
           `contacts.upsert - '${lids.length}' synced lid to pn mapping`,
@@ -193,7 +193,7 @@ export class NowebPersistentStore implements INowebStore {
     });
     ev.on('contacts.update', (data) => {
       this.withLock('contacts', () => this.onContactUpdate(data));
-      this.withLock('lids', async () => {
+      this.withNoLock('lids', async () => {
         const lids = await this.handleLidPNUpdates(data);
         this.logger.debug(
           `contacts.update - '${lids.length}' synced lid to pn mapping`,
@@ -234,7 +234,7 @@ export class NowebPersistentStore implements INowebStore {
         await this.onContactsUpsert(contacts);
         this.logger.info(`history sync - '${contacts.length}' synced contacts`);
       }),
-      this.withLock('lids', async () => {
+      this.withNoLock('lids', async () => {
         const lids = await this.handleLidPNUpdates(contacts);
         this.logger.info(
           `history sync - '${lids.length}' synced lid to pn mapping`,
@@ -436,6 +436,10 @@ export class NowebPersistentStore implements INowebStore {
 
   private withLock(key, fn) {
     return this.lock.acquire(key, fn);
+  }
+
+  private withNoLock(key, fn) {
+    return fn();
   }
 
   private async onContactsUpsert(contacts: Contact[]) {
