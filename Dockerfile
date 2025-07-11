@@ -195,8 +195,8 @@ COPY --from=build /git/node_modules ./node_modules
 COPY --from=build /git/dist ./dist
 COPY --from=dashboard /dashboard ./dist/dashboard
 COPY --from=gows /go/gows/bin/gows /app/gows
-ENV WAHA_GOWS_PATH /app/gows
-ENV WAHA_GOWS_SOCKET /tmp/gows.sock
+ENV WAHA_GOWS_PATH=/app/gows
+ENV WAHA_GOWS_SOCKET=/tmp/gows.sock
 
 COPY entrypoint.sh /entrypoint.sh
 
