@@ -159,6 +159,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   private startDelayedJob: SingleDelayedJobRunner;
   private engineStateCheckDelayedJob: SingleDelayedJobRunner;
   private shouldRestart: boolean;
+  private lastQRDate: Date = null;
 
   whatsapp: WebjsClientCore;
   protected qr: QR;
@@ -442,6 +443,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       this.qr.save(qr);
       this.printQR(this.qr);
       this.status = WAHASessionStatus.SCAN_QR_CODE;
+      this.lastQRDate = new Date();
     });
 
     this.whatsapp.on(Events.READY, () => {
@@ -1469,6 +1471,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     const messageReaction$ = fromEvent(this.whatsapp, 'message_reaction');
     const messagesReaction$ = messageReaction$.pipe(
       map(this.processMessageReaction.bind(this)),
+      filter(Boolean),
     );
     this.events2.get(WAHAEvents.MESSAGE_REACTION).switch(messagesReaction$);
 
@@ -1649,6 +1652,14 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   }
 
   private processMessageReaction(reaction: Reaction): WAMessageReaction {
+    if (this.lastQRDate) {
+      // If it's timestamp before last qr - ignore it
+      // Fixes: https://github.com/devlikeapro/waha/issues/494
+      if (reaction.timestamp < this.lastQRDate.getTime() / 1000) {
+        return null;
+      }
+    }
+
     const source = this.getMessageSource(reaction.id.id);
     return {
       id: reaction.id._serialized,
