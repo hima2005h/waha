@@ -320,7 +320,7 @@ export abstract class WhatsappSession {
       '--no-sandbox',
       '--no-zygote',
       '--password-store=basic',
-      '--renderer-process-limit=1',
+      '--renderer-process-limit=2',
       '--safebrowsing-disable-auto-update',
       '--use-mock-keychain',
       '--window-size=1280,720',
