@@ -33,7 +33,7 @@ export function getEngineName(): string {
 }
 
 export const VERSION: WAHAEnvironment = {
-  version: '2025.7.4',
+  version: '2025.7.5',
   engine: getEngineName(),
   tier: getWAHAVersion(),
   browser:
