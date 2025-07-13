@@ -1,5 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { IAppsService } from '@waha/apps/app_sdk/services/IAppsService';
+import { DataStore } from '@waha/core/abc/DataStore';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { WhatsappSession } from '@waha/core/abc/session.abc';
 import { Knex } from 'knex';
@@ -36,7 +37,7 @@ export class AppsDisabledService implements IAppsService {
     return;
   }
 
-  async beforeSessionStart(session: WhatsappSession, knex) {
+  async beforeSessionStart(session: WhatsappSession, store: DataStore) {
     return;
   }
 }

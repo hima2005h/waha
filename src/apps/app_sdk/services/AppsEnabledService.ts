@@ -3,6 +3,7 @@ import { migrate } from '@waha/apps/app_sdk/migrations';
 import { IAppService } from '@waha/apps/app_sdk/services/IAppService';
 import { IAppsService } from '@waha/apps/app_sdk/services/IAppsService';
 import { ChatWootAppService } from '@waha/apps/chatwoot/services/ChatWootAppService';
+import { DataStore } from '@waha/core/abc/DataStore';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { WhatsappSession } from '@waha/core/abc/session.abc';
 import { generatePrefixedId } from '@waha/utils/ids';
@@ -106,7 +107,8 @@ export class AppsEnabledService implements IAppsService {
     return;
   }
 
-  async beforeSessionStart(session: WhatsappSession, knex) {
+  async beforeSessionStart(session: WhatsappSession, store: DataStore) {
+    const knex = store.getWAHADatabase();
     const repo = new AppRepository(knex);
     const apps = await repo.getAllBySession(session.name);
     for (const app of apps) {

@@ -1,4 +1,5 @@
 import { App } from '@waha/apps/app_sdk/dto/app.dto';
+import { DataStore } from '@waha/core/abc/DataStore';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { WhatsappSession } from '@waha/core/abc/session.abc';
 import { Knex } from 'knex';
@@ -12,7 +13,7 @@ export interface IAppsService {
 
   delete(manager: SessionManager, appId: string): Promise<void>;
 
-  beforeSessionStart(session: WhatsappSession, knex: Knex): Promise<void>;
+  beforeSessionStart(session: WhatsappSession, store: DataStore): Promise<void>;
 
   migrate(knex: Knex): Promise<void>;
 }
