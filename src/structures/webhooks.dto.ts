@@ -120,7 +120,7 @@ export class WASessionStatusBody {
   status: WAHASessionStatus;
 }
 
-export class WAHAWebhook {
+export class WAHAWebhook<Payload = any> {
   @ApiProperty({
     example: 'evt_01aaaaaaaaaaaaaaaaaaaaaaaa',
     description:
@@ -159,10 +159,7 @@ export class WAHAWebhook {
 
   event: WAHAEvents;
 
-  payload:
-    | WAGroupPayload
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    | object;
+  payload: Payload;
 }
 
 export class WAHAWebhookSessionStatus extends WAHAWebhook {

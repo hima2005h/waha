@@ -73,6 +73,7 @@ export class SwaggerConfiguratorCore {
       .setExternalDoc(this.title, this.externalDocUrl)
       .setVersion(VERSION.version)
       .addTag('🖥️ Sessions', 'Control WhatsApp sessions (accounts)')
+      .addTag('🧩 Apps', 'Applications (built-in integrations)')
       .addTag('🔑 Auth', 'Authentication')
       .addTag('🆔 Profile', 'Your profile information')
       .addTag('🖼️ Screenshot', 'Get screenshot of WhatsApp and show QR code')
@@ -184,7 +185,13 @@ export class SwaggerConfiguratorCore {
   setUpAuth(credentials: [string, string]): void {
     const [username, password] = credentials;
     const dashboardConfig = this.app.get(DashboardConfigServiceCore);
-    const exclude = ['/api/', dashboardConfig.dashboardUri, '/health', '/ws'];
+    const exclude = [
+      '/api/',
+      dashboardConfig.dashboardUri,
+      '/health',
+      '/ws',
+      '/webhooks/',
+    ];
     const authFunction = BasicAuthFunction(username, password, exclude);
     this.app.use(authFunction);
   }

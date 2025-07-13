@@ -1,0 +1,181 @@
+# Portuguese translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'Integração WhatsApp (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 Tentando novamente em {{attempts.nextDelay}} segundos...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ Não há mais tentativas restantes. Por favor, tente novamente mais tarde.
+  {{/attempts.nextDelay}}
+  Tentativa: {{{attempts.current}}} / {{{attempts.max}}}
+  Detalhes: [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **Sucesso**
+  Tentativa: {{{attempts.current}}} / {{{attempts.max}}}
+  Detalhes: [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE:
+  Não foi possível enviar uma mensagem no WhatsApp.
+WHATSAPP_ERROR_RECEIVING_MESSAGE:
+  Não foi possível receber uma mensagem do WhatsApp
+WHATSAPP_ERROR_REMOVING_MESSAGE:
+  Não foi possível remover uma mensagem do WhatsApp
+APP_SCHEDULED_JOB_ERROR: Falha ao executar tarefa agendada
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *Enviado do WhatsApp*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *Enviado via API*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *Esta mensagem foi excluída no WhatsApp*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *Editado no WhatsApp*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *Reagiu com* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *Reação removida*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'Grupo'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Canal'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'Status'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **CONECTADO: Sessão do WhatsApp para Caixa de Entrada do ChatWoot**
+
+  ✅ A sessão do WhatsApp **{{{name}}}** foi conectada com sucesso a esta Caixa de Entrada do ChatWoot.
+
+  Esta caixa de entrada agora está vinculada à sua **Conta do WhatsApp**. Você pode enviar e receber mensagens diretamente daqui — assim como usar o WhatsApp, mas dentro do ChatWoot.
+
+  Você também pode gerenciar a sessão do WhatsApp vinculada a esta caixa de entrada. Para ver as ações disponíveis, envie **help** para este chat.
+
+  📋 Ações comuns que você pode fazer:
+  - Verificar se a sessão do WhatsApp está ativa
+  - Reiniciar ou Parar a sessão do WhatsApp
+  - Sair e reconectar escaneando um novo código QR
+
+  Se tudo estiver funcionando, você poderá conversar livremente. Se você vir avisos, pode precisar reconectar sua conta do WhatsApp.
+
+  Vamos começar! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **DESCONECTADO: Sessão do WhatsApp da Caixa de Entrada do ChatWoot**
+
+  ❌ A sessão do WhatsApp **{{{name}}}** foi desconectada desta Caixa de Entrada do ChatWoot.
+
+  Você não poderá mais enviar ou receber mensagens do WhatsApp.
+
+  Para reconectar, entre em contato com seu administrador.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **ATUALIZADO: Configurações da Sessão do WhatsApp**
+
+  ✅ As configurações para a sessão do WhatsApp **{{{name}}}** foram atualizadas.
+
+APP_COMMANDS_LIST: |
+  Você pode gerenciar a **sessão do WhatsApp** enviando um dos seguintes comandos:
+  1. **status** - obter o status atual da sessão.
+  2. **restart** - reiniciar a sessão - isso tentará reconectar sua conta do WhatsApp.
+  3. **start** - iniciar a sessão.
+  4. **stop** - parar a sessão.
+  5. **logout** - sair da sessão, para que você possa escanear o código QR e reparar a sessão.
+  6. **qr** - obter o código QR para a sessão.
+  7. **screenshot** - obter uma captura de tela da sessão (disponível apenas no motor **WEBJS**).
+  8. **help** - comandos disponíveis.
+
+  Comandos do servidor:
+  - **server status** - obter informações sobre a versão e status do servidor.
+  - **server reboot** - reiniciar o servidor suavemente.
+  - **server reboot force** - forçar a reinicialização do servidor.
+
+  Envie um **comando** (não sensível a maiúsculas/minúsculas) ou um **número de comando** para esta conversa.
+
+APP_HELP_REMINDER: |
+  Envie **help** para obter a lista de comandos disponíveis.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} A sessão "{{{session}}}" mudou para o status {{{status}}}
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} O status da sessão **{{{session}}}** é **{{{status}}}**
+  **Conta do WhatsApp:**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  Visite o [Painel WAHA]({{{url}}}) para mais detalhes.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ Esta Caixa de Entrada do ChatWoot está vinculada à **Conta do WhatsApp** e pronta para enviar e receber mensagens!
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **Esta Caixa de Entrada do ChatWoot está vinculada à Conta do WhatsApp, mas NÃO está pronta para enviar e receber mensagens!**
+
+  Por favor, verifique o status da sessão e tente reiniciá-la ou saia e escaneie o código QR novamente.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **Escaneie o código QR no seu telefone para vincular a Conta do WhatsApp a esta Caixa de Entrada do ChatWoot!**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **Versão:**
+  ```
+  {{{version}}}
+  ```
+
+  **Status:**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  O servidor está reiniciando suavemente...
+
+APP_SERVER_REBOOT_FORCE: |
+  O servidor está reiniciando forçadamente...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ Conta desautorizada com sucesso!
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **Nova Versão Disponível!**
+
+  Versão atual: **{{{currentVersion}}}**
+  Nova versão: **{{{newVersion}}}**
+
+  👉 Confira o que há de novo no [**🆕 Registro de Alterações**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **Apoie o WAHA!**
+
+  Você está usando a versão gratuita **WAHA Core**. Se você acha este projeto útil, considere apoiar seu desenvolvimento.
+
+  Seu apoio é a única maneira de continuarmos trabalhando em atualizações, correções e novos recursos.
+
+  [**🎁 Apoie-nos**]({{{supportUrl}}})

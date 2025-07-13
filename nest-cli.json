@@ -3,7 +3,12 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "plugins": ["@nestjs/swagger"],
-    "assets": ["dashboard/**", "core/engines/webjs/*", "plus/engines/webjs/*"],
+    "assets": [
+      "dashboard/**",
+      "core/engines/webjs/*",
+      "plus/engines/webjs/*",
+      "apps/chatwoot/i18n/*.yaml"
+    ],
     "watchAssets": true
   }
 }

@@ -209,16 +209,7 @@ class SessionsController {
   })
   @UsePipes(new WAHAValidationPipe())
   async restart(@Param('session') name: string): Promise<SessionDTO> {
-    await this.withLock(name, async () => {
-      const exists = await this.manager.exists(name);
-      if (!exists) {
-        throw new NotFoundException('Session not found');
-      }
-      await this.manager.assign(name);
-      await this.manager.stop(name, true);
-      await this.manager.start(name);
-    });
-
+    await this.manager.restart(name);
     return await this.manager.getSessionInfo(name);
   }
 

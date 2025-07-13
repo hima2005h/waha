@@ -7,8 +7,8 @@ services:
     ports:
       - '3000:3000/tcp'
     volumes:
-      - './.sessions:/app/.sessions'
-      - './.media:/app/.media'
+      - './sessions:/app/.sessions'
+      - './media:/app/.media'
     environment:
       - WAHA_API_KEY=321
       - WAHA_DASHBOARD_USERNAME=admin

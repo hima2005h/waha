@@ -1862,7 +1862,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         const waMessage = await this.toWAMessage(message);
         // Extract the body from editedMessage using extractBody function
         const body =
-          this.extractBody(message.message.protocolMessage.editedMessage) || '';
+          extractBody(message.message.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
         const editedMessageId = message.message.protocolMessage.key?.id;
         return {
@@ -2191,7 +2191,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   protected toWAMessage(message): Promise<WAMessage> {
     const fromToParticipant = getFromToParticipant(message.key);
     const id = buildMessageId(message.key);
-    const body = this.extractBody(message.message);
+    const body = extractBody(message.message);
     const replyTo = this.extractReplyTo(message.message);
     const ack = message.ack || StatusToAck(message.status);
     const mediaContent = extractMediaContent(message.message);
@@ -2220,36 +2220,6 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     });
   }
 
-  protected extractBody(message): string | null {
-    if (!message) {
-      return null;
-    }
-    const content = extractMessageContent(message);
-    if (!content) {
-      return null;
-    }
-    let body = content.conversation || null;
-    if (!body) {
-      // Some of the messages have no conversation, but instead have text in extendedTextMessage
-      // https://github.com/devlikeapro/waha/issues/90
-      body = content.extendedTextMessage?.text;
-    }
-    if (!body) {
-      // Populate from caption
-      const mediaContent = extractMediaContent(content);
-      // @ts-ignore - AudioMessage doesn't have caption field
-      body = mediaContent?.caption;
-    }
-    // Response for buttons
-    if (!body) {
-      body = content.templateButtonReplyMessage?.selectedDisplayText;
-    }
-    if (!body) {
-      body = content.buttonsResponseMessage?.selectedDisplayText;
-    }
-    return body;
-  }
-
   protected extractReplyTo(message): ReplyToMessage | null {
     const msgType = getContentType(message);
     const contextInfo = message[msgType]?.contextInfo;
@@ -2260,7 +2230,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     if (!quotedMessage) {
       return null;
     }
-    const body = this.extractBody(quotedMessage);
+    const body = extractBody(quotedMessage);
     return {
       id: contextInfo.stanzaId,
       participant: toCusFormat(contextInfo.participant),
@@ -2597,7 +2567,12 @@ export const ALL_JID = 'all@s.whatsapp.net';
  * {id: "AAA", remoteJid: "11111111111@s.whatsapp.net", "fromMe": false}
  * false_11111111111@c.us_AA
  */
-function buildMessageId({ id, remoteJid, fromMe, participant }: WAMessageKey) {
+export function buildMessageId({
+  id,
+  remoteJid,
+  fromMe,
+  participant,
+}: WAMessageKey) {
   const chatId = toCusFormat(remoteJid);
   const parts = [fromMe || false, chatId, id];
   if (participant) {
@@ -2669,4 +2644,34 @@ export function getDestination(key, meId = undefined): MessageDestination {
     from: toCusFormat(getFrom(key, meId)),
     fromMe: key.fromMe,
   };
+}
+
+export function extractBody(message): string | null {
+  if (!message) {
+    return null;
+  }
+  const content = extractMessageContent(message);
+  if (!content) {
+    return null;
+  }
+  let body = content.conversation || null;
+  if (!body) {
+    // Some of the messages have no conversation, but instead have text in extendedTextMessage
+    // https://github.com/devlikeapro/waha/issues/90
+    body = content.extendedTextMessage?.text;
+  }
+  if (!body) {
+    // Populate from caption
+    const mediaContent = extractMediaContent(content);
+    // @ts-ignore - AudioMessage doesn't have caption field
+    body = mediaContent?.caption;
+  }
+  // Response for buttons
+  if (!body) {
+    body = content.templateButtonReplyMessage?.selectedDisplayText;
+  }
+  if (!body) {
+    body = content.buttonsResponseMessage?.selectedDisplayText;
+  }
+  return body;
 }

@@ -1173,6 +1173,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bull-board/api@npm:6.11.0, @bull-board/api@npm:^6.9.1":
+  version: 6.11.0
+  resolution: "@bull-board/api@npm:6.11.0"
+  dependencies:
+    redis-info: ^3.1.0
+  peerDependencies:
+    "@bull-board/ui": 6.11.0
+  checksum: 1a2cc2261a219d426a7a2bb642e056144988686fb1df2ba7998ecda6be2c54ec02576fade36548c64013689d36105a37e2cfb5cf52bd942bb7a256cf55aa77a1
+  languageName: node
+  linkType: hard
+
+"@bull-board/express@npm:^6.9.1":
+  version: 6.11.0
+  resolution: "@bull-board/express@npm:6.11.0"
+  dependencies:
+    "@bull-board/api": 6.11.0
+    "@bull-board/ui": 6.11.0
+    ejs: ^3.1.10
+    express: ^4.21.1 || ^5.0.0
+  checksum: 2b2fe0dd9e030b2234d9420f2df0bc386c71df20d314cb19d3ecd994128a820b096be4555828dfe8977b12b8ee66a92a21d1b121a5eb494d55b0b638c6068787
+  languageName: node
+  linkType: hard
+
+"@bull-board/nestjs@npm:^6.9.1":
+  version: 6.11.0
+  resolution: "@bull-board/nestjs@npm:6.11.0"
+  peerDependencies:
+    "@bull-board/api": ^6.11.0
+    "@nestjs/bull-shared": ^10.0.0 || ^11.0.0
+    "@nestjs/common": ^9.0.0 || ^10.0.0 || ^11.0.0
+    "@nestjs/core": ^9.0.0 || ^10.0.0 || ^11.0.0
+    reflect-metadata: ^0.1.13 || ^0.2.0
+    rxjs: ^7.8.1
+  checksum: 8399f835a3bcf2880845ab58231d6d92b88b70675d1e8ed228b32bf75c4b0d6c13781cce63214e786084427c2cd827edaf441a6b872f717efde2d7856cd440b9
+  languageName: node
+  linkType: hard
+
+"@bull-board/ui@npm:6.11.0":
+  version: 6.11.0
+  resolution: "@bull-board/ui@npm:6.11.0"
+  dependencies:
+    "@bull-board/api": 6.11.0
+  checksum: 7c73b2820784e8e6102c78313fc47e2469a89620ee8c60096555132ea14e9b9fa9aa243350ab165b9b40298d9fc8f7d53a60a3f0789bad5a2e6d7650cca52ffe
+  languageName: node
+  linkType: hard
+
 "@cacheable/node-cache@npm:^1.4.0":
   version: 1.5.6
   resolution: "@cacheable/node-cache@npm:1.5.6"
@@ -1213,6 +1259,15 @@ __metadata:
   version: 1.2.2
   resolution: "@eshaz/web-worker@npm:1.2.2"
   checksum: 608afe769df965d33ab1c3441b7d44b12ad7d6681b9a3ed9edbd8daa7d0498a953ffd238358d09d2544e7fb2b8cfd658c6e7f223418f6b14a4cf23330085d481
+  languageName: node
+  linkType: hard
+
+"@figuro/chatwoot-sdk@npm:^1.1.17":
+  version: 1.1.17
+  resolution: "@figuro/chatwoot-sdk@npm:1.1.17"
+  dependencies:
+    axios: ^0.27.2
+  checksum: c33cf8ef37711f1db2fc49641d1ecc927a577bc6beff29fa7e905c6ba6ccdda6314ba6467c12730f07b7d6a439ff9025da6c8ba5e8f51fed9c50eb40b8a7e7fd
   languageName: node
   linkType: hard
 
@@ -1688,6 +1743,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ioredis/commands@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "@ioredis/commands@npm:1.2.0"
+  checksum: 9b20225ba36ef3e5caf69b3c0720597c3016cc9b1e157f519ea388f621dd9037177f84cfe7e25c4c32dad7dd90c70ff9123cd411f747e053cf292193c9c461e2
+  languageName: node
+  linkType: hard
+
 "@isaacs/balanced-match@npm:^4.0.1":
   version: 4.0.1
   resolution: "@isaacs/balanced-match@npm:4.0.1"
@@ -2067,6 +2129,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@liaoliaots/nestjs-redis@npm:^9":
+  version: 9.0.5
+  resolution: "@liaoliaots/nestjs-redis@npm:9.0.5"
+  dependencies:
+    tslib: 2.4.1
+  peerDependencies:
+    "@nestjs/common": ^9.0.0
+    "@nestjs/core": ^9.0.0
+    ioredis: ^5.0.0
+  checksum: 6b292cb9dcfda862ae010b71bce3faf7fc514892b1d7142cba737d693ec390d01019b43a95c3c2d085ec873cacd41384576c8264a7b14509bb6674de3b299ebb
+  languageName: node
+  linkType: hard
+
 "@lukeed/csprng@npm:^1.0.0":
   version: 1.1.0
   resolution: "@lukeed/csprng@npm:1.1.0"
@@ -2109,6 +2184,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@nestjs/axios@npm:^3.0.2":
   version: 3.1.3
   resolution: "@nestjs/axios@npm:3.1.3"
@@ -2117,6 +2234,32 @@ __metadata:
     axios: ^1.3.1
     rxjs: ^6.0.0 || ^7.0.0
   checksum: e949f664cec5a874b3fd11a193f00b8ddca12fc4b80e23b4e764594a0dccc167db833c1bb2b6cc8e5536bc3bc655bff0196d3efcad5a14a1bd5638a048a80b26
+  languageName: node
+  linkType: hard
+
+"@nestjs/bull-shared@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "@nestjs/bull-shared@npm:11.0.2"
+  dependencies:
+    tslib: 2.8.1
+  peerDependencies:
+    "@nestjs/common": ^10.0.0 || ^11.0.0
+    "@nestjs/core": ^10.0.0 || ^11.0.0
+  checksum: 2bdaa938bd3ec30c0d2362887752b03b10d9ec99b01a150edeaa603763ba599f438545be6b74974c690fb866f7ed6a19c2f2f00373b0e3bb7da35e46a2c239c5
+  languageName: node
+  linkType: hard
+
+"@nestjs/bullmq@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "@nestjs/bullmq@npm:11.0.2"
+  dependencies:
+    "@nestjs/bull-shared": ^11.0.2
+    tslib: 2.8.1
+  peerDependencies:
+    "@nestjs/common": ^10.0.0 || ^11.0.0
+    "@nestjs/core": ^10.0.0 || ^11.0.0
+    bullmq: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: ca1f75fa1d6793199a05bf43d75ae9e5e3ec3e2ac1274b02f7d5d2f746d59e110972dc9d9ea1c264289682f09fd4972f1bf54a91786d7a6d4af2f7ba6c22e7f0
   languageName: node
   linkType: hard
 
@@ -3598,6 +3741,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mustache@npm:^4.2.5":
+  version: 4.2.6
+  resolution: "@types/mustache@npm:4.2.6"
+  checksum: 6480867fab64737a04fea5568a55cd5c118fa3e76a99f66521387f201abbc9413d6d6b9395379a1fbfa49387189e20cd4ab42678d304e9c3a9af6bf20209bbef
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:>=13.7.0":
   version: 24.0.1
   resolution: "@types/node@npm:24.0.1"
@@ -5040,6 +5190,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bullmq@npm:^5.48.1":
+  version: 5.56.1
+  resolution: "bullmq@npm:5.56.1"
+  dependencies:
+    cron-parser: ^4.9.0
+    ioredis: ^5.4.1
+    msgpackr: ^1.11.2
+    node-abort-controller: ^3.1.1
+    semver: ^7.5.4
+    tslib: ^2.0.0
+    uuid: ^9.0.0
+  checksum: 355a78c8aca0cfe1632d6212578411825be68d743cc88e5ac9ae3d74116d28ff92480a24619b4ad3c35d94a1acc0ed167465b8f497c77d4f5b3f81f039a56ad4
+  languageName: node
+  linkType: hard
+
 "busboy@npm:^1.6.0":
   version: 1.6.0
   resolution: "busboy@npm:1.6.0"
@@ -5416,6 +5581,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cluster-key-slot@npm:^1.1.0":
+  version: 1.1.2
+  resolution: "cluster-key-slot@npm:1.1.2"
+  checksum: be0ad2d262502adc998597e83f9ded1b80f827f0452127c5a37b22dfca36bab8edf393f7b25bb626006fb9fb2436106939ede6d2d6ecf4229b96a47f27edd681
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -5745,6 +5917,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cron-parser@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "cron-parser@npm:4.9.0"
+  dependencies:
+    luxon: ^3.2.1
+  checksum: 3cf248fc5cae6c19ec7124962b1cd84b76f02b9bc4f58976b3bd07624db3ef10aaf1548efcc2d2dcdab0dad4f12029d640a55ecce05ea5e1596af9db585502cf
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
@@ -5982,6 +6163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"denque@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "denque@npm:2.1.0"
+  checksum: 1d4ae1d05e59ac3a3481e7b478293f4b4c813819342273f3d5b826c7ffa9753c520919ba264f377e09108d24ec6cf0ec0ac729a5686cbb8f32d797126c5dae74
+  languageName: node
+  linkType: hard
+
 "depd@npm:2.0.0, depd@npm:^2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -5989,7 +6177,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detect-libc@npm:^2.0.0, detect-libc@npm:^2.0.3":
+"detect-libc@npm:^2.0.0, detect-libc@npm:^2.0.1, detect-libc@npm:^2.0.3":
   version: 2.0.4
   resolution: "detect-libc@npm:2.0.4"
   checksum: 3d186b7d4e16965e10e21db596c78a4e131f9eee69c0081d13b85e6a61d7448d3ba23fe7997648022bdfa3b0eb4cc3c289a44c8188df949445a20852689abef6
@@ -6763,7 +6951,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:5.1.0":
+"express@npm:5.1.0, express@npm:^4.21.1 || ^5.0.0":
   version: 5.1.0
   resolution: "express@npm:5.1.0"
   dependencies:
@@ -7850,6 +8038,23 @@ __metadata:
   version: 2.2.0
   resolution: "interpret@npm:2.2.0"
   checksum: f51efef7cb8d02da16408ffa3504cd6053014c5aeb7bb8c223727e053e4235bf565e45d67028b0c8740d917c603807aa3c27d7bd2f21bf20b6417e2bb3e5fd6e
+  languageName: node
+  linkType: hard
+
+"ioredis@npm:^5, ioredis@npm:^5.4.1":
+  version: 5.6.1
+  resolution: "ioredis@npm:5.6.1"
+  dependencies:
+    "@ioredis/commands": ^1.1.1
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.4
+    denque: ^2.1.0
+    lodash.defaults: ^4.2.0
+    lodash.isarguments: ^3.1.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 89100a97b2210fed2aca45daf902adee8aa2294e56f817742651c86234a3efa56f82aa5aa762a94f5fbf806942f259ef5e628f626d1841d20d5cbb163fc8bd3f
   languageName: node
   linkType: hard
 
@@ -9118,6 +9323,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isarguments@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "lodash.isarguments@npm:3.1.0"
+  checksum: ae1526f3eb5c61c77944b101b1f655f846ecbedcb9e6b073526eba6890dc0f13f09f72e11ffbf6540b602caee319af9ac363d6cdd6be41f4ee453436f04f13b5
+  languageName: node
+  linkType: hard
+
 "lodash.isplainobject@npm:^4.0.6":
   version: 4.0.6
   resolution: "lodash.isplainobject@npm:4.0.6"
@@ -9139,7 +9351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21":
+"lodash@npm:4.17.21, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -9197,6 +9409,13 @@ __metadata:
   version: 7.18.3
   resolution: "lru-cache@npm:7.18.3"
   checksum: e550d772384709deea3f141af34b6d4fa392e2e418c1498c078de0ee63670f1f46f5eee746e8ef7e69e1c895af0d4224e62ee33e66a543a14763b0f2e74c1356
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.2.1":
+  version: 3.6.1
+  resolution: "luxon@npm:3.6.1"
+  checksum: bc6c24dde90f4263f548cc5a4ea3328e9c9511bee0b2255bd319639712862f1eb14a39c1b2dcbff8a8bf6686996d28f45b8fc902994a72dd05a29cef1269a6a4
   languageName: node
   linkType: hard
 
@@ -9673,6 +9892,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"msgpackr-extract@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "msgpackr-extract@npm:3.0.3"
+  dependencies:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64": 3.0.3
+    "@msgpackr-extract/msgpackr-extract-darwin-x64": 3.0.3
+    "@msgpackr-extract/msgpackr-extract-linux-arm": 3.0.3
+    "@msgpackr-extract/msgpackr-extract-linux-arm64": 3.0.3
+    "@msgpackr-extract/msgpackr-extract-linux-x64": 3.0.3
+    "@msgpackr-extract/msgpackr-extract-win32-x64": 3.0.3
+    node-gyp: latest
+    node-gyp-build-optional-packages: 5.2.2
+  dependenciesMeta:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-darwin-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-win32-x64":
+      optional: true
+  bin:
+    download-msgpackr-prebuilds: bin/download-prebuilds.js
+  checksum: 3b5ae152821feff843380f0b091afbebd80bd224e644f4410abd33d05da3159eb8b0d45c7dcf7d5226ce1d5c71cd68052f066788f46ea7a3cd8791a1c740a079
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.11.2":
+  version: 1.11.4
+  resolution: "msgpackr@npm:1.11.4"
+  dependencies:
+    msgpackr-extract: ^3.0.2
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 8367ee1ee1ee87eb65810d012c5f5576b8036f241570a6ac5d4ab43e1a1899e11418dacd62fe3fcda557f2314dcb5d8e34fc6beca89e8c1db9af2cee2b3227f3
+  languageName: node
+  linkType: hard
+
 "multer@npm:2.0.1":
   version: 2.0.1
   resolution: "multer@npm:2.0.1"
@@ -9700,6 +9962,15 @@ __metadata:
     strtok3: ^6.3.0
     token-types: ^4.2.1
   checksum: e1583c3d6519ea3ce1f451e2dfb37ad7a614cd9a8cdb7acfc7d2a2243f7490d209772fb4735b8d8f118f5e1fff27a81096a75839af72e8269516756a658edc3e
+  languageName: node
+  linkType: hard
+
+"mustache@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "mustache@npm:4.2.0"
+  bin:
+    mustache: bin/mustache
+  checksum: 928fcb63e3aa44a562bfe9b59ba202cccbe40a46da50be6f0dd831b495be1dd7e38ca4657f0ecab2c1a89dc7bccba0885eab7ee7c1b215830da765758c7e0506
   languageName: node
   linkType: hard
 
@@ -9766,7 +10037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abort-controller@npm:^3.0.1":
+"node-abort-controller@npm:^3.0.1, node-abort-controller@npm:^3.1.1":
   version: 3.1.1
   resolution: "node-abort-controller@npm:3.1.1"
   checksum: 2c340916af9710328b11c0828223fc65ba320e0d082214a211311bf64c2891028e42ef276b9799188c4ada9e6e1c54cf7a0b7c05dd9d59fcdc8cd633304c8047
@@ -9802,6 +10073,19 @@ __metadata:
     encoding:
       optional: true
   checksum: d76d2f5edb451a3f05b15115ec89fc6be39de37c6089f1b6368df03b91e1633fd379a7e01b7ab05089a25034b2023d959b47e59759cb38d88341b2459e89d6e5
+  languageName: node
+  linkType: hard
+
+"node-gyp-build-optional-packages@npm:5.2.2":
+  version: 5.2.2
+  resolution: "node-gyp-build-optional-packages@npm:5.2.2"
+  dependencies:
+    detect-libc: ^2.0.1
+  bin:
+    node-gyp-build-optional-packages: bin.js
+    node-gyp-build-optional-packages-optional: optional.js
+    node-gyp-build-optional-packages-test: build-test.js
+  checksum: 3c10d7380901ab5febcd153d2632917fe7507edb15a3405e9ef19801834a4c2162459a67b9944887f737f8718baeb4aaf0002c829a8214011930f2de80e4b42f
   languageName: node
   linkType: hard
 
@@ -11082,6 +11366,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"redis-errors@npm:^1.0.0, redis-errors@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "redis-errors@npm:1.2.0"
+  checksum: f28ac2692113f6f9c222670735aa58aeae413464fd58ccf3fce3f700cae7262606300840c802c64f2b53f19f65993da24dc918afc277e9e33ac1ff09edb394f4
+  languageName: node
+  linkType: hard
+
+"redis-info@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "redis-info@npm:3.1.0"
+  dependencies:
+    lodash: ^4.17.11
+  checksum: d72ff0584ebb4a2149cfcfcf9142d9a7f9d0b96ae53fbf431f2738f33f1f42add6505ff73b2d640cab345923a34b217d7c728fa706cc81ad8bd8ad4c48987445
+  languageName: node
+  linkType: hard
+
+"redis-parser@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "redis-parser@npm:3.0.0"
+  dependencies:
+    redis-errors: ^1.0.0
+  checksum: 89290ae530332f2ae37577647fa18208d10308a1a6ba750b9d9a093e7398f5e5253f19855b64c98757f7129cccce958e4af2573fdc33bad41405f87f1943459a
+  languageName: node
+  linkType: hard
+
 "reflect-metadata@npm:^0.1.13":
   version: 0.1.14
   resolution: "reflect-metadata@npm:0.1.14"
@@ -11858,6 +12167,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"standard-as-callback@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "standard-as-callback@npm:2.1.0"
+  checksum: 88bec83ee220687c72d94fd86a98d5272c91d37ec64b66d830dbc0d79b62bfa6e47f53b71646011835fc9ce7fae62739545d13124262b53be4fbb3e2ebad551c
+  languageName: node
+  linkType: hard
+
 "statuses@npm:2.0.1":
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
@@ -12594,7 +12910,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
+"tslib@npm:2.4.1":
+  version: 2.4.1
+  resolution: "tslib@npm:2.4.1"
+  checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.8.1, tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
@@ -12955,7 +13278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0.1":
+"uuid@npm:^9.0.0, uuid@npm:^9.0.1":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
@@ -13011,9 +13334,15 @@ __metadata:
     "@adiwajshing/keyed-db": ^0.2.4
     "@aws-sdk/client-s3": ^3.633.0
     "@aws-sdk/s3-request-presigner": ^3.633.0
+    "@bull-board/api": ^6.9.1
+    "@bull-board/express": ^6.9.1
+    "@bull-board/nestjs": ^6.9.1
+    "@figuro/chatwoot-sdk": ^1.1.17
     "@grpc/grpc-js": ^1.13.4
     "@grpc/proto-loader": ^0.7.13
+    "@liaoliaots/nestjs-redis": ^9
     "@nestjs/axios": ^3.0.2
+    "@nestjs/bullmq": ^11.0.2
     "@nestjs/cli": ^11.0.0
     "@nestjs/common": ^11.0.0
     "@nestjs/config": ^3.2.3
@@ -13031,6 +13360,7 @@ __metadata:
     "@types/express": ^4.17.3
     "@types/jest": 26.0.10
     "@types/lodash": ^4.14.194
+    "@types/mustache": ^4.2.5
     "@types/node": ^18.14.2
     "@types/passport": ^1.0.17
     "@types/supertest": ^2.0.8
@@ -13045,6 +13375,7 @@ __metadata:
     axios-retry: ^4.5.0
     better-sqlite3: 11.3.0
     bufferutil: ^4.0.8
+    bullmq: ^5.48.1
     check-disk-space: ^3.4.0
     chokidar: ^3.6.0
     class-transformer: ^0.5.1
@@ -13060,6 +13391,7 @@ __metadata:
     google-protobuf: ^3.21.4
     grpc-tools: ^1.13.0
     https-proxy-agent: ^7.0.0
+    ioredis: ^5
     jest: ^29.7.0
     joi: ^17.13.3
     knex: ^3.1.0
@@ -13069,6 +13401,7 @@ __metadata:
     lodash: ^4.17.21
     mime-types: ^2.1.27
     mongodb: 6.9.0
+    mustache: ^4.2.0
     nestjs-pino: ^4.1.0
     node-cache: 5.1.2
     passport: ^0.7.0
@@ -13097,6 +13430,7 @@ __metadata:
     ulid: ^2.3.0
     whatsapp-web.js: "github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09"
     write-file-atomic: ^6.0.0
+    yaml: ^2.7.1
     yargs: ^17.7.2
   dependenciesMeta:
     bufferutil:
@@ -13472,6 +13806,15 @@ __metadata:
   version: 5.0.0
   resolution: "yallist@npm:5.0.0"
   checksum: eba51182400b9f35b017daa7f419f434424410691bbc5de4f4240cc830fdef906b504424992700dc047f16b4d99100a6f8b8b11175c193f38008e9c96322b6a5
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.7.1":
+  version: 2.8.0
+  resolution: "yaml@npm:2.8.0"
+  bin:
+    yaml: bin.mjs
+  checksum: 66f103ca5a2f02dac0526895cc7ae7626d91aa8c43aad6fdcff15edf68b1199be4012140b390063877913441aaa5288fdf57eca30e06268a8282dd741525e626
   languageName: node
   linkType: hard
 

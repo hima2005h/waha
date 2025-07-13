@@ -1,0 +1,178 @@
+# Hebrew translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'אינטגרציית וואטסאפ (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 מנסה שוב בעוד {{attempts.nextDelay}} שניות...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ לא נותרו ניסיונות נוספים. אנא נסה שוב מאוחר יותר.
+  {{/attempts.nextDelay}}
+  ניסיון: {{{attempts.current}}} / {{{attempts.max}}}
+  פרטים: [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **הצליח**
+  ניסיון: {{{attempts.current}}} / {{{attempts.max}}}
+  פרטים: [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE: לא ניתן לשלוח הודעה בוואטסאפ.
+WHATSAPP_ERROR_RECEIVING_MESSAGE: לא ניתן לקבל הודעה מוואטסאפ
+WHATSAPP_ERROR_REMOVING_MESSAGE: לא ניתן להסיר הודעה מוואטסאפ
+APP_SCHEDULED_JOB_ERROR: המשימה המתוזמנת נכשלה בביצוע
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *נשלח מוואטסאפ*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *נשלח דרך API*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *הודעה זו נמחקה בוואטסאפ*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *נערך בוואטסאפ*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *הגיב* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *התגובה הוסרה*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'קבוצה'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'ערוץ'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'סטטוס'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **מחובר: הפעלת וואטסאפ לתיבת הדואר הנכנס של ChatWoot**
+
+  ✅ הפעלת וואטסאפ **{{{name}}}** חוברה בהצלחה לתיבת הדואר הנכנס של ChatWoot.
+
+  תיבת דואר נכנס זו מקושרת כעת ל**חשבון הוואטסאפ** שלך. אתה יכול לשלוח ולקבל הודעות ישירות מכאן — בדיוק כמו שימוש בוואטסאפ, אבל בתוך ChatWoot.
+
+  אתה יכול גם לנהל את הפעלת הוואטסאפ המקושרת לתיבת דואר נכנס זו. כדי לראות פעולות זמינות, שלח **help** לצ'אט זה.
+
+  📋 פעולות נפוצות שאתה יכול לעשות:
+  - בדוק אם הפעלת הוואטסאפ פעילה
+  - הפעל מחדש או עצור את הפעלת הוואטסאפ
+  - התנתק והתחבר מחדש על ידי סריקת קוד QR חדש
+
+  אם הכל עובד, תוכל לשוחח בחופשיות. אם אתה רואה אזהרות, ייתכן שתצטרך לחבר מחדש את חשבון הוואטסאפ שלך.
+
+  בוא נתחיל! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **מנותק: הפעלת וואטסאפ מתיבת הדואר הנכנס של ChatWoot**
+
+  ❌ הפעלת וואטסאפ **{{{name}}}** נותקה מתיבת הדואר הנכנס של ChatWoot.
+
+  לא תוכל יותר לשלוח או לקבל הודעות מוואטסאפ.
+
+  כדי להתחבר מחדש, אנא פנה למנהל המערכת שלך.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **עודכן: הגדרות הפעלת וואטסאפ**
+
+  ✅ ההגדרות עבור הפעלת וואטסאפ **{{{name}}}** עודכנו.
+
+APP_COMMANDS_LIST: |
+  אתה יכול לנהל **הפעלת וואטסאפ** על ידי שליחת אחת מהפקודות הבאות:
+  1. **status** - קבל את סטטוס ההפעלה הנוכחי.
+  2. **restart** - הפעל מחדש את ההפעלה - זה ינסה לחבר מחדש את חשבון הוואטסאפ שלך.
+  3. **start** - התחל את ההפעלה.
+  4. **stop** - עצור את ההפעלה.
+  5. **logout** - התנתק מההפעלה, כך שתוכל לסרוק קוד QR ולתקן את ההפעלה.
+  6. **qr** - קבל את קוד ה-QR עבור ההפעלה.
+  7. **screenshot** - קבל צילום מסך של ההפעלה (זמין רק במנוע **WEBJS**).
+  8. **help** - פקודות זמינות.
+
+  פקודות שרת:
+  - **server status** - קבל מידע על גרסת השרת והסטטוס.
+  - **server reboot** - הפעל מחדש את השרת בצורה חלקה.
+  - **server reboot force** - אלץ הפעלה מחדש של השרת.
+
+  שלח **פקודה** (לא תלוי רישיות) או **מספר פקודה** לשיחה זו.
+
+APP_HELP_REMINDER: |
+  שלח **help** כדי לקבל את רשימת הפקודות הזמינות.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} הפעלה "{{{session}}}" עברה לסטטוס {{{status}}}
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} סטטוס ההפעלה **{{{session}}}** הוא **{{{status}}}**
+  **חשבון וואטסאפ:**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  בקר ב[לוח הבקרה של WAHA]({{{url}}}) לפרטים נוספים.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ תיבת הדואר הנכנס של ChatWoot מקושרת ל**חשבון וואטסאפ** ומוכנה לשלוח ולקבל הודעות!
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **תיבת הדואר הנכנס של ChatWoot מקושרת לחשבון וואטסאפ אך אינה מוכנה לשלוח ולקבל הודעות!**
+
+  אנא בדוק את סטטוס ההפעלה ונסה להפעיל אותה מחדש או התנתק וסרוק את קוד ה-QR שוב.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **סרוק את קוד ה-QR בטלפון שלך כדי לקשר את חשבון הוואטסאפ לתיבת הדואר הנכנס של ChatWoot!**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **גרסה:**
+  ```
+  {{{version}}}
+  ```
+
+  **סטטוס:**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  השרת מופעל מחדש בצורה חלקה...
+
+APP_SERVER_REBOOT_FORCE: |
+  השרת מופעל מחדש בכוח...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ החשבון בוטל בהצלחה!
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **גרסה חדשה זמינה!**
+
+  גרסה נוכחית: **{{{currentVersion}}}**
+  גרסה חדשה: **{{{newVersion}}}**
+
+  👉 בדוק מה חדש ב[**🆕 יומן שינויים**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **תמוך ב-WAHA!**
+
+  אתה משתמש בגרסת **WAHA Core** החינמית. אם אתה מוצא פרויקט זה שימושי, אנא שקול לתמוך בפיתוח שלו.
+
+  התמיכה שלך היא הדרך היחידה שבה אנחנו יכולים להמשיך לעבוד על עדכונים, תיקונים ותכונות חדשות.
+
+  [**🎁 תמוך בנו**]({{{supportUrl}}})

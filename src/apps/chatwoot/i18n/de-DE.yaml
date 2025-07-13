@@ -1,0 +1,181 @@
+# German translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'WhatsApp Integration (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 Wiederholung in {{attempts.nextDelay}} Sekunden...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ Keine weiteren Versuche übrig. Bitte versuchen Sie es später erneut.
+  {{/attempts.nextDelay}}
+  Versuch: {{{attempts.current}}} / {{{attempts.max}}}
+  Details: [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **Erfolgreich**
+  Versuch: {{{attempts.current}}} / {{{attempts.max}}}
+  Details: [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE:
+  Nachricht konnte nicht über WhatsApp gesendet werden.
+WHATSAPP_ERROR_RECEIVING_MESSAGE:
+  Nachricht konnte nicht von WhatsApp empfangen werden
+WHATSAPP_ERROR_REMOVING_MESSAGE:
+  Nachricht konnte nicht von WhatsApp entfernt werden
+APP_SCHEDULED_JOB_ERROR: Geplante Aufgabe konnte nicht ausgeführt werden
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *Von WhatsApp gesendet*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *Über API gesendet*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *Diese Nachricht wurde in WhatsApp gelöscht*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *In WhatsApp bearbeitet*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *Reagiert mit* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *Reaktion entfernt*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'Gruppe'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Kanal'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'Status'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **VERBUNDEN: WhatsApp-Sitzung mit ChatWoot Inbox**
+
+  ✅ WhatsApp-Sitzung **{{{name}}}** wurde erfolgreich mit dieser ChatWoot Inbox verbunden.
+
+  Diese Inbox ist jetzt mit Ihrem **WhatsApp-Konto** verknüpft. Sie können Nachrichten direkt von hier senden und empfangen — genau wie bei WhatsApp, aber innerhalb von ChatWoot.
+
+  Sie können auch die mit dieser Inbox verknüpfte WhatsApp-Sitzung verwalten. Um verfügbare Aktionen anzuzeigen, senden Sie **help** an diesen Chat.
+
+  📋 Häufige Aktionen, die Sie durchführen können:
+  - Überprüfen, ob die WhatsApp-Sitzung aktiv ist
+  - Die WhatsApp-Sitzung neu starten oder stoppen
+  - Abmelden und durch Scannen eines neuen QR-Codes wieder verbinden
+
+  Wenn alles funktioniert, können Sie frei chatten. Wenn Sie Warnungen sehen, müssen Sie möglicherweise Ihr WhatsApp-Konto neu verbinden.
+
+  Lassen Sie uns beginnen! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **GETRENNT: WhatsApp-Sitzung von ChatWoot Inbox**
+
+  ❌ WhatsApp-Sitzung **{{{name}}}** wurde von dieser ChatWoot Inbox getrennt.
+
+  Sie können keine Nachrichten mehr von WhatsApp senden oder empfangen.
+
+  Um eine erneute Verbindung herzustellen, wenden Sie sich bitte an Ihren Administrator.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **AKTUALISIERT: WhatsApp-Sitzungseinstellungen**
+
+  ✅ Einstellungen für WhatsApp-Sitzung **{{{name}}}** wurden aktualisiert.
+
+APP_COMMANDS_LIST: |
+  Sie können die **WhatsApp-Sitzung** verwalten, indem Sie einen der folgenden Befehle senden:
+  1. **status** - den aktuellen Sitzungsstatus abrufen.
+  2. **restart** - die Sitzung neu starten - dies versucht, Ihr WhatsApp-Konto neu zu verbinden.
+  3. **start** - die Sitzung starten.
+  4. **stop** - die Sitzung stoppen.
+  5. **logout** - von der Sitzung abmelden, damit Sie den QR-Code scannen und die Sitzung reparieren können.
+  6. **qr** - den QR-Code für die Sitzung abrufen.
+  7. **screenshot** - einen Screenshot der Sitzung erhalten (nur in der **WEBJS**-Engine verfügbar).
+  8. **help** - verfügbare Befehle.
+
+  Server-Befehle:
+  - **server status** - Serverversion und Statusinformationen abrufen.
+  - **server reboot** - Server ordnungsgemäß neu starten.
+  - **server reboot force** - Server erzwungen neu starten.
+
+  Senden Sie einen **Befehl** (Groß-/Kleinschreibung wird nicht beachtet) oder eine **Befehlsnummer** an diese Konversation.
+
+APP_HELP_REMINDER: |
+  Senden Sie **help**, um die Liste der verfügbaren Befehle zu erhalten.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} Sitzung "{{{session}}}" hat den Status zu {{{status}}} gewechselt
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} **{{{session}}}** Sitzungsstatus ist **{{{status}}}**
+  **WhatsApp-Konto:**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  Besuchen Sie das [WAHA Dashboard]({{{url}}}) für weitere Details.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ Diese ChatWoot Inbox ist mit dem **WhatsApp-Konto** verknüpft und bereit zum Senden und Empfangen von Nachrichten!
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **Diese ChatWoot Inbox ist mit dem WhatsApp-Konto verknüpft, aber NICHT bereit zum Senden und Empfangen von Nachrichten!**
+
+  Bitte überprüfen Sie den Sitzungsstatus und versuchen Sie, sie neu zu starten oder melden Sie sich ab und scannen Sie den QR-Code erneut.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **Scannen Sie den QR-Code auf Ihrem Telefon, um das WhatsApp-Konto mit dieser ChatWoot Inbox zu verknüpfen!**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **Version:**
+  ```
+  {{{version}}}
+  ```
+
+  **Status:**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  Server wird ordnungsgemäß neu gestartet...
+
+APP_SERVER_REBOOT_FORCE: |
+  Server wird erzwungen neu gestartet...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ Konto erfolgreich abgemeldet!
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **Neue Version verfügbar!**
+
+  Aktuelle Version: **{{{currentVersion}}}**
+  Neue Version: **{{{newVersion}}}**
+
+  👉 Sehen Sie, was neu ist im [**🆕 Änderungsprotokoll**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **Unterstützen Sie WAHA!**
+
+  Sie verwenden die kostenlose **WAHA Core** Version. Wenn Sie dieses Projekt nützlich finden, erwägen Sie bitte, seine Entwicklung zu unterstützen.
+
+  Ihre Unterstützung ist der einzige Weg, wie wir weiterhin an Updates, Fehlerbehebungen und neuen Funktionen arbeiten können.
+
+  [**🎁 Unterstützen Sie uns**]({{{supportUrl}}})

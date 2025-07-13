@@ -13,6 +13,7 @@ import { ProfileController } from '@waha/api/profile.controller';
 import { ServerController } from '@waha/api/server.controller';
 import { ServerDebugController } from '@waha/api/server.debug.controller';
 import { WebsocketGatewayCore } from '@waha/api/websocket.gateway.core';
+import { AppsModuleExports } from '@waha/apps/apps.module';
 import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
 import { IApiKeyAuth } from '@waha/core/auth/auth';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
@@ -31,7 +32,6 @@ import {
   getPinoLogLevel,
   getPinoTransport,
 } from '@waha/utils/logging';
-import { noSlashAtTheEnd } from '@waha/utils/string';
 import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { Logger as NestJSPinoLogger } from 'nestjs-pino';
@@ -64,6 +64,7 @@ import { WAHAHealthCheckServiceCore } from './health/WAHAHealthCheckServiceCore'
 import { SessionManagerCore } from './manager.core';
 
 export const IMPORTS_CORE = [
+  ...AppsModuleExports.imports,
   LoggerModule.forRoot({
     renameContext: 'name',
     pinoHttp: {
@@ -77,7 +78,8 @@ export const IMPORTS_CORE = [
             req.url.startsWith('/ping') ||
             req.url.startsWith('/dashboard/') ||
             req.url.startsWith('/api/files/') ||
-            req.url.startsWith('/api/s3/')
+            req.url.startsWith('/api/s3/') ||
+            req.url.startsWith('/jobs/')
           );
         },
       },
@@ -155,6 +157,7 @@ export const CONTROLLERS = [
   ServerDebugController,
   VersionController,
   MediaController,
+  ...AppsModuleExports.controllers,
 ];
 export const PROVIDERS_BASE: Provider[] = [
   {
@@ -176,6 +179,7 @@ export const PROVIDERS_BASE: Provider[] = [
     useFactory: ApiKeyAuthFactory,
     inject: [WhatsappConfigService, NestJSPinoLogger],
   },
+  ...AppsModuleExports.providers,
 ];
 
 const PROVIDERS = [
@@ -235,8 +239,9 @@ export class AppModuleCore {
     if (dashboardCredentials) {
       const username = dashboardCredentials[0];
       const password = dashboardCredentials[1];
-      const route = noSlashAtTheEnd(this.dashboardConfig.dashboardUri);
-      consumer.apply(BasicAuthFunction(username, password)).forRoutes(route);
+      consumer
+        .apply(BasicAuthFunction(username, password))
+        .forRoutes('dashboard');
     }
   }
 }

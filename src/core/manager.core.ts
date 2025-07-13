@@ -1,9 +1,14 @@
 import {
+  Inject,
   Injectable,
   NotFoundException,
   OnModuleInit,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import {
+  AppsService,
+  IAppsService,
+} from '@waha/apps/app_sdk/services/IAppsService';
 import { EngineBootstrap } from '@waha/core/abc/EngineBootstrap';
 import { GowsEngineConfigService } from '@waha/core/config/GowsEngineConfigService';
 import { WebJSEngineConfigService } from '@waha/core/config/WebJSEngineConfigService';
@@ -81,8 +86,10 @@ export class SessionManagerCore extends SessionManager implements OnModuleInit {
     gowsConfigService: GowsEngineConfigService,
     log: PinoLogger,
     private mediaStorageFactory: MediaStorageFactory,
+    @Inject(AppsService)
+    appsService: IAppsService,
   ) {
-    super(log, config, gowsConfigService);
+    super(log, config, gowsConfigService, appsService);
     this.session = DefaultSessionStatus.STOPPED;
     this.sessionConfig = null;
     const engineName = this.engineConfigService.getDefaultEngineName();
@@ -208,6 +215,9 @@ export class SessionManagerCore extends SessionManager implements OnModuleInit {
     // configure webhooks
     const webhooks = this.getWebhooks();
     webhook.configure(session, webhooks);
+
+    // Apps
+    await this.configureApps(session);
 
     // start session
     await session.start();
@@ -378,9 +388,7 @@ export class SessionManagerCore extends SessionManager implements OnModuleInit {
   }
 
   async getSessionInfo(name: string): Promise<SessionDetailedInfo | null> {
-    if (name !== this.DEFAULT) {
-      return null;
-    }
+    this.onlyDefault(name);
     const sessions = await this.getSessions(true);
     if (sessions.length === 0) {
       return null;
@@ -400,5 +408,7 @@ export class SessionManagerCore extends SessionManager implements OnModuleInit {
 
   async init() {
     await this.store.init();
+    const knex = this.store.getWAHADatabase();
+    await this.appsService.migrate(knex);
   }
 }

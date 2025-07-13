@@ -1,0 +1,178 @@
+# French translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'Intégration WhatsApp (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 Nouvelle tentative dans {{attempts.nextDelay}} secondes...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ Plus de tentatives restantes. Veuillez réessayer plus tard.
+  {{/attempts.nextDelay}}
+  Tentative : {{{attempts.current}}} / {{{attempts.max}}}
+  Détails : [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **Réussi**
+  Tentative : {{{attempts.current}}} / {{{attempts.max}}}
+  Détails : [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE: Impossible d'envoyer un message sur WhatsApp.
+WHATSAPP_ERROR_RECEIVING_MESSAGE: Impossible de recevoir un message de WhatsApp
+WHATSAPP_ERROR_REMOVING_MESSAGE: Impossible de supprimer un message de WhatsApp
+APP_SCHEDULED_JOB_ERROR: La tâche planifiée n'a pas pu être exécutée
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *Envoyé depuis WhatsApp*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *Envoyé via API*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *Ce message a été supprimé dans WhatsApp*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *Modifié dans WhatsApp*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *A réagi avec* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *Réaction supprimée*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'Groupe'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Canal'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'Statut'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **CONNECTÉ : Session WhatsApp à la Boîte de Réception ChatWoot**
+
+  ✅ La session WhatsApp **{{{name}}}** a été connectée avec succès à cette Boîte de Réception ChatWoot.
+
+  Cette boîte de réception est maintenant liée à votre **Compte WhatsApp**. Vous pouvez envoyer et recevoir des messages directement d'ici — tout comme utiliser WhatsApp, mais à l'intérieur de ChatWoot.
+
+  Vous pouvez également gérer la session WhatsApp liée à cette boîte de réception. Pour voir les actions disponibles, envoyez **help** à ce chat.
+
+  📋 Actions courantes que vous pouvez effectuer :
+  - Vérifier si la session WhatsApp est active
+  - Redémarrer ou Arrêter la session WhatsApp
+  - Se déconnecter et se reconnecter en scannant un nouveau code QR
+
+  Si tout fonctionne, vous pourrez discuter librement. Si vous voyez des avertissements, vous devrez peut-être reconnecter votre compte WhatsApp.
+
+  Commençons ! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **DÉCONNECTÉ : Session WhatsApp de la Boîte de Réception ChatWoot**
+
+  ❌ La session WhatsApp **{{{name}}}** a été déconnectée de cette Boîte de Réception ChatWoot.
+
+  Vous ne pourrez plus envoyer ou recevoir de messages depuis WhatsApp.
+
+  Pour vous reconnecter, veuillez contacter votre administrateur.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **MIS À JOUR : Paramètres de Session WhatsApp**
+
+  ✅ Les paramètres de la session WhatsApp **{{{name}}}** ont été mis à jour.
+
+APP_COMMANDS_LIST: |
+  Vous pouvez gérer la **session WhatsApp** en envoyant l'une des commandes suivantes :
+  1. **status** - obtenir l'état actuel de la session.
+  2. **restart** - redémarrer la session - cela tentera de reconnecter votre compte WhatsApp.
+  3. **start** - démarrer la session.
+  4. **stop** - arrêter la session.
+  5. **logout** - se déconnecter de la session, pour pouvoir scanner le code QR et réparer la session.
+  6. **qr** - obtenir le code QR pour la session.
+  7. **screenshot** - obtenir une capture d'écran de la session (disponible uniquement dans le moteur **WEBJS**).
+  8. **help** - commandes disponibles.
+
+  Commandes du serveur :
+  - **server status** - obtenir les informations de version et d'état du serveur.
+  - **server reboot** - redémarrer le serveur en douceur.
+  - **server reboot force** - forcer le redémarrage du serveur.
+
+  Envoyez une **commande** (insensible à la casse) ou un **numéro de commande** à cette conversation.
+
+APP_HELP_REMINDER: |
+  Envoyez **help** pour obtenir la liste des commandes disponibles.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} La session "{{{session}}}" est passée au statut {{{status}}}
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} Le statut de la session **{{{session}}}** est **{{{status}}}**
+  **Compte WhatsApp :**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  Visitez le [Tableau de bord WAHA]({{{url}}}) pour plus de détails.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ Cette Boîte de Réception ChatWoot est liée au **Compte WhatsApp** et prête à envoyer et recevoir des messages !
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **Cette Boîte de Réception ChatWoot est liée au Compte WhatsApp mais N'EST PAS prête à envoyer et recevoir des messages !**
+
+  Veuillez vérifier l'état de la session et essayer de la redémarrer ou déconnectez-vous et scannez à nouveau le code QR.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **Scannez le code QR sur votre téléphone pour lier le Compte WhatsApp à cette Boîte de Réception ChatWoot !**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **Version :**
+  ```
+  {{{version}}}
+  ```
+
+  **Statut :**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  Le serveur redémarre en douceur...
+
+APP_SERVER_REBOOT_FORCE: |
+  Le serveur redémarre de force...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ Compte déconnecté avec succès !
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **Nouvelle Version Disponible !**
+
+  Version actuelle : **{{{currentVersion}}}**
+  Nouvelle version : **{{{newVersion}}}**
+
+  👉 Découvrez les nouveautés dans le [**🆕 Journal des modifications**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **Soutenez WAHA !**
+
+  Vous utilisez la version gratuite **WAHA Core**. Si vous trouvez ce projet utile, veuillez envisager de soutenir son développement.
+
+  Votre soutien est le seul moyen pour nous de continuer à travailler sur les mises à jour, les corrections et les nouvelles fonctionnalités.
+
+  [**🎁 Soutenez-nous**]({{{supportUrl}}})

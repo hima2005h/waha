@@ -1,0 +1,178 @@
+# Turkish translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'WhatsApp Entegrasyonu (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 {{attempts.nextDelay}} saniye içinde tekrar deneniyor...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ Başka deneme hakkı kalmadı. Lütfen daha sonra tekrar deneyin.
+  {{/attempts.nextDelay}}
+  Deneme: {{{attempts.current}}} / {{{attempts.max}}}
+  Detaylar: [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **Başarılı**
+  Deneme: {{{attempts.current}}} / {{{attempts.max}}}
+  Detaylar: [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE: WhatsApp'ta mesaj gönderilemedi.
+WHATSAPP_ERROR_RECEIVING_MESSAGE: WhatsApp'tan mesaj alınamadı
+WHATSAPP_ERROR_REMOVING_MESSAGE: WhatsApp'tan mesaj kaldırılamadı
+APP_SCHEDULED_JOB_ERROR: Zamanlanmış görev yürütülemedi
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *WhatsApp'tan gönderildi*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *API aracılığıyla gönderildi*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *Bu mesaj WhatsApp'ta silindi*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *WhatsApp'ta düzenlendi*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *Tepki verdi* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *Tepki kaldırıldı*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'Grup'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Kanal'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'Durum'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **BAĞLANDI: WhatsApp Oturumu ChatWoot Gelen Kutusuna**
+
+  ✅ WhatsApp oturumu **{{{name}}}** bu ChatWoot Gelen Kutusuna başarıyla bağlandı.
+
+  Bu gelen kutusu artık **WhatsApp Hesabınıza** bağlı. Mesajları doğrudan buradan gönderip alabilirsiniz — tıpkı WhatsApp kullanır gibi, ancak ChatWoot içinde.
+
+  Ayrıca bu gelen kutusuna bağlı WhatsApp oturumunu da yönetebilirsiniz. Kullanılabilir eylemleri görmek için, bu sohbete **help** gönderin.
+
+  📋 Yapabileceğiniz yaygın eylemler:
+  - WhatsApp oturumunun aktif olup olmadığını kontrol etme
+  - WhatsApp oturumunu yeniden başlatma veya durdurma
+  - Çıkış yapma ve yeni bir QR kod tarayarak yeniden bağlanma
+
+  Her şey çalışıyorsa, özgürce sohbet edebileceksiniz. Uyarılar görürseniz, WhatsApp hesabınızı yeniden bağlamanız gerekebilir.
+
+  Hadi başlayalım! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **BAĞLANTI KESİLDİ: WhatsApp Oturumu ChatWoot Gelen Kutusundan**
+
+  ❌ WhatsApp oturumu **{{{name}}}** bu ChatWoot Gelen Kutusundan bağlantısı kesildi.
+
+  Artık WhatsApp'tan mesaj gönderemez veya alamazsınız.
+
+  Yeniden bağlanmak için, lütfen yöneticinizle iletişime geçin.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **GÜNCELLENDİ: WhatsApp Oturum Ayarları**
+
+  ✅ WhatsApp oturumu **{{{name}}}** için ayarlar güncellendi.
+
+APP_COMMANDS_LIST: |
+  Aşağıdaki komutlardan birini göndererek **WhatsApp oturumunu** yönetebilirsiniz:
+  1. **status** - mevcut oturum durumunu alın.
+  2. **restart** - oturumu yeniden başlatın - bu, WhatsApp hesabınızı yeniden bağlamaya çalışacaktır.
+  3. **start** - oturumu başlatın.
+  4. **stop** - oturumu durdurun.
+  5. **logout** - oturumdan çıkış yapın, böylece QR kodu tarayabilir ve oturumu onarabilirsiniz.
+  6. **qr** - oturum için QR kodu alın.
+  7. **screenshot** - oturumun ekran görüntüsünü alın (yalnızca **WEBJS** motorunda kullanılabilir).
+  8. **help** - kullanılabilir komutlar.
+
+  Sunucu komutları:
+  - **server status** - sunucu sürümü ve durum bilgilerini alın.
+  - **server reboot** - sunucuyu nazikçe yeniden başlatın.
+  - **server reboot force** - sunucuyu zorla yeniden başlatın.
+
+  Bu konuşmaya bir **komut** (büyük/küçük harf duyarsız) veya **komut numarası** gönderin.
+
+APP_HELP_REMINDER: |
+  Kullanılabilir komutların listesini almak için **help** gönderin.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} "{{{session}}}" oturumu {{{status}}} durumuna geçti
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} **{{{session}}}** oturum durumu **{{{status}}}** içinde
+  **WhatsApp Hesabı:**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  Daha fazla ayrıntı için [WAHA Kontrol Paneli]({{{url}}}) ziyaret edin.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ Bu ChatWoot Gelen Kutusu **WhatsApp Hesabına** bağlı ve mesaj gönderip almaya hazır!
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **Bu ChatWoot Gelen Kutusu WhatsApp Hesabına bağlı ancak mesaj gönderip almaya hazır DEĞİL!**
+
+  Lütfen oturum durumunu kontrol edin ve yeniden başlatmayı deneyin veya çıkış yapın ve QR kodu tekrar tarayın.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **WhatsApp Hesabını bu ChatWoot Gelen Kutusuna bağlamak için telefonunuzda QR kodu tarayın!**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **Sürüm:**
+  ```
+  {{{version}}}
+  ```
+
+  **Durum:**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  Sunucu nazikçe yeniden başlatılıyor...
+
+APP_SERVER_REBOOT_FORCE: |
+  Sunucu zorla yeniden başlatılıyor...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ Hesap başarıyla yetkilendirilmedi!
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **Yeni Sürüm Mevcut!**
+
+  Mevcut sürüm: **{{{currentVersion}}}**
+  Yeni sürüm: **{{{newVersion}}}**
+
+  👉 [**🆕 Değişiklik Günlüğü**]({{{changelogUrl}}}) içinde yenilikleri kontrol edin
+
+APP_CORE_VERSION_USED: |
+  ❤️ **WAHA'yı Destekleyin!**
+
+  Ücretsiz **WAHA Core** sürümünü kullanıyorsunuz. Bu projeyi faydalı buluyorsanız, lütfen geliştirilmesini desteklemeyi düşünün.
+
+  Desteğiniz, güncellemeler, düzeltmeler ve yeni özellikler üzerinde çalışmaya devam edebilmemizin tek yoludur.
+
+  [**🎁 Bizi Destekleyin**]({{{supportUrl}}})

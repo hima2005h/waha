@@ -1,8 +1,10 @@
 import {
   BeforeApplicationShutdown,
+  NotFoundException,
   OnApplicationBootstrap,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { IAppsService } from '@waha/apps/app_sdk/services/IAppsService';
 import { WhatsappConfigService } from '@waha/config.service';
 import {
   EngineBootstrap,
@@ -55,6 +57,7 @@ export abstract class SessionManager
     protected log: PinoLogger,
     protected config: WhatsappConfigService,
     protected gowsConfigService: GowsEngineConfigService,
+    protected readonly appsService: IAppsService,
   ) {
     this.lock = new AsyncLock({
       timeout: 5_000,
@@ -99,9 +102,28 @@ export abstract class SessionManager
     );
   }
 
+  async configureApps(session: WhatsappSession) {
+    await this.appsService.beforeSessionStart(
+      session,
+      this.store.getWAHADatabase(),
+    );
+  }
+
   //
   // API Methods
   //
+  restart(name: string) {
+    return this.withLock(name, async () => {
+      const exists = await this.exists(name);
+      if (!exists) {
+        throw new NotFoundException('Session not found');
+      }
+      await this.assign(name);
+      await this.stop(name, true);
+      await this.start(name);
+    });
+  }
+
   /**
    * Either create or update
    */

@@ -1,0 +1,178 @@
+# Indonesian translations for ChatWoot integration
+APP_INBOX_CONTACT_NAME: 'Integrasi WhatsApp (WAHA)'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 Mencoba lagi dalam {{attempts.nextDelay}} detik...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ Tidak ada percobaan lagi. Silakan coba lagi nanti.
+  {{/attempts.nextDelay}}
+  Percobaan: {{{attempts.current}}} / {{{attempts.max}}}
+  Detail: [{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **Berhasil**
+  Percobaan: {{{attempts.current}}} / {{{attempts.max}}}
+  Detail: [{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE: Tidak dapat mengirim pesan di WhatsApp.
+WHATSAPP_ERROR_RECEIVING_MESSAGE: Tidak dapat menerima pesan dari WhatsApp
+WHATSAPP_ERROR_REMOVING_MESSAGE: Tidak dapat menghapus pesan dari WhatsApp
+APP_SCHEDULED_JOB_ERROR: Tugas terjadwal gagal dijalankan
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *Dikirim dari WhatsApp*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *Dikirim melalui API*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *Pesan ini telah dihapus di WhatsApp*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *Diedit di WhatsApp*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *Bereaksi* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *Reaksi dihapus*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: 'Grup'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Saluran'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: 'Status'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **TERHUBUNG: Sesi WhatsApp ke Kotak Masuk ChatWoot**
+
+  ✅ Sesi WhatsApp **{{{name}}}** telah berhasil terhubung ke Kotak Masuk ChatWoot ini.
+
+  Kotak masuk ini sekarang terhubung ke **Akun WhatsApp** Anda. Anda dapat mengirim dan menerima pesan langsung dari sini — seperti menggunakan WhatsApp, tetapi di dalam ChatWoot.
+
+  Anda juga dapat mengelola sesi WhatsApp yang terhubung ke kotak masuk ini. Untuk melihat tindakan yang tersedia, kirim **help** ke obrolan ini.
+
+  📋 Tindakan umum yang dapat Anda lakukan:
+  - Periksa apakah sesi WhatsApp aktif
+  - Mulai ulang atau Hentikan sesi WhatsApp
+  - Keluar dan hubungkan kembali dengan memindai kode QR baru
+
+  Jika semuanya berfungsi, Anda akan dapat mengobrol dengan bebas. Jika Anda melihat peringatan, Anda mungkin perlu menghubungkan kembali akun WhatsApp Anda.
+
+  Mari kita mulai! 🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **TERPUTUS: Sesi WhatsApp dari Kotak Masuk ChatWoot**
+
+  ❌ Sesi WhatsApp **{{{name}}}** telah terputus dari Kotak Masuk ChatWoot ini.
+
+  Anda tidak akan dapat lagi mengirim atau menerima pesan dari WhatsApp.
+
+  Untuk menghubungkan kembali, silakan hubungi administrator Anda.
+
+APP_UPDATED_MESSAGE: |
+  🔄 **DIPERBARUI: Pengaturan Sesi WhatsApp**
+
+  ✅ Pengaturan untuk sesi WhatsApp **{{{name}}}** telah diperbarui.
+
+APP_COMMANDS_LIST: |
+  Anda dapat mengelola **sesi WhatsApp** dengan mengirimkan salah satu perintah berikut:
+  1. **status** - dapatkan status sesi saat ini.
+  2. **restart** - mulai ulang sesi - ini akan mencoba menghubungkan kembali akun WhatsApp Anda.
+  3. **start** - mulai sesi.
+  4. **stop** - hentikan sesi.
+  5. **logout** - keluar dari sesi, sehingga Anda dapat memindai kode QR dan memperbaiki sesi.
+  6. **qr** - dapatkan kode QR untuk sesi.
+  7. **screenshot** - dapatkan tangkapan layar sesi (hanya tersedia di mesin **WEBJS**).
+  8. **help** - perintah yang tersedia.
+
+  Perintah server:
+  - **server status** - dapatkan informasi versi dan status server.
+  - **server reboot** - mulai ulang server dengan anggun.
+  - **server reboot force** - paksa mulai ulang server.
+
+  Kirim **perintah** (tidak peka huruf besar/kecil) atau **nomor perintah** ke percakapan ini.
+
+APP_HELP_REMINDER: |
+  Kirim **help** untuk mendapatkan daftar perintah yang tersedia.
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} Sesi "{{{session}}}" beralih ke status {{{status}}}
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} Status sesi **{{{session}}}** adalah **{{{status}}}**
+  **Akun WhatsApp:**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  Kunjungi [Dasbor WAHA]({{{url}}}) untuk detail lebih lanjut.
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ Kotak Masuk ChatWoot ini terhubung ke **Akun WhatsApp** dan siap untuk mengirim dan menerima pesan!
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **Kotak Masuk ChatWoot ini terhubung ke Akun WhatsApp tetapi TIDAK siap untuk mengirim dan menerima pesan!**
+
+  Silakan periksa status sesi dan coba mulai ulang atau keluar dan pindai kode QR lagi.
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **Pindai kode QR di ponsel Anda untuk menghubungkan Akun WhatsApp dengan Kotak Masuk ChatWoot ini!**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **Versi:**
+  ```
+  {{{version}}}
+  ```
+
+  **Status:**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  Server sedang dimulai ulang dengan anggun...
+
+APP_SERVER_REBOOT_FORCE: |
+  Server sedang dipaksa untuk dimulai ulang...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ Akun berhasil tidak diotorisasi!
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **Versi Baru Tersedia!**
+
+  Versi saat ini: **{{{currentVersion}}}**
+  Versi baru: **{{{newVersion}}}**
+
+  👉 Lihat apa yang baru di [**🆕 Changelog**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **Dukung WAHA!**
+
+  Anda menggunakan versi **WAHA Core** gratis. Jika Anda merasa proyek ini bermanfaat, harap pertimbangkan untuk mendukung pengembangannya.
+
+  Dukungan Anda adalah satu-satunya cara kami dapat terus bekerja pada pembaruan, perbaikan, dan fitur baru.
+
+  [**🎁 Dukung Kami**]({{{supportUrl}}})
