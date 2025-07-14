@@ -109,7 +109,10 @@ import {
   VoiceStatus,
 } from '../../structures/status.dto';
 import { WASessionStatusBody } from '../../structures/webhooks.dto';
-import { NotImplementedByEngineError } from '../exceptions';
+import {
+  AvailableInPlusVersion,
+  NotImplementedByEngineError,
+} from '../exceptions';
 import { IMediaManager } from '../media/IMediaManager';
 import { QR } from '../QR';
 import { DataStore } from './DataStore';
@@ -940,15 +943,15 @@ export abstract class WhatsappSession {
   }
 
   public sendImageStatus(status: ImageStatus) {
-    throw new NotImplementedByEngineError();
+    throw new AvailableInPlusVersion();
   }
 
   public sendVoiceStatus(status: VoiceStatus) {
-    throw new NotImplementedByEngineError();
+    throw new AvailableInPlusVersion();
   }
 
   public sendVideoStatus(status: VideoStatus) {
-    throw new NotImplementedByEngineError();
+    throw new AvailableInPlusVersion();
   }
 
   public deleteStatus(request: DeleteStatusRequest) {
