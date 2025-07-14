@@ -24,7 +24,8 @@ export class SwitchObservable<T> extends Observable<T> {
   }
 
   switch(newObservable$: Observable<T>) {
-    this.subject$.next(newObservable$);
+    // If newObservable$ is null or undefined, use EMPTY instead
+    this.subject$.next(newObservable$ || EMPTY);
   }
 
   complete() {
