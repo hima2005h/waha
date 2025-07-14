@@ -1426,12 +1426,14 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     const messageReceived$ = fromEvent(this.whatsapp, Events.MESSAGE_RECEIVED);
     const messagesFromOthers$ = messageReceived$.pipe(
       mergeMap((msg: any) => this.processIncomingMessage(msg, true)),
+      share(),
     );
     this.events2.get(WAHAEvents.MESSAGE).switch(messagesFromOthers$);
 
     const messageCreate$ = fromEvent(this.whatsapp, Events.MESSAGE_CREATE);
     const messagesFromAll$ = messageCreate$.pipe(
       mergeMap((msg: any) => this.processIncomingMessage(msg, true)),
+      share(),
     );
     this.events2.get(WAHAEvents.MESSAGE_ANY).switch(messagesFromAll$);
 
@@ -1440,7 +1442,8 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       Events.MESSAGE_CIPHERTEXT,
     );
     const messagesWaiting$ = messageCiphertext$.pipe(
-      mergeMap((msg: any) => this.processIncomingMessage(msg, true)),
+      mergeMap((msg: any) => this.processIncomingMessage(msg, false)),
+      share(),
     );
     this.events2.get(WAHAEvents.MESSAGE_WAITING).switch(messagesWaiting$);
 
