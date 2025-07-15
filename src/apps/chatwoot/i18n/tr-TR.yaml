@@ -95,7 +95,9 @@ APP_UPDATED_MESSAGE: |
   ✅ WhatsApp oturumu **{{{name}}}** için ayarlar güncellendi.
 
 APP_COMMANDS_LIST: |
-  Aşağıdaki komutlardan birini göndererek **WhatsApp oturumunu** yönetebilirsiniz:
+  Aşağıdaki komutlardan birini göndererek **WhatsApp Entegrasyonu**nu yönetebilirsiniz:
+
+  🖥️ Oturumlar:
   1. **status** - mevcut oturum durumunu alın.
   2. **restart** - oturumu yeniden başlatın - bu, WhatsApp hesabınızı yeniden bağlamaya çalışacaktır.
   3. **start** - oturumu başlatın.
@@ -105,7 +107,7 @@ APP_COMMANDS_LIST: |
   7. **screenshot** - oturumun ekran görüntüsünü alın (yalnızca **WEBJS** motorunda kullanılabilir).
   8. **help** - kullanılabilir komutlar.
 
-  Sunucu komutları:
+  ⚙️ Sunucu:
   - **server status** - sunucu sürümü ve durum bilgilerini alın.
   - **server reboot** - sunucuyu nazikçe yeniden başlatın.
   - **server reboot force** - sunucuyu zorla yeniden başlatın.

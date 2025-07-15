@@ -95,7 +95,9 @@ APP_UPDATED_MESSAGE: |
   ✅ Pengaturan untuk sesi WhatsApp **{{{name}}}** telah diperbarui.
 
 APP_COMMANDS_LIST: |
-  Anda dapat mengelola **sesi WhatsApp** dengan mengirimkan salah satu perintah berikut:
+  Anda dapat mengelola **Integrasi WhatsApp** dengan mengirimkan salah satu perintah berikut:
+
+  🖥️ Sesi:
   1. **status** - dapatkan status sesi saat ini.
   2. **restart** - mulai ulang sesi - ini akan mencoba menghubungkan kembali akun WhatsApp Anda.
   3. **start** - mulai sesi.
@@ -105,7 +107,7 @@ APP_COMMANDS_LIST: |
   7. **screenshot** - dapatkan tangkapan layar sesi (hanya tersedia di mesin **WEBJS**).
   8. **help** - perintah yang tersedia.
 
-  Perintah server:
+  ⚙️ Server:
   - **server status** - dapatkan informasi versi dan status server.
   - **server reboot** - mulai ulang server dengan anggun.
   - **server reboot force** - paksa mulai ulang server.

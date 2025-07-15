@@ -95,7 +95,9 @@ APP_UPDATED_MESSAGE: |
   ✅ Les paramètres de la session WhatsApp **{{{name}}}** ont été mis à jour.
 
 APP_COMMANDS_LIST: |
-  Vous pouvez gérer la **session WhatsApp** en envoyant l'une des commandes suivantes :
+  Vous pouvez gérer l'**Intégration WhatsApp** en envoyant l'une des commandes suivantes :
+
+  🖥️ Sessions :
   1. **status** - obtenir l'état actuel de la session.
   2. **restart** - redémarrer la session - cela tentera de reconnecter votre compte WhatsApp.
   3. **start** - démarrer la session.
@@ -105,7 +107,7 @@ APP_COMMANDS_LIST: |
   7. **screenshot** - obtenir une capture d'écran de la session (disponible uniquement dans le moteur **WEBJS**).
   8. **help** - commandes disponibles.
 
-  Commandes du serveur :
+  ⚙️ Serveur :
   - **server status** - obtenir les informations de version et d'état du serveur.
   - **server reboot** - redémarrer le serveur en douceur.
   - **server reboot force** - forcer le redémarrage du serveur.
