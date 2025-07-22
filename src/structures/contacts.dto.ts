@@ -54,3 +54,21 @@ export class ContactRequest extends SessionBaseRequest {
   @IsString()
   contactId: string;
 }
+
+export class ContactUpdateBody {
+  @ApiProperty({
+    description: 'Contact First Name',
+    example: 'John',
+    required: true,
+  })
+  @IsString()
+  firstName: string = 'John';
+
+  @ApiProperty({
+    description: 'Contact Last Name',
+    example: 'Doe',
+    required: true,
+  })
+  @IsString()
+  lastName: string = 'Doe';
+}

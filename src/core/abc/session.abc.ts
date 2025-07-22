@@ -77,7 +77,11 @@ import {
   MessageVoiceRequest,
   SendSeenRequest,
 } from '../../structures/chatting.dto';
-import { ContactQuery, ContactRequest } from '../../structures/contacts.dto';
+import {
+  ContactQuery,
+  ContactRequest,
+  ContactUpdateBody,
+} from '../../structures/contacts.dto';
 import {
   WAHAEngine,
   WAHAEvents,
@@ -639,6 +643,10 @@ export abstract class WhatsappSession {
   /**
    * Contacts methods
    */
+  public upsertContact(chatId: string, body: ContactUpdateBody): Promise<void> {
+    throw new NotImplementedByEngineError();
+  }
+
   public getContact(query: ContactQuery) {
     throw new NotImplementedByEngineError();
   }

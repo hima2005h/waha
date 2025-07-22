@@ -80,7 +80,11 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
-import { ContactQuery, ContactRequest } from '@waha/structures/contacts.dto';
+import {
+  ContactQuery,
+  ContactRequest,
+  ContactUpdateBody,
+} from '@waha/structures/contacts.dto';
 import {
   ACK_UNKNOWN,
   SECOND,
@@ -953,6 +957,16 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   /**
    * Contacts methods
    */
+  public async upsertContact(chatId: string, body: ContactUpdateBody) {
+    const phoneNumber = chatId.split('@')[0];
+    await this.whatsapp.saveOrEditAddressbookContact(
+      phoneNumber,
+      body.firstName,
+      body.lastName,
+      true,
+    );
+  }
+
   getContact(query: ContactQuery) {
     return this.whatsapp
       .getContactById(this.ensureSuffix(query.contactId))

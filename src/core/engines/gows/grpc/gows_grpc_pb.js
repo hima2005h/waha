@@ -631,6 +631,17 @@ function deserialize_messages_SubscribePresenceRequest(buffer_arg) {
   return gows_pb.SubscribePresenceRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_messages_UpdateContactRequest(arg) {
+  if (!(arg instanceof gows_pb.UpdateContactRequest)) {
+    throw new Error('Expected argument of type messages.UpdateContactRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_UpdateContactRequest(buffer_arg) {
+  return gows_pb.UpdateContactRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_messages_UpdateParticipantsRequest(arg) {
   if (!(arg instanceof gows_pb.UpdateParticipantsRequest)) {
     throw new Error('Expected argument of type messages.UpdateParticipantsRequest');
@@ -1294,6 +1305,42 @@ getLabels: {
     responseDeserialize: deserialize_messages_JsonList,
   },
   //
+// Contacts
+//
+updateContact: {
+    path: '/messages.MessageService/UpdateContact',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.UpdateContactRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_UpdateContactRequest,
+    requestDeserialize: deserialize_messages_UpdateContactRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
+  },
+  getContacts: {
+    path: '/messages.MessageService/GetContacts',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.GetContactsRequest,
+    responseType: gows_pb.JsonList,
+    requestSerialize: serialize_messages_GetContactsRequest,
+    requestDeserialize: deserialize_messages_GetContactsRequest,
+    responseSerialize: serialize_messages_JsonList,
+    responseDeserialize: deserialize_messages_JsonList,
+  },
+  getContactById: {
+    path: '/messages.MessageService/GetContactById',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.EntityByIdRequest,
+    responseType: gows_pb.Json,
+    requestSerialize: serialize_messages_EntityByIdRequest,
+    requestDeserialize: deserialize_messages_EntityByIdRequest,
+    responseSerialize: serialize_messages_Json,
+    responseDeserialize: deserialize_messages_Json,
+  },
+  //
 // Events
 //
 cancelEventMessage: {
@@ -1345,28 +1392,6 @@ getMessageById: {
     requestDeserialize: deserialize_messages_GetMessagesRequest,
     responseSerialize: serialize_messages_JsonList,
     responseDeserialize: deserialize_messages_JsonList,
-  },
-  getContacts: {
-    path: '/messages.MessageService/GetContacts',
-    requestStream: false,
-    responseStream: false,
-    requestType: gows_pb.GetContactsRequest,
-    responseType: gows_pb.JsonList,
-    requestSerialize: serialize_messages_GetContactsRequest,
-    requestDeserialize: deserialize_messages_GetContactsRequest,
-    responseSerialize: serialize_messages_JsonList,
-    responseDeserialize: deserialize_messages_JsonList,
-  },
-  getContactById: {
-    path: '/messages.MessageService/GetContactById',
-    requestStream: false,
-    responseStream: false,
-    requestType: gows_pb.EntityByIdRequest,
-    responseType: gows_pb.Json,
-    requestSerialize: serialize_messages_EntityByIdRequest,
-    requestDeserialize: deserialize_messages_EntityByIdRequest,
-    responseSerialize: serialize_messages_Json,
-    responseDeserialize: deserialize_messages_Json,
   },
   getChats: {
     path: '/messages.MessageService/GetChats',

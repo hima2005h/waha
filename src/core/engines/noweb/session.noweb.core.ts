@@ -121,7 +121,11 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
-import { ContactQuery, ContactRequest } from '@waha/structures/contacts.dto';
+import {
+  ContactQuery,
+  ContactRequest,
+  ContactUpdateBody,
+} from '@waha/structures/contacts.dto';
 import {
   ACK_UNKNOWN,
   SECOND,
@@ -1322,6 +1326,28 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   /**
    * Contacts methods
    */
+
+  public async upsertContact(chatId: string, body: ContactUpdateBody) {
+    const jid = toJID(chatId);
+    let fullName = body.firstName;
+    if (body.lastName) {
+      fullName = `${body.firstName} ${body.lastName}`;
+    }
+    const action = {
+      fullName: fullName,
+      firstName: body.firstName,
+      saveOnPrimaryAddressbook: true,
+    };
+    await this.sock.addOrEditContact(jid, action);
+    const updates: Partial<Contact>[] = [
+      {
+        id: jid,
+        name: fullName,
+      },
+    ];
+    this.sock.ev.emit('contacts.update', updates);
+  }
+
   async getContact(query: ContactQuery) {
     const jid = toJID(query.contactId);
     const contact = await this.store.getContactById(jid);

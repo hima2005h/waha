@@ -14,6 +14,7 @@ import { ServerController } from '@waha/api/server.controller';
 import { ServerDebugController } from '@waha/api/server.debug.controller';
 import { WebsocketGatewayCore } from '@waha/api/websocket.gateway.core';
 import { AppsModuleExports } from '@waha/apps/apps.module';
+import { ContactsSessionController } from '@waha/contacts.session.controller';
 import { ApiKeyStrategy } from '@waha/core/auth/apiKey.strategy';
 import { IApiKeyAuth } from '@waha/core/auth/auth';
 import { AuthMiddleware } from '@waha/core/auth/auth.middleware';
@@ -146,6 +147,7 @@ export const CONTROLLERS = [
   StatusController,
   LabelsController,
   ContactsController,
+  ContactsSessionController,
   LidsController,
   GroupsController,
   PresenceController,

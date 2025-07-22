@@ -7941,6 +7941,145 @@ export namespace messages {
             return GetMessagesRequest.deserialize(bytes);
         }
     }
+    export class UpdateContactRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            session?: Session;
+            jid?: string;
+            firstName?: string;
+            lastName?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("session" in data && data.session != undefined) {
+                    this.session = data.session;
+                }
+                if ("jid" in data && data.jid != undefined) {
+                    this.jid = data.jid;
+                }
+                if ("firstName" in data && data.firstName != undefined) {
+                    this.firstName = data.firstName;
+                }
+                if ("lastName" in data && data.lastName != undefined) {
+                    this.lastName = data.lastName;
+                }
+            }
+        }
+        get session() {
+            return pb_1.Message.getWrapperField(this, Session, 1) as Session;
+        }
+        set session(value: Session) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_session() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get jid() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set jid(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get firstName() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set firstName(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get lastName() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set lastName(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            session?: ReturnType<typeof Session.prototype.toObject>;
+            jid?: string;
+            firstName?: string;
+            lastName?: string;
+        }): UpdateContactRequest {
+            const message = new UpdateContactRequest({});
+            if (data.session != null) {
+                message.session = Session.fromObject(data.session);
+            }
+            if (data.jid != null) {
+                message.jid = data.jid;
+            }
+            if (data.firstName != null) {
+                message.firstName = data.firstName;
+            }
+            if (data.lastName != null) {
+                message.lastName = data.lastName;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                session?: ReturnType<typeof Session.prototype.toObject>;
+                jid?: string;
+                firstName?: string;
+                lastName?: string;
+            } = {};
+            if (this.session != null) {
+                data.session = this.session.toObject();
+            }
+            if (this.jid != null) {
+                data.jid = this.jid;
+            }
+            if (this.firstName != null) {
+                data.firstName = this.firstName;
+            }
+            if (this.lastName != null) {
+                data.lastName = this.lastName;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_session)
+                writer.writeMessage(1, this.session, () => this.session.serialize(writer));
+            if (this.jid.length)
+                writer.writeString(2, this.jid);
+            if (this.firstName.length)
+                writer.writeString(3, this.firstName);
+            if (this.lastName.length)
+                writer.writeString(4, this.lastName);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UpdateContactRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UpdateContactRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.session, () => message.session = Session.deserialize(reader));
+                        break;
+                    case 2:
+                        message.jid = reader.readString();
+                        break;
+                    case 3:
+                        message.firstName = reader.readString();
+                        break;
+                    case 4:
+                        message.lastName = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UpdateContactRequest {
+            return UpdateContactRequest.deserialize(bytes);
+        }
+    }
     export class GetContactsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -9603,6 +9742,33 @@ export namespace messages {
                 responseSerialize: (message: JsonList) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => JsonList.deserialize(new Uint8Array(bytes))
             },
+            UpdateContact: {
+                path: "/messages.MessageService/UpdateContact",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: UpdateContactRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => UpdateContactRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: Empty) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => Empty.deserialize(new Uint8Array(bytes))
+            },
+            GetContacts: {
+                path: "/messages.MessageService/GetContacts",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetContactsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetContactsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: JsonList) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => JsonList.deserialize(new Uint8Array(bytes))
+            },
+            GetContactById: {
+                path: "/messages.MessageService/GetContactById",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: EntityByIdRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => EntityByIdRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: Json) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => Json.deserialize(new Uint8Array(bytes))
+            },
             CancelEventMessage: {
                 path: "/messages.MessageService/CancelEventMessage",
                 requestStream: false,
@@ -9638,24 +9804,6 @@ export namespace messages {
                 requestDeserialize: (bytes: Buffer) => GetMessagesRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: JsonList) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => JsonList.deserialize(new Uint8Array(bytes))
-            },
-            GetContacts: {
-                path: "/messages.MessageService/GetContacts",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: GetContactsRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => GetContactsRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: JsonList) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => JsonList.deserialize(new Uint8Array(bytes))
-            },
-            GetContactById: {
-                path: "/messages.MessageService/GetContactById",
-                requestStream: false,
-                responseStream: false,
-                requestSerialize: (message: EntityByIdRequest) => Buffer.from(message.serialize()),
-                requestDeserialize: (bytes: Buffer) => EntityByIdRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: Json) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => Json.deserialize(new Uint8Array(bytes))
             },
             GetChats: {
                 path: "/messages.MessageService/GetChats",
@@ -9722,12 +9870,13 @@ export namespace messages {
         abstract RemoveChatLabel(call: grpc_1.ServerUnaryCall<ChatLabelRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract GetLabelsByJid(call: grpc_1.ServerUnaryCall<EntityByIdRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
         abstract GetChatsByLabelId(call: grpc_1.ServerUnaryCall<EntityByIdRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
+        abstract UpdateContact(call: grpc_1.ServerUnaryCall<UpdateContactRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
+        abstract GetContacts(call: grpc_1.ServerUnaryCall<GetContactsRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
+        abstract GetContactById(call: grpc_1.ServerUnaryCall<EntityByIdRequest, Json>, callback: grpc_1.sendUnaryData<Json>): void;
         abstract CancelEventMessage(call: grpc_1.ServerUnaryCall<CancelEventMessageRequest, MessageResponse>, callback: grpc_1.sendUnaryData<MessageResponse>): void;
         abstract DownloadMedia(call: grpc_1.ServerUnaryCall<DownloadMediaRequest, DownloadMediaResponse>, callback: grpc_1.sendUnaryData<DownloadMediaResponse>): void;
         abstract GetMessageById(call: grpc_1.ServerUnaryCall<EntityByIdRequest, Json>, callback: grpc_1.sendUnaryData<Json>): void;
         abstract GetMessages(call: grpc_1.ServerUnaryCall<GetMessagesRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
-        abstract GetContacts(call: grpc_1.ServerUnaryCall<GetContactsRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
-        abstract GetContactById(call: grpc_1.ServerUnaryCall<EntityByIdRequest, Json>, callback: grpc_1.sendUnaryData<Json>): void;
         abstract GetChats(call: grpc_1.ServerUnaryCall<GetChatsRequest, JsonList>, callback: grpc_1.sendUnaryData<JsonList>): void;
     }
     export class MessageServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedMessageServiceService.definition, "MessageService", {}) {
@@ -9896,6 +10045,15 @@ export namespace messages {
         GetChatsByLabelId: GrpcUnaryServiceInterface<EntityByIdRequest, JsonList> = (message: EntityByIdRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
             return super.GetChatsByLabelId(message, metadata, options, callback);
         };
+        UpdateContact: GrpcUnaryServiceInterface<UpdateContactRequest, Empty> = (message: UpdateContactRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Empty>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Empty>, callback?: grpc_1.requestCallback<Empty>): grpc_1.ClientUnaryCall => {
+            return super.UpdateContact(message, metadata, options, callback);
+        };
+        GetContacts: GrpcUnaryServiceInterface<GetContactsRequest, JsonList> = (message: GetContactsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
+            return super.GetContacts(message, metadata, options, callback);
+        };
+        GetContactById: GrpcUnaryServiceInterface<EntityByIdRequest, Json> = (message: EntityByIdRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Json>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Json>, callback?: grpc_1.requestCallback<Json>): grpc_1.ClientUnaryCall => {
+            return super.GetContactById(message, metadata, options, callback);
+        };
         CancelEventMessage: GrpcUnaryServiceInterface<CancelEventMessageRequest, MessageResponse> = (message: CancelEventMessageRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<MessageResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<MessageResponse>, callback?: grpc_1.requestCallback<MessageResponse>): grpc_1.ClientUnaryCall => {
             return super.CancelEventMessage(message, metadata, options, callback);
         };
@@ -9907,12 +10065,6 @@ export namespace messages {
         };
         GetMessages: GrpcUnaryServiceInterface<GetMessagesRequest, JsonList> = (message: GetMessagesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
             return super.GetMessages(message, metadata, options, callback);
-        };
-        GetContacts: GrpcUnaryServiceInterface<GetContactsRequest, JsonList> = (message: GetContactsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
-            return super.GetContacts(message, metadata, options, callback);
-        };
-        GetContactById: GrpcUnaryServiceInterface<EntityByIdRequest, Json> = (message: EntityByIdRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Json>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Json>, callback?: grpc_1.requestCallback<Json>): grpc_1.ClientUnaryCall => {
-            return super.GetContactById(message, metadata, options, callback);
         };
         GetChats: GrpcUnaryServiceInterface<GetChatsRequest, JsonList> = (message: GetChatsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, options?: grpc_1.CallOptions | grpc_1.requestCallback<JsonList>, callback?: grpc_1.requestCallback<JsonList>): grpc_1.ClientUnaryCall => {
             return super.GetChats(message, metadata, options, callback);

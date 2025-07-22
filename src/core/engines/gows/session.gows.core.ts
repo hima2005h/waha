@@ -1,5 +1,6 @@
 import {
   aggregateMessageKeysNotFromMe,
+  Contact,
   getContentType,
   getUrlFromDirectPath,
   isJidGroup,
@@ -86,7 +87,7 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
-import { ContactQuery } from '@waha/structures/contacts.dto';
+import { ContactQuery, ContactUpdateBody } from '@waha/structures/contacts.dto';
 import {
   ACK_UNKNOWN,
   WAHAEvents,
@@ -1463,6 +1464,18 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   /**
    * Contacts methods
    */
+
+  public async upsertContact(chatId: string, body: ContactUpdateBody) {
+    const jid = toJID(chatId);
+    const request = new messages.UpdateContactRequest({
+      session: this.session,
+      jid: jid,
+      firstName: body.firstName || '',
+      lastName: body.lastName || '',
+    });
+    const response = await promisify(this.client.UpdateContact)(request);
+    response.toObject();
+  }
 
   protected toWAContact(contact) {
     return {
