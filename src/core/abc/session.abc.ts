@@ -286,13 +286,11 @@ export abstract class WhatsappSession {
     // https://superuser.com/questions/654565/how-to-run-google-chrome-in-a-single-process
     // https://www.bannerbear.com/blog/ways-to-speed-up-puppeteer-screenshots/
     return [
-      '--aggressive-cache-discard',
       '--disable-accelerated-2d-canvas',
       '--disable-application-cache',
       // DO NOT disable software rasterizer, it will break the video
       // https://github.com/devlikeapro/waha/issues/629
       // '--disable-software-rasterizer',
-      '--disable-cache',
       '--disable-client-side-phishing-detection',
       '--disable-component-update',
       '--disable-default-apps',
@@ -309,7 +307,6 @@ export abstract class WhatsappSession {
       '--disable-sync',
       '--disable-translate',
       '--disable-web-security',
-      '--disk-cache-size=0',
       '--hide-scrollbars',
       '--ignore-certificate-errors',
       '--ignore-ssl-errors',
@@ -327,6 +324,13 @@ export abstract class WhatsappSession {
       '--safebrowsing-disable-auto-update',
       '--use-mock-keychain',
       '--window-size=1280,720',
+      //
+      // Cache options
+      //
+      '--disk-cache-size=1073741824', // 1GB
+      // '--disk-cache-size=0',
+      // '--disable-cache',
+      // '--aggressive-cache-discard',
     ];
   }
 
