@@ -180,7 +180,7 @@ export class MessageHandler {
 
     switch (file.file_type) {
       case 'image':
-        if (mimetype != 'image/jpeg') {
+        if (mimetype != 'image/jpeg' && mimetype != 'image/png') {
           // Send it as a file
           break;
         }
