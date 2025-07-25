@@ -10,7 +10,7 @@ cpus=$(node -e "const os = require('os'); console.log(os.cpus().length);" 2>/dev
 case $cpus in
   ''|*[!0-9]*) cpus=1 ;;
 esac
-uv_threadpool_size=$(($cpus * 1))
+uv_threadpool_size=$(($cpus * 2))
 
 # Check if uv_threadpool_size is less than 4 (default), set it to 4 if it is
 if [ "$uv_threadpool_size" -lt 4 ]; then
