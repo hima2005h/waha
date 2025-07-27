@@ -68,7 +68,7 @@ export class LocalStoreCore extends LocalStore {
     const engineDir = this.getEngineDirectory();
     const database = path.join(engineDir, 'waha.sqlite3');
     return Knex({
-      client: 'better-sqlite3',
+      client: 'sqlite3',
       connection: { filename: database },
       useNullAsDefault: true,
     });

@@ -22,7 +22,7 @@ export class Sqlite3Storage extends INowebStorage {
   constructor(filePath: string) {
     super();
     this.knex = Knex({
-      client: 'better-sqlite3',
+      client: 'sqlite3',
       connection: { filename: filePath },
       useNullAsDefault: true,
     });
