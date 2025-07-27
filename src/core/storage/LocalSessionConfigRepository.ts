@@ -48,13 +48,13 @@ export class LocalSessionConfigRepository extends ISessionConfigRepository {
     return JSON.parse(content);
   }
 
-  async saveConfig(sessionName: string, config: SessionConfig | null) {
-    // Create folder if not exist
+  async saveConfig(sessionName: string, config: SessionConfig) {
+    // Create a folder if not exist
     const folder = this.store.getSessionDirectory(sessionName);
     await fs.mkdir(folder, { recursive: true });
     // Save config
     const filepath = this.getFilePath(sessionName);
-    const content = JSON.stringify(config || null);
+    const content = JSON.stringify(config || {});
     await writeFileAtomic(filepath, content);
   }
 

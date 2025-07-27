@@ -3,7 +3,7 @@ import { SessionConfig } from '../../structures/sessions.dto';
 export abstract class ISessionConfigRepository {
   abstract saveConfig(
     sessionName: string,
-    config: SessionConfig | null,
+    config: SessionConfig,
   ): Promise<void>;
 
   abstract getConfig(sessionName: string): Promise<SessionConfig | null>;

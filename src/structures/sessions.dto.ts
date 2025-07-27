@@ -122,7 +122,7 @@ export class SessionConfig {
   })
   @IsBoolean()
   @IsOptional()
-  debug: boolean;
+  debug?: boolean;
 
   @ApiProperty({
     example: {
