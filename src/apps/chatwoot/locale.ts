@@ -20,6 +20,7 @@ export enum LocaleCode {
   RU_RU = 'ru-RU',
   TR_TR = 'tr-TR',
   UK_UA = 'uk-UA',
+  UR_PK = 'ur-PK',
 }
 
 export const LOCALES = [
@@ -38,6 +39,7 @@ export const LOCALES = [
   LocaleCode.RU_RU,
   LocaleCode.TR_TR,
   LocaleCode.UK_UA,
+  LocaleCode.UR_PK,
 ];
 
 export const DEFAULT_LOCALE = 'en-US';
