@@ -40,23 +40,6 @@ export const LOCALES = [
   LocaleCode.UK_UA,
 ];
 
-export const LOCALE_NAMES: Record<LocaleCode, string> = {
-  [LocaleCode.EN_US]: '🇺🇸 English (English)',
-  [LocaleCode.AR_AE]: '🇦🇪 العربية (Arabic)',
-  [LocaleCode.BN_BD]: '🇧🇩 বাংলা (Bengali)',
-  [LocaleCode.PT_BR]: '🇧🇷🇵🇹 Português (Portuguese)',
-  [LocaleCode.DE_DE]: '🇩🇪 Deutsch (German)',
-  [LocaleCode.ES_ES]: '🇪🇸 Español (Spanish)',
-  [LocaleCode.FR_FR]: '🇫🇷 Français (French)',
-  [LocaleCode.ID_ID]: '🇮🇩 Bahasa Indonesia (Indonesian)',
-  [LocaleCode.HE_IL]: '🇮🇱 עברית (Hebrew)',
-  [LocaleCode.HI_IN]: '🇮🇳 हिंदी (Hindi)',
-  [LocaleCode.FA_IR]: '🇮🇷 فارسی (Persian)',
-  [LocaleCode.PA_PK]: '🇵🇰 ਪੰਜਾਬੀ (Punjabi)',
-  [LocaleCode.RU_RU]: '🇷🇺 Русский (Russian)',
-  [LocaleCode.TR_TR]: '🇹🇷 Türkçe (Turkish)',
-  [LocaleCode.UK_UA]: '🇺🇦 Українська (Ukrainian)',
-};
 export const DEFAULT_LOCALE = 'en-US';
 
 function loadTemplateStrings(locale: string) {
@@ -82,8 +65,13 @@ function loadLocales(locales: string[]) {
 }
 
 let locales: Record<string, Record<string, string>> = {};
+export const LOCALE_NAMES: Map<LocaleCode, string> = new Map();
+
 try {
   locales = loadLocales(LOCALES);
+  for (const [locale, strings] of Object.entries(locales)) {
+    LOCALE_NAMES.set(locale as LocaleCode, strings['LOCALE_NAME']);
+  }
 } catch (error) {
   console.error('Error loading locales:', error);
   process.exit(1);

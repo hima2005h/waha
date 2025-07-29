@@ -17,9 +17,9 @@ export class ChatwootLocalesController {
     description: 'Get available languages for Chatwoot app',
   })
   getLanguages(): LanguageResponse[] {
-    return Object.entries(LOCALE_NAMES).map(([locale, name]) => ({
-      name: name,
-      locale: locale,
+    return Array.from(LOCALE_NAMES.entries()).map(([locale, name]) => ({
+      name,
+      locale,
     }));
   }
 }
