@@ -1,7 +1,7 @@
 import { AppConsumer } from '@waha/apps/app_sdk/AppConsumer';
 import { JobLoggerWrapper } from '@waha/apps/app_sdk/JobLoggerWrapper';
 import { HasBeenRetried } from '@waha/apps/app_sdk/JobUtils';
-import { GetChatID } from '@waha/apps/chatwoot/client/ids';
+import { FindChatID } from '@waha/apps/chatwoot/client/ids';
 import { EventName } from '@waha/apps/chatwoot/client/types';
 import { ChatWootConversationKey } from '@waha/apps/chatwoot/consumers/mutex';
 import { InboxData } from '@waha/apps/chatwoot/consumers/types';
@@ -124,7 +124,7 @@ export async function LookupAndCheckChatId(
   body: any,
 ): Promise<string> {
   const sender = body.conversation.meta.sender;
-  let chatId = GetChatID(sender);
+  let chatId = FindChatID(sender);
   if (!chatId && sender.phone_number) {
     const existResult = await session.contactCheckExists(sender.phone_number);
     if (!existResult.numberExists) {

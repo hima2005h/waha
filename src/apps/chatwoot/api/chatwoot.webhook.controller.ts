@@ -1,6 +1,6 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { GetChatID } from '@waha/apps/chatwoot/client/ids';
+import { FindChatID } from '@waha/apps/chatwoot/client/ids';
 import { EventName, MessageType } from '@waha/apps/chatwoot/client/types';
 import { INBOX_CONTACT_CHAT_ID } from '@waha/apps/chatwoot/const';
 import { InboxData } from '@waha/apps/chatwoot/consumers/types';
@@ -43,7 +43,7 @@ export class ChatwootWebhookController {
 
     // Check if it's a command message (sent to the special inbox contact)
     const sender = body?.conversation?.meta?.sender;
-    const chatId = GetChatID(sender);
+    const chatId = FindChatID(sender);
     const isCommandsChat = chatId === INBOX_CONTACT_CHAT_ID;
 
     // Check if it's a deleted message

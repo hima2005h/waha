@@ -15,6 +15,19 @@ export function GetChatID(contact: any): string | null {
   return contact?.custom_attributes?.[AttributeKey.WA_CHAT_ID];
 }
 
+export function FindChatID(contact: any): string | null {
+  if (GetJID(contact)) {
+    return GetJID(contact);
+  }
+  if (GetLID(contact)) {
+    return GetLID(contact);
+  }
+  if (GetChatID(contact)) {
+    return GetChatID(contact);
+  }
+  return null;
+}
+
 export function SerializeWhatsAppKey(message: WhatsAppMessage): string {
   const key = {
     id: message.message_id,
