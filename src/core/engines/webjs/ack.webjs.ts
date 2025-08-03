@@ -49,7 +49,7 @@ export function TagReceiptNodeToReceiptEvent(
   const { attrs, content } = node;
   const status = getStatusFromReceiptType(attrs.type);
   if (status == null) {
-    return null;
+    return [];
   }
 
   const from = jidNormalizedUser(jid(attrs.from));
@@ -118,14 +118,14 @@ function handleGroupedReceipts(
   fromMe: boolean,
   isLid: boolean,
   me: Me,
-): ReceiptEvent[] | null {
+): ReceiptEvent[] {
   const { content } = node;
   if (!Array.isArray(content)) {
     return [];
   }
   const participantsTags = content.filter((c) => c.tag === 'participants');
   if (participantsTags.length === 0) {
-    return null;
+    return [];
   }
 
   const receiptEvents: ReceiptEvent[] = [];
