@@ -7,6 +7,7 @@ import {
   IsBoolean,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
   ValidateNested,
 } from 'class-validator';
@@ -179,6 +180,10 @@ export class SessionCreateRequest {
   @IsString()
   @IsOptional()
   @MaxLength(DB_NAME_LIMIT - DB_NAME_MAX_PREFIX_LEN)
+  @Matches(/^[a-zA-Z0-9_-]*$/, {
+    message:
+      'Session name can only contain alphanumeric characters, hyphens, and underscores (a-z, A-Z, 0-9, -, _) or be empty',
+  })
   name: string | undefined;
 
   @ValidateNested()
