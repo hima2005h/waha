@@ -1768,7 +1768,10 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   public async channelsList(query: ListChannelsQuery): Promise<Channel[]> {
     const newsletters = await this.sock.newsletterSubscribed();
-    let channels = newsletters.map(toNewsletterMetadata).map(this.toChannel);
+    let channels = newsletters
+      .map(toNewsletterMetadata)
+      .filter(Boolean)
+      .map(this.toChannel);
     if (query.role) {
       // @ts-ignore
       channels = channels.filter((channel) => channel.role === query.role);
