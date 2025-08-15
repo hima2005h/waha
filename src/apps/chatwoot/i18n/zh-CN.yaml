@@ -1,0 +1,182 @@
+# Simplified Chinese translations for ChatWoot integration
+LOCALE_NAME: '🇨🇳 中文（Simplified Chinese）'
+APP_INBOX_CONTACT_NAME: 'WhatsApp 集成（WAHA）'
+APP_INBOX_CONTACT_AVATAR_URL: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
+
+JOB_ERROR_REPORT: |
+  ⚠️ **{{{header}}}**
+  {{#attempts.nextDelay}}
+  🔄 将在 {{attempts.nextDelay}} 秒后重试...
+  {{/attempts.nextDelay}}
+  {{^attempts.nextDelay}}
+  ❌ 没有更多重试机会。请稍后再试。
+  {{/attempts.nextDelay}}
+  尝试：{{{attempts.current}}} / {{{attempts.max}}}
+  详情：[{{{details.text}}}]({{{details.url}}})
+  {{#error}}
+  ```
+
+  {{{error}}}
+  ```
+  {{/error}}
+
+JOB_SUCCEEDED_REPORT: |
+  ✅ **成功**
+  尝试：{{{attempts.current}}} / {{{attempts.max}}}
+  详情：[{{{details.text}}}]({{{details.url}}})
+
+WHATSAPP_ERROR_SENDING_MESSAGE: 无法在 WhatsApp 中发送消息。
+WHATSAPP_ERROR_RECEIVING_MESSAGE: 无法接收来自 WhatsApp 的消息
+WHATSAPP_ERROR_REMOVING_MESSAGE: 无法从 WhatsApp 中删除消息
+APP_SCHEDULED_JOB_ERROR: 计划任务执行失败
+
+MESSAGE_FROM_WHATSAPP: |
+  {{{text}}}
+
+  📱 *通过 WhatsApp 发送*
+
+MESSAGE_FROM_API: |
+  {{{text}}}
+
+  📱 *通过 API 发送*
+
+MESSAGE_REMOVED_IN_WHATSAPP: |
+  ❌ *此消息已在 WhatsApp 中被删除*
+
+MESSAGE_EDITED_IN_WHATSAPP: |
+  {{{text}}}
+
+  ✏️ *已在 WhatsApp 中编辑*
+
+WHATSAPP_GROUP_MESSAGE: |
+  {{{text}}}
+
+  👥 *{{{participant}}}*
+
+WHATSAPP_REACTION_ADDED: |
+  *已反应* {{{emoji}}}
+
+WHATSAPP_REACTION_REMOVED: |
+  *已移除反应*
+
+WHATSAPP_CONTACT_GROUP_SUFFIX: '群组'
+WHATSAPP_CONTACT_CHANNEL_SUFFIX: '频道'
+# Aka Stories
+WHATSAPP_CONTACT_STATUS_NAME: '状态'
+
+APP_CONNECTED_MESSAGE: |
+  🔗 **已连接：WhatsApp 会话到 ChatWoot 收件箱**
+
+  ✅ WhatsApp 会话 **{{{name}}}** 已成功连接到此 ChatWoot 收件箱。
+
+  此收件箱现已链接到你的**WhatsApp 账号**。你可以在这里直接收发消息——就像使用 WhatsApp 一样，但在 ChatWoot 内完成。
+
+  你也可以管理与此收件箱关联的 WhatsApp 会话。要查看可用操作，请向此对话发送 **help**。
+
+  📋 你可以执行的常见操作：
+  - 检查 WhatsApp 会话是否活动
+  - 重启或停止 WhatsApp 会话
+  - 登出并通过扫描新的二维码重新连接
+
+  如果一切正常，你就可以自由聊天。如果你看到警告，可能需要重新连接你的 WhatsApp 账号。
+
+  开始吧！🚀
+
+APP_DISCONNECTED_MESSAGE: |
+  🔌 **已断开：从 ChatWoot 收件箱断开 WhatsApp 会话**
+
+  ❌ WhatsApp 会话 **{{{name}}}** 已与此 ChatWoot 收件箱断开。
+
+  你将无法再从 WhatsApp 发送或接收消息。
+
+  如需重新连接，请联系你的管理员。
+
+APP_UPDATED_MESSAGE: |
+  🔄 **已更新：WhatsApp 会话设置**
+
+  ✅ WhatsApp 会话 **{{{name}}}** 的设置已更新。
+
+APP_COMMANDS_LIST: |
+  你可以通过发送以下命令来管理**WhatsApp 集成**：
+
+  🖥️ 会话：
+  1. **status** - 获取当前会话状态。
+  2. **restart** - 重启会话——将尝试重新连接你的 WhatsApp 账号。
+  3. **start** - 启动会话。
+  4. **stop** - 停止会话。
+  5. **logout** - 登出会话，以便你可以扫描二维码并修复会话。
+  6. **qr** - 获取该会话的二维码。
+  7. **screenshot** - 获取会话截图（仅在 **WEBJS** 引擎中可用）。
+  8. **help** - 查看可用命令。
+
+  ⚙️ 服务器：
+  - **server status** - 获取服务器版本和状态信息。
+  - **server reboot** - 优雅地重启服务器。
+  - **server reboot force** - 强制重启服务器。
+
+  向此对话发送**命令**（不区分大小写）或**命令编号**。
+
+APP_HELP_REMINDER: |
+  发送 **help** 获取可用命令列表。
+
+APP_SESSION_STATUS_CHANGE: |
+  {{{emoji}}} "{{{session}}}" 会话已切换为 {{{status}}} 状态
+
+APP_SESSION_CURRENT_STATUS: |
+  {{{emoji}}} **{{{session}}}** 会话状态为 **{{{status}}}**
+  **WhatsApp 账号：**
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_DASHBOARD_LINK: |
+  访问 [WAHA 控制台]({{{url}}}) 以了解更多信息。
+
+APP_SESSION_STATUS_WORKING: |
+  ✅ 此 ChatWoot 收件箱已链接到**WhatsApp 账号**，可以正常收发消息！
+
+  📱 **{{{name}}} ({{{id}}})**
+
+APP_SESSION_STATUS_ERROR: |
+  ⚠️ **此 ChatWoot 收件箱已链接到 WhatsApp 账号，但尚未准备好收发消息！**
+
+  请检查会话状态，尝试重启，或登出后重新扫描二维码。
+
+APP_SESSION_SCAN_QR_CODE: |
+  ⚠️ **请在手机上扫描二维码，将 WhatsApp 账号与此 ChatWoot 收件箱关联！**
+
+APP_SERVER_VERSION_AND_STATUS: |
+  **版本：**
+  ```
+  {{{version}}}
+  ```
+
+  **状态：**
+  ```
+  {{{status}}}
+  ```
+
+APP_SERVER_REBOOT: |
+  服务器正在优雅重启...
+
+APP_SERVER_REBOOT_FORCE: |
+  服务器正在强制重启...
+
+APP_LOGOUT_SUCCESS: |
+  ✅ 账号已成功取消授权！
+
+APP_NEW_VERSION_AVAILABLE: |
+  🔄 **有新版本可用！**
+
+  当前版本：**{{{currentVersion}}}**
+  新版本：**{{{newVersion}}}**
+
+  👉 查看[**🆕 更新日志**]({{{changelogUrl}}})
+
+APP_CORE_VERSION_USED: |
+  ❤️ **支持 WAHA！**
+
+  你正在使用免费的 **WAHA Core** 版本。如果你觉得该项目有帮助，请考虑支持其开发。
+
+  你的支持是我们持续进行更新、修复和新增功能的唯一动力。
+
+  [**🎁 支持我们**]({{{supportUrl}}})

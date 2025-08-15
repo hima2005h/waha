@@ -21,6 +21,7 @@ export const LOCALES = [
   'tr-TR',
   'uk-UA',
   'ur-PK',
+  'zh-CN',
 ];
 
 export const DEFAULT_LOCALE = 'en-US';
