@@ -4,42 +4,23 @@ import * as Mustache from 'mustache';
 import * as path from 'path';
 import * as yaml from 'yaml';
 
-export enum LocaleCode {
-  EN_US = 'en-US',
-  AR_AE = 'ar-AE',
-  BN_BD = 'bn-BD',
-  PT_BR = 'pt-BR',
-  DE_DE = 'de-DE',
-  ES_ES = 'es-ES',
-  FR_FR = 'fr-FR',
-  ID_ID = 'id-ID',
-  HE_IL = 'he-IL',
-  HI_IN = 'hi-IN',
-  FA_IR = 'fa-IR',
-  PA_PK = 'pa-PK',
-  RU_RU = 'ru-RU',
-  TR_TR = 'tr-TR',
-  UK_UA = 'uk-UA',
-  UR_PK = 'ur-PK',
-}
-
 export const LOCALES = [
-  LocaleCode.EN_US,
-  LocaleCode.AR_AE,
-  LocaleCode.BN_BD,
-  LocaleCode.PT_BR,
-  LocaleCode.DE_DE,
-  LocaleCode.ES_ES,
-  LocaleCode.FR_FR,
-  LocaleCode.ID_ID,
-  LocaleCode.HE_IL,
-  LocaleCode.HI_IN,
-  LocaleCode.FA_IR,
-  LocaleCode.PA_PK,
-  LocaleCode.RU_RU,
-  LocaleCode.TR_TR,
-  LocaleCode.UK_UA,
-  LocaleCode.UR_PK,
+  'en-US',
+  'ar-AE',
+  'bn-BD',
+  'pt-BR',
+  'de-DE',
+  'es-ES',
+  'fr-FR',
+  'id-ID',
+  'he-IL',
+  'hi-IN',
+  'fa-IR',
+  'pa-PK',
+  'ru-RU',
+  'tr-TR',
+  'uk-UA',
+  'ur-PK',
 ];
 
 export const DEFAULT_LOCALE = 'en-US';
@@ -67,12 +48,12 @@ function loadLocales(locales: string[]) {
 }
 
 let locales: Record<string, Record<string, string>> = {};
-export const LOCALE_NAMES: Map<LocaleCode, string> = new Map();
+export const LOCALE_NAMES: Map<string, string> = new Map();
 
 try {
   locales = loadLocales(LOCALES);
   for (const [locale, strings] of Object.entries(locales)) {
-    LOCALE_NAMES.set(locale as LocaleCode, strings['LOCALE_NAME']);
+    LOCALE_NAMES.set(locale, strings['LOCALE_NAME']);
   }
 } catch (error) {
   console.error('Error loading locales:', error);
