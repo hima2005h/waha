@@ -154,6 +154,8 @@ export class MessageHandler {
       chatId: chatId,
       text: content,
       reply_to: replyTo,
+      linkPreview: false,
+      linkPreviewHighQuality: false,
     };
     const session = this.session;
     await session.readMessages(chatId);
