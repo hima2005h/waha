@@ -1,6 +1,5 @@
 import {
   aggregateMessageKeysNotFromMe,
-  Contact,
   getContentType,
   getUrlFromDirectPath,
   isJidGroup,
@@ -35,6 +34,7 @@ import {
 } from '@waha/core/engines/gows/helpers';
 import { GowsAuthFactoryCore } from '@waha/core/engines/gows/store/GowsAuthFactoryCore';
 import {
+  extractBody,
   getDestination,
   toCusFormat,
 } from '@waha/core/engines/noweb/session.noweb.core';
@@ -87,6 +87,7 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
+import { SendListRequest } from '@waha/structures/chatting.list.dto';
 import { ContactQuery, ContactUpdateBody } from '@waha/structures/contacts.dto';
 import {
   ACK_UNKNOWN,
@@ -96,7 +97,6 @@ import {
   WAMessageAck,
 } from '@waha/structures/enums.dto';
 import {
-  EventCancelRequest,
   EventMessageRequest,
   EventResponse,
   EventResponsePayload,
@@ -444,7 +444,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
         const waMessage = await this.toWAMessage(message);
         // Extract the body from editedMessage using extractBody function
         const body =
-          this.extractBody(message.Message.protocolMessage.editedMessage) || '';
+          extractBody(message.Message.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
         const editedMessageId = message.Message.protocolMessage.key?.ID;
         return {
@@ -790,6 +790,10 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const response = await promisify(this.client.SendMessage)(message);
     const data = response.toObject();
     return this.messageResponse(jid, data);
+  }
+
+  sendList(request: SendListRequest): Promise<any> {
+    throw new AvailableInPlusVersion();
   }
 
   public async deleteMessage(chatId: string, messageId: string) {
@@ -1883,7 +1887,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   protected toWAMessage(message): WAMessage {
     const fromToParticipant = getFromToParticipant(message);
     const id = buildMessageId(message);
-    const body = this.extractBody(message.Message);
+    const body = extractBody(message.Message);
     const replyTo = this.extractReplyTo(message.Message);
     let ack = statusToAck(message.Status);
     if (ack === WAMessageAck.ERROR) {
@@ -1984,21 +1988,6 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     return sentDeviceId === myDeviceId ? MessageSource.API : MessageSource.APP;
   }
 
-  private extractBody(message) {
-    if (!message) {
-      return null;
-    }
-    let body = message.Conversation || message.conversation;
-    if (!body) {
-      body = message.extendedTextMessage?.text;
-    }
-    if (!body) {
-      const media = extractMediaContent(message);
-      body = media?.caption;
-    }
-    return body;
-  }
-
   protected extractReplyTo(message): ReplyToMessage | null {
     const msgType = getContentType(message);
     const contextInfo = message[msgType]?.contextInfo;
@@ -2009,7 +1998,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     if (!quotedMessage) {
       return null;
     }
-    const body = this.extractBody(quotedMessage);
+    const body = extractBody(quotedMessage);
     return {
       id: contextInfo.stanzaID,
       participant: toCusFormat(contextInfo.participant),

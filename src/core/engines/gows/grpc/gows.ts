@@ -3263,6 +3263,7 @@ export namespace messages {
             contacts?: vCardContact[];
             event?: EventMessage;
             poll?: PollMessage;
+            list?: ListMessage;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [11, 13], this.#one_of_decls);
@@ -3311,6 +3312,9 @@ export namespace messages {
                 }
                 if ("poll" in data && data.poll != undefined) {
                     this.poll = data.poll;
+                }
+                if ("list" in data && data.list != undefined) {
+                    this.list = data.list;
                 }
             }
         }
@@ -3425,6 +3429,15 @@ export namespace messages {
         get has_poll() {
             return pb_1.Message.getField(this, 15) != null;
         }
+        get list() {
+            return pb_1.Message.getWrapperField(this, ListMessage, 16) as ListMessage;
+        }
+        set list(value: ListMessage) {
+            pb_1.Message.setWrapperField(this, 16, value);
+        }
+        get has_list() {
+            return pb_1.Message.getField(this, 16) != null;
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             jid?: string;
@@ -3441,6 +3454,7 @@ export namespace messages {
             contacts?: ReturnType<typeof vCardContact.prototype.toObject>[];
             event?: ReturnType<typeof EventMessage.prototype.toObject>;
             poll?: ReturnType<typeof PollMessage.prototype.toObject>;
+            list?: ReturnType<typeof ListMessage.prototype.toObject>;
         }): MessageRequest {
             const message = new MessageRequest({});
             if (data.session != null) {
@@ -3488,6 +3502,9 @@ export namespace messages {
             if (data.poll != null) {
                 message.poll = PollMessage.fromObject(data.poll);
             }
+            if (data.list != null) {
+                message.list = ListMessage.fromObject(data.list);
+            }
             return message;
         }
         toObject() {
@@ -3507,6 +3524,7 @@ export namespace messages {
                 contacts?: ReturnType<typeof vCardContact.prototype.toObject>[];
                 event?: ReturnType<typeof EventMessage.prototype.toObject>;
                 poll?: ReturnType<typeof PollMessage.prototype.toObject>;
+                list?: ReturnType<typeof ListMessage.prototype.toObject>;
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -3553,6 +3571,9 @@ export namespace messages {
             if (this.poll != null) {
                 data.poll = this.poll.toObject();
             }
+            if (this.list != null) {
+                data.list = this.list.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -3589,6 +3610,8 @@ export namespace messages {
                 writer.writeMessage(14, this.event, () => this.event.serialize(writer));
             if (this.has_poll)
                 writer.writeMessage(15, this.poll, () => this.poll.serialize(writer));
+            if (this.has_list)
+                writer.writeMessage(16, this.list, () => this.list.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -3643,6 +3666,9 @@ export namespace messages {
                     case 15:
                         reader.readMessage(message.poll, () => message.poll = PollMessage.deserialize(reader));
                         break;
+                    case 16:
+                        reader.readMessage(message.list, () => message.list = ListMessage.deserialize(reader));
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -3653,6 +3679,407 @@ export namespace messages {
         }
         static deserializeBinary(bytes: Uint8Array): MessageRequest {
             return MessageRequest.deserialize(bytes);
+        }
+    }
+    export class Row extends pb_1.Message {
+        #one_of_decls: number[][] = [[2]];
+        constructor(data?: any[] | ({
+            title?: string;
+            rowId?: string;
+        } & (({
+            description?: string;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("title" in data && data.title != undefined) {
+                    this.title = data.title;
+                }
+                if ("description" in data && data.description != undefined) {
+                    this.description = data.description;
+                }
+                if ("rowId" in data && data.rowId != undefined) {
+                    this.rowId = data.rowId;
+                }
+            }
+        }
+        get title() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set title(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get description() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set description(value: string) {
+            pb_1.Message.setOneofField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_description() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get rowId() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set rowId(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get _description() {
+            const cases: {
+                [index: number]: "none" | "description";
+            } = {
+                0: "none",
+                2: "description"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [2])];
+        }
+        static fromObject(data: {
+            title?: string;
+            description?: string;
+            rowId?: string;
+        }): Row {
+            const message = new Row({});
+            if (data.title != null) {
+                message.title = data.title;
+            }
+            if (data.description != null) {
+                message.description = data.description;
+            }
+            if (data.rowId != null) {
+                message.rowId = data.rowId;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                title?: string;
+                description?: string;
+                rowId?: string;
+            } = {};
+            if (this.title != null) {
+                data.title = this.title;
+            }
+            if (this.description != null) {
+                data.description = this.description;
+            }
+            if (this.rowId != null) {
+                data.rowId = this.rowId;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.title.length)
+                writer.writeString(1, this.title);
+            if (this.has_description)
+                writer.writeString(2, this.description);
+            if (this.rowId.length)
+                writer.writeString(3, this.rowId);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Row {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Row();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.title = reader.readString();
+                        break;
+                    case 2:
+                        message.description = reader.readString();
+                        break;
+                    case 3:
+                        message.rowId = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Row {
+            return Row.deserialize(bytes);
+        }
+    }
+    export class Section extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            title?: string;
+            rows?: Row[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("title" in data && data.title != undefined) {
+                    this.title = data.title;
+                }
+                if ("rows" in data && data.rows != undefined) {
+                    this.rows = data.rows;
+                }
+            }
+        }
+        get title() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set title(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get rows() {
+            return pb_1.Message.getRepeatedWrapperField(this, Row, 2) as Row[];
+        }
+        set rows(value: Row[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 2, value);
+        }
+        static fromObject(data: {
+            title?: string;
+            rows?: ReturnType<typeof Row.prototype.toObject>[];
+        }): Section {
+            const message = new Section({});
+            if (data.title != null) {
+                message.title = data.title;
+            }
+            if (data.rows != null) {
+                message.rows = data.rows.map(item => Row.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                title?: string;
+                rows?: ReturnType<typeof Row.prototype.toObject>[];
+            } = {};
+            if (this.title != null) {
+                data.title = this.title;
+            }
+            if (this.rows != null) {
+                data.rows = this.rows.map((item: Row) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.title.length)
+                writer.writeString(1, this.title);
+            if (this.rows.length)
+                writer.writeRepeatedMessage(2, this.rows, (item: Row) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Section {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Section();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.title = reader.readString();
+                        break;
+                    case 2:
+                        reader.readMessage(message.rows, () => pb_1.Message.addToRepeatedWrapperField(message, 2, Row.deserialize(reader), Row));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Section {
+            return Section.deserialize(bytes);
+        }
+    }
+    export class ListMessage extends pb_1.Message {
+        #one_of_decls: number[][] = [[2], [3]];
+        constructor(data?: any[] | ({
+            title?: string;
+            button?: string;
+            sections?: Section[];
+        } & (({
+            description?: string;
+        }) | ({
+            footer?: string;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [5], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("title" in data && data.title != undefined) {
+                    this.title = data.title;
+                }
+                if ("description" in data && data.description != undefined) {
+                    this.description = data.description;
+                }
+                if ("footer" in data && data.footer != undefined) {
+                    this.footer = data.footer;
+                }
+                if ("button" in data && data.button != undefined) {
+                    this.button = data.button;
+                }
+                if ("sections" in data && data.sections != undefined) {
+                    this.sections = data.sections;
+                }
+            }
+        }
+        get title() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set title(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get description() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set description(value: string) {
+            pb_1.Message.setOneofField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_description() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get footer() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set footer(value: string) {
+            pb_1.Message.setOneofField(this, 3, this.#one_of_decls[1], value);
+        }
+        get has_footer() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get button() {
+            return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+        }
+        set button(value: string) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get sections() {
+            return pb_1.Message.getRepeatedWrapperField(this, Section, 5) as Section[];
+        }
+        set sections(value: Section[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 5, value);
+        }
+        get _description() {
+            const cases: {
+                [index: number]: "none" | "description";
+            } = {
+                0: "none",
+                2: "description"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [2])];
+        }
+        get _footer() {
+            const cases: {
+                [index: number]: "none" | "footer";
+            } = {
+                0: "none",
+                3: "footer"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [3])];
+        }
+        static fromObject(data: {
+            title?: string;
+            description?: string;
+            footer?: string;
+            button?: string;
+            sections?: ReturnType<typeof Section.prototype.toObject>[];
+        }): ListMessage {
+            const message = new ListMessage({});
+            if (data.title != null) {
+                message.title = data.title;
+            }
+            if (data.description != null) {
+                message.description = data.description;
+            }
+            if (data.footer != null) {
+                message.footer = data.footer;
+            }
+            if (data.button != null) {
+                message.button = data.button;
+            }
+            if (data.sections != null) {
+                message.sections = data.sections.map(item => Section.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                title?: string;
+                description?: string;
+                footer?: string;
+                button?: string;
+                sections?: ReturnType<typeof Section.prototype.toObject>[];
+            } = {};
+            if (this.title != null) {
+                data.title = this.title;
+            }
+            if (this.description != null) {
+                data.description = this.description;
+            }
+            if (this.footer != null) {
+                data.footer = this.footer;
+            }
+            if (this.button != null) {
+                data.button = this.button;
+            }
+            if (this.sections != null) {
+                data.sections = this.sections.map((item: Section) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.title.length)
+                writer.writeString(1, this.title);
+            if (this.has_description)
+                writer.writeString(2, this.description);
+            if (this.has_footer)
+                writer.writeString(3, this.footer);
+            if (this.button.length)
+                writer.writeString(4, this.button);
+            if (this.sections.length)
+                writer.writeRepeatedMessage(5, this.sections, (item: Section) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ListMessage {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ListMessage();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.title = reader.readString();
+                        break;
+                    case 2:
+                        message.description = reader.readString();
+                        break;
+                    case 3:
+                        message.footer = reader.readString();
+                        break;
+                    case 4:
+                        message.button = reader.readString();
+                        break;
+                    case 5:
+                        reader.readMessage(message.sections, () => pb_1.Message.addToRepeatedWrapperField(message, 5, Section.deserialize(reader), Section));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ListMessage {
+            return ListMessage.deserialize(bytes);
         }
     }
     export class MessageReaction extends pb_1.Message {

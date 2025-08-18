@@ -16,6 +16,7 @@ import {
   transformAck,
 } from '@waha/structures/chats.dto';
 import { SendButtonsRequest } from '@waha/structures/chatting.buttons.dto';
+import { SendListRequest } from '@waha/structures/chatting.list.dto';
 
 import { SessionManager } from '../core/abc/manager.abc';
 import {
@@ -121,13 +122,25 @@ export class ChattingController {
 
   @Post('/sendButtons')
   @ApiOperation({
-    summary: 'Send buttons (interactive message)',
+    summary: 'Send buttons message (interactive)',
     description: 'Send Buttons',
+    deprecated: true,
   })
   @UsePipes(new WAHAValidationPipe())
   async sendButtons(@Body() request: SendButtonsRequest) {
     const whatsapp = await this.manager.getWorkingSession(request.session);
     return whatsapp.sendButtons(request);
+  }
+
+  @Post('/sendList')
+  @ApiOperation({
+    summary: 'Send a list message (interactive)',
+    description: 'Send a List message with sections and rows',
+  })
+  @UsePipes(new WAHAValidationPipe())
+  async sendList(@Body() request: SendListRequest) {
+    const whatsapp = await this.manager.getWorkingSession(request.session);
+    return whatsapp.sendList(request);
   }
 
   @Post('/forwardMessage')

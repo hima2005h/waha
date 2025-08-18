@@ -16,7 +16,6 @@ import makeWASocket, {
   jidNormalizedUser,
   makeCacheableSignalKeyStore,
   MiscMessageGenerationOptions,
-  NewsletterMetadata,
   normalizeMessageContent,
   PresenceData,
   proto,
@@ -121,6 +120,7 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
+import { SendListRequest } from '@waha/structures/chatting.list.dto';
 import {
   ContactQuery,
   ContactRequest,
@@ -950,6 +950,10 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       request.body,
       request.footer,
     );
+  }
+
+  sendList(request: SendListRequest): Promise<any> {
+    throw new AvailableInPlusVersion();
   }
 
   async sendLocation(request: MessageLocationRequest) {
@@ -2702,5 +2706,20 @@ export function extractBody(message): string | null {
   if (!body) {
     body = content.buttonsResponseMessage?.selectedDisplayText;
   }
+
+  // List message
+  if (!body) {
+    const type = getContentType(content);
+    if (type == 'listMessage') {
+      const list = content.listMessage;
+      const parts = [list.title, list.description, list.footerText];
+      body = parts.filter(Boolean).join('\n');
+    } else if (type === 'listResponseMessage') {
+      const response = content.listResponseMessage;
+      const parts = [response.title, response.description];
+      body = parts.filter(Boolean).join('\n');
+    }
+  }
+
   return body;
 }
