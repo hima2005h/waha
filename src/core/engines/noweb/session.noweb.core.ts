@@ -735,6 +735,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     return {
       id: toCusFormat(meId),
       pushName: me.name,
+      lid: me.lid,
     };
   }
 

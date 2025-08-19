@@ -155,6 +155,11 @@ export class MeInfo {
   @ChatIdProperty()
   id: string;
 
+  @ApiProperty({
+    example: '123123@lid',
+  })
+  lid?: string;
+
   pushName: string;
 }
 

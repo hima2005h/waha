@@ -307,6 +307,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       this.me = {
         id: toCusFormat(jidNormalizedUser(data.ID)),
         pushName: data.PushName,
+        lid: jidNormalizedUser(data.LID),
       };
       // @ts-ignore
       this.me.jid = data.ID;
