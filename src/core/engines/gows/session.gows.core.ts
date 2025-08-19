@@ -5,6 +5,7 @@ import {
   isJidGroup,
   jidNormalizedUser,
   normalizeMessageContent,
+  proto,
   WAMessageKey,
 } from '@adiwajshing/baileys';
 import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
@@ -168,6 +169,7 @@ import {
   isLabelChatAddedEvent,
   isLabelUpsertEvent,
 } from './labels.gows';
+import IMessageKey = proto.IMessageKey;
 
 enum WhatsMeowEvent {
   CONNECTED = 'gows.ConnectedEventData',
@@ -1924,12 +1926,19 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   private toPollVotePayload(event: any): PollVotePayload {
     // Extract event creation message key from the message
     const creationKey = event.Message?.pollUpdateMessage.pollCreationMessageKey;
-    const key: WAMessageKey = {
+    const pollKey: IMessageKey = {
       remoteJid: creationKey.remoteJID,
       fromMe: creationKey.fromMe,
       id: creationKey.ID,
       participant: creationKey.participant,
     };
+    const voteKey: IMessageKey = {
+      id: event.Info.ID,
+      remoteJid: event.Info.Chat,
+      participant: event.IsGroup ? event.Info.Sender : null,
+      fromMe: event.IsFromMe,
+    };
+    const key = fixPollCreationKey(voteKey, pollKey, this.me);
     const fromToParticipant = getFromToParticipant(event);
     const pollCreationKey = getDestination(key);
     return {
@@ -2181,6 +2190,7 @@ function getFromToParticipant(message) {
     from: info.Chat,
     to: info.IsGroup ? info.Sender : null,
     participant: info.IsGroup ? info.Sender : null,
+    fromMe: info.IsFromMe,
   };
 }
 
@@ -2232,4 +2242,64 @@ export function getMessageIdFromSerialized(serialized: string): string | null {
   }
   const key = parseMessageIdSerialized(serialized, true);
   return key.id;
+}
+
+/**
+ * Poll creation keys are a bit tricky — they contain the data that the receiver uses.
+ * When recipients respond to a poll, they send back THEIR `message.id`.
+ *
+ * For example,
+ * - If we send a poll and in our system the ID is "true_{chatId}_{ID}",
+ * - The corresponding `pollCreationKey` will be "false_{ourId}_{ID}" —
+ *   essentially the opposite of our message ID.
+ *
+ * The function inspects the key and,
+ * if it originates from us (based on `remoteJid` or `participant`),
+ * adjusts it to the correct value.
+ */
+
+function fixPollCreationKey(
+  vote: IMessageKey,
+  poll: IMessageKey,
+  me: MeInfo,
+): IMessageKey {
+  // If the vote is from me, the pollCreationKey is already in my perspective
+  if (vote?.fromMe) {
+    return poll;
+  }
+  if (!me) {
+    return poll;
+  }
+  if (!poll) {
+    return poll;
+  }
+
+  // DM - my poll, not my vote
+  if (
+    toCusFormat(poll.remoteJid) == toCusFormat(me.id) ||
+    toCusFormat(poll.remoteJid) == toCusFormat(me.lid)
+  ) {
+    return {
+      id: poll.id,
+      remoteJid: vote.remoteJid,
+      fromMe: true,
+      participant: undefined,
+    };
+  }
+
+  // Many Participants Chat - my poll, not my vote
+  if (
+    toCusFormat(poll.participant) == toCusFormat(me.id) ||
+    toCusFormat(poll.participant) == toCusFormat(me.lid)
+  ) {
+    return {
+      id: poll.id,
+      remoteJid: vote.remoteJid,
+      fromMe: true,
+      participant: me.id,
+    };
+  }
+
+  // Other
+  return poll;
 }
