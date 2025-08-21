@@ -958,14 +958,16 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   }
 
   async sendLocation(request: MessageLocationRequest) {
+    const chatId = toJID(this.ensureSuffix(request.chatId));
     const msg = {
       location: {
+        name: request.title || null,
         degreesLatitude: request.latitude,
         degreesLongitude: request.longitude,
       },
     };
     const options = await this.getMessageOptions(request);
-    return await this.sock.sendMessage(request.chatId, msg, options);
+    return await this.sock.sendMessage(chatId, msg, options);
   }
 
   async forwardMessage(request: MessageForwardRequest): Promise<WAMessage> {
