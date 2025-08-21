@@ -3034,6 +3034,132 @@ export namespace messages {
             return EventLocation.deserialize(bytes);
         }
     }
+    export class Location extends pb_1.Message {
+        #one_of_decls: number[][] = [[1]];
+        constructor(data?: any[] | ({
+            degreesLongitude?: number;
+            degreesLatitude?: number;
+        } & (({
+            name?: string;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("name" in data && data.name != undefined) {
+                    this.name = data.name;
+                }
+                if ("degreesLongitude" in data && data.degreesLongitude != undefined) {
+                    this.degreesLongitude = data.degreesLongitude;
+                }
+                if ("degreesLatitude" in data && data.degreesLatitude != undefined) {
+                    this.degreesLatitude = data.degreesLatitude;
+                }
+            }
+        }
+        get name() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set name(value: string) {
+            pb_1.Message.setOneofField(this, 1, this.#one_of_decls[0], value);
+        }
+        get has_name() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get degreesLongitude() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set degreesLongitude(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get degreesLatitude() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set degreesLatitude(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get _name() {
+            const cases: {
+                [index: number]: "none" | "name";
+            } = {
+                0: "none",
+                1: "name"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [1])];
+        }
+        static fromObject(data: {
+            name?: string;
+            degreesLongitude?: number;
+            degreesLatitude?: number;
+        }): Location {
+            const message = new Location({});
+            if (data.name != null) {
+                message.name = data.name;
+            }
+            if (data.degreesLongitude != null) {
+                message.degreesLongitude = data.degreesLongitude;
+            }
+            if (data.degreesLatitude != null) {
+                message.degreesLatitude = data.degreesLatitude;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                name?: string;
+                degreesLongitude?: number;
+                degreesLatitude?: number;
+            } = {};
+            if (this.name != null) {
+                data.name = this.name;
+            }
+            if (this.degreesLongitude != null) {
+                data.degreesLongitude = this.degreesLongitude;
+            }
+            if (this.degreesLatitude != null) {
+                data.degreesLatitude = this.degreesLatitude;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_name)
+                writer.writeString(1, this.name);
+            if (this.degreesLongitude != 0)
+                writer.writeDouble(2, this.degreesLongitude);
+            if (this.degreesLatitude != 0)
+                writer.writeDouble(3, this.degreesLatitude);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Location {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Location();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.name = reader.readString();
+                        break;
+                    case 2:
+                        message.degreesLongitude = reader.readDouble();
+                        break;
+                    case 3:
+                        message.degreesLatitude = reader.readDouble();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Location {
+            return Location.deserialize(bytes);
+        }
+    }
     export class EventMessage extends pb_1.Message {
         #one_of_decls: number[][] = [[2], [4]];
         constructor(data?: any[] | ({
@@ -3264,6 +3390,7 @@ export namespace messages {
             event?: EventMessage;
             poll?: PollMessage;
             list?: ListMessage;
+            location?: Location;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [11, 13], this.#one_of_decls);
@@ -3315,6 +3442,9 @@ export namespace messages {
                 }
                 if ("list" in data && data.list != undefined) {
                     this.list = data.list;
+                }
+                if ("location" in data && data.location != undefined) {
+                    this.location = data.location;
                 }
             }
         }
@@ -3438,6 +3568,15 @@ export namespace messages {
         get has_list() {
             return pb_1.Message.getField(this, 16) != null;
         }
+        get location() {
+            return pb_1.Message.getWrapperField(this, Location, 17) as Location;
+        }
+        set location(value: Location) {
+            pb_1.Message.setWrapperField(this, 17, value);
+        }
+        get has_location() {
+            return pb_1.Message.getField(this, 17) != null;
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             jid?: string;
@@ -3455,6 +3594,7 @@ export namespace messages {
             event?: ReturnType<typeof EventMessage.prototype.toObject>;
             poll?: ReturnType<typeof PollMessage.prototype.toObject>;
             list?: ReturnType<typeof ListMessage.prototype.toObject>;
+            location?: ReturnType<typeof Location.prototype.toObject>;
         }): MessageRequest {
             const message = new MessageRequest({});
             if (data.session != null) {
@@ -3505,6 +3645,9 @@ export namespace messages {
             if (data.list != null) {
                 message.list = ListMessage.fromObject(data.list);
             }
+            if (data.location != null) {
+                message.location = Location.fromObject(data.location);
+            }
             return message;
         }
         toObject() {
@@ -3525,6 +3668,7 @@ export namespace messages {
                 event?: ReturnType<typeof EventMessage.prototype.toObject>;
                 poll?: ReturnType<typeof PollMessage.prototype.toObject>;
                 list?: ReturnType<typeof ListMessage.prototype.toObject>;
+                location?: ReturnType<typeof Location.prototype.toObject>;
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -3574,6 +3718,9 @@ export namespace messages {
             if (this.list != null) {
                 data.list = this.list.toObject();
             }
+            if (this.location != null) {
+                data.location = this.location.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -3612,6 +3759,8 @@ export namespace messages {
                 writer.writeMessage(15, this.poll, () => this.poll.serialize(writer));
             if (this.has_list)
                 writer.writeMessage(16, this.list, () => this.list.serialize(writer));
+            if (this.has_location)
+                writer.writeMessage(17, this.location, () => this.location.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -3668,6 +3817,9 @@ export namespace messages {
                         break;
                     case 16:
                         reader.readMessage(message.list, () => message.list = ListMessage.deserialize(reader));
+                        break;
+                    case 17:
+                        reader.readMessage(message.location, () => message.location = Location.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

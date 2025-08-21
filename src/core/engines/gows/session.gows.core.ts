@@ -888,8 +888,21 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     };
   }
 
-  sendLocation(request: MessageLocationRequest) {
-    throw new Error('Method not implemented.');
+  async sendLocation(request: MessageLocationRequest) {
+    const jid = toJID(this.ensureSuffix(request.chatId));
+    const message = new messages.MessageRequest({
+      jid: jid,
+      session: this.session,
+      replyTo: getMessageIdFromSerialized(request.reply_to),
+      location: new messages.Location({
+        name: request.title,
+        degreesLatitude: request.latitude,
+        degreesLongitude: request.longitude,
+      }),
+    });
+    const response = await promisify(this.client.SendMessage)(message);
+    const data = response.toObject();
+    return this.messageResponse(jid, data);
   }
 
   forwardMessage(request: MessageForwardRequest): Promise<WAMessage> {
