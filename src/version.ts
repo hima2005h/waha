@@ -1,4 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+import { getEngineName } from '@waha/config';
+
 import { getBrowserExecutablePath } from './core/abc/session.abc';
 import { WAHAEngine } from './structures/enums.dto';
 import { WAHAEnvironment } from './structures/environment.dto';
@@ -26,11 +28,6 @@ export function getWAHAVersion(): WAHAVersion {
 
   return WAHAVersion.CORE;
 }
-export function getEngineName(): string {
-  //   Load engine name from WHATSAPP_DEFAULT_ENGINE environment variable
-  //   If not set - use WEBJS
-  return process.env.WHATSAPP_DEFAULT_ENGINE || WAHAEngine.WEBJS;
-}
 
 export const VERSION: WAHAEnvironment = {
   version: '2025.8.1',
@@ -41,3 +38,5 @@ export const VERSION: WAHAEnvironment = {
 };
 
 export const IsChrome = VERSION.browser?.includes('chrome');
+
+export { getEngineName };
