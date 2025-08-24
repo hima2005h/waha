@@ -32,6 +32,7 @@ import {
   MessageLinkPreviewRequest,
   MessageLocationRequest,
   MessagePollRequest,
+  MessagePollVoteRequest,
   MessageReactionRequest,
   MessageReplyRequest,
   MessageStarRequest,
@@ -204,6 +205,17 @@ export class ChattingController {
   async sendPoll(@Body() request: MessagePollRequest) {
     const whatsapp = await this.manager.getWorkingSession(request.session);
     return whatsapp.sendPoll(request);
+  }
+
+  @Post('/sendPollVote')
+  @ApiOperation({
+    summary: 'Vote on a poll',
+    description: 'Cast vote(s) on an existing poll message',
+  })
+  @UsePipes(new WAHAValidationPipe())
+  async sendPollVote(@Body() request: MessagePollVoteRequest) {
+    const whatsapp = await this.manager.getWorkingSession(request.session);
+    return whatsapp.sendPollVote(request);
   }
 
   @Post('/sendLocation')

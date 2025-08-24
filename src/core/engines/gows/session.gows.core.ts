@@ -81,6 +81,7 @@ import {
   MessageLinkCustomPreviewRequest,
   MessageLocationRequest,
   MessagePollRequest,
+  MessagePollVoteRequest,
   MessageReactionRequest,
   MessageReplyRequest,
   MessageTextRequest,
@@ -539,6 +540,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       onlyEvent(WhatsMeowEvent.POLL_VOTE_EVENT),
       map(this.toPollVotePayload.bind(this)),
       filter(Boolean),
+      share(),
     );
 
     // Split into successful and failed responses
@@ -793,6 +795,10 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const response = await promisify(this.client.SendMessage)(message);
     const data = response.toObject();
     return this.messageResponse(jid, data);
+  }
+
+  sendPollVote(request: MessagePollVoteRequest) {
+    throw new AvailableInPlusVersion('Poll voting');
   }
 
   sendList(request: SendListRequest): Promise<any> {

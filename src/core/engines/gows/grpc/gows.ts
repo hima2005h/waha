@@ -3391,6 +3391,7 @@ export namespace messages {
             poll?: PollMessage;
             list?: ListMessage;
             location?: Location;
+            pollVote?: PollVoteMessage;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [11, 13], this.#one_of_decls);
@@ -3445,6 +3446,9 @@ export namespace messages {
                 }
                 if ("location" in data && data.location != undefined) {
                     this.location = data.location;
+                }
+                if ("pollVote" in data && data.pollVote != undefined) {
+                    this.pollVote = data.pollVote;
                 }
             }
         }
@@ -3577,6 +3581,15 @@ export namespace messages {
         get has_location() {
             return pb_1.Message.getField(this, 17) != null;
         }
+        get pollVote() {
+            return pb_1.Message.getWrapperField(this, PollVoteMessage, 18) as PollVoteMessage;
+        }
+        set pollVote(value: PollVoteMessage) {
+            pb_1.Message.setWrapperField(this, 18, value);
+        }
+        get has_pollVote() {
+            return pb_1.Message.getField(this, 18) != null;
+        }
         static fromObject(data: {
             session?: ReturnType<typeof Session.prototype.toObject>;
             jid?: string;
@@ -3595,6 +3608,7 @@ export namespace messages {
             poll?: ReturnType<typeof PollMessage.prototype.toObject>;
             list?: ReturnType<typeof ListMessage.prototype.toObject>;
             location?: ReturnType<typeof Location.prototype.toObject>;
+            pollVote?: ReturnType<typeof PollVoteMessage.prototype.toObject>;
         }): MessageRequest {
             const message = new MessageRequest({});
             if (data.session != null) {
@@ -3648,6 +3662,9 @@ export namespace messages {
             if (data.location != null) {
                 message.location = Location.fromObject(data.location);
             }
+            if (data.pollVote != null) {
+                message.pollVote = PollVoteMessage.fromObject(data.pollVote);
+            }
             return message;
         }
         toObject() {
@@ -3669,6 +3686,7 @@ export namespace messages {
                 poll?: ReturnType<typeof PollMessage.prototype.toObject>;
                 list?: ReturnType<typeof ListMessage.prototype.toObject>;
                 location?: ReturnType<typeof Location.prototype.toObject>;
+                pollVote?: ReturnType<typeof PollVoteMessage.prototype.toObject>;
             } = {};
             if (this.session != null) {
                 data.session = this.session.toObject();
@@ -3721,6 +3739,9 @@ export namespace messages {
             if (this.location != null) {
                 data.location = this.location.toObject();
             }
+            if (this.pollVote != null) {
+                data.pollVote = this.pollVote.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -3761,6 +3782,8 @@ export namespace messages {
                 writer.writeMessage(16, this.list, () => this.list.serialize(writer));
             if (this.has_location)
                 writer.writeMessage(17, this.location, () => this.location.serialize(writer));
+            if (this.has_pollVote)
+                writer.writeMessage(18, this.pollVote, () => this.pollVote.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -3820,6 +3843,9 @@ export namespace messages {
                         break;
                     case 17:
                         reader.readMessage(message.location, () => message.location = Location.deserialize(reader));
+                        break;
+                    case 18:
+                        reader.readMessage(message.pollVote, () => message.pollVote = PollVoteMessage.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }
@@ -9784,6 +9810,132 @@ export namespace messages {
         }
         static deserializeBinary(bytes: Uint8Array): PollMessage {
             return PollMessage.deserialize(bytes);
+        }
+    }
+    export class PollVoteMessage extends pb_1.Message {
+        #one_of_decls: number[][] = [[2]];
+        constructor(data?: any[] | ({
+            pollMessageId?: string;
+            options?: string[];
+        } & (({
+            pollServerId?: number;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("pollMessageId" in data && data.pollMessageId != undefined) {
+                    this.pollMessageId = data.pollMessageId;
+                }
+                if ("pollServerId" in data && data.pollServerId != undefined) {
+                    this.pollServerId = data.pollServerId;
+                }
+                if ("options" in data && data.options != undefined) {
+                    this.options = data.options;
+                }
+            }
+        }
+        get pollMessageId() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set pollMessageId(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get pollServerId() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set pollServerId(value: number) {
+            pb_1.Message.setOneofField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_pollServerId() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get options() {
+            return pb_1.Message.getFieldWithDefault(this, 3, []) as string[];
+        }
+        set options(value: string[]) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get _pollServerId() {
+            const cases: {
+                [index: number]: "none" | "pollServerId";
+            } = {
+                0: "none",
+                2: "pollServerId"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [2])];
+        }
+        static fromObject(data: {
+            pollMessageId?: string;
+            pollServerId?: number;
+            options?: string[];
+        }): PollVoteMessage {
+            const message = new PollVoteMessage({});
+            if (data.pollMessageId != null) {
+                message.pollMessageId = data.pollMessageId;
+            }
+            if (data.pollServerId != null) {
+                message.pollServerId = data.pollServerId;
+            }
+            if (data.options != null) {
+                message.options = data.options;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                pollMessageId?: string;
+                pollServerId?: number;
+                options?: string[];
+            } = {};
+            if (this.pollMessageId != null) {
+                data.pollMessageId = this.pollMessageId;
+            }
+            if (this.pollServerId != null) {
+                data.pollServerId = this.pollServerId;
+            }
+            if (this.options != null) {
+                data.options = this.options;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.pollMessageId.length)
+                writer.writeString(1, this.pollMessageId);
+            if (this.has_pollServerId)
+                writer.writeInt64(2, this.pollServerId);
+            if (this.options.length)
+                writer.writeRepeatedString(3, this.options);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PollVoteMessage {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PollVoteMessage();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.pollMessageId = reader.readString();
+                        break;
+                    case 2:
+                        message.pollServerId = reader.readInt64();
+                        break;
+                    case 3:
+                        pb_1.Message.addToRepeatedField(message, 3, reader.readString());
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): PollVoteMessage {
+            return PollVoteMessage.deserialize(bytes);
         }
     }
     interface GrpcUnaryServiceInterface<P, R> {

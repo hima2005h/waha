@@ -8,8 +8,10 @@ import { IsFileType } from '@waha/nestjs/validation/IsFileType';
 import { GetChatMessagesQuery } from '@waha/structures/chats.dto';
 import { plainToInstance, Transform, Type } from 'class-transformer';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUrl,
@@ -455,4 +457,35 @@ export class NewMessageIDResponse {
     required: true,
   })
   id: string;
+}
+
+export class MessagePollVoteRequest extends ChatRequest {
+  @ApiProperty({
+    description:
+      'The ID of the poll message. Format: {fromMe}_{chatID}_{messageId}[_{participant}] or just ID for GOWS',
+    example: 'false_11111111111@c.us_AAAAAAAAAAAAAAAAAAAA',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  pollMessageId: string;
+
+  @ApiProperty({
+    description:
+      'Only for Channels - server message id (if known); if omitted, API may look it up in the storage',
+    required: false,
+    example: null,
+  })
+  @IsOptional()
+  @IsNumber()
+  pollServerId?: number;
+
+  @ApiProperty({
+    description: 'Poll options you are voting for',
+    example: 'Awesome!',
+    isArray: true,
+  })
+  @IsArray()
+  @IsString({ each: true })
+  votes: string[];
 }

@@ -70,6 +70,7 @@ import {
   MessageLinkPreviewRequest,
   MessageLocationRequest,
   MessagePollRequest,
+  MessagePollVoteRequest,
   MessageReactionRequest,
   MessageReplyRequest,
   MessageStarRequest,
@@ -449,6 +450,10 @@ export abstract class WhatsappSession {
   }
 
   sendPoll(request: MessagePollRequest) {
+    throw new NotImplementedByEngineError();
+  }
+
+  sendPollVote(request: MessagePollVoteRequest) {
     throw new NotImplementedByEngineError();
   }
 
