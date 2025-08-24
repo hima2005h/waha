@@ -18,7 +18,12 @@ export function serializeError(err: unknown) {
   const properties = Object.getOwnPropertyNames(err);
   // getOwnPropertyNames does not get 'name', like "ReferenceError"
   properties.push('name');
-  return JSON.parse(JSON.stringify(err, properties));
+  const result = JSON.parse(JSON.stringify(err, properties));
+  // Put the "stack" field at the end, too wordy
+  const stack = result.stack;
+  delete result.stack;
+  result.stack = stack;
+  return result;
 }
 
 @Catch()
