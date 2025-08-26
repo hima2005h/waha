@@ -102,7 +102,7 @@ export class MediaManager implements IMediaManager {
     processor: IMediaEngineProcessor<Message>,
     message: Message,
     session: string,
-  ): Promise<Message> {
+  ): Promise<WAMedia | null> {
     let messageId: string;
     try {
       messageId = processor.getMessageId(message);
@@ -134,9 +134,7 @@ export class MediaManager implements IMediaManager {
       // @ts-ignore
       media.error.details = `${err.stack}`;
     }
-    // @ts-ignore
-    message.media = media;
-    return message;
+    return media;
   }
 
   private async fetchMedia(

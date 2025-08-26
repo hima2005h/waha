@@ -103,6 +103,7 @@ import {
 } from '@waha/structures/groups.dto';
 import { Label, LabelDTO, LabelID } from '@waha/structures/labels.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import { WAMedia } from '@waha/structures/media.dto';
 import { ReplyToMessage } from '@waha/structures/message.dto';
 import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
 import {
@@ -1657,15 +1658,14 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     message: Message,
     downloadMedia = true,
   ) {
+    // Convert
+    const wamessage = this.toWAMessage(message);
+    // Media
     if (downloadMedia) {
-      try {
-        message = await this.downloadMedia(message);
-      } catch (e) {
-        this.logger.error('Failed when tried to download media for a message');
-        this.logger.error(e, e.stack);
-      }
+      const media = await this.downloadMediaSafe(message);
+      wamessage.media = media;
     }
-    return this.toWAMessage(message);
+    return wamessage;
   }
 
   private processMessageReaction(reaction: Reaction): WAMessageReaction {
@@ -1737,8 +1737,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       // Media
       // @ts-ignore
       hasMedia: Boolean(message.hasMedia),
-      // @ts-ignore
-      media: message.media || null,
+      media: null,
       // @ts-ignore
       mediaUrl: message.media?.url,
       // @ts-ignore
@@ -1781,9 +1780,24 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     return contact;
   }
 
-  protected downloadMedia(message: Message) {
+  protected async downloadMediaSafe(message): Promise<WAMedia | null> {
+    try {
+      return await this.downloadMedia(message);
+    } catch (e) {
+      this.logger.error('Failed when tried to download media for a message');
+      this.logger.error(e, e.stack);
+    }
+    return null;
+  }
+
+  protected async downloadMedia(message: Message) {
     const processor = new WEBJSEngineMediaProcessor();
-    return this.mediaManager.processMedia(processor, message, this.name);
+    const media = await this.mediaManager.processMedia(
+      processor,
+      message,
+      this.name,
+    );
+    return media;
   }
 
   protected getMessageOptions(request: any): any {

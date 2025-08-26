@@ -148,6 +148,7 @@ import {
   LabelID,
 } from '@waha/structures/labels.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';
+import { WAMedia } from '@waha/structures/media.dto';
 import { ReplyToMessage } from '@waha/structures/message.dto';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 import {
@@ -1855,6 +1856,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
     );
+    messagesFromMe$ = messagesFromMe$.pipe(
+      filter((msg) => this.shouldProcessIncomingMessage(msg)),
+    );
     messagesFromOthers$ = messagesFromOthers$.pipe(
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
@@ -1871,7 +1875,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
           proto.Message.ProtocolMessage.Type.REVOKE,
       ),
       mergeMap(async (message): Promise<WAMessageRevokedBody> => {
-        const afterMessage = await this.toWAMessage(message);
+        const afterMessage = this.toWAMessage(message);
         // Extract the revoked message ID from protocolMessage.key
         const revokedMessageId = message.message.protocolMessage.key?.id;
         return {
@@ -1895,7 +1899,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
           message.message?.protocolMessage?.editedMessage !== undefined,
       ),
       mergeMap(async (message): Promise<WAMessageEditedBody> => {
-        const waMessage = await this.toWAMessage(message);
+        const waMessage = this.toWAMessage(message);
         // Extract the body from editedMessage using extractBody function
         const body =
           extractBody(message.message.protocolMessage.editedMessage) || '';
@@ -2170,7 +2174,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     return reaction;
   }
 
-  protected async processIncomingMessage(message, downloadMedia = true) {
+  shouldProcessIncomingMessage(message): boolean {
     // if there is no text or media message
     if (!message) return;
     if (!message.message) return;
@@ -2204,27 +2208,41 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       // Ignore key distribution messages
       if (message?.message?.senderKeyDistributionMessage) return;
     }
+    return true;
+  }
 
-    if (downloadMedia) {
-      try {
-        message = await this.downloadMedia(message);
-      } catch (e) {
-        this.logger.error('Failed when tried to download media for a message');
-        this.logger.error(e, e.stack);
-      }
+  protected async processIncomingMessage(
+    message,
+    downloadMedia: boolean,
+  ): Promise<WAMessage | null> {
+    // Filter
+    if (!this.shouldProcessIncomingMessage(message)) {
+      return null;
     }
+    // Convert
+    const wamessage = this.toWAMessageSafe(message);
+    if (!wamessage) {
+      return null;
+    }
+    // Media
+    if (downloadMedia) {
+      const media = await this.downloadMediaSafe(message);
+      wamessage.media = media;
+    }
+    return wamessage;
+  }
 
+  protected toWAMessageSafe(message): WAMessage | null {
     try {
-      return await this.toWAMessage(message);
+      return this.toWAMessage(message);
     } catch (error) {
       this.logger.error('Failed to process incoming message');
       this.logger.error(error);
-      console.trace(error);
       return null;
     }
   }
 
-  protected toWAMessage(message): Promise<WAMessage> {
+  protected toWAMessage(message): WAMessage {
     const fromToParticipant = getFromToParticipant(message.key);
     const id = buildMessageId(message.key);
     const body = extractBody(message.message);
@@ -2232,7 +2250,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const ack = message.ack || StatusToAck(message.status);
     const mediaContent = extractMediaContent(message.message);
     const source = this.getMessageSource(message.key.id);
-    return Promise.resolve({
+    return {
       id: id,
       timestamp: ensureNumber(message.messageTimestamp),
       from: toCusFormat(fromToParticipant.from),
@@ -2243,7 +2261,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       participant: toCusFormat(fromToParticipant.participant),
       // Media
       hasMedia: Boolean(mediaContent),
-      media: message.media || null,
+      media: null,
       mediaUrl: message.media?.url,
       // @ts-ignore
       ack: ack,
@@ -2253,7 +2271,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       vCards: message.vCards,
       replyTo: replyTo,
       _data: message,
-    });
+    };
   }
 
   protected extractReplyTo(message): ReplyToMessage | null {
@@ -2445,7 +2463,17 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     return { id: chatId, presences: presences };
   }
 
-  protected downloadMedia(message) {
+  protected async downloadMediaSafe(message): Promise<WAMedia | null> {
+    try {
+      return await this.downloadMedia(message);
+    } catch (e) {
+      this.logger.error('Failed when tried to download media for a message');
+      this.logger.error(e, e.stack);
+    }
+    return null;
+  }
+
+  protected async downloadMedia(message): Promise<WAMedia | null> {
     const processor = new NOWEBEngineMediaProcessor(this, this.loggerBuilder);
     return this.mediaManager.processMedia(processor, message, this.name);
   }

@@ -1,4 +1,5 @@
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
+import { WAMedia } from '@waha/structures/media.dto';
 
 /**
  * General interface for MediaManager - one that handles the logic
@@ -9,7 +10,7 @@ interface IMediaManager {
     processor: IMediaEngineProcessor<Message>,
     message: Message,
     session: string,
-  ): Promise<Message>;
+  ): Promise<WAMedia | null>;
   close(): void;
 }
 

@@ -1870,7 +1870,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   // END - Methods for API
   //
 
-  protected async processIncomingMessage(message, downloadMedia = true) {
+  protected shouldProcessIncomingMessage(message): boolean {
     // if there is no text or media message
     if (!message) return;
     if (!message.Message) return;
@@ -1889,21 +1889,42 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       // Ignore key distribution messages
       if (message?.Message?.senderKeyDistributionMessage) return;
     }
-
-    if (downloadMedia) {
-      try {
-        message = await this.downloadMedia(message);
-      } catch (e) {
-        this.logger.error('Failed when tried to download media for a message');
-        this.logger.error(e, e.stack);
-      }
-    }
-    return this.toWAMessage(message);
+    return true;
   }
 
-  protected downloadMedia(message) {
+  protected async processIncomingMessage(message, downloadMedia = true) {
+    // Filter
+    if (!this.shouldProcessIncomingMessage(message)) {
+      return null;
+    }
+    // Convert
+    const wamessage = this.toWAMessage(message);
+    // Media
+    if (downloadMedia) {
+      const media = await this.downloadMediaSafe(message);
+      wamessage.media = media;
+    }
+    return wamessage;
+  }
+
+  protected async downloadMediaSafe(message) {
+    try {
+      return await this.downloadMedia(message);
+    } catch (e) {
+      this.logger.error('Failed when tried to download media for a message');
+      this.logger.error(e, e.stack);
+      return null;
+    }
+  }
+
+  protected async downloadMedia(message) {
     const processor = new GOWSEngineMediaProcessor(this);
-    return this.mediaManager.processMedia(processor, message, this.name);
+    const media = await this.mediaManager.processMedia(
+      processor,
+      message,
+      this.name,
+    );
+    return media;
   }
 
   protected toWAMessage(message): WAMessage {
@@ -1931,7 +1952,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       participant: toCusFormat(fromToParticipant.participant),
       // Media
       hasMedia: Boolean(mediaContent),
-      media: message.media || null,
+      media: null,
       mediaUrl: message.media?.url,
       // @ts-ignore
       ack: ack,
