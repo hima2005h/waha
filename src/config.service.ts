@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GlobalWebhookConfigConfig } from '@waha/core/config/GlobalWebhookConfig';
+import { IgnoreJidConfig } from '@waha/core/utils/jids';
 
 import { parseBool } from './helpers';
 import { WebhookConfig } from './structures/webhooks.config.dto';
@@ -176,6 +177,23 @@ export class WhatsappConfigService implements OnApplicationBootstrap {
   get debugModeEnabled(): boolean {
     const value = this.configService.get('WAHA_DEBUG_MODE', 'false');
     return parseBool(value);
+  }
+
+  /**
+   * Global default "ignore settings" for chats.
+   * If not defined, defaults to false (do not ignore anything).
+   */
+  getIgnoreChatsConfig(): IgnoreJidConfig {
+    const status = parseBool(
+      this.configService.get('WAHA_SESSION_CONFIG_IGNORE_STATUS', 'false'),
+    );
+    const groups = parseBool(
+      this.configService.get('WAHA_SESSION_CONFIG_IGNORE_GROUPS', 'false'),
+    );
+    const channels = parseBool(
+      this.configService.get('WAHA_SESSION_CONFIG_IGNORE_CHANNELS', 'false'),
+    );
+    return { status, groups, channels };
   }
 
   onApplicationBootstrap() {

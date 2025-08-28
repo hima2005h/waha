@@ -1302,13 +1302,128 @@ export namespace messages {
             return SessionProxyConfig.deserialize(bytes);
         }
     }
-    export class SessionConfig extends pb_1.Message {
+    export class SessionIgnoreJidsConfig extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
+            status?: boolean;
+            groups?: boolean;
+            newsletters?: boolean;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("status" in data && data.status != undefined) {
+                    this.status = data.status;
+                }
+                if ("groups" in data && data.groups != undefined) {
+                    this.groups = data.groups;
+                }
+                if ("newsletters" in data && data.newsletters != undefined) {
+                    this.newsletters = data.newsletters;
+                }
+            }
+        }
+        get status() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set status(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get groups() {
+            return pb_1.Message.getFieldWithDefault(this, 2, false) as boolean;
+        }
+        set groups(value: boolean) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get newsletters() {
+            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
+        }
+        set newsletters(value: boolean) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            status?: boolean;
+            groups?: boolean;
+            newsletters?: boolean;
+        }): SessionIgnoreJidsConfig {
+            const message = new SessionIgnoreJidsConfig({});
+            if (data.status != null) {
+                message.status = data.status;
+            }
+            if (data.groups != null) {
+                message.groups = data.groups;
+            }
+            if (data.newsletters != null) {
+                message.newsletters = data.newsletters;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                status?: boolean;
+                groups?: boolean;
+                newsletters?: boolean;
+            } = {};
+            if (this.status != null) {
+                data.status = this.status;
+            }
+            if (this.groups != null) {
+                data.groups = this.groups;
+            }
+            if (this.newsletters != null) {
+                data.newsletters = this.newsletters;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.status != false)
+                writer.writeBool(1, this.status);
+            if (this.groups != false)
+                writer.writeBool(2, this.groups);
+            if (this.newsletters != false)
+                writer.writeBool(3, this.newsletters);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SessionIgnoreJidsConfig {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SessionIgnoreJidsConfig();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.status = reader.readBool();
+                        break;
+                    case 2:
+                        message.groups = reader.readBool();
+                        break;
+                    case 3:
+                        message.newsletters = reader.readBool();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SessionIgnoreJidsConfig {
+            return SessionIgnoreJidsConfig.deserialize(bytes);
+        }
+    }
+    export class SessionConfig extends pb_1.Message {
+        #one_of_decls: number[][] = [[4]];
+        constructor(data?: any[] | ({
             store?: SessionStoreConfig;
             log?: SessionLogConfig;
             proxy?: SessionProxyConfig;
-        }) {
+        } & (({
+            ignore?: SessionIgnoreJidsConfig;
+        })))) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
@@ -1320,6 +1435,9 @@ export namespace messages {
                 }
                 if ("proxy" in data && data.proxy != undefined) {
                     this.proxy = data.proxy;
+                }
+                if ("ignore" in data && data.ignore != undefined) {
+                    this.ignore = data.ignore;
                 }
             }
         }
@@ -1350,10 +1468,29 @@ export namespace messages {
         get has_proxy() {
             return pb_1.Message.getField(this, 3) != null;
         }
+        get ignore() {
+            return pb_1.Message.getWrapperField(this, SessionIgnoreJidsConfig, 4) as SessionIgnoreJidsConfig;
+        }
+        set ignore(value: SessionIgnoreJidsConfig) {
+            pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
+        }
+        get has_ignore() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
+        get _ignore() {
+            const cases: {
+                [index: number]: "none" | "ignore";
+            } = {
+                0: "none",
+                4: "ignore"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [4])];
+        }
         static fromObject(data: {
             store?: ReturnType<typeof SessionStoreConfig.prototype.toObject>;
             log?: ReturnType<typeof SessionLogConfig.prototype.toObject>;
             proxy?: ReturnType<typeof SessionProxyConfig.prototype.toObject>;
+            ignore?: ReturnType<typeof SessionIgnoreJidsConfig.prototype.toObject>;
         }): SessionConfig {
             const message = new SessionConfig({});
             if (data.store != null) {
@@ -1365,6 +1502,9 @@ export namespace messages {
             if (data.proxy != null) {
                 message.proxy = SessionProxyConfig.fromObject(data.proxy);
             }
+            if (data.ignore != null) {
+                message.ignore = SessionIgnoreJidsConfig.fromObject(data.ignore);
+            }
             return message;
         }
         toObject() {
@@ -1372,6 +1512,7 @@ export namespace messages {
                 store?: ReturnType<typeof SessionStoreConfig.prototype.toObject>;
                 log?: ReturnType<typeof SessionLogConfig.prototype.toObject>;
                 proxy?: ReturnType<typeof SessionProxyConfig.prototype.toObject>;
+                ignore?: ReturnType<typeof SessionIgnoreJidsConfig.prototype.toObject>;
             } = {};
             if (this.store != null) {
                 data.store = this.store.toObject();
@@ -1381,6 +1522,9 @@ export namespace messages {
             }
             if (this.proxy != null) {
                 data.proxy = this.proxy.toObject();
+            }
+            if (this.ignore != null) {
+                data.ignore = this.ignore.toObject();
             }
             return data;
         }
@@ -1394,6 +1538,8 @@ export namespace messages {
                 writer.writeMessage(2, this.log, () => this.log.serialize(writer));
             if (this.has_proxy)
                 writer.writeMessage(3, this.proxy, () => this.proxy.serialize(writer));
+            if (this.has_ignore)
+                writer.writeMessage(4, this.ignore, () => this.ignore.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1411,6 +1557,9 @@ export namespace messages {
                         break;
                     case 3:
                         reader.readMessage(message.proxy, () => message.proxy = SessionProxyConfig.deserialize(reader));
+                        break;
+                    case 4:
+                        reader.readMessage(message.ignore, () => message.ignore = SessionIgnoreJidsConfig.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

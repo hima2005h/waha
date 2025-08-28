@@ -4,7 +4,11 @@ import {
   IMediaConverter,
 } from '@waha/core/media/IConverter';
 import { MessagesForRead } from '@waha/core/utils/convertors';
-import { isJidNewsletter } from '@waha/core/utils/jids';
+import {
+  IgnoreJidConfig,
+  isJidNewsletter,
+  JidFilter,
+} from '@waha/core/utils/jids';
 import {
   Channel,
   ChannelListResult,
@@ -90,10 +94,7 @@ import {
   WAHAPresenceStatus,
   WAHASessionStatus,
 } from '../../structures/enums.dto';
-import {
-  EventCancelRequest,
-  EventMessageRequest,
-} from '../../structures/events.dto';
+import { EventMessageRequest } from '../../structures/events.dto';
 import {
   CreateGroupRequest,
   GroupField,
@@ -153,8 +154,11 @@ export interface SessionParams {
   loggerBuilder: LoggerBuilder;
   sessionStore: DataStore;
   proxyConfig?: ProxyConfig;
+  // Raw unchanged SessionConfig
   sessionConfig?: SessionConfig;
   engineConfig?: any;
+  // Ignore settings
+  ignore: IgnoreJidConfig;
 }
 
 export abstract class WhatsappSession {
@@ -169,6 +173,7 @@ export abstract class WhatsappSession {
   public sessionConfig?: SessionConfig;
   protected engineConfig?: any;
   protected unpairing: boolean = false;
+  protected jids: JidFilter;
 
   private _status: WAHASessionStatus;
   private shouldPrintQR: boolean;
@@ -195,6 +200,7 @@ export abstract class WhatsappSession {
     mediaManager,
     sessionConfig,
     engineConfig,
+    ignore,
   }: SessionParams) {
     this.status$ = new BehaviorSubject(null);
 
@@ -260,6 +266,11 @@ export abstract class WhatsappSession {
     this.sessionConfig = sessionConfig;
     this.engineConfig = engineConfig;
     this.shouldPrintQR = printQR;
+    this.logger.info(
+      { ignore: ignore },
+      'The session ignores the following chat ids',
+    );
+    this.jids = new JidFilter(ignore);
   }
 
   public getEventObservable(event: WAHAEvents) {

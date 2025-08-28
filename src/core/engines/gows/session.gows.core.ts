@@ -254,6 +254,11 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
         proxy: new messages.SessionProxyConfig({
           url: this.getProxyUrl(this.proxyConfig),
         }),
+        ignore: new messages.SessionIgnoreJidsConfig({
+          status: this.jids.ignore.status,
+          groups: this.jids.ignore.groups,
+          newsletters: this.jids.ignore.channels,
+        }),
       }),
     });
 
@@ -391,7 +396,11 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const all$ = this.all$;
     this.events2.get(WAHAEvents.ENGINE_EVENT).switch(all$);
 
-    const messages$ = all$.pipe(onlyEvent(WhatsMeowEvent.MESSAGE));
+    const messages$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.MESSAGE),
+      filter((msg: any) => this.jids.include(msg?.Info?.Chat)),
+      share(),
+    );
 
     let [messagesFromMe$, messagesFromOthers$] = partition(messages$, isMine);
     messagesFromMe$ = messagesFromMe$.pipe(
@@ -461,7 +470,10 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     );
     this.events2.get(WAHAEvents.MESSAGE_EDITED).switch(messagesEdited$);
 
-    const receipt$ = all$.pipe(onlyEvent(WhatsMeowEvent.RECEIPT));
+    const receipt$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.RECEIPT),
+      filter((r: any) => this.jids.include(r?.Chat)),
+    );
     const messageAck$ = receipt$.pipe(
       mergeMap(this.receiptToMessageAck.bind(this)),
       DistinctAck(),
@@ -476,9 +488,13 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
 
     const presence$ = all$.pipe(
       onlyEvent(WhatsMeowEvent.PRESENCE),
+      filter((event: any) => this.jids.include(event?.From)),
       filter((event) => !isJidGroup(event.From)),
     );
-    const chatPresence$ = all$.pipe(onlyEvent(WhatsMeowEvent.CHAT_PRESENCE));
+    const chatPresence$ = all$.pipe(
+      onlyEvent(WhatsMeowEvent.CHAT_PRESENCE),
+      filter((event: any) => this.jids.include(event?.Chat)),
+    );
     const presenceUpdates$ = merge(presence$, chatPresence$).pipe(
       map((event) => this.toWahaPresences(event.From || event.Chat, [event])),
     );
@@ -538,6 +554,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     //
     const pollVoteEvent$ = all$.pipe(
       onlyEvent(WhatsMeowEvent.POLL_VOTE_EVENT),
+      filter((event: any) => this.jids.include(event?.Info?.Chat)),
       map(this.toPollVotePayload.bind(this)),
       filter(Boolean),
       share(),
@@ -557,6 +574,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     //
     const eventMessageResponse$ = all$.pipe(
       onlyEvent(WhatsMeowEvent.EVENT_MESSAGE_RESPONSE),
+      filter((event: any) => this.jids.include(event?.Info?.Chat)),
       map(this.toEventResponsePayload.bind(this)),
       filter(Boolean),
     );

@@ -385,6 +385,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     this.store = new NowebPersistentStore(
       this.loggerBuilder.child({ name: NowebPersistentStore.name }),
       storage,
+      this.jids,
     );
     await this.store.init();
   }
@@ -1846,6 +1847,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     const messagesUpsert$ = fromEvent(this.sock.ev, 'messages.upsert').pipe(
       map((event: BaileysEventMap['messages.upsert']) => event.messages),
       mergeAll(),
+      filter((msg) => this.jids.include(msg.key.remoteJid)),
       share(),
     );
     let [messagesFromMe$, messagesFromOthers$] = partition(
@@ -1933,6 +1935,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     ).pipe(
       // @ts-ignore
       mergeAll(),
+      filter((update) => this.jids.include(update.key.remoteJid)),
       share(),
     );
     const messageAckDirect$ = messageUpdates$.pipe(
@@ -1944,6 +1947,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       fromEvent(this.sock.ev, 'message-receipt.update').pipe(
         // @ts-ignore
         mergeAll(),
+        filter((update) => this.jids.include(update.key.remoteJid)),
         share(),
       );
 
@@ -2011,6 +2015,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
     this.events2.get(WAHAEvents.PRESENCE_UPDATE).switch(
       fromEvent(this.sock.ev, 'presence.update').pipe(
+        filter((presence: any) => this.jids.include(presence.id)),
         map((data: any) => this.toWahaPresences(data.id, data.presences)),
         share(),
       ),
@@ -2041,7 +2046,13 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     //
     // @ts-ignore
     const calls$: Observable<WACallEvent[]> = fromEvent(this.sock.ev, 'call');
-    const call$ = calls$.pipe(mergeMap(identity), share());
+    const call$ = calls$.pipe(
+      mergeMap(identity),
+      filter((call: WACallEvent) =>
+        this.jids.include(call.groupJid || call.chatId),
+      ),
+      share(),
+    );
     this.events2.get(WAHAEvents.CALL_RECEIVED).switch(
       call$.pipe(
         filter((call: WACallEvent) => call.status === 'offer'),

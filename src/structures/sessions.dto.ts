@@ -89,6 +89,29 @@ export class NowebConfig {
   markOnline: boolean = true;
 }
 
+export class IgnoreConfig {
+  @ApiProperty({
+    description: 'Ignore a status@broadcast (stories) events',
+  })
+  @IsBoolean()
+  @IsOptional()
+  status?: boolean;
+
+  @ApiProperty({
+    description: 'Ignore groups events',
+  })
+  @IsBoolean()
+  @IsOptional()
+  groups?: boolean;
+
+  @ApiProperty({
+    description: 'Ignore channels events',
+  })
+  @IsBoolean()
+  @IsOptional()
+  channels?: boolean;
+}
+
 export class SessionConfig {
   @ValidateNested({ each: true })
   @Type(() => WebhookConfig)
@@ -124,6 +147,19 @@ export class SessionConfig {
   @IsBoolean()
   @IsOptional()
   debug?: boolean;
+
+  @ApiProperty({
+    example: {
+      status: null,
+      groups: null,
+      channels: null,
+    },
+    description: 'Ignore some events related to specific chats',
+  })
+  @ValidateNested()
+  @Type(() => IgnoreConfig)
+  @IsOptional()
+  ignore?: IgnoreConfig;
 
   @ApiProperty({
     example: {

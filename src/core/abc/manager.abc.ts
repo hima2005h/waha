@@ -14,9 +14,11 @@ import { GowsEngineConfigService } from '@waha/core/config/GowsEngineConfigServi
 import { GowsBootstrap } from '@waha/core/engines/gows/GowsBootstrap';
 import { ISessionMeRepository } from '@waha/core/storage/ISessionMeRepository';
 import { ISessionWorkerRepository } from '@waha/core/storage/ISessionWorkerRepository';
+import { IgnoreJidConfig } from '@waha/core/utils/jids';
 import { WAHAWebhook } from '@waha/structures/webhooks.dto';
 import { waitUntil } from '@waha/utils/promiseTimeout';
 import { VERSION } from '@waha/version';
+import * as lodash from 'lodash';
 import { PinoLogger } from 'nestjs-pino';
 import { merge, Observable, of } from 'rxjs';
 
@@ -234,6 +236,12 @@ export abstract class SessionManager
       return new GowsBootstrap(logger, config);
     }
     return new NoopEngineBootstrap();
+  }
+
+  protected ignoreChatsConfig(config: SessionConfig) {
+    const ignore: IgnoreJidConfig = this.config.getIgnoreChatsConfig();
+    // Given the default, overwrite from the config if any
+    return lodash.defaults({}, config?.ignore, ignore);
   }
 }
 

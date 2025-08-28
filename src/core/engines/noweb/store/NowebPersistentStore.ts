@@ -14,6 +14,7 @@ import makeWASocket, {
   updateMessageWithReceipt,
   WAMessage,
 } from '@adiwajshing/baileys';
+import { WACallEvent } from '@adiwajshing/baileys/lib/Types/Call';
 import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
 import { Label } from '@adiwajshing/baileys/lib/Types/Label';
 import {
@@ -24,6 +25,7 @@ import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import { IGroupRepository } from '@waha/core/engines/noweb/store/IGroupRepository';
 import { ILabelAssociationRepository } from '@waha/core/engines/noweb/store/ILabelAssociationsRepository';
 import { ILabelsRepository } from '@waha/core/engines/noweb/store/ILabelsRepository';
+import { JidFilter } from '@waha/core/utils/jids';
 import {
   GetChatMessagesFilter,
   OverviewFilter,
@@ -39,6 +41,7 @@ import { waitUntil } from '@waha/utils/promiseTimeout';
 import * as lodash from 'lodash';
 import { toNumber } from 'lodash';
 import { Logger } from 'pino';
+import { filter } from 'rxjs';
 
 import { IChatRepository } from './IChatRepository';
 import { IContactRepository } from './IContactRepository';
@@ -82,6 +85,7 @@ export class NowebPersistentStore implements INowebStore {
   constructor(
     private logger: Logger,
     public storage: INowebStorage,
+    private jids: JidFilter,
   ) {
     this.socket = null;
     this.chatRepo = storage.getChatRepository();
@@ -247,6 +251,7 @@ export class NowebPersistentStore implements INowebStore {
 
   private async syncMessagesHistory(messages) {
     const realMessages = messages.filter(isRealMessage);
+    messages = messages.filter((msg) => this.jids.include(msg.key.remoteJid));
     await this.messagesRepo.upsert(realMessages);
     this.logger.info(
       `history sync - '${messages.length}' got messages, '${realMessages.length}' real messages`,
@@ -254,11 +259,13 @@ export class NowebPersistentStore implements INowebStore {
   }
 
   private async onMessagesUpsert(update) {
-    const { messages, type } = update;
+    const type = update.type;
     if (type !== 'notify' && type !== 'append') {
       this.logger.debug(`unexpected type for messages.upsert: '${type}'`);
       return;
     }
+    let messages = update.messages;
+    messages = messages.filter((msg) => this.jids.include(msg.key.remoteJid));
     const realMessages = messages.filter(isRealMessage);
     await this.messagesRepo.upsert(realMessages);
     this.logger.debug(
@@ -270,6 +277,9 @@ export class NowebPersistentStore implements INowebStore {
     for (const update of updates) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const jid = jidNormalizedUser(update.key.remoteJid!);
+      if (!this.jids.include(jid)) {
+        continue;
+      }
       if (!update.key.id) {
         continue;
       }
@@ -333,12 +343,16 @@ export class NowebPersistentStore implements INowebStore {
       delete chat['messages'];
       chat.conversationTimestamp = toNumber(chat.conversationTimestamp) || null;
     }
+    chats = chats.filter((chat) => this.jids.include(chat.id));
     await this.chatRepo.upsertMany(chats);
     this.logger.info(`store sync - '${chats.length}' synced chats`);
   }
 
   private async onGroupUpsert(groups: GroupMetadata[]) {
     for (const group of groups) {
+      if (!this.jids.include(group.id)) {
+        continue;
+      }
       await this.groupRepo.save(group);
     }
     this.logger.info(`store sync - '${groups.length}' synced groups`);
@@ -346,6 +360,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onGroupUpdate(groups: Partial<GroupMetadata>[]) {
     for (const update of groups) {
+      if (!this.jids.include(update.id)) {
+        continue;
+      }
       let group = await this.groupRepo.getById(update.id);
       group = Object.assign(group || {}, update) as GroupMetadata;
       await this.groupRepo.save(group);
@@ -356,6 +373,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onGroupParticipantsUpdate(data) {
     const id: string = data.id;
+    if (!this.jids.include(id)) {
+      return;
+    }
     const participants: string[] = data.participants;
     const action: ParticipantAction = data.action;
 
@@ -419,6 +439,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onChatUpdate(updates: ChatUpdate[]) {
     for (const update of updates) {
+      if (!this.jids.include(update.id)) {
+        continue;
+      }
       const chat = (await this.chatRepo.getById(update.id)) || ({} as Chat);
       Object.assign(chat, update);
       chat.conversationTimestamp = toNumber(chat.conversationTimestamp) || null;
@@ -447,6 +470,9 @@ export class NowebPersistentStore implements INowebStore {
     const ids = contacts.map((c) => c.id);
     const contactById = await this.contactRepo.getEntitiesByIds(ids);
     for (const update of contacts) {
+      if (!this.jids.include(update.id)) {
+        continue;
+      }
       const contact = contactById.get(update.id) || {};
       // remove undefined from data
       Object.keys(update).forEach(
@@ -460,6 +486,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onContactUpdate(updates: Partial<Contact>[]) {
     for (const update of updates) {
+      if (!this.jids.include(update.id)) {
+        continue;
+      }
       let contact = await this.contactRepo.getById(update.id);
 
       if (!contact) {
@@ -493,6 +522,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onMessageReaction(reactions) {
     for (const { key, reaction } of reactions) {
+      if (!this.jids.include(key.remoteJid)) {
+        continue;
+      }
       const msg = await this.messagesRepo.getByJidById(key.remoteJid, key.id);
       if (!msg) {
         this.logger.warn(
@@ -509,6 +541,9 @@ export class NowebPersistentStore implements INowebStore {
 
   private async onMessageReceiptUpdate(updates) {
     for (const { key, receipt } of updates) {
+      if (!this.jids.include(key.remoteJid)) {
+        continue;
+      }
       const msg = await this.messagesRepo.getByJidById(key.remoteJid, key.id);
       if (!msg) {
         this.logger.warn(
@@ -544,6 +579,9 @@ export class NowebPersistentStore implements INowebStore {
   }
 
   private async onPresenceUpdate({ id, presences: update }) {
+    if (!this.jids.include(id)) {
+      return;
+    }
     this.presences[id] = this.presences[id] || {};
     Object.assign(this.presences[id], update);
   }

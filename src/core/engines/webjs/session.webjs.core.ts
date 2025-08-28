@@ -1440,6 +1440,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     //
     const messageReceived$ = fromEvent(this.whatsapp, Events.MESSAGE_RECEIVED);
     const messagesFromOthers$ = messageReceived$.pipe(
+      filter((msg: Message) => this.jids.include(msg?.id?.remote)),
       mergeMap((msg: any) => this.processIncomingMessage(msg, true)),
       share(),
     );
@@ -1447,6 +1448,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
 
     const messageCreate$ = fromEvent(this.whatsapp, Events.MESSAGE_CREATE);
     const messagesFromAll$ = messageCreate$.pipe(
+      filter((msg: Message) => this.jids.include(msg?.id?.remote)),
       mergeMap((msg: any) => this.processIncomingMessage(msg, true)),
       share(),
     );
@@ -1457,6 +1459,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       Events.MESSAGE_CIPHERTEXT,
     );
     const messagesWaiting$ = messageCiphertext$.pipe(
+      filter((msg: Message) => this.jids.include(msg?.id?.remote)),
       mergeMap((msg: any) => this.processIncomingMessage(msg, false)),
       share(),
     );
@@ -1470,6 +1473,9 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       },
     );
     const messagesRevoked$ = messageRevoked$.pipe(
+      filter((evt: any) =>
+        this.jids.include(evt?.after?.id?.remote || evt?.before?.id?.remote),
+      ),
       map((event): WAMessageRevokedBody => {
         const afterMessage = event.after ? this.toWAMessage(event.after) : null;
         const beforeMessage = event.before
@@ -1488,6 +1494,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
 
     const messageReaction$ = fromEvent(this.whatsapp, 'message_reaction');
     const messagesReaction$ = messageReaction$.pipe(
+      filter((reaction: Reaction) => this.jids.include(reaction?.id?.remote)),
       map(this.processMessageReaction.bind(this)),
       filter(Boolean),
     );
@@ -1501,6 +1508,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       },
     );
     const messagesEdit$ = messageEdit$.pipe(
+      filter((event: any) => this.jids.include(event?.message?.id?.remote)),
       map((event): WAMessageEditedBody => {
         const message = this.toWAMessage(event.message);
         return {
@@ -1524,6 +1532,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       map((event) => event.message),
       map<any, WAMessage>(this.toWAMessage.bind(this)),
       filter((ack) => !isJidGroup(ack.to) && !isJidStatusBroadcast(ack.to)),
+      filter((ack) => this.jids.include(ack.to)),
     );
     const tagReceiptNode$ = fromEvent(this.whatsapp, Events.TAG_RECEIPT);
     const messageAckGroups$ = tagReceiptNode$.pipe(
@@ -1533,6 +1542,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       filter(Boolean),
       mergeMap(this.TagReceiptToMessageAck.bind(this)),
       filter((ack) => isJidGroup(ack.to) || isJidStatusBroadcast(ack.to)),
+      filter((ack) => this.jids.include(ack.to)),
     );
 
     const messageAckAll$ = merge(messagesAckDM$, messageAckGroups$);
@@ -1553,11 +1563,13 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     const presences$ = tagPresenceNode$.pipe(
       map(TagPresenceToPresence),
       filter(Boolean),
+      filter((presence: any) => this.jids.include(presence.id)),
     );
     const tagChatstateNode$ = fromEvent(this.whatsapp, 'tag:chatstate');
     const chatstatePresences$ = tagChatstateNode$.pipe(
       map(TagChatstateToPresence),
       filter(Boolean),
+      filter((presence: any) => this.jids.include(presence.id)),
     );
     const presenceUpdate$ = merge(presences$, chatstatePresences$);
     this.events2.get(WAHAEvents.PRESENCE_UPDATE).switch(presenceUpdate$);
@@ -1626,6 +1638,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       },
     );
     const chatsArchived$ = chatArchived$.pipe(
+      filter((event: any) => this.jids.include(event?.chat?.id?._serialized)),
       map((event) => {
         return {
           id: event.chat.id._serialized,
@@ -1641,6 +1654,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
     //
     const call$ = fromEvent(this.whatsapp, 'call');
     const calls$ = call$.pipe(
+      filter((call: Call) => this.jids.include((call as any)?.from)),
       map((call: Call) => {
         return {
           id: call.id,

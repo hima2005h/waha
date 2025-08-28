@@ -200,6 +200,7 @@ export class SessionManagerCore extends SessionManager implements OnModuleInit {
       sessionStore: this.store,
       proxyConfig: proxyConfig,
       sessionConfig: this.sessionConfig,
+      ignore: this.ignoreChatsConfig(this.sessionConfig),
     };
     if (this.EngineClass === WhatsappSessionWebJSCore) {
       sessionConfig.engineConfig = this.webjsEngineConfigService.getConfig();
