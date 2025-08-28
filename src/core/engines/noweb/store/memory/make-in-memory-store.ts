@@ -446,7 +446,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
     ) => {
       const list = assertMessageList(jid);
       const mode = !cursor || 'before' in cursor ? 'before' : 'after';
-      const cursorKey = !!cursor
+      const cursorKey = cursor
         ? 'before' in cursor
           ? cursor.before
           : cursor.after

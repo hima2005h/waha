@@ -32,9 +32,7 @@ export class HashAuth implements IApiKeyAuth {
   constructor(
     private hash: string,
     private algorithm: string,
-  ) {
-    this.algorithm = algorithm;
-  }
+  ) {}
 
   isValid(plain: string): boolean {
     if (!plain) {

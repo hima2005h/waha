@@ -20,7 +20,7 @@ export function MarkdownToWhatsApp(text: string): string {
       // Links: [text](url) → text (url)
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1 ($2)')
       // Lists: -, +, * → * item
-      .replace(/^[\-\+\*] (.*)/gm, '* $1')
+      .replace(/^[-+*] (.*)/gm, '* $1')
   );
 }
 

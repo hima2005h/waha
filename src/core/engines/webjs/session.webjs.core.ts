@@ -784,7 +784,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       chat.id._serialized,
       false,
     );
-    const lastMessage = !!chat.lastMessage
+    const lastMessage = chat.lastMessage
       ? this.toWAMessage(chat.lastMessage)
       : null;
     return {
