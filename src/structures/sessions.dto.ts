@@ -89,6 +89,19 @@ export class NowebConfig {
   markOnline: boolean = true;
 }
 
+export class WebjsConfig {
+  @ApiProperty({
+    description:
+      "Enable emission of special 'tag:*' engine events required for presence.update and message.ack.\n" +
+      'WARNING: Enabling this may have performance and stability impact. Disabled by default.',
+    required: false,
+    default: false,
+  })
+  @IsBoolean()
+  @IsOptional()
+  tagsEventsOn?: boolean = false;
+}
+
 export class IgnoreConfig {
   @ApiProperty({
     description: 'Ignore a status@broadcast (stories) events',
@@ -173,6 +186,15 @@ export class SessionConfig {
   @Type(() => NowebConfig)
   @IsOptional()
   noweb?: NowebConfig;
+
+  @ApiProperty({
+    description: 'WebJS-specific settings.',
+    required: false,
+  })
+  @ValidateNested()
+  @Type(() => WebjsConfig)
+  @IsOptional()
+  webjs?: WebjsConfig;
 }
 
 export class SessionDTO {

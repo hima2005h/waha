@@ -236,7 +236,14 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       rmMaxRetries: undefined,
     });
     this.addProxyConfig(clientOptions);
-    return new WebjsClientCore(clientOptions);
+    return new WebjsClientCore(clientOptions, this.getWebjsTagsFlag());
+  }
+
+  protected getWebjsTagsFlag() {
+    // Emit 'tag:*' events only when explicitly enabled in session config.
+    // This flag is required for presence.update and message.ack events.
+    // Disabled by default for performance and stability reasons.
+    return !!this.sessionConfig?.webjs?.tagsEventsOn;
   }
 
   private restartClient() {

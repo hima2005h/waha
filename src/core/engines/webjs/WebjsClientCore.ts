@@ -30,7 +30,10 @@ export class WebjsClientCore extends Client {
   public events = new EventEmitter();
   private wpage: WPage = null;
 
-  constructor(options) {
+  constructor(
+    options,
+    protected tags: boolean,
+  ) {
     super(options);
     // Wait until it's READY and inject more utils
     this.on(Events.READY, async () => {
@@ -86,6 +89,32 @@ export class WebjsClientCore extends Client {
         return;
       },
     );
+    if (this.tags) {
+      await this.attachTagsEvents();
+    }
+  }
+
+  async attachTagsEvents() {
+    await this.pupPage.evaluate(() => {
+      // @ts-ignore
+      if (window.decodeStanzaBack) {
+        return;
+      }
+
+      const tags = ['receipt', 'presence', 'chatstate'];
+      // @ts-ignore
+      window.decodeStanzaBack = window.Store.SocketWap.decodeStanza;
+      // @ts-ignore
+      window.Store.SocketWap.decodeStanza = async (...args) => {
+        // @ts-ignore
+        const result = await window.decodeStanzaBack(...args);
+        if (tags.includes(result?.tag)) {
+          // @ts-ignore
+          setTimeout(() => window.onTag(result), 0);
+        }
+        return result;
+      };
+    });
   }
 
   async destroy() {
