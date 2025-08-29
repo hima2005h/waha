@@ -1859,6 +1859,17 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     return labels.map(this.toLabel);
   }
 
+  public async chatsUnreadChat(chatId: string): Promise<any> {
+    const jid = toJID(this.ensureSuffix(chatId));
+    const request = new messages.ChatUnreadRequest({
+      session: this.session,
+      jid: jid,
+      read: false,
+    });
+    await promisify(this.client.MarkChatUnread)(request);
+    return { success: true };
+  }
+
   public async putLabelsToChat(chatId: string, labels: LabelID[]) {
     const jid = toJID(chatId);
     const labelsIds = labels.map((label) => label.id);

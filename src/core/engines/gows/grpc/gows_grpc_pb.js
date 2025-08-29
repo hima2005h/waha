@@ -48,6 +48,17 @@ function deserialize_messages_ChatPresenceRequest(buffer_arg) {
   return gows_pb.ChatPresenceRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_messages_ChatUnreadRequest(arg) {
+  if (!(arg instanceof gows_pb.ChatUnreadRequest)) {
+    throw new Error('Expected argument of type messages.ChatUnreadRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_messages_ChatUnreadRequest(buffer_arg) {
+  return gows_pb.ChatUnreadRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_messages_CheckPhonesRequest(arg) {
   if (!(arg instanceof gows_pb.CheckPhonesRequest)) {
     throw new Error('Expected argument of type messages.CheckPhonesRequest');
@@ -1052,6 +1063,17 @@ getProfilePicture: {
     requestDeserialize: deserialize_messages_CheckPhonesRequest,
     responseSerialize: serialize_messages_CheckPhonesResponse,
     responseDeserialize: deserialize_messages_CheckPhonesResponse,
+  },
+  markChatUnread: {
+    path: '/messages.MessageService/MarkChatUnread',
+    requestStream: false,
+    responseStream: false,
+    requestType: gows_pb.ChatUnreadRequest,
+    responseType: gows_pb.Empty,
+    requestSerialize: serialize_messages_ChatUnreadRequest,
+    requestDeserialize: deserialize_messages_ChatUnreadRequest,
+    responseSerialize: serialize_messages_Empty,
+    responseDeserialize: deserialize_messages_Empty,
   },
   //
 // Message

@@ -5656,6 +5656,122 @@ export namespace messages {
             return CheckPhonesRequest.deserialize(bytes);
         }
     }
+    export class ChatUnreadRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            session?: Session;
+            jid?: string;
+            read?: boolean;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("session" in data && data.session != undefined) {
+                    this.session = data.session;
+                }
+                if ("jid" in data && data.jid != undefined) {
+                    this.jid = data.jid;
+                }
+                if ("read" in data && data.read != undefined) {
+                    this.read = data.read;
+                }
+            }
+        }
+        get session() {
+            return pb_1.Message.getWrapperField(this, Session, 1) as Session;
+        }
+        set session(value: Session) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_session() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get jid() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set jid(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get read() {
+            return pb_1.Message.getFieldWithDefault(this, 3, false) as boolean;
+        }
+        set read(value: boolean) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            session?: ReturnType<typeof Session.prototype.toObject>;
+            jid?: string;
+            read?: boolean;
+        }): ChatUnreadRequest {
+            const message = new ChatUnreadRequest({});
+            if (data.session != null) {
+                message.session = Session.fromObject(data.session);
+            }
+            if (data.jid != null) {
+                message.jid = data.jid;
+            }
+            if (data.read != null) {
+                message.read = data.read;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                session?: ReturnType<typeof Session.prototype.toObject>;
+                jid?: string;
+                read?: boolean;
+            } = {};
+            if (this.session != null) {
+                data.session = this.session.toObject();
+            }
+            if (this.jid != null) {
+                data.jid = this.jid;
+            }
+            if (this.read != null) {
+                data.read = this.read;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_session)
+                writer.writeMessage(1, this.session, () => this.session.serialize(writer));
+            if (this.jid.length)
+                writer.writeString(2, this.jid);
+            if (this.read != false)
+                writer.writeBool(3, this.read);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ChatUnreadRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ChatUnreadRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.session, () => message.session = Session.deserialize(reader));
+                        break;
+                    case 2:
+                        message.jid = reader.readString();
+                        break;
+                    case 3:
+                        message.read = reader.readBool();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ChatUnreadRequest {
+            return ChatUnreadRequest.deserialize(bytes);
+        }
+    }
     export class PhoneInfo extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -10424,6 +10540,15 @@ export namespace messages {
                 responseSerialize: (message: CheckPhonesResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => CheckPhonesResponse.deserialize(new Uint8Array(bytes))
             },
+            MarkChatUnread: {
+                path: "/messages.MessageService/MarkChatUnread",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: ChatUnreadRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => ChatUnreadRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: Empty) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => Empty.deserialize(new Uint8Array(bytes))
+            },
             GenerateNewMessageID: {
                 path: "/messages.MessageService/GenerateNewMessageID",
                 requestStream: false,
@@ -10728,6 +10853,7 @@ export namespace messages {
         abstract SendChatPresence(call: grpc_1.ServerUnaryCall<ChatPresenceRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract SubscribePresence(call: grpc_1.ServerUnaryCall<SubscribePresenceRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract CheckPhones(call: grpc_1.ServerUnaryCall<CheckPhonesRequest, CheckPhonesResponse>, callback: grpc_1.sendUnaryData<CheckPhonesResponse>): void;
+        abstract MarkChatUnread(call: grpc_1.ServerUnaryCall<ChatUnreadRequest, Empty>, callback: grpc_1.sendUnaryData<Empty>): void;
         abstract GenerateNewMessageID(call: grpc_1.ServerUnaryCall<Session, NewMessageIDResponse>, callback: grpc_1.sendUnaryData<NewMessageIDResponse>): void;
         abstract SendMessage(call: grpc_1.ServerUnaryCall<MessageRequest, MessageResponse>, callback: grpc_1.sendUnaryData<MessageResponse>): void;
         abstract SendReaction(call: grpc_1.ServerUnaryCall<MessageReaction, MessageResponse>, callback: grpc_1.sendUnaryData<MessageResponse>): void;
@@ -10858,6 +10984,9 @@ export namespace messages {
         };
         CheckPhones: GrpcUnaryServiceInterface<CheckPhonesRequest, CheckPhonesResponse> = (message: CheckPhonesRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<CheckPhonesResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<CheckPhonesResponse>, callback?: grpc_1.requestCallback<CheckPhonesResponse>): grpc_1.ClientUnaryCall => {
             return super.CheckPhones(message, metadata, options, callback);
+        };
+        MarkChatUnread: GrpcUnaryServiceInterface<ChatUnreadRequest, Empty> = (message: ChatUnreadRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Empty>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Empty>, callback?: grpc_1.requestCallback<Empty>): grpc_1.ClientUnaryCall => {
+            return super.MarkChatUnread(message, metadata, options, callback);
         };
         GenerateNewMessageID: GrpcUnaryServiceInterface<Session, NewMessageIDResponse> = (message: Session, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<NewMessageIDResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<NewMessageIDResponse>, callback?: grpc_1.requestCallback<NewMessageIDResponse>): grpc_1.ClientUnaryCall => {
             return super.GenerateNewMessageID(message, metadata, options, callback);
