@@ -1858,9 +1858,6 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
     );
-    messagesFromMe$ = messagesFromMe$.pipe(
-      filter((msg) => this.shouldProcessIncomingMessage(msg)),
-    );
     messagesFromOthers$ = messagesFromOthers$.pipe(
       mergeMap((msg) => this.processIncomingMessage(msg, true)),
       share(), // share it so we don't process twice in message.any
