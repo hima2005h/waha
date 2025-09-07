@@ -28,6 +28,8 @@ services:
     env_file: .chatwoot.env ## Change this file for customized env variables
     volumes:
       - chatwoot_storage:/app/storage
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     logging:
       driver: 'json-file'
       options:
