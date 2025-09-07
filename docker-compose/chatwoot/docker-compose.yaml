@@ -24,7 +24,7 @@ services:
       - 8.8.8.8
 
   base: &base
-    image: chatwoot/chatwoot:v4.3.0
+    image: chatwoot/chatwoot:v4.5.2
     env_file: .chatwoot.env ## Change this file for customized env variables
     volumes:
       - chatwoot_storage:/app/storage
