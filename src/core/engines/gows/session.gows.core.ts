@@ -258,6 +258,7 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
           status: this.jids.ignore.status,
           groups: this.jids.ignore.groups,
           newsletters: this.jids.ignore.channels,
+          broadcast: this.jids.ignore.broadcast,
         }),
       }),
     });

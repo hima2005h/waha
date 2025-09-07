@@ -1308,6 +1308,7 @@ export namespace messages {
             status?: boolean;
             groups?: boolean;
             newsletters?: boolean;
+            broadcast?: boolean;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1320,6 +1321,9 @@ export namespace messages {
                 }
                 if ("newsletters" in data && data.newsletters != undefined) {
                     this.newsletters = data.newsletters;
+                }
+                if ("broadcast" in data && data.broadcast != undefined) {
+                    this.broadcast = data.broadcast;
                 }
             }
         }
@@ -1341,10 +1345,17 @@ export namespace messages {
         set newsletters(value: boolean) {
             pb_1.Message.setField(this, 3, value);
         }
+        get broadcast() {
+            return pb_1.Message.getFieldWithDefault(this, 4, false) as boolean;
+        }
+        set broadcast(value: boolean) {
+            pb_1.Message.setField(this, 4, value);
+        }
         static fromObject(data: {
             status?: boolean;
             groups?: boolean;
             newsletters?: boolean;
+            broadcast?: boolean;
         }): SessionIgnoreJidsConfig {
             const message = new SessionIgnoreJidsConfig({});
             if (data.status != null) {
@@ -1356,6 +1367,9 @@ export namespace messages {
             if (data.newsletters != null) {
                 message.newsletters = data.newsletters;
             }
+            if (data.broadcast != null) {
+                message.broadcast = data.broadcast;
+            }
             return message;
         }
         toObject() {
@@ -1363,6 +1377,7 @@ export namespace messages {
                 status?: boolean;
                 groups?: boolean;
                 newsletters?: boolean;
+                broadcast?: boolean;
             } = {};
             if (this.status != null) {
                 data.status = this.status;
@@ -1372,6 +1387,9 @@ export namespace messages {
             }
             if (this.newsletters != null) {
                 data.newsletters = this.newsletters;
+            }
+            if (this.broadcast != null) {
+                data.broadcast = this.broadcast;
             }
             return data;
         }
@@ -1385,6 +1403,8 @@ export namespace messages {
                 writer.writeBool(2, this.groups);
             if (this.newsletters != false)
                 writer.writeBool(3, this.newsletters);
+            if (this.broadcast != false)
+                writer.writeBool(4, this.broadcast);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1402,6 +1422,9 @@ export namespace messages {
                         break;
                     case 3:
                         message.newsletters = reader.readBool();
+                        break;
+                    case 4:
+                        message.broadcast = reader.readBool();
                         break;
                     default: reader.skipField();
                 }

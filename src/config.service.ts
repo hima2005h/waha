@@ -193,7 +193,10 @@ export class WhatsappConfigService implements OnApplicationBootstrap {
     const channels = parseBool(
       this.configService.get('WAHA_SESSION_CONFIG_IGNORE_CHANNELS', 'false'),
     );
-    return { status, groups, channels };
+    const broadcast = parseBool(
+      this.configService.get('WAHA_SESSION_CONFIG_IGNORE_BROADCAST', 'false'),
+    );
+    return { status, groups, channels, broadcast };
   }
 
   onApplicationBootstrap() {

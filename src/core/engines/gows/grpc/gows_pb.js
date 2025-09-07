@@ -4447,7 +4447,8 @@ proto.messages.SessionIgnoreJidsConfig.toObject = function(includeInstance, msg)
   var f, obj = {
     status: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
     groups: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
-    newsletters: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+    newsletters: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    broadcast: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
   };
 
   if (includeInstance) {
@@ -4496,6 +4497,10 @@ proto.messages.SessionIgnoreJidsConfig.deserializeBinaryFromReader = function(ms
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setNewsletters(value);
       break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setBroadcast(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -4543,6 +4548,13 @@ proto.messages.SessionIgnoreJidsConfig.serializeBinaryToWriter = function(messag
   if (f) {
     writer.writeBool(
       3,
+      f
+    );
+  }
+  f = message.getBroadcast();
+  if (f) {
+    writer.writeBool(
+      4,
       f
     );
   }
@@ -4600,6 +4612,24 @@ proto.messages.SessionIgnoreJidsConfig.prototype.getNewsletters = function() {
  */
 proto.messages.SessionIgnoreJidsConfig.prototype.setNewsletters = function(value) {
   return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional bool broadcast = 4;
+ * @return {boolean}
+ */
+proto.messages.SessionIgnoreJidsConfig.prototype.getBroadcast = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.messages.SessionIgnoreJidsConfig} returns this
+ */
+proto.messages.SessionIgnoreJidsConfig.prototype.setBroadcast = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
 };
 
 

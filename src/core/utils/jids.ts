@@ -44,6 +44,7 @@ export interface IgnoreJidConfig {
   status: boolean;
   groups: boolean;
   channels: boolean;
+  broadcast: boolean;
 }
 
 export class JidFilter {
@@ -51,6 +52,12 @@ export class JidFilter {
 
   include(jid: string): boolean {
     if (this.ignore.status && isJidStatusBroadcast(jid)) {
+      return false;
+    } else if (
+      this.ignore.broadcast &&
+      !isJidStatusBroadcast(jid) &&
+      isJidBroadcast(jid)
+    ) {
       return false;
     } else if (this.ignore.groups && isJidGroup(jid)) {
       return false;

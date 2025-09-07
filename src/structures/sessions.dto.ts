@@ -123,6 +123,13 @@ export class IgnoreConfig {
   @IsBoolean()
   @IsOptional()
   channels?: boolean;
+
+  @ApiProperty({
+    description: 'Ignore broadcast events (broadcast list and status)',
+  })
+  @IsBoolean()
+  @IsOptional()
+  broadcast?: boolean;
 }
 
 export class SessionConfig {
