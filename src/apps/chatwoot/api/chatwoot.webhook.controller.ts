@@ -1,15 +1,26 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FindChatID } from '@waha/apps/chatwoot/client/ids';
 import { EventName, MessageType } from '@waha/apps/chatwoot/client/types';
 import { INBOX_CONTACT_CHAT_ID } from '@waha/apps/chatwoot/const';
 import { InboxData } from '@waha/apps/chatwoot/consumers/types';
 import { ChatWootQueueService } from '@waha/apps/chatwoot/services/ChatWootQueueService';
+import { SessionManager } from '@waha/core/abc/manager.abc';
+import { AppRepository } from '@waha/apps/app_sdk/storage/AppRepository';
 
 @Controller('webhooks/chatwoot/')
 @ApiTags('🧩 Apps')
 export class ChatwootWebhookController {
-  constructor(private readonly chatWootQueueService: ChatWootQueueService) {}
+  constructor(
+    private readonly chatWootQueueService: ChatWootQueueService,
+    private readonly manager: SessionManager,
+  ) {}
 
   @Post(':session/:id')
   @ApiOperation({
@@ -40,6 +51,14 @@ export class ChatwootWebhookController {
       app: id,
       body: body,
     };
+
+    // Skip if app is disabled or does not exist
+    const knex = this.manager.store.getWAHADatabase();
+    const repo = new AppRepository(knex);
+    const app = await repo.findEnabledAppById(id);
+    if (!app || app.session !== session) {
+      throw new NotFoundException(`App '${id}' not found`);
+    }
 
     // Check if it's a command message (sent to the special inbox contact)
     const sender = body?.conversation?.meta?.sender;

@@ -21,11 +21,15 @@ export class AppsDisabledService implements IAppsService {
     throw new AppsIsDisabledError();
   }
 
+  async get(manager: SessionManager, appId: string): Promise<App> {
+    throw new AppsIsDisabledError();
+  }
+
   async create(manager: SessionManager, app: App): Promise<App> {
     throw new AppsIsDisabledError();
   }
 
-  async update(manager: SessionManager, app: App) {
+  async update(manager: SessionManager, app: App): Promise<App> {
     throw new AppsIsDisabledError();
   }
 

@@ -48,10 +48,17 @@ export class AppsController {
     return await this.appsService.create(this.manager, app);
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get app by ID' })
+  @UsePipes(new WAHAValidationPipe())
+  async get(@Param('id') id: string): Promise<App> {
+    return await this.appsService.get(this.manager, id);
+  }
+
   @Put('/:id')
   @ApiOperation({ summary: 'Update an existing app' })
   @UsePipes(new WAHAValidationPipe())
-  async update(@Param('id') id: string, @Body() app: App): Promise<void> {
+  async update(@Param('id') id: string, @Body() app: App): Promise<App> {
     if (!app.id) {
       app.id = id;
     } else if (app.id !== id) {
@@ -60,7 +67,7 @@ export class AppsController {
       );
     }
 
-    await this.appsService.update(this.manager, app);
+    return await this.appsService.update(this.manager, app);
   }
 
   @Delete('/:id')

@@ -7,9 +7,11 @@ import { Knex } from 'knex';
 export interface IAppsService {
   list(manager: SessionManager, session: string): Promise<App[]>;
 
+  get(manager: SessionManager, appId: string): Promise<App>;
+
   create(manager: SessionManager, app: App): Promise<App>;
 
-  update(manager: SessionManager, app: App): Promise<void>;
+  update(manager: SessionManager, app: App): Promise<App>;
 
   delete(manager: SessionManager, appId: string): Promise<void>;
 

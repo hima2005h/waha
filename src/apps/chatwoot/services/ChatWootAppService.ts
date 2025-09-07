@@ -26,6 +26,24 @@ export class ChatWootAppService implements IAppService {
     await this.sendConnectedMessage(app);
   }
 
+  async beforeEnabled(
+    savedApp: App<ChatWootAppConfig>,
+    newApp: App<ChatWootAppConfig>,
+  ): Promise<void> {
+    // Enabling -> behave like created
+    await this.beforeCreated(newApp);
+    return;
+  }
+
+  async beforeDisabled(
+    savedApp: App<ChatWootAppConfig>,
+    newApp: App<ChatWootAppConfig>,
+  ): Promise<void> {
+    // Disabling -> behave like deleted
+    await this.beforeDeleted(savedApp);
+    return;
+  }
+
   async beforeUpdated(
     savedApp: App<ChatWootAppConfig>,
     newApp: App<ChatWootAppConfig>,

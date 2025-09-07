@@ -58,15 +58,31 @@ export class AppsEnabledService implements IAppsService {
     }
 
     const service = this.getAppService(app);
-    await service.beforeCreated(app);
+    // Only run beforeCreated when app is enabled (default true if omitted)
+    if (app.enabled !== false) {
+      await service.beforeCreated(app);
+    }
 
     const result = await repo.save(app);
-    await this.restartIfRunning(manager, app.session);
+    if (app.enabled) {
+      await this.restartIfRunning(manager, app.session);
+    }
     delete result.pk;
     return result;
   }
 
-  async update(manager: SessionManager, app: App) {
+  async get(manager: SessionManager, appId: string): Promise<App> {
+    const knex = manager.store.getWAHADatabase();
+    const repo = new AppRepository(knex);
+    const app = await repo.getById(appId);
+    if (!app) {
+      throw new NotFoundException(`App '${appId}' not found`);
+    }
+    delete (app as any).pk;
+    return app;
+  }
+
+  async update(manager: SessionManager, app: App): Promise<App> {
     await this.checkSessionExists(manager, app.session);
     const knex = manager.store.getWAHADatabase();
     const repo = new AppRepository(knex);
@@ -86,11 +102,24 @@ export class AppsEnabledService implements IAppsService {
     }
 
     const service = this.getAppService(app);
-    await service.beforeUpdated(savedApp, app);
+    const hasEnabledChange = savedApp.enabled !== app.enabled;
+
+    if (hasEnabledChange) {
+      if (app.enabled) {
+        await service.beforeEnabled(savedApp, app);
+      } else {
+        await service.beforeDisabled(savedApp, app);
+      }
+    } else {
+      await service.beforeUpdated(savedApp, app);
+    }
 
     await repo.update(app.id, app);
     await this.restartIfRunning(manager, app.session);
-    return;
+
+    const updated = await repo.getById(app.id);
+    delete (updated as any)?.pk;
+    return updated!;
   }
 
   async delete(manager: SessionManager, appId: string) {
@@ -110,7 +139,7 @@ export class AppsEnabledService implements IAppsService {
   async beforeSessionStart(session: WhatsappSession, store: DataStore) {
     const knex = store.getWAHADatabase();
     const repo = new AppRepository(knex);
-    const apps = await repo.getAllBySession(session.name);
+    const apps = await repo.getEnabledBySession(session.name);
     for (const app of apps) {
       const service = this.getAppService(app);
       await service.beforeSessionStart(app, session);
