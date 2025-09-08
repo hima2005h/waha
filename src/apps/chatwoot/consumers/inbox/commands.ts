@@ -7,13 +7,14 @@ import { MessageType } from '@waha/apps/chatwoot/client/types';
 import { ChatWootInboxMessageConsumer } from '@waha/apps/chatwoot/consumers/inbox/base';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASelf } from '@waha/apps/chatwoot/session/WAHASelf';
 import { SessionStatusEmoji } from '@waha/apps/chatwoot/SessionStatusEmoji';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.INBOX_COMMANDS, { concurrency: JOB_CONCURRENCY })
 export class ChatWootInboxCommandsConsumer extends ChatWootInboxMessageConsumer {

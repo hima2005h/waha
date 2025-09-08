@@ -1,8 +1,8 @@
 # Arabic translations for ChatWoot integration
-LOCALE_NAME: '🇦🇪 العربية (Arabic)'
-APP_INBOX_CONTACT_NAME: 'تكامل واتساب (WAHA)'
+locale.name: '🇦🇪 العربية (Arabic)'
+app.inbox.contact.name: 'تكامل واتساب (WAHA)'
 
-JOB_ERROR_REPORT: |
+job.report.error: |
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 إعادة المحاولة في {{attempts.nextDelay}} ثانية...
@@ -19,51 +19,51 @@ JOB_ERROR_REPORT: |
   ```
   {{/error}}
 
-JOB_SUCCEEDED_REPORT: |
+job.report.succeeded: |
   ✅ **نجاح**
   المحاولة: {{{attempts.current}}} / {{{attempts.max}}}
   التفاصيل: [{{{details.text}}}]({{{details.url}}})
 
-WHATSAPP_ERROR_SENDING_MESSAGE: تعذر إرسال رسالة على واتساب.
-WHATSAPP_ERROR_RECEIVING_MESSAGE: تعذر استلام رسالة من واتساب
-WHATSAPP_ERROR_REMOVING_MESSAGE: تعذر إزالة رسالة من واتساب
-APP_SCHEDULED_JOB_ERROR: فشل تنفيذ المهمة المجدولة
+whatsapp.message.sending.error: تعذر إرسال رسالة على واتساب.
+whatsapp.message.receiving.error: تعذر استلام رسالة من واتساب
+whatsapp.message.removing.error: تعذر إزالة رسالة من واتساب
+job.scheduled.error.header: فشل تنفيذ المهمة المجدولة
 
-MESSAGE_FROM_WHATSAPP: |
+message.from.whatsapp: |
   {{{text}}}
 
   📱 *أرسلت من واتساب*
 
-MESSAGE_FROM_API: |
+message.from.api: |
   {{{text}}}
 
   📱 *أرسلت عبر API*
 
-MESSAGE_REMOVED_IN_WHATSAPP: |
+message.removed.in.whatsapp: |
   ❌ *تم حذف هذه الرسالة في واتساب*
 
-MESSAGE_EDITED_IN_WHATSAPP: |
+message.edited.in.whatsapp: |
   {{{text}}}
 
   ✏️ *تم تعديلها في واتساب*
 
-WHATSAPP_GROUP_MESSAGE: |
+whatsapp.group.message: |
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-WHATSAPP_REACTION_ADDED: |
+whatsapp.reaction.added: |
   *تفاعل* {{{emoji}}}
 
-WHATSAPP_REACTION_REMOVED: |
+whatsapp.reaction.removed: |
   *تمت إزالة التفاعل*
 
-WHATSAPP_CONTACT_GROUP_SUFFIX: 'مجموعة'
-WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'قناة'
+whatsapp.contact.group.suffix: 'مجموعة'
+whatsapp.contact.channel.suffix: 'قناة'
 # Aka Stories
-WHATSAPP_CONTACT_STATUS_NAME: 'الحالة'
+whatsapp.contact.status.name: 'الحالة'
 
-APP_CONNECTED_MESSAGE: |
+app.connected.message: |
   🔗 **متصل: جلسة واتساب إلى صندوق وارد ChatWoot**
 
   ✅ تم توصيل جلسة واتساب **{{{name}}}** بنجاح بصندوق وارد ChatWoot هذا.
@@ -81,7 +81,7 @@ APP_CONNECTED_MESSAGE: |
 
   لنبدأ! 🚀
 
-APP_DISCONNECTED_MESSAGE: |
+app.disconnected.message: |
   🔌 **غير متصل: جلسة واتساب من صندوق وارد ChatWoot**
 
   ❌ تم قطع اتصال جلسة واتساب **{{{name}}}** من صندوق وارد ChatWoot هذا.
@@ -90,12 +90,12 @@ APP_DISCONNECTED_MESSAGE: |
 
   لإعادة الاتصال، يرجى الاتصال بالمسؤول الخاص بك.
 
-APP_UPDATED_MESSAGE: |
+app.updated.message: |
   🔄 **تم التحديث: إعدادات جلسة واتساب**
 
   ✅ تم تحديث إعدادات جلسة واتساب **{{{name}}}**.
 
-APP_COMMANDS_LIST: |
+app.commands.list: |
   يمكنك إدارة **تكامل واتساب** عن طريق إرسال أحد الأوامر التالية:
 
   🖥️ الجلسات:
@@ -115,35 +115,32 @@ APP_COMMANDS_LIST: |
 
   أرسل **أمرًا** (غير حساس لحالة الأحرف) أو **رقم أمر** إلى هذه المحادثة.
 
-APP_HELP_REMINDER: |
+app.help.reminder: |
   أرسل **help** للحصول على قائمة الأوامر المتاحة.
 
-APP_SESSION_STATUS_CHANGE: |
+app.session.status.change: |
   {{{emoji}}} تم تغيير حالة جلسة "{{{session}}}" إلى {{{status}}}
 
-APP_SESSION_CURRENT_STATUS: |
+app.session.current.status: |
   {{{emoji}}} حالة جلسة **{{{session}}}** هي **{{{status}}}**
   **حساب واتساب:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_DASHBOARD_LINK: |
-  قم بزيارة [لوحة تحكم WAHA]({{{url}}}) لمزيد من التفاصيل.
-
-APP_SESSION_STATUS_WORKING: |
+app.session.status.working: |
   ✅ صندوق وارد ChatWoot هذا مرتبط بـ **حساب واتساب** وجاهز لإرسال واستقبال الرسائل!
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_SESSION_STATUS_ERROR: |
+app.session.status.error: |
   ⚠️ **صندوق وارد ChatWoot هذا مرتبط بحساب واتساب ولكنه غير جاهز لإرسال واستقبال الرسائل!**
 
   يرجى التحقق من حالة الجلسة ومحاولة إعادة تشغيلها أو تسجيل الخروج ومسح رمز QR مرة أخرى.
 
-APP_SESSION_SCAN_QR_CODE: |
+app.session.scan.qr.code: |
   ⚠️ **امسح رمز QR على هاتفك لربط حساب واتساب بصندوق وارد ChatWoot هذا!**
 
-APP_SERVER_VERSION_AND_STATUS: |
+app.server.version.and.status: |
   **الإصدار:**
   ```
   {{{version}}}
@@ -154,16 +151,16 @@ APP_SERVER_VERSION_AND_STATUS: |
   {{{status}}}
   ```
 
-APP_SERVER_REBOOT: |
+app.server.reboot: |
   يتم إعادة تشغيل الخادم بسلاسة...
 
-APP_SERVER_REBOOT_FORCE: |
+app.server.reboot.force: |
   يتم إعادة تشغيل الخادم بالقوة...
 
-APP_LOGOUT_SUCCESS: |
+app.logout.success: |
   ✅ تم إلغاء تفويض الحساب بنجاح!
 
-APP_NEW_VERSION_AVAILABLE: |
+waha.new.version.available: |
   🔄 **إصدار جديد متاح!**
 
   الإصدار الحالي: **{{{currentVersion}}}**
@@ -171,7 +168,7 @@ APP_NEW_VERSION_AVAILABLE: |
 
   👉 تحقق مما هو جديد في [**🆕 سجل التغييرات**]({{{changelogUrl}}})
 
-APP_CORE_VERSION_USED: |
+waha.core.version.used: |
   ❤️ **ادعم WAHA!**
 
   أنت تستخدم إصدار **WAHA Core** المجاني. إذا وجدت هذا المشروع مفيدًا، فيرجى التفكير في دعم تطويره.

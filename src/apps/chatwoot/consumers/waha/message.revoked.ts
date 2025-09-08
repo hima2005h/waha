@@ -10,7 +10,7 @@ import {
   ChatWootWAHABaseConsumer,
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import {
   ChatwootMessage,
   MessageMappingService,
@@ -22,6 +22,7 @@ import { WAHAEvents } from '@waha/structures/enums.dto';
 import { WAHAWebhookMessageRevoked } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.WAHA_MESSAGE_REVOKED, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageRevokedConsumer extends ChatWootWAHABaseConsumer {

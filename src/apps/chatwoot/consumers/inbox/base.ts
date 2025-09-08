@@ -10,7 +10,6 @@ import {
   ChatIDNotFoundForContactError,
   PhoneNumberNotFoundInWhatsAppError,
 } from '@waha/apps/chatwoot/errors';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
@@ -18,6 +17,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { AppRepository } from '../../storage';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 /**
  * Base class for ChatWoot inbox consumers

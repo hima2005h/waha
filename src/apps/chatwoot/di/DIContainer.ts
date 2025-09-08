@@ -6,9 +6,12 @@ import { ContactConversationService } from '@waha/apps/chatwoot/client/ContactCo
 import { ConversationAPI } from '@waha/apps/chatwoot/client/ConversationAPI';
 import { CustomAttributesAPI } from '@waha/apps/chatwoot/client/CustomAttributesAPI';
 import { ChatWootInboxAPI } from '@waha/apps/chatwoot/client/interfaces';
-import { ChatWootAppConfig } from '@waha/apps/chatwoot/dto/config.dto';
+import {
+  ChatWootAppConfig,
+  DEFAULT_LOCALE,
+} from '@waha/apps/chatwoot/dto/config.dto';
 import { ChatWootErrorReporter } from '@waha/apps/chatwoot/error/ChatWootErrorReporter';
-import { Locale } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASelf } from '@waha/apps/chatwoot/session/WAHASelf';
 import {
   ChatwootMessageRepository,
@@ -18,6 +21,7 @@ import {
 } from '@waha/apps/chatwoot/storage';
 import { Job } from 'bullmq';
 import { Knex } from 'knex';
+import { i18n } from '@waha/apps/chatwoot/i18n';
 
 /**
  * Dependency Injection Container for ChatWoot
@@ -63,7 +67,7 @@ export class DIContainer {
 
   public Locale(): Locale {
     if (!this.locale) {
-      this.locale = new Locale(this.config.locale);
+      this.locale = i18n.locale(this.config.locale || DEFAULT_LOCALE);
     }
     return this.locale;
   }

@@ -1,8 +1,8 @@
 # Persian translations for ChatWoot integration
-LOCALE_NAME: '🇮🇷 فارسی (Persian)'
-APP_INBOX_CONTACT_NAME: 'ادغام واتساپ (WAHA)'
+locale.name: '🇮🇷 فارسی (Persian)'
+app.inbox.contact.name: 'ادغام واتساپ (WAHA)'
 
-JOB_ERROR_REPORT: |
+job.report.error: |
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 تلاش مجدد در {{attempts.nextDelay}} ثانیه...
@@ -19,51 +19,51 @@ JOB_ERROR_REPORT: |
   ```
   {{/error}}
 
-JOB_SUCCEEDED_REPORT: |
+job.report.succeeded: |
   ✅ **موفقیت‌آمیز**
   تلاش: {{{attempts.current}}} / {{{attempts.max}}}
   جزئیات: [{{{details.text}}}]({{{details.url}}})
 
-WHATSAPP_ERROR_SENDING_MESSAGE: ارسال پیام در واتساپ امکان‌پذیر نبود.
-WHATSAPP_ERROR_RECEIVING_MESSAGE: دریافت پیام از واتساپ امکان‌پذیر نبود
-WHATSAPP_ERROR_REMOVING_MESSAGE: حذف پیام از واتساپ امکان‌پذیر نبود
-APP_SCHEDULED_JOB_ERROR: اجرای کار زمان‌بندی شده ناموفق بود
+whatsapp.message.sending.error: ارسال پیام در واتساپ امکان‌پذیر نبود.
+whatsapp.message.receiving.error: دریافت پیام از واتساپ امکان‌پذیر نبود
+whatsapp.message.removing.error: حذف پیام از واتساپ امکان‌پذیر نبود
+job.scheduled.error.header: اجرای کار زمان‌بندی شده ناموفق بود
 
-MESSAGE_FROM_WHATSAPP: |
+message.from.whatsapp: |
   {{{text}}}
 
   📱 *ارسال شده از واتساپ*
 
-MESSAGE_FROM_API: |
+message.from.api: |
   {{{text}}}
 
   📱 *ارسال شده از طریق API*
 
-MESSAGE_REMOVED_IN_WHATSAPP: |
+message.removed.in.whatsapp: |
   ❌ *این پیام در واتساپ حذف شده است*
 
-MESSAGE_EDITED_IN_WHATSAPP: |
+message.edited.in.whatsapp: |
   {{{text}}}
 
   ✏️ *ویرایش شده در واتساپ*
 
-WHATSAPP_GROUP_MESSAGE: |
+whatsapp.group.message: |
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-WHATSAPP_REACTION_ADDED: |
+whatsapp.reaction.added: |
   *واکنش* {{{emoji}}}
 
-WHATSAPP_REACTION_REMOVED: |
+whatsapp.reaction.removed: |
   *واکنش حذف شد*
 
-WHATSAPP_CONTACT_GROUP_SUFFIX: 'گروه'
-WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'کانال'
+whatsapp.contact.group.suffix: 'گروه'
+whatsapp.contact.channel.suffix: 'کانال'
 # Aka Stories
-WHATSAPP_CONTACT_STATUS_NAME: 'وضعیت'
+whatsapp.contact.status.name: 'وضعیت'
 
-APP_CONNECTED_MESSAGE: |
+app.connected.message: |
   🔗 **متصل: جلسه واتساپ به صندوق ورودی ChatWoot**
 
   ✅ جلسه واتساپ **{{{name}}}** با موفقیت به این صندوق ورودی ChatWoot متصل شده است.
@@ -81,7 +81,7 @@ APP_CONNECTED_MESSAGE: |
 
   بیایید شروع کنیم! 🚀
 
-APP_DISCONNECTED_MESSAGE: |
+app.disconnected.message: |
   🔌 **قطع اتصال: جلسه واتساپ از صندوق ورودی ChatWoot**
 
   ❌ جلسه واتساپ **{{{name}}}** از این صندوق ورودی ChatWoot قطع شده است.
@@ -90,12 +90,12 @@ APP_DISCONNECTED_MESSAGE: |
 
   برای اتصال مجدد، لطفاً با مدیر خود تماس بگیرید.
 
-APP_UPDATED_MESSAGE: |
+app.updated.message: |
   🔄 **به‌روزرسانی: تنظیمات جلسه واتساپ**
 
   ✅ تنظیمات جلسه واتساپ **{{{name}}}** به‌روزرسانی شده است.
 
-APP_COMMANDS_LIST: |
+app.commands.list: |
   شما می‌توانید **ادغام واتساپ** را با ارسال یکی از دستورات زیر مدیریت کنید:
 
   🖥️ جلسات:
@@ -115,35 +115,32 @@ APP_COMMANDS_LIST: |
 
   یک **دستور** (بدون حساسیت به بزرگی و کوچکی حروف) یا **شماره دستور** را به این گفتگو ارسال کنید.
 
-APP_HELP_REMINDER: |
+app.help.reminder: |
   برای دریافت لیست دستورات موجود، **help** را ارسال کنید.
 
-APP_SESSION_STATUS_CHANGE: |
+app.session.status.change: |
   {{{emoji}}} جلسه "{{{session}}}" به وضعیت {{{status}}} تغییر کرد
 
-APP_SESSION_CURRENT_STATUS: |
+app.session.current.status: |
   {{{emoji}}} وضعیت جلسه **{{{session}}}** در **{{{status}}}** است
   **حساب واتساپ:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_DASHBOARD_LINK: |
-  برای جزئیات بیشتر به [داشبورد WAHA]({{{url}}}) مراجعه کنید.
-
-APP_SESSION_STATUS_WORKING: |
+app.session.status.working: |
   ✅ این صندوق ورودی ChatWoot به **حساب واتساپ** متصل است و آماده ارسال و دریافت پیام است!
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_SESSION_STATUS_ERROR: |
+app.session.status.error: |
   ⚠️ **این صندوق ورودی ChatWoot به حساب واتساپ متصل است اما آماده ارسال و دریافت پیام نیست!**
 
   لطفاً وضعیت جلسه را بررسی کنید و سعی کنید آن را مجدداً راه‌اندازی کنید یا خارج شوید و کد QR را دوباره اسکن کنید.
 
-APP_SESSION_SCAN_QR_CODE: |
+app.session.scan.qr.code: |
   ⚠️ **کد QR را در تلفن خود اسکن کنید تا حساب واتساپ را با این صندوق ورودی ChatWoot پیوند دهید!**
 
-APP_SERVER_VERSION_AND_STATUS: |
+app.server.version.and.status: |
   **نسخه:**
   ```
   {{{version}}}
@@ -154,16 +151,16 @@ APP_SERVER_VERSION_AND_STATUS: |
   {{{status}}}
   ```
 
-APP_SERVER_REBOOT: |
+app.server.reboot: |
   سرور در حال راه‌اندازی مجدد نرم است...
 
-APP_SERVER_REBOOT_FORCE: |
+app.server.reboot.force: |
   سرور در حال راه‌اندازی مجدد اجباری است...
 
-APP_LOGOUT_SUCCESS: |
+app.logout.success: |
   ✅ حساب با موفقیت غیرمجاز شد!
 
-APP_NEW_VERSION_AVAILABLE: |
+waha.new.version.available: |
   🔄 **نسخه جدید در دسترس است!**
 
   نسخه فعلی: **{{{currentVersion}}}**
@@ -171,7 +168,7 @@ APP_NEW_VERSION_AVAILABLE: |
 
   👉 موارد جدید را در [**🆕 تغییرات**]({{{changelogUrl}}}) مشاهده کنید
 
-APP_CORE_VERSION_USED: |
+waha.core.version.used: |
   ❤️ **از WAHA پشتیبانی کنید!**
 
   شما از نسخه رایگان **WAHA Core** استفاده می‌کنید. اگر این پروژه را مفید می‌دانید، لطفاً حمایت از توسعه آن را در نظر بگیرید.

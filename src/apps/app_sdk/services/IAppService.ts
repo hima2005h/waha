@@ -5,6 +5,8 @@ import { WhatsappSession } from '@waha/core/abc/session.abc';
  * Exact App service
  */
 export interface IAppService {
+  validate(app: App): void;
+
   beforeCreated(app: App): Promise<void>;
 
   /**

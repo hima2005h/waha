@@ -8,7 +8,6 @@ import {
 } from '@waha/apps/chatwoot/consumers/inbox/base';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { EngineHelper } from '@waha/apps/chatwoot/session';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import {
@@ -30,6 +29,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { SerializeWhatsAppKey } from '../../client/ids';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -45,7 +45,7 @@ export class ChatWootInboxMessageCreatedConsumer extends ChatWootInboxMessageCon
   }
 
   ErrorHeaderKey(): TKey | null {
-    return TKey.WHATSAPP_ERROR_SENDING_MESSAGE;
+    return TKey.WHATSAPP_MESSAGE_SENDING_ERROR;
   }
 
   protected async Process(container: DIContainer, body, job: Job) {

@@ -58,6 +58,7 @@ export class AppsEnabledService implements IAppsService {
     }
 
     const service = this.getAppService(app);
+    service.validate(app);
     // Only run beforeCreated when app is enabled (default true if omitted)
     if (app.enabled !== false) {
       await service.beforeCreated(app);
@@ -102,6 +103,8 @@ export class AppsEnabledService implements IAppsService {
     }
 
     const service = this.getAppService(app);
+    service.validate(app);
+
     const hasEnabledChange = savedApp.enabled !== app.enabled;
 
     if (hasEnabledChange) {

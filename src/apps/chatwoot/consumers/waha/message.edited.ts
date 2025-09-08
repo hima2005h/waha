@@ -7,7 +7,6 @@ import {
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
 import { MessageBaseHandler } from '@waha/apps/chatwoot/consumers/waha/base';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { WhatsappToMarkdown } from '@waha/apps/chatwoot/text';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
@@ -21,6 +20,7 @@ import { PinoLogger } from 'nestjs-pino';
 
 import { SendAttachment } from '../../client/types';
 import { WAHASessionAPI } from '../../session/WAHASelf';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.WAHA_MESSAGE_EDITED, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageEditedConsumer extends ChatWootWAHABaseConsumer {

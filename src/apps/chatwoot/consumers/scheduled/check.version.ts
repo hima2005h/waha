@@ -4,7 +4,6 @@ import { JOB_CONCURRENCY } from '@waha/apps/app_sdk/constants';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { CHANGELOG_URL, SUPPORT_US_URL } from '@waha/core/constants';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
@@ -14,6 +13,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { ChatWootScheduledConsumer } from './base';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 /**
  * Scheduled consumer for version checking
@@ -26,7 +26,7 @@ export class CheckVersionConsumer extends ChatWootScheduledConsumer {
   }
 
   protected ErrorHeaderKey(): TKey {
-    return TKey.APP_SCHEDULED_JOB_ERROR;
+    return TKey.JOB_SCHEDULED_ERROR_HEADER;
   }
 
   /**
@@ -50,7 +50,7 @@ export class CheckVersionConsumer extends ChatWootScheduledConsumer {
       return;
     }
     logger.info('WAHA is using the CORE version');
-    const supportMessage = locale.key(TKey.APP_CORE_VERSION_USED).render({
+    const supportMessage = locale.key(TKey.WAHA_CORE_VERSION_USED).render({
       supportUrl: SUPPORT_US_URL,
     });
     await conversation.incoming(supportMessage);
@@ -74,7 +74,7 @@ export class CheckVersionConsumer extends ChatWootScheduledConsumer {
 
     // Send a message to Chatwoot conversation about a new version
     const locale = container.Locale();
-    const message = locale.key(TKey.APP_NEW_VERSION_AVAILABLE).render({
+    const message = locale.key(TKey.WAHA_NEW_VERSION_AVAILABLE).render({
       currentVersion: currentVersion,
       newVersion: latestVersion,
       changelogUrl: CHANGELOG_URL,

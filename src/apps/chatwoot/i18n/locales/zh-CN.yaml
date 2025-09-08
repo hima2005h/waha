@@ -1,9 +1,9 @@
 # Simplified Chinese translations for ChatWoot integration
-LOCALE_NAME: '🇨🇳 中文（Simplified Chinese）'
-APP_INBOX_CONTACT_NAME: 'WhatsApp 集成（WAHA）'
-APP_INBOX_CONTACT_AVATAR_URL: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
+locale.name: '🇨🇳 中文（Simplified Chinese）'
+app.inbox.contact.name: 'WhatsApp 集成（WAHA）'
+app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
-JOB_ERROR_REPORT: |
+job.report.error: |
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 将在 {{attempts.nextDelay}} 秒后重试...
@@ -20,51 +20,51 @@ JOB_ERROR_REPORT: |
   ```
   {{/error}}
 
-JOB_SUCCEEDED_REPORT: |
+job.report.succeeded: |
   ✅ **成功**
   尝试：{{{attempts.current}}} / {{{attempts.max}}}
   详情：[{{{details.text}}}]({{{details.url}}})
 
-WHATSAPP_ERROR_SENDING_MESSAGE: 无法在 WhatsApp 中发送消息。
-WHATSAPP_ERROR_RECEIVING_MESSAGE: 无法接收来自 WhatsApp 的消息
-WHATSAPP_ERROR_REMOVING_MESSAGE: 无法从 WhatsApp 中删除消息
-APP_SCHEDULED_JOB_ERROR: 计划任务执行失败
+whatsapp.message.sending.error: 无法在 WhatsApp 中发送消息。
+whatsapp.message.receiving.error: 无法接收来自 WhatsApp 的消息
+whatsapp.message.removing.error: 无法从 WhatsApp 中删除消息
+job.scheduled.error.header: 计划任务执行失败
 
-MESSAGE_FROM_WHATSAPP: |
+message.from.whatsapp: |
   {{{text}}}
 
   📱 *通过 WhatsApp 发送*
 
-MESSAGE_FROM_API: |
+message.from.api: |
   {{{text}}}
 
   📱 *通过 API 发送*
 
-MESSAGE_REMOVED_IN_WHATSAPP: |
+message.removed.in.whatsapp: |
   ❌ *此消息已在 WhatsApp 中被删除*
 
-MESSAGE_EDITED_IN_WHATSAPP: |
+message.edited.in.whatsapp: |
   {{{text}}}
 
   ✏️ *已在 WhatsApp 中编辑*
 
-WHATSAPP_GROUP_MESSAGE: |
+whatsapp.group.message: |
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-WHATSAPP_REACTION_ADDED: |
+whatsapp.reaction.added: |
   *已反应* {{{emoji}}}
 
-WHATSAPP_REACTION_REMOVED: |
+whatsapp.reaction.removed: |
   *已移除反应*
 
-WHATSAPP_CONTACT_GROUP_SUFFIX: '群组'
-WHATSAPP_CONTACT_CHANNEL_SUFFIX: '频道'
+whatsapp.contact.group.suffix: '群组'
+whatsapp.contact.channel.suffix: '频道'
 # Aka Stories
-WHATSAPP_CONTACT_STATUS_NAME: '状态'
+whatsapp.contact.status.name: '状态'
 
-APP_CONNECTED_MESSAGE: |
+app.connected.message: |
   🔗 **已连接：WhatsApp 会话到 ChatWoot 收件箱**
 
   ✅ WhatsApp 会话 **{{{name}}}** 已成功连接到此 ChatWoot 收件箱。
@@ -82,7 +82,7 @@ APP_CONNECTED_MESSAGE: |
 
   开始吧！🚀
 
-APP_DISCONNECTED_MESSAGE: |
+app.disconnected.message: |
   🔌 **已断开：从 ChatWoot 收件箱断开 WhatsApp 会话**
 
   ❌ WhatsApp 会话 **{{{name}}}** 已与此 ChatWoot 收件箱断开。
@@ -91,12 +91,12 @@ APP_DISCONNECTED_MESSAGE: |
 
   如需重新连接，请联系你的管理员。
 
-APP_UPDATED_MESSAGE: |
+app.updated.message: |
   🔄 **已更新：WhatsApp 会话设置**
 
   ✅ WhatsApp 会话 **{{{name}}}** 的设置已更新。
 
-APP_COMMANDS_LIST: |
+app.commands.list: |
   你可以通过发送以下命令来管理**WhatsApp 集成**：
 
   🖥️ 会话：
@@ -116,35 +116,32 @@ APP_COMMANDS_LIST: |
 
   向此对话发送**命令**（不区分大小写）或**命令编号**。
 
-APP_HELP_REMINDER: |
+app.help.reminder: |
   发送 **help** 获取可用命令列表。
 
-APP_SESSION_STATUS_CHANGE: |
+app.session.status.change: |
   {{{emoji}}} "{{{session}}}" 会话已切换为 {{{status}}} 状态
 
-APP_SESSION_CURRENT_STATUS: |
+app.session.current.status: |
   {{{emoji}}} **{{{session}}}** 会话状态为 **{{{status}}}**
   **WhatsApp 账号：**
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_DASHBOARD_LINK: |
-  访问 [WAHA 控制台]({{{url}}}) 以了解更多信息。
-
-APP_SESSION_STATUS_WORKING: |
+app.session.status.working: |
   ✅ 此 ChatWoot 收件箱已链接到**WhatsApp 账号**，可以正常收发消息！
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_SESSION_STATUS_ERROR: |
+app.session.status.error: |
   ⚠️ **此 ChatWoot 收件箱已链接到 WhatsApp 账号，但尚未准备好收发消息！**
 
   请检查会话状态，尝试重启，或登出后重新扫描二维码。
 
-APP_SESSION_SCAN_QR_CODE: |
+app.session.scan.qr.code: |
   ⚠️ **请在手机上扫描二维码，将 WhatsApp 账号与此 ChatWoot 收件箱关联！**
 
-APP_SERVER_VERSION_AND_STATUS: |
+app.server.version.and.status: |
   **版本：**
   ```
   {{{version}}}
@@ -155,16 +152,16 @@ APP_SERVER_VERSION_AND_STATUS: |
   {{{status}}}
   ```
 
-APP_SERVER_REBOOT: |
+app.server.reboot: |
   服务器正在优雅重启...
 
-APP_SERVER_REBOOT_FORCE: |
+app.server.reboot.force: |
   服务器正在强制重启...
 
-APP_LOGOUT_SUCCESS: |
+app.logout.success: |
   ✅ 账号已成功取消授权！
 
-APP_NEW_VERSION_AVAILABLE: |
+waha.new.version.available: |
   🔄 **有新版本可用！**
 
   当前版本：**{{{currentVersion}}}**
@@ -172,7 +169,7 @@ APP_NEW_VERSION_AVAILABLE: |
 
   👉 查看[**🆕 更新日志**]({{{changelogUrl}}})
 
-APP_CORE_VERSION_USED: |
+waha.core.version.used: |
   ❤️ **支持 WAHA！**
 
   你正在使用免费的 **WAHA Core** 版本。如果你觉得该项目有帮助，请考虑支持其开发。

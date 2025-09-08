@@ -8,7 +8,6 @@ import {
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
 import { MessageBaseHandler } from '@waha/apps/chatwoot/consumers/waha/base';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
@@ -18,6 +17,7 @@ import { WAMessageReaction, WAReaction } from '@waha/structures/responses.dto';
 import { WAHAWebhookMessageReaction } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.WAHA_MESSAGE_REACTION, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageReactionConsumer extends ChatWootWAHABaseConsumer {

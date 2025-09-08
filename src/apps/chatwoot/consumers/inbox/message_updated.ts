@@ -4,13 +4,13 @@ import { ChatWootInboxMessageConsumer } from '@waha/apps/chatwoot/consumers/inbo
 import { MessageHandler } from '@waha/apps/chatwoot/consumers/inbox/message_created';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { WAHASessionAPI } from '../../session/WAHASelf';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.INBOX_MESSAGE_UPDATED, { concurrency: JOB_CONCURRENCY })
 export class ChatWootInboxMessageUpdatedConsumer extends ChatWootInboxMessageConsumer {
@@ -23,7 +23,7 @@ export class ChatWootInboxMessageUpdatedConsumer extends ChatWootInboxMessageCon
   }
 
   ErrorHeaderKey(): TKey | null {
-    return TKey.WHATSAPP_ERROR_SENDING_MESSAGE;
+    return TKey.WHATSAPP_MESSAGE_SENDING_ERROR;
   }
 
   protected async Process(container: DIContainer, body, job: Job) {

@@ -7,10 +7,11 @@ import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import { public_contact_create_update_payload as Contact } from '@figuro/chatwoot-sdk';
 import { ContactInfo } from '@waha/apps/chatwoot/client/ContactConversationService';
 import { AttributeKey } from '@waha/apps/chatwoot/const';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { Channel } from '@waha/structures/channels.dto';
 import { CacheAsync } from '@waha/utils/Cache';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 /**
  * Base WhatsApp contact info class

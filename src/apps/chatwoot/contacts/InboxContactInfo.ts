@@ -1,7 +1,8 @@
 import { public_contact_create_update_payload } from '@figuro/chatwoot-sdk';
 import { ContactInfo } from '@waha/apps/chatwoot/client/ContactConversationService';
 import { AttributeKey, INBOX_CONTACT_CHAT_ID } from '@waha/apps/chatwoot/const';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 /**
  * Inbox Notifications Contact

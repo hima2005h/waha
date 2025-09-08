@@ -10,7 +10,7 @@ import {
   ChatWootWAHABaseConsumer,
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASelf } from '@waha/apps/chatwoot/session/WAHASelf';
 import { SessionStatusEmoji } from '@waha/apps/chatwoot/SessionStatusEmoji';
 import { SessionManager } from '@waha/core/abc/manager.abc';
@@ -19,6 +19,7 @@ import { WAHAEvents, WAHASessionStatus } from '@waha/structures/enums.dto';
 import { WAHAWebhookSessionStatus } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.WAHA_SESSION_STATUS, { concurrency: JOB_CONCURRENCY })
 export class WAHASessionStatusConsumer extends ChatWootWAHABaseConsumer {

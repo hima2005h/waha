@@ -7,7 +7,8 @@
       "dashboard/**",
       "core/engines/webjs/*",
       "plus/engines/webjs/*",
-      "apps/chatwoot/i18n/*.yaml"
+      "apps/chatwoot/i18n/locales/*.yaml",
+      "apps/chatwoot/i18n/locales/*.yml"
     ],
     "watchAssets": true
   }

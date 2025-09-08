@@ -8,13 +8,13 @@ import {
 } from '@waha/apps/chatwoot/consumers/inbox/base';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { MessageMappingService } from '@waha/apps/chatwoot/storage';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 @Processor(QueueName.INBOX_MESSAGE_DELETED, { concurrency: JOB_CONCURRENCY })
 export class ChatWootInboxMessageDeletedConsumer extends ChatWootInboxMessageConsumer {
@@ -27,7 +27,7 @@ export class ChatWootInboxMessageDeletedConsumer extends ChatWootInboxMessageCon
   }
 
   ErrorHeaderKey(): TKey | null {
-    return TKey.WHATSAPP_ERROR_REMOVING_MESSAGE;
+    return TKey.WHATSAPP_MESSAGE_REMOVING_ERROR;
   }
 
   protected async Process(container: DIContainer, body, job: Job) {

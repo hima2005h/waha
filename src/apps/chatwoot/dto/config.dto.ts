@@ -1,6 +1,7 @@
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
-import { DEFAULT_LOCALE, LOCALES } from '@waha/apps/chatwoot/locale';
-import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
+
+export const DEFAULT_LOCALE = 'en-US';
 
 export class ChatWootAppConfig implements ChatWootAPIConfig {
   @IsString()
@@ -19,6 +20,5 @@ export class ChatWootAppConfig implements ChatWootAPIConfig {
   inboxIdentifier: string;
 
   @IsString()
-  @IsIn(LOCALES)
   locale: string = DEFAULT_LOCALE;
 }

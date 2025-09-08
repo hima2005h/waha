@@ -1,8 +1,8 @@
 # German translations for ChatWoot integration
-LOCALE_NAME: '🇩🇪 Deutsch (German)'
-APP_INBOX_CONTACT_NAME: 'WhatsApp Integration (WAHA)'
+locale.name: '🇩🇪 Deutsch (German)'
+app.inbox.contact.name: 'WhatsApp Integration (WAHA)'
 
-JOB_ERROR_REPORT: |
+job.report.error: |
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 Wiederholung in {{attempts.nextDelay}} Sekunden...
@@ -19,54 +19,54 @@ JOB_ERROR_REPORT: |
   ```
   {{/error}}
 
-JOB_SUCCEEDED_REPORT: |
+job.report.succeeded: |
   ✅ **Erfolgreich**
   Versuch: {{{attempts.current}}} / {{{attempts.max}}}
   Details: [{{{details.text}}}]({{{details.url}}})
 
-WHATSAPP_ERROR_SENDING_MESSAGE:
+whatsapp.message.sending.error:
   Nachricht konnte nicht über WhatsApp gesendet werden.
-WHATSAPP_ERROR_RECEIVING_MESSAGE:
+whatsapp.message.receiving.error:
   Nachricht konnte nicht von WhatsApp empfangen werden
-WHATSAPP_ERROR_REMOVING_MESSAGE:
+whatsapp.message.removing.error:
   Nachricht konnte nicht von WhatsApp entfernt werden
-APP_SCHEDULED_JOB_ERROR: Geplante Aufgabe konnte nicht ausgeführt werden
+job.scheduled.error.header: Geplante Aufgabe konnte nicht ausgeführt werden
 
-MESSAGE_FROM_WHATSAPP: |
+message.from.whatsapp: |
   {{{text}}}
 
   📱 *Von WhatsApp gesendet*
 
-MESSAGE_FROM_API: |
+message.from.api: |
   {{{text}}}
 
   📱 *Über API gesendet*
 
-MESSAGE_REMOVED_IN_WHATSAPP: |
+message.removed.in.whatsapp: |
   ❌ *Diese Nachricht wurde in WhatsApp gelöscht*
 
-MESSAGE_EDITED_IN_WHATSAPP: |
+message.edited.in.whatsapp: |
   {{{text}}}
 
   ✏️ *In WhatsApp bearbeitet*
 
-WHATSAPP_GROUP_MESSAGE: |
+whatsapp.group.message: |
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-WHATSAPP_REACTION_ADDED: |
+whatsapp.reaction.added: |
   *Reagiert mit* {{{emoji}}}
 
-WHATSAPP_REACTION_REMOVED: |
+whatsapp.reaction.removed: |
   *Reaktion entfernt*
 
-WHATSAPP_CONTACT_GROUP_SUFFIX: 'Gruppe'
-WHATSAPP_CONTACT_CHANNEL_SUFFIX: 'Kanal'
+whatsapp.contact.group.suffix: 'Gruppe'
+whatsapp.contact.channel.suffix: 'Kanal'
 # Aka Stories
-WHATSAPP_CONTACT_STATUS_NAME: 'Status'
+whatsapp.contact.status.name: 'Status'
 
-APP_CONNECTED_MESSAGE: |
+app.connected.message: |
   🔗 **VERBUNDEN: WhatsApp-Sitzung mit ChatWoot Inbox**
 
   ✅ WhatsApp-Sitzung **{{{name}}}** wurde erfolgreich mit dieser ChatWoot Inbox verbunden.
@@ -84,7 +84,7 @@ APP_CONNECTED_MESSAGE: |
 
   Lassen Sie uns beginnen! 🚀
 
-APP_DISCONNECTED_MESSAGE: |
+app.disconnected.message: |
   🔌 **GETRENNT: WhatsApp-Sitzung von ChatWoot Inbox**
 
   ❌ WhatsApp-Sitzung **{{{name}}}** wurde von dieser ChatWoot Inbox getrennt.
@@ -93,12 +93,12 @@ APP_DISCONNECTED_MESSAGE: |
 
   Um eine erneute Verbindung herzustellen, wenden Sie sich bitte an Ihren Administrator.
 
-APP_UPDATED_MESSAGE: |
+app.updated.message: |
   🔄 **AKTUALISIERT: WhatsApp-Sitzungseinstellungen**
 
   ✅ Einstellungen für WhatsApp-Sitzung **{{{name}}}** wurden aktualisiert.
 
-APP_COMMANDS_LIST: |
+app.commands.list: |
   Sie können die **WhatsApp Integration** verwalten, indem Sie einen der folgenden Befehle senden:
 
   🖥️ Sitzungen:
@@ -118,35 +118,32 @@ APP_COMMANDS_LIST: |
 
   Senden Sie einen **Befehl** (Groß-/Kleinschreibung wird nicht beachtet) oder eine **Befehlsnummer** an diese Konversation.
 
-APP_HELP_REMINDER: |
+app.help.reminder: |
   Senden Sie **help**, um die Liste der verfügbaren Befehle zu erhalten.
 
-APP_SESSION_STATUS_CHANGE: |
+app.session.status.change: |
   {{{emoji}}} Sitzung "{{{session}}}" hat den Status zu {{{status}}} gewechselt
 
-APP_SESSION_CURRENT_STATUS: |
+app.session.current.status: |
   {{{emoji}}} **{{{session}}}** Sitzungsstatus ist **{{{status}}}**
   **WhatsApp-Konto:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_DASHBOARD_LINK: |
-  Besuchen Sie das [WAHA Dashboard]({{{url}}}) für weitere Details.
-
-APP_SESSION_STATUS_WORKING: |
+app.session.status.working: |
   ✅ Diese ChatWoot Inbox ist mit dem **WhatsApp-Konto** verknüpft und bereit zum Senden und Empfangen von Nachrichten!
 
   📱 **{{{name}}} ({{{id}}})**
 
-APP_SESSION_STATUS_ERROR: |
+app.session.status.error: |
   ⚠️ **Diese ChatWoot Inbox ist mit dem WhatsApp-Konto verknüpft, aber NICHT bereit zum Senden und Empfangen von Nachrichten!**
 
   Bitte überprüfen Sie den Sitzungsstatus und versuchen Sie, sie neu zu starten oder melden Sie sich ab und scannen Sie den QR-Code erneut.
 
-APP_SESSION_SCAN_QR_CODE: |
+app.session.scan.qr.code: |
   ⚠️ **Scannen Sie den QR-Code auf Ihrem Telefon, um das WhatsApp-Konto mit dieser ChatWoot Inbox zu verknüpfen!**
 
-APP_SERVER_VERSION_AND_STATUS: |
+app.server.version.and.status: |
   **Version:**
   ```
   {{{version}}}
@@ -157,16 +154,16 @@ APP_SERVER_VERSION_AND_STATUS: |
   {{{status}}}
   ```
 
-APP_SERVER_REBOOT: |
+app.server.reboot: |
   Server wird ordnungsgemäß neu gestartet...
 
-APP_SERVER_REBOOT_FORCE: |
+app.server.reboot.force: |
   Server wird erzwungen neu gestartet...
 
-APP_LOGOUT_SUCCESS: |
+app.logout.success: |
   ✅ Konto erfolgreich abgemeldet!
 
-APP_NEW_VERSION_AVAILABLE: |
+waha.new.version.available: |
   🔄 **Neue Version verfügbar!**
 
   Aktuelle Version: **{{{currentVersion}}}**
@@ -174,7 +171,7 @@ APP_NEW_VERSION_AVAILABLE: |
 
   👉 Sehen Sie, was neu ist im [**🆕 Änderungsprotokoll**]({{{changelogUrl}}})
 
-APP_CORE_VERSION_USED: |
+waha.core.version.used: |
   ❤️ **Unterstützen Sie WAHA!**
 
   Sie verwenden die kostenlose **WAHA Core** Version. Wenn Sie dieses Projekt nützlich finden, erwägen Sie bitte, seine Entwicklung zu unterstützen.

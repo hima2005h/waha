@@ -5,13 +5,13 @@ import { MessageType } from '@waha/apps/chatwoot/client/types';
 import { ScheduledData } from '@waha/apps/chatwoot/consumers/types';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
 import { ChatWootAppConfig } from '@waha/apps/chatwoot/dto/config.dto';
-import { TKey } from '@waha/apps/chatwoot/locale';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { AppRepository } from '../../storage';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 /**
  * Base class for ChatWoot scheduled consumers

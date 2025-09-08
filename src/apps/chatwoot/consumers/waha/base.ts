@@ -13,7 +13,7 @@ import { WhatsAppChatIdKey } from '@waha/apps/chatwoot/consumers/mutex';
 import { EventData } from '@waha/apps/chatwoot/consumers/types';
 import { WhatsAppContactInfo } from '@waha/apps/chatwoot/contacts/WhatsAppContactInfo';
 import { DIContainer } from '@waha/apps/chatwoot/di/DIContainer';
-import { Locale, TKey } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASelf, WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import {
   AppRepository,
@@ -36,6 +36,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { ChatWootAppConfig } from '../../dto/config.dto';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
 export function ListenEventsForChatWoot() {
   return [
@@ -64,7 +65,7 @@ export abstract class ChatWootWAHABaseConsumer extends AppConsumer {
   }
 
   protected ErrorHeaderKey(): TKey | null {
-    return TKey.WHATSAPP_ERROR_RECEIVING_MESSAGE;
+    return TKey.WHATSAPP_MESSAGE_RECEIVING_ERROR;
   }
 
   private async ProcessAndReportErrors(job) {

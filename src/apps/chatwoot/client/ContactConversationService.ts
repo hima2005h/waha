@@ -9,7 +9,7 @@ import { Conversation } from '@waha/apps/chatwoot/client/Conversation';
 import { ConversationAPI } from '@waha/apps/chatwoot/client/ConversationAPI';
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
 import { InboxContactInfo } from '@waha/apps/chatwoot/contacts/InboxContactInfo';
-import { Locale } from '@waha/apps/chatwoot/locale';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 
 import { CacheForConfig } from '../cache/ConversationCache';
 import { IConversationCache } from '../cache/IConversationCache';
