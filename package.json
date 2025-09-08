@@ -135,9 +135,9 @@
     "supertest": "^4.0.2",
     "ts-jest": "^29.1.3",
     "ts-loader": "^6.2.1",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.8.4",
+    "typescript": "5.9.2",
     "yargs": "^17.7.2"
   },
   "jest": {
