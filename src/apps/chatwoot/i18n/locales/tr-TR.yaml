@@ -1,6 +1,7 @@
 # Turkish translations for ChatWoot integration
 locale.name: '🇹🇷 Türkçe (Turkish)'
 app.inbox.contact.name: 'WhatsApp Entegrasyonu (WAHA)'
+app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 job.report.error: |
   ⚠️ **{{{header}}}**
@@ -98,7 +99,7 @@ app.updated.message: |
 app.commands.list: |
   Aşağıdaki komutlardan birini göndererek **WhatsApp Entegrasyonu**nu yönetebilirsiniz:
 
-  🖥️ Oturumlar:
+  🖥️ **Oturum**:
   1. **status** - mevcut oturum durumunu alın.
   2. **restart** - oturumu yeniden başlatın - bu, WhatsApp hesabınızı yeniden bağlamaya çalışacaktır.
   3. **start** - oturumu başlatın.
@@ -108,12 +109,20 @@ app.commands.list: |
   7. **screenshot** - oturumun ekran görüntüsünü alın (yalnızca **WEBJS** motorunda kullanılabilir).
   8. **help** - kullanılabilir komutlar.
 
+  {{#commands.server}}
   ⚙️ Sunucu:
   - **server status** - sunucu sürümü ve durum bilgilerini alın.
   - **server reboot** - sunucuyu nazikçe yeniden başlatın.
   - **server reboot force** - sunucuyu zorla yeniden başlatın.
+  {{/commands.server}}
 
   Bu konuşmaya bir **komut** (büyük/küçük harf duyarsız) veya **komut numarası** gönderin.
+
+app.commands.server.disabled: ⛔ **Sunucu komutları devre dışı**.
+
+  Lütfen yöneticinizle iletişime geçin.
+
+  Kullanılabilir komutların listesini almak için **help** gönderin.
 
 app.help.reminder: |
   Kullanılabilir komutların listesini almak için **help** gönderin.

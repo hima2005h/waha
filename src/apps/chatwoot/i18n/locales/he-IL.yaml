@@ -1,6 +1,7 @@
 # Hebrew translations for ChatWoot integration
 locale.name: '🇮🇱 עברית (Hebrew)'
 app.inbox.contact.name: 'אינטגרציית וואטסאפ (WAHA)'
+app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 job.report.error: |
   ⚠️ **{{{header}}}**
@@ -98,7 +99,7 @@ app.updated.message: |
 app.commands.list: |
   אתה יכול לנהל **אינטגרציית וואטסאפ** על ידי שליחת אחת מהפקודות הבאות:
 
-  🖥️ הפעלות:
+  🖥️ **הפעלה**:
   1. **status** - קבל את סטטוס ההפעלה הנוכחי.
   2. **restart** - הפעל מחדש את ההפעלה - זה ינסה לחבר מחדש את חשבון הוואטסאפ שלך.
   3. **start** - התחל את ההפעלה.
@@ -108,12 +109,20 @@ app.commands.list: |
   7. **screenshot** - קבל צילום מסך של ההפעלה (זמין רק במנוע **WEBJS**).
   8. **help** - פקודות זמינות.
 
+  {{#commands.server}}
   ⚙️ שרת:
   - **server status** - קבל מידע על גרסת השרת והסטטוס.
   - **server reboot** - הפעל מחדש את השרת בצורה חלקה.
   - **server reboot force** - אלץ הפעלה מחדש של השרת.
+  {{/commands.server}}
 
   שלח **פקודה** (לא תלוי רישיות) או **מספר פקודה** לשיחה זו.
+
+app.commands.server.disabled: ⛔ **פקודות השרת מושבתות**.
+
+  אנא פנו למנהל המערכת שלכם.
+
+  שלחו **help** כדי לקבל את רשימת הפקודות הזמינות.
 
 app.help.reminder: |
   שלח **help** כדי לקבל את רשימת הפקודות הזמינות.

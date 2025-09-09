@@ -1,6 +1,7 @@
 # Indonesian translations for ChatWoot integration
 locale.name: '🇮🇩 Bahasa Indonesia (Indonesian)'
 app.inbox.contact.name: 'Integrasi WhatsApp (WAHA)'
+app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 job.report.error: |
   ⚠️ **{{{header}}}**
@@ -98,7 +99,7 @@ app.updated.message: |
 app.commands.list: |
   Anda dapat mengelola **Integrasi WhatsApp** dengan mengirimkan salah satu perintah berikut:
 
-  🖥️ Sesi:
+  🖥️ **Sesi**:
   1. **status** - dapatkan status sesi saat ini.
   2. **restart** - mulai ulang sesi - ini akan mencoba menghubungkan kembali akun WhatsApp Anda.
   3. **start** - mulai sesi.
@@ -108,12 +109,20 @@ app.commands.list: |
   7. **screenshot** - dapatkan tangkapan layar sesi (hanya tersedia di mesin **WEBJS**).
   8. **help** - perintah yang tersedia.
 
+  {{#commands.server}}
   ⚙️ Server:
   - **server status** - dapatkan informasi versi dan status server.
   - **server reboot** - mulai ulang server dengan anggun.
   - **server reboot force** - paksa mulai ulang server.
+  {{/commands.server}}
 
   Kirim **perintah** (tidak peka huruf besar/kecil) atau **nomor perintah** ke percakapan ini.
+
+app.commands.server.disabled: ⛔ **Perintah server dinonaktifkan**.
+
+  Silakan hubungi administrator Anda.
+
+  Kirim **help** untuk melihat daftar perintah yang tersedia.
 
 app.help.reminder: |
   Kirim **help** untuk mendapatkan daftar perintah yang tersedia.

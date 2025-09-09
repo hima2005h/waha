@@ -100,7 +100,7 @@ app.updated.message: |
 app.commands.list: |
   You can manage **WhatsApp Integration** by sending one of the following commands:
 
-  🖥️ Sessions:
+  🖥️ **Session**:
   1. **status** - get the current session status.
   2. **restart** - restart the session - this will try to reconnect your WhatsApp account.
   3. **start** - start the session.
@@ -110,12 +110,20 @@ app.commands.list: |
   7. **screenshot** - get a screenshot of the session (only available in **WEBJS** engine).
   8. **help** - available commands.
 
-  ⚙️ Server:
+  {{#commands.server}}
+  🛠️ **Server**:
   - **server status** - get the server version and status information.
   - **server reboot** - reboot the server gracefully.
   - **server reboot force** - force reboot the server.
 
+  {{/commands.server}}
   Send a **command** (case insensitive) or a **command number**  to this conversation.
+
+app.commands.server.disabled: ⛔ **Server commands are disabled**.
+
+  Please contact your administrator.
+
+  Send **help** to get the list of available commands.
 
 app.help.reminder: |
   Send **help** to get the list of available commands.

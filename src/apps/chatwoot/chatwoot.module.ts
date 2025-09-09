@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { RegisterAppQueue } from '@waha/apps/app_sdk/BullUtils';
 import {
   ExponentialRetriesJobOptions,

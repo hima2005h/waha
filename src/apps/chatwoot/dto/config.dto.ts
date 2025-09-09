@@ -1,7 +1,13 @@
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export const DEFAULT_LOCALE = 'en-US';
+
+export class ChatWootCommandsConfig {
+  @IsBoolean()
+  server: boolean = true;
+}
 
 export class ChatWootAppConfig implements ChatWootAPIConfig {
   @IsString()
@@ -21,4 +27,8 @@ export class ChatWootAppConfig implements ChatWootAPIConfig {
 
   @IsString()
   locale: string = DEFAULT_LOCALE;
+
+  @ValidateNested()
+  @Type(() => ChatWootCommandsConfig)
+  commands?: ChatWootCommandsConfig;
 }

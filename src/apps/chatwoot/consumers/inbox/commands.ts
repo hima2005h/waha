@@ -15,6 +15,7 @@ import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { ChatWootCommandsConfig } from '@waha/apps/chatwoot/dto/config.dto';
 
 @Processor(QueueName.INBOX_COMMANDS, { concurrency: JOB_CONCURRENCY })
 export class ChatWootInboxCommandsConsumer extends ChatWootInboxMessageConsumer {
@@ -37,10 +38,13 @@ export class ChatWootInboxCommandsConsumer extends ChatWootInboxMessageConsumer 
       job.data.session,
       container.Locale(),
       container.WAHASelf(),
+      container.CommandsConfig(),
     );
     return await handler.handle(body);
   }
 }
+
+const CommandServerPrefix = 'server ';
 
 enum Command {
   STATUS = 'status',
@@ -100,6 +104,7 @@ class SessionCommandHandler {
     private session: string,
     private l: Locale,
     private waha: WAHASelf,
+    private commands: ChatWootCommandsConfig,
   ) {}
 
   async handle(message: any) {
@@ -108,6 +113,13 @@ class SessionCommandHandler {
     this.logger.info(
       `Executing command ${command} for session ${this.session}`,
     );
+    const warning = this.commandDisabledWarning(command);
+    const conversation = await this.repo.InboxNotifications();
+    if (warning) {
+      const text = this.l.key(warning).render();
+      await conversation.incoming(text);
+      return;
+    }
     switch (command) {
       case Command.RESTART:
         await this.waha.restart(this.session);
@@ -118,7 +130,6 @@ class SessionCommandHandler {
       case Command.LOGOUT:
         this.logger.info(`Logging out session ${this.session}`);
         await this.waha.logout(this.session);
-        const conversation = await this.repo.InboxNotifications();
         const text = this.l.key(TKey.APP_LOGOUT_SUCCESS).render();
         await conversation.incoming(text);
         break;
@@ -129,7 +140,6 @@ class SessionCommandHandler {
       case Command.STATUS: {
         this.logger.info(`Getting status for session ${this.session}`);
         const session = await this.waha.get(this.session);
-        const conversation = await this.repo.InboxNotifications();
         const emoji = SessionStatusEmoji(session.status);
         const text = this.l.key(TKey.APP_SESSION_CURRENT_STATUS).render({
           emoji: emoji,
@@ -145,7 +155,6 @@ class SessionCommandHandler {
         this.logger.info('Getting server version and status');
         const version = await this.waha.serverVersion();
         const status = await this.waha.serverStatus();
-        const conversation = await this.repo.InboxNotifications();
         const text = this.l.key(TKey.APP_SERVER_VERSION_AND_STATUS).render({
           version: JSON.stringify(version, null, 2),
           status: JSON.stringify(status, null, 2),
@@ -155,7 +164,6 @@ class SessionCommandHandler {
       }
       case Command.SERVER_REBOOT: {
         this.logger.info('Rebooting server (graceful)');
-        const conversation = await this.repo.InboxNotifications();
         const text = this.l.key(TKey.APP_SERVER_REBOOT).render();
         await conversation.incoming(text);
         await this.waha.serverReboot(false);
@@ -163,14 +171,12 @@ class SessionCommandHandler {
       }
       case Command.SERVER_REBOOT_FORCE: {
         this.logger.info('Rebooting server (force)');
-        const conversation = await this.repo.InboxNotifications();
         const text = this.l.key(TKey.APP_SERVER_REBOOT_FORCE).render();
         await conversation.incoming(text);
         await this.waha.serverReboot(true);
         break;
       }
       case Command.QR: {
-        const conversation = await this.repo.InboxNotifications();
         const content = await this.waha.qr(this.session);
         const message = AttachmentFromBuffer(content, 'qr.jpg');
         message.message_type = MessageType.INCOMING;
@@ -179,7 +185,6 @@ class SessionCommandHandler {
       }
       case Command.SCREENSHOT: {
         this.logger.info(`Getting screenshot for session ${this.session}`);
-        const conversation = await this.repo.InboxNotifications();
         const content = await this.waha.screenshot(this.session);
         const message = AttachmentFromBuffer(content, 'screenshot.jpg');
         message.message_type = MessageType.INCOMING;
@@ -187,14 +192,26 @@ class SessionCommandHandler {
         break;
       }
       case Command.HELP: {
-        const conversation = await this.repo.InboxNotifications();
-        const text = this.l.key(TKey.APP_COMMANDS_LIST).render();
+        const text = this.l
+          .key(TKey.APP_COMMANDS_LIST)
+          .render({ commands: this.commands });
         await conversation.incoming(text);
         break;
       }
       default:
         throw new CommandIsNotImplementedError(cmd);
     }
+  }
+
+  /**
+   * Check if the command allowed for this session
+   * Returns `null` if allowed or the message key to show as an error
+   */
+  commandDisabledWarning(command: Command): TKey | null {
+    if (!this.commands.server && command.startsWith(CommandServerPrefix)) {
+      return TKey.APP_COMMANDS_SERVER_DISABLED;
+    }
+    return null;
   }
 
   findCommand(text: string): Command {

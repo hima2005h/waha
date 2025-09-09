@@ -1,4 +1,5 @@
 import ChatwootClient from '@figuro/chatwoot-sdk';
+import * as lodash from 'lodash';
 import { AxiosLogging } from '@waha/apps/app_sdk/AxiosLogging';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
 import { ContactAPI } from '@waha/apps/chatwoot/client/ContactAPI';
@@ -8,6 +9,7 @@ import { CustomAttributesAPI } from '@waha/apps/chatwoot/client/CustomAttributes
 import { ChatWootInboxAPI } from '@waha/apps/chatwoot/client/interfaces';
 import {
   ChatWootAppConfig,
+  ChatWootCommandsConfig,
   DEFAULT_LOCALE,
 } from '@waha/apps/chatwoot/dto/config.dto';
 import { ChatWootErrorReporter } from '@waha/apps/chatwoot/error/ChatWootErrorReporter';
@@ -201,5 +203,12 @@ export class DIContainer {
 
   public CustomAttributesAPI() {
     return new CustomAttributesAPI(this.config, this.AccountAPI());
+  }
+
+  public CommandsConfig(): ChatWootCommandsConfig {
+    const defaults: ChatWootCommandsConfig = {
+      server: true,
+    };
+    return lodash.defaults({}, this.config.commands, defaults);
   }
 }

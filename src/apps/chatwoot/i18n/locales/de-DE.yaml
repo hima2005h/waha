@@ -1,6 +1,7 @@
 # German translations for ChatWoot integration
 locale.name: '🇩🇪 Deutsch (German)'
 app.inbox.contact.name: 'WhatsApp Integration (WAHA)'
+app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 job.report.error: |
   ⚠️ **{{{header}}}**
@@ -101,7 +102,7 @@ app.updated.message: |
 app.commands.list: |
   Sie können die **WhatsApp Integration** verwalten, indem Sie einen der folgenden Befehle senden:
 
-  🖥️ Sitzungen:
+  🖥️ **Sitzung**:
   1. **status** - den aktuellen Sitzungsstatus abrufen.
   2. **restart** - die Sitzung neu starten - dies versucht, Ihr WhatsApp-Konto neu zu verbinden.
   3. **start** - die Sitzung starten.
@@ -111,12 +112,20 @@ app.commands.list: |
   7. **screenshot** - einen Screenshot der Sitzung erhalten (nur in der **WEBJS**-Engine verfügbar).
   8. **help** - verfügbare Befehle.
 
+  {{#commands.server}}
   ⚙️ Server:
   - **server status** - Serverversion und Statusinformationen abrufen.
   - **server reboot** - Server ordnungsgemäß neu starten.
   - **server reboot force** - Server erzwungen neu starten.
+  {{/commands.server}}
 
   Senden Sie einen **Befehl** (Groß-/Kleinschreibung wird nicht beachtet) oder eine **Befehlsnummer** an diese Konversation.
+
+app.commands.server.disabled: ⛔ **Serverbefehle sind deaktiviert**.
+
+  Bitte wenden Sie sich an Ihren Administrator.
+
+  Senden Sie **help**, um die Liste der verfügbaren Befehle zu erhalten.
 
 app.help.reminder: |
   Senden Sie **help**, um die Liste der verfügbaren Befehle zu erhalten.
