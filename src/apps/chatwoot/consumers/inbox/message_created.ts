@@ -94,7 +94,7 @@ export class MessageHandler {
     });
 
     // Send text
-    if (attachments.length == 0 || multipleAttachments) {
+    if ((attachments.length == 0 || multipleAttachments) && content) {
       const msg = await this.sendTextMessage(chatId, content, replyTo);
       results.push(msg);
       part = await this.saveMapping(message, msg, part);
