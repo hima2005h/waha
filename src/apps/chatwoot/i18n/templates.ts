@@ -36,6 +36,12 @@ export enum TKey {
   WHATSAPP_CONTACT_STATUS_NAME = 'whatsapp.contact.status.name',
 
   //
+  // ChatWoot to WhatsApp
+  //
+  CW_TO_WA_MESSAGE_TEXT = 'chatwoot.to.whatsapp.message.text',
+  CW_TO_WA_MESSAGE_MEDIA_CAPTION = 'chatwoot.to.whatsapp.message.media.caption',
+
+  //
   // App Inbox
   //
   APP_INBOX_CONTACT_NAME = 'app.inbox.contact.name',
@@ -98,6 +104,15 @@ export type TemplatePayloads = {
   [TKey.WHATSAPP_CONTACT_GROUP_SUFFIX]: void;
   [TKey.WHATSAPP_CONTACT_CHANNEL_SUFFIX]: void;
   [TKey.WHATSAPP_CONTACT_STATUS_NAME]: void;
+  [TKey.CW_TO_WA_MESSAGE_TEXT]: {
+    content: string;
+    chatwoot: any;
+  };
+  [TKey.CW_TO_WA_MESSAGE_MEDIA_CAPTION]: {
+    content: string;
+    chatwoot: any;
+    singleAttachment: boolean;
+  };
   [TKey.JOB_SCHEDULED_ERROR_HEADER]: void;
   [TKey.JOB_REPORT_ERROR]: {
     header: string;

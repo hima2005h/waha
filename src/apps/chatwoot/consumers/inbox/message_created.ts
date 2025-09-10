@@ -34,6 +34,7 @@ import {
   ChatWootConfig,
   LinkPreview,
 } from '@waha/apps/chatwoot/dto/config.dto';
+import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -60,6 +61,7 @@ export class ChatWootInboxMessageCreatedConsumer extends ChatWootInboxMessageCon
       container.Logger(),
       session,
       container.ChatWootConfig(),
+      container.Locale(),
     );
     return await handler.handle(body);
   }
@@ -71,6 +73,7 @@ export class MessageHandler {
     private logger: ILogger,
     private session: WAHASessionAPI,
     private config: ChatWootConfig,
+    private l: Locale,
   ) {}
 
   async handle(body: any) {
@@ -84,9 +87,7 @@ export class MessageHandler {
     }
 
     const content = MarkdownToWhatsApp(message.content);
-    const attachments = message.attachments || [];
     const results = [];
-    const multipleAttachments = attachments.length > 1;
     let part = 1;
     const replyTo = await this.getReplyTo(message).catch((err) => {
       this.logger.error(`Error getting reply to message ID: ${err}`);
@@ -94,22 +95,28 @@ export class MessageHandler {
     });
 
     // Send text
-    if ((attachments.length == 0 || multipleAttachments) && content) {
-      const msg = await this.sendTextMessage(chatId, content, replyTo);
+    const attachments = message.attachments || [];
+    if (content && attachments.length !== 1) {
+      const textTemplate = this.l.key(TKey.CW_TO_WA_MESSAGE_TEXT);
+      const text = textTemplate.render({
+        content: content,
+        chatwoot: body,
+      });
+      const msg = await this.sendTextMessage(chatId, text, replyTo);
       results.push(msg);
       part = await this.saveMapping(message, msg, part);
       this.logger.info(`Text message sent: ${msg.id}`);
     }
 
     // Send files
-    const fileMessageContent = multipleAttachments ? '' : content;
+    const captionTemplate = this.l.key(TKey.CW_TO_WA_MESSAGE_MEDIA_CAPTION);
     for (const file of attachments) {
-      const msg = await this.sendFile(
-        chatId,
-        fileMessageContent,
-        file,
-        replyTo,
-      );
+      const caption = captionTemplate.render({
+        content: content,
+        chatwoot: body,
+        singleAttachment: attachments.length == 1,
+      });
+      const msg = await this.sendFile(chatId, caption, file, replyTo);
       this.logger.info(
         `File message sent: ${msg.id} - ${file.data_url} - ${file.file_type}`,
       );

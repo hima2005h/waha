@@ -65,6 +65,16 @@ whatsapp.contact.channel.suffix: 'Channel'
 # Aka Stories
 whatsapp.contact.status.name: 'Status'
 
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
 app.connected.message: |
   🔗 **CONNECTED: WhatsApp Session to ChatWoot Inbox**
 
