@@ -8,6 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsDynamicObject } from '@waha/nestjs/validation/IsDynamicObject';
 
 export const DEFAULT_LOCALE = 'en-US';
 
@@ -23,6 +24,7 @@ export enum LinkPreview {
 }
 
 export interface ChatWootConfig {
+  templates: Record<string, string>;
   linkPreview: LinkPreview;
   commands: ChatWootCommandsConfig;
 }
@@ -49,6 +51,10 @@ export class ChatWootAppConfig implements ChatWootAPIConfig {
 
   @IsString()
   locale: string = DEFAULT_LOCALE;
+
+  @IsOptional()
+  @IsDynamicObject()
+  templates?: Record<string, string>;
 
   @ValidateNested()
   @Type(() => ChatWootCommandsConfig)

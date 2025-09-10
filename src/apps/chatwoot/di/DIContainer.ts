@@ -71,6 +71,7 @@ export class DIContainer {
   public Locale(): Locale {
     if (!this.locale) {
       this.locale = i18n.locale(this.config.locale || DEFAULT_LOCALE);
+      this.locale = this.locale.override(this.ChatWootConfig().templates);
     }
     return this.locale;
   }
@@ -208,6 +209,7 @@ export class DIContainer {
 
   public ChatWootConfig(): ChatWootConfig {
     const defaults: ChatWootConfig = {
+      templates: {},
       linkPreview: LinkPreview.OFF,
       commands: {
         server: true,
