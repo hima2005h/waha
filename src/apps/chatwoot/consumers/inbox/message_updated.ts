@@ -33,6 +33,7 @@ export class ChatWootInboxMessageUpdatedConsumer extends ChatWootInboxMessageCon
       container.MessageMappingService(),
       container.Logger(),
       session,
+      container.ChatWootConfig(),
     );
     return await handler.handle(body);
   }

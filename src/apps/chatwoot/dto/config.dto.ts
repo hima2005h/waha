@@ -1,5 +1,12 @@
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
-import { IsBoolean, IsNumber, IsString, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export const DEFAULT_LOCALE = 'en-US';
@@ -9,7 +16,14 @@ export class ChatWootCommandsConfig {
   server: boolean = true;
 }
 
+export enum LinkPreview {
+  OFF = 'OFF',
+  LQ = 'LG',
+  HQ = 'HG',
+}
+
 export interface ChatWootConfig {
+  linkPreview: LinkPreview;
   commands: ChatWootCommandsConfig;
 }
 
@@ -28,6 +42,10 @@ export class ChatWootAppConfig implements ChatWootAPIConfig {
 
   @IsString()
   inboxIdentifier: string;
+
+  @IsEnum(LinkPreview)
+  @IsOptional()
+  linkPreview?: LinkPreview = LinkPreview.OFF;
 
   @IsString()
   locale: string = DEFAULT_LOCALE;

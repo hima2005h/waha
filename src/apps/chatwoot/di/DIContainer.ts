@@ -9,9 +9,9 @@ import { CustomAttributesAPI } from '@waha/apps/chatwoot/client/CustomAttributes
 import { ChatWootInboxAPI } from '@waha/apps/chatwoot/client/interfaces';
 import {
   ChatWootAppConfig,
-  ChatWootCommandsConfig,
   ChatWootConfig,
   DEFAULT_LOCALE,
+  LinkPreview,
 } from '@waha/apps/chatwoot/dto/config.dto';
 import { ChatWootErrorReporter } from '@waha/apps/chatwoot/error/ChatWootErrorReporter';
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
@@ -208,6 +208,7 @@ export class DIContainer {
 
   public ChatWootConfig(): ChatWootConfig {
     const defaults: ChatWootConfig = {
+      linkPreview: LinkPreview.OFF,
       commands: {
         server: true,
       },

@@ -30,6 +30,10 @@ import { PinoLogger } from 'nestjs-pino';
 
 import { SerializeWhatsAppKey } from '../../client/ids';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import {
+  ChatWootConfig,
+  LinkPreview,
+} from '@waha/apps/chatwoot/dto/config.dto';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -55,6 +59,7 @@ export class ChatWootInboxMessageCreatedConsumer extends ChatWootInboxMessageCon
       container.MessageMappingService(),
       container.Logger(),
       session,
+      container.ChatWootConfig(),
     );
     return await handler.handle(body);
   }
@@ -65,6 +70,7 @@ export class MessageHandler {
     private mappingService: MessageMappingService,
     private logger: ILogger,
     private session: WAHASessionAPI,
+    private config: ChatWootConfig,
   ) {}
 
   async handle(body: any) {
@@ -154,8 +160,10 @@ export class MessageHandler {
       chatId: chatId,
       text: content,
       reply_to: replyTo,
-      linkPreview: false,
-      linkPreviewHighQuality: false,
+      linkPreview: [LinkPreview.LQ, LinkPreview.HQ].includes(
+        this.config.linkPreview,
+      ),
+      linkPreviewHighQuality: this.config.linkPreview == LinkPreview.HQ,
     };
     const session = this.session;
     await session.readMessages(chatId);
