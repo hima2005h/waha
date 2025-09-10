@@ -38,7 +38,7 @@ export class ChatWootInboxCommandsConsumer extends ChatWootInboxMessageConsumer 
       job.data.session,
       container.Locale(),
       container.WAHASelf(),
-      container.CommandsConfig(),
+      container.ChatWootConfig().commands,
     );
     return await handler.handle(body);
   }

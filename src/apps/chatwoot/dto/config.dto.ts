@@ -9,6 +9,10 @@ export class ChatWootCommandsConfig {
   server: boolean = true;
 }
 
+export interface ChatWootConfig {
+  commands: ChatWootCommandsConfig;
+}
+
 export class ChatWootAppConfig implements ChatWootAPIConfig {
   @IsString()
   url: string;

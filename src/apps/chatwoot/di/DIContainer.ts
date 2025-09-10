@@ -10,6 +10,7 @@ import { ChatWootInboxAPI } from '@waha/apps/chatwoot/client/interfaces';
 import {
   ChatWootAppConfig,
   ChatWootCommandsConfig,
+  ChatWootConfig,
   DEFAULT_LOCALE,
 } from '@waha/apps/chatwoot/dto/config.dto';
 import { ChatWootErrorReporter } from '@waha/apps/chatwoot/error/ChatWootErrorReporter';
@@ -205,10 +206,12 @@ export class DIContainer {
     return new CustomAttributesAPI(this.config, this.AccountAPI());
   }
 
-  public CommandsConfig(): ChatWootCommandsConfig {
-    const defaults: ChatWootCommandsConfig = {
-      server: true,
+  public ChatWootConfig(): ChatWootConfig {
+    const defaults: ChatWootConfig = {
+      commands: {
+        server: true,
+      },
     };
-    return lodash.defaults({}, this.config.commands, defaults);
+    return lodash.defaults({}, this.config, defaults);
   }
 }
