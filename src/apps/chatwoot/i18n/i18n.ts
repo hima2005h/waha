@@ -26,7 +26,7 @@ export class I18N {
     if (!this.locales[locale]) {
       this.locales[locale] = new Locale(strings);
     } else {
-      this.locales[locale].override(strings);
+      this.locales[locale] = this.locales[locale].override(strings);
     }
   }
 
