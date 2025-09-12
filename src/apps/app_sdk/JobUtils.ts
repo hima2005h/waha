@@ -50,3 +50,11 @@ export function HasBeenRetried(job: Job): boolean {
   const attemptsMade = job.attemptsMade + 1;
   return attemptsMade > 1;
 }
+
+export function JobLink(job: Job): { text: string; url: string } {
+  const text = `${job.queueName} => ${job.id}`;
+  const url = `http://localhost:3000/jobs/queue/${encodeURIComponent(
+    job.queueName,
+  )}/${job.id}`;
+  return { text: text, url: url };
+}

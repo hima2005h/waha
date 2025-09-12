@@ -1,6 +1,9 @@
 import type { conversation_message_create } from '@figuro/chatwoot-sdk/dist/models/conversation_message_create';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
-import { NextAttemptDelayInWholeSeconds } from '@waha/apps/app_sdk/JobUtils';
+import {
+  JobLink,
+  NextAttemptDelayInWholeSeconds,
+} from '@waha/apps/app_sdk/JobUtils';
 import { Conversation } from '@waha/apps/chatwoot/client/Conversation';
 import { MessageType } from '@waha/apps/chatwoot/client/types';
 import { ErrorRenderer } from '@waha/apps/chatwoot/error/ErrorRenderer';
@@ -26,9 +29,6 @@ export class ChatWootErrorReporter {
   ) {
     const errorText = this.errorRenderer.renderError(error);
     this.logger.error(errorText);
-    const errorUrl = `http://localhost:3000/jobs/queue/${encodeURIComponent(
-      this.job.queueName,
-    )}/${this.job.id}`;
     const template = this.l.key(TKey.JOB_REPORT_ERROR);
     const nextDelay = NextAttemptDelayInWholeSeconds(this.job);
     const attempts = {
@@ -39,10 +39,7 @@ export class ChatWootErrorReporter {
     const content = template.render({
       header: header,
       error: nextDelay != null ? null : errorText,
-      details: {
-        text: `${this.job.queueName} => ${this.job.id}`,
-        url: errorUrl,
-      },
+      details: JobLink(this.job),
       attempts: attempts,
     });
     const request: conversation_message_create = {
