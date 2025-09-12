@@ -66,17 +66,9 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
   ): Promise<ChatWootMessagePartial> {
     const attachments = await this.getAttachments(payload);
     const content = this.getContent(payload);
-    if (content) {
+    if (content || attachments.length > 0) {
       return {
         content: content,
-        attachments: attachments,
-        private: undefined,
-      };
-    }
-    if (attachments.length > 0) {
-      // With no content ChatWoot render the message as an ugly big attachment
-      return {
-        content: ' ',
         attachments: attachments,
         private: undefined,
       };
