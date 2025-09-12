@@ -21,6 +21,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { SendAttachment } from '../../client/types';
 import { WAHASessionAPI } from '../../session/WAHASelf';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { WAMessage } from '@waha/structures/responses.dto';
 
 @Processor(QueueName.WAHA_MESSAGE_EDITED, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageEditedConsumer extends ChatWootWAHABaseConsumer {
@@ -44,6 +45,7 @@ export class WAHAMessageEditedConsumer extends ChatWootWAHABaseConsumer {
     const event: WAHAWebhookMessageEdited = job.data.event as any;
     const session = new WAHASessionAPI(event.session, container.WAHASelf());
     const handler = new MessageEditedHandler(
+      job,
       container.MessageMappingService(),
       container.ContactConversationService(),
       container.Logger(),

@@ -41,6 +41,7 @@ export class WAHAMessageReactionConsumer extends ChatWootWAHABaseConsumer {
     const event: WAHAWebhookMessageReaction = job.data.event as any;
     const session = new WAHASessionAPI(event.session, container.WAHASelf());
     const handler = new MessageReactionHandler(
+      job,
       container.MessageMappingService(),
       container.ContactConversationService(),
       container.Logger(),
@@ -54,7 +55,7 @@ export class WAHAMessageReactionConsumer extends ChatWootWAHABaseConsumer {
 }
 
 export class MessageReactionHandler extends MessageBaseHandler<WAMessageReaction> {
-  getContent(payload: WAMessageReaction) {
+  getContent(payload: WAMessageReaction): string {
     const reaction = payload.reaction as WAReaction;
     const emoji = reaction.text;
     if (!emoji) {

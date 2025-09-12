@@ -75,6 +75,15 @@ chatwoot.to.whatsapp.message.media.caption: |
   {{/content}}
   {{/singleAttachment}}
 
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **This message type is not supported in ChatWoot.**
+  📱 Please open **WhatsApp** to view it.
+
+  Details: [{{{details.text}}}]({{{details.url}}})
+
 app.connected.message: |
   🔗 **CONNECTED: WhatsApp Session to ChatWoot Inbox**
 

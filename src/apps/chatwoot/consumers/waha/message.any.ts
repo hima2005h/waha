@@ -4,10 +4,11 @@ import { SendAttachment } from '@waha/apps/chatwoot/client/types';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { EventData } from '@waha/apps/chatwoot/consumers/types';
 import {
+  ChatWootMessagePartial,
   ChatWootWAHABaseConsumer,
   IMessageInfo,
+  MessageBaseHandler,
 } from '@waha/apps/chatwoot/consumers/waha/base';
-import { MessageBaseHandler } from '@waha/apps/chatwoot/consumers/waha/base';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { WhatsappToMarkdown } from '@waha/apps/chatwoot/text';
 import { SessionManager } from '@waha/core/abc/manager.abc';
@@ -18,6 +19,8 @@ import { WAMessage } from '@waha/structures/responses.dto';
 import { WAHAWebhookMessageAny } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
+import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { JobLink } from '@waha/apps/app_sdk/JobUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -44,6 +47,7 @@ export class WAHAMessageAnyConsumer extends ChatWootWAHABaseConsumer {
     const event: WAHAWebhookMessageAny = job.data.event as any;
     const session = new WAHASessionAPI(event.session, container.WAHASelf());
     const handler = new MessageAnyHandler(
+      job,
       container.MessageMappingService(),
       container.ContactConversationService(),
       container.Logger(),
@@ -57,9 +61,44 @@ export class WAHAMessageAnyConsumer extends ChatWootWAHABaseConsumer {
 }
 
 class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
+  protected async getMessage(
+    payload: WAMessage,
+  ): Promise<ChatWootMessagePartial> {
+    const attachments = await this.getAttachments(payload);
+    const content = this.getContent(payload);
+    if (content) {
+      return {
+        content: content,
+        attachments: attachments,
+        private: undefined,
+      };
+    }
+    if (attachments.length > 0) {
+      // With no content ChatWoot render the message as an ugly big attachment
+      return {
+        content: ' ',
+        attachments: attachments,
+        private: undefined,
+      };
+    }
+    const unsupported = this.l
+      .key(TKey.WA_TO_CW_MESSAGE_UNSUPPORTED)
+      .render({ details: JobLink(this.job) });
+    return {
+      content: unsupported,
+      attachments: [],
+      private: true,
+    };
+  }
+
   getContent(payload: WAMessage): string {
-    const body = payload.body;
-    return WhatsappToMarkdown(body);
+    const content = this.l
+      .key(TKey.WA_TO_CW_MESSAGE)
+      .render({ payload: payload });
+    if (content == '' || content == '\n') {
+      return '';
+    }
+    return WhatsappToMarkdown(content);
   }
 
   getReplyToWhatsAppID(payload: WAMessage): string {

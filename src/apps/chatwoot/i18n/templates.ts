@@ -1,4 +1,5 @@
 import { ChatWootCommandsConfig } from '@waha/apps/chatwoot/dto/config.dto';
+import { WAMessage } from '@waha/structures/responses.dto';
 
 export enum TKey {
   LOCALE_NAME = 'locale.name',
@@ -40,6 +41,12 @@ export enum TKey {
   //
   CW_TO_WA_MESSAGE_TEXT = 'chatwoot.to.whatsapp.message.text',
   CW_TO_WA_MESSAGE_MEDIA_CAPTION = 'chatwoot.to.whatsapp.message.media.caption',
+
+  //
+  // WhatsApp to ChatWoot
+  //
+  WA_TO_CW_MESSAGE = 'whatsapp.to.chatwoot.message',
+  WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
 
   //
   // App Inbox
@@ -113,6 +120,10 @@ export type TemplatePayloads = {
     chatwoot: any;
     singleAttachment: boolean;
   };
+  [TKey.WA_TO_CW_MESSAGE]: {
+    payload: WAMessage;
+  };
+  [TKey.WA_TO_CW_MESSAGE_UNSUPPORTED]: { details: Link };
   [TKey.JOB_SCHEDULED_ERROR_HEADER]: void;
   [TKey.JOB_REPORT_ERROR]: {
     header: string;

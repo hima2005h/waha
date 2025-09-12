@@ -184,8 +184,15 @@ class MessageReportInfo implements IMessageInfo {
   }
 }
 
+export interface ChatWootMessagePartial {
+  content: string;
+  attachments: SendAttachment[];
+  private?: boolean;
+}
+
 export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
   constructor(
+    protected job: Job,
     protected mappingService: MessageMappingService,
     protected repo: ContactConversationService,
     protected logger: ILogger,
@@ -194,6 +201,18 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
     protected l: Locale,
     protected waha: WAHASelf,
   ) {}
+
+  protected async getMessage(
+    payload: Payload,
+  ): Promise<ChatWootMessagePartial> {
+    const content = this.getContent(payload);
+    const attachments = await this.getAttachments(payload);
+    return {
+      content: content,
+      attachments: attachments,
+      private: undefined,
+    };
+  }
 
   abstract getContent(payload: Payload): string;
 
@@ -263,7 +282,8 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
   private async buildChatWootMessage(
     payload: Payload,
   ): Promise<conversation_message_create> {
-    let content: string = this.getContent(payload);
+    const message = await this.getMessage(payload);
+    let content = message.content;
 
     // Format the content if the message from me
     if (payload.fromMe && payload.source === MessageSource.APP) {
@@ -291,11 +311,6 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
         participant: participant,
       });
     }
-    const attachments: SendAttachment[] = await this.getAttachments(payload);
-    if (!content && attachments.length > 0) {
-      // With no content ChatWoot render the message as an ugly big attachment
-      content = ' ';
-    }
     const replyTo = await this.getReplyToChatWootMessageID(payload).catch(
       (err) => {
         this.logger.error(`Error getting reply to message ID: ${err}`);
@@ -307,8 +322,8 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
     return {
       content: content,
       message_type: type,
-      private: payload.fromMe,
-      attachments: attachments as any,
+      private: message.private ?? payload.fromMe,
+      attachments: message.attachments as any,
       content_attributes: {
         in_reply_to: replyTo,
       },
