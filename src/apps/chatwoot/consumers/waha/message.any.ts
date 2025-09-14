@@ -74,80 +74,103 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
   protected async getMessage(
     payload: WAMessage,
   ): Promise<ChatWootMessagePartial> {
+    const protoMessage = this.getProtoMessage(payload);
+    let msg = await this.getTextMessage(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+    msg = this.getLocationMessage(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+    msg = this.getShareContactMessage(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+    return this.getUnsupportedMessage();
+  }
+
+  protected async getTextMessage(
+    payload: WAMessage,
+    _: proto.Message | null,
+  ): Promise<ChatWootMessagePartial | null> {
     const attachments = await this.getAttachments(payload);
     const content = this.l
       .key(TKey.WA_TO_CW_MESSAGE)
       .render({ payload: payload });
-    // Regular text or media message
-    if (!isEmptyString(content) || attachments.length > 0) {
-      return {
-        content: WhatsappToMarkdown(content),
-        attachments: attachments,
-        private: undefined,
-      };
+    if (isEmptyString(content) && attachments.length == 0) {
+      return null;
     }
+    return {
+      content: WhatsappToMarkdown(content),
+      attachments: attachments,
+      private: undefined,
+    };
+  }
 
-    const message = this.getProtoMessage(payload);
-
-    // Location
-    if (
-      !lodash.isEmpty(message?.locationMessage) ||
-      !lodash.isEmpty(message?.liveLocationMessage)
-    ) {
-      const location = this.l.key(TKey.WA_TO_CW_MESSAGE_LOCATION).r({
-        payload: payload,
-        message: message,
-      });
-      if (!isEmptyString(location)) {
-        return {
-          content: location,
-          attachments: [],
-          private: false,
-        };
-      }
+  private getLocationMessage(
+    payload: WAMessage,
+    message: proto.Message | null,
+  ): ChatWootMessagePartial | null {
+    const hasLocation = !lodash.isEmpty(message?.locationMessage);
+    const hasLiveLocation = !lodash.isEmpty(message?.liveLocationMessage);
+    if (!hasLocation && !hasLiveLocation) {
+      return null;
     }
-
-    // Share Contact
-    let vcards: string[] | null = null;
-    if (!lodash.isEmpty(message?.contactMessage)) {
-      vcards = [message.contactMessage?.vcard];
+    const location = this.l.key(TKey.WA_TO_CW_MESSAGE_LOCATION).r({
+      payload,
+      message,
+    });
+    if (isEmptyString(location)) {
+      return null;
     }
-    if (!lodash.isEmpty(message?.contactsArrayMessage)) {
-      vcards = message.contactsArrayMessage.contacts.map(
-        (contact) => contact.vcard,
+    return {
+      content: location,
+      attachments: [],
+      private: undefined,
+    };
+  }
+
+  private getShareContactMessage(
+    _payload: WAMessage,
+    message: proto.Message | null,
+  ): ChatWootMessagePartial | null {
+    let vcards: string[] = [];
+
+    if (!lodash.isEmpty(message?.contactsArrayMessage?.contacts)) {
+      vcards = message!.contactsArrayMessage!.contacts.map((c) => c.vcard);
+    } else if (!lodash.isEmpty(message?.contactMessage?.vcard)) {
+      vcards = [message!.contactMessage!.vcard];
+    }
+    if (vcards.length === 0) {
+      return null;
+    }
+    const attachments: SendAttachment[] = vcards.map((v, i) => ({
+      content: Buffer.from(v, 'utf8').toString('base64'),
+      encoding: 'base64',
+      filename: `vcard-${i + 1}.vcf`,
+    }));
+    let contacts: SimpleVCardInfo[] = [];
+    try {
+      contacts = vcards.map(parseVCardV3);
+    } catch (err) {
+      this.logger.error(
+        `Error parsing some vcards: vcards=${vcards}, err=${err}`,
       );
     }
-    if (vcards && vcards.length > 0) {
-      for (const [index, vcard] of vcards.entries()) {
-        const attachment: SendAttachment = {
-          content: Buffer.from(vcard, 'utf8').toString('base64'),
-          encoding: 'base64',
-          filename: `vcard-${index + 1}.vcf`,
-        };
-        attachments.push(attachment);
-      }
-      let contacts: SimpleVCardInfo[] = [];
-
-      try {
-        contacts = vcards.map(parseVCardV3);
-      } catch (err) {
-        this.logger.error(
-          `Error parsing some vcards: vcards=${vcards}, err=${err}`,
-        );
-      }
-      const msg = this.l.key(TKey.WA_TO_CW_MESSAGE_CONTACTS).r({
-        contacts: contacts,
-      });
-      if (contacts.length > 0 || attachments.length > 0) {
-        return {
-          content: msg,
-          attachments: attachments,
-          private: false,
-        };
-      }
+    const msg = this.l.key(TKey.WA_TO_CW_MESSAGE_CONTACTS).r({ contacts });
+    if (contacts.length === 0 && attachments.length === 0) {
+      return null;
     }
 
-    // Unsupported
+    return {
+      content: msg,
+      attachments: attachments,
+      private: undefined,
+    };
+  }
+
+  private getUnsupportedMessage(): ChatWootMessagePartial {
     const unsupported = this.l
       .key(TKey.WA_TO_CW_MESSAGE_UNSUPPORTED)
       .render({ details: JobLink(this.job) });
@@ -158,16 +181,7 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     };
   }
 
-  getReplyToWhatsAppID(payload: WAMessage): string {
-    const replyTo = payload.replyTo;
-    if (!replyTo) {
-      return undefined;
-    }
-    const key = parseMessageIdSerialized(replyTo.id, true);
-    return key.id;
-  }
-
-  getProtoMessage(payload: WAMessage): proto.Message | null {
+  private getProtoMessage(payload: WAMessage): proto.Message | null {
     // GOWS
     if (payload._data.Message) {
       return payload._data.Message;
@@ -178,6 +192,15 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     }
     // WEBJS - not available
     return null;
+  }
+
+  getReplyToWhatsAppID(payload: WAMessage): string {
+    const replyTo = payload.replyTo;
+    if (!replyTo) {
+      return undefined;
+    }
+    const key = parseMessageIdSerialized(replyTo.id, true);
+    return key.id;
   }
 
   async getAttachments(payload: WAMessage): Promise<SendAttachment[]> {

@@ -79,7 +79,7 @@ whatsapp.to.chatwoot.message: |
   {{{payload.body}}}
 
 whatsapp.to.chatwoot.message.contacts: |
-  👤 **Shared contacts**
+  👤 **Shared Contact(s)**
 
   {{#contacts}}
   🪪 Name: **{{fullName}}**
@@ -92,14 +92,14 @@ whatsapp.to.chatwoot.message.contacts: |
 whatsapp.to.chatwoot.message.location: |
   {{#message}}
   {{#locationMessage}}
-  📍 **Shared current location.**
+  📍 **Shared Location**
 
   https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
-  📍📡 **Sharing live location.**
+  📍📡 **Sharing Live Location**
   Open **WhatsApp** to see real-time updates.
 
   https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
