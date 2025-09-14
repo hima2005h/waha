@@ -3,8 +3,14 @@ import {
   isJidNewsletter,
   isJidStatusBroadcast,
 } from '@adiwajshing/baileys';
-import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
-import { public_contact_create_update_payload as Contact } from '@figuro/chatwoot-sdk';
+import {
+  isJidBroadcast,
+  isLidUser,
+} from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import {
+  public_contact_create_update_payload,
+  public_contact_create_update_payload as Contact,
+} from '@figuro/chatwoot-sdk';
 import { ContactInfo } from '@waha/apps/chatwoot/client/ContactConversationService';
 import { AttributeKey } from '@waha/apps/chatwoot/const';
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
@@ -221,6 +227,31 @@ class StatusContactInfo extends ChatContactInfo {
   }
 }
 
+class BroadcastContactInfo extends ChatContactInfo {
+  async Attributes() {
+    return {
+      [AttributeKey.WA_CHAT_ID]: this.chatId,
+    };
+  }
+
+  @CacheAsync()
+  async AvatarUrl(): Promise<string | null> {
+    return null;
+  }
+
+  async PublicContactCreate(): Promise<Contact> {
+    const name = this.locale
+      .key(TKey.WHATSAPP_CONTACT_BROADCAST_SUFFIX)
+      .render();
+
+    return {
+      identifier: this.chatId,
+      name: `${name} (${this.chatId})`,
+      custom_attributes: await this.Attributes(),
+    };
+  }
+}
+
 /**
  * Factory function to get the appropriate ContactInfo implementation
  * based on the chat ID type
@@ -236,6 +267,8 @@ export function WhatsAppContactInfo(
     return new ChannelContactInfo(session, chatId, locale);
   } else if (isJidStatusBroadcast(chatId)) {
     return new StatusContactInfo(session, chatId, locale);
+  } else if (isJidBroadcast(chatId)) {
+    return new BroadcastContactInfo(session, chatId, locale);
   } else if (isLidUser(chatId)) {
     return new LidContactInfo(session, chatId, locale);
   }

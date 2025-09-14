@@ -61,6 +61,7 @@ whatsapp.reaction.removed: |
 
 whatsapp.contact.group.suffix: '群组'
 whatsapp.contact.channel.suffix: '频道'
+whatsapp.contact.broadcast.suffix: '广播列表'
 # Aka Stories
 whatsapp.contact.status.name: '状态'
 

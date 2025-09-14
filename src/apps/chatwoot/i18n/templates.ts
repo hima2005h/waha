@@ -36,6 +36,7 @@ export enum TKey {
   //
   WHATSAPP_CONTACT_GROUP_SUFFIX = 'whatsapp.contact.group.suffix',
   WHATSAPP_CONTACT_CHANNEL_SUFFIX = 'whatsapp.contact.channel.suffix',
+  WHATSAPP_CONTACT_BROADCAST_SUFFIX = 'whatsapp.contact.broadcast.suffix',
   WHATSAPP_CONTACT_STATUS_NAME = 'whatsapp.contact.status.name',
 
   //
@@ -114,6 +115,7 @@ export type TemplatePayloads = {
   [TKey.WHATSAPP_MESSAGE_REMOVING_ERROR]: void;
   [TKey.WHATSAPP_CONTACT_GROUP_SUFFIX]: void;
   [TKey.WHATSAPP_CONTACT_CHANNEL_SUFFIX]: void;
+  [TKey.WHATSAPP_CONTACT_BROADCAST_SUFFIX]: void;
   [TKey.WHATSAPP_CONTACT_STATUS_NAME]: void;
   [TKey.CW_TO_WA_MESSAGE_TEXT]: {
     content: string;

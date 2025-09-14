@@ -61,6 +61,7 @@ whatsapp.reaction.removed: |
 
 whatsapp.contact.group.suffix: 'Група'
 whatsapp.contact.channel.suffix: 'Канал'
+whatsapp.contact.broadcast.suffix: 'Список розсилки'
 # Aka Stories
 whatsapp.contact.status.name: 'Статус'
 

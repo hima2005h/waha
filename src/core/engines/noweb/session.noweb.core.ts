@@ -2211,7 +2211,12 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       return;
 
     const normalizedContent = normalizeMessageContent(message.message);
-    const hasSomeContent = !!getContentType(normalizedContent);
+    const contentType = getContentType(normalizedContent);
+    // Ignore device sent message
+    if (contentType == 'deviceSentMessage') {
+      return;
+    }
+    const hasSomeContent = !!contentType;
     if (!hasSomeContent) {
       // Ignore key distribution messages
       if (message?.message?.senderKeyDistributionMessage) return;

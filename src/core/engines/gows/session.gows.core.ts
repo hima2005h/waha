@@ -1914,7 +1914,12 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     if (message.Message.protocolMessage) return;
 
     const normalizedContent = normalizeMessageContent(message.Message);
-    const hasSomeContent = !!getContentType(normalizedContent);
+    const contentType = getContentType(normalizedContent);
+    // Ignore device sent message
+    if (contentType == 'deviceSentMessage') {
+      return;
+    }
+    const hasSomeContent = !!contentType;
     if (!hasSomeContent) {
       // Ignore key distribution messages
       if (message?.Message?.senderKeyDistributionMessage) return;

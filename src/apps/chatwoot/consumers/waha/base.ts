@@ -35,8 +35,8 @@ import { sleep } from '@waha/utils/promiseTimeout';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
-import { ChatWootAppConfig } from '../../dto/config.dto';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 
 export function ListenEventsForChatWoot() {
   return [
@@ -285,7 +285,7 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
     const chatId = payload.from;
 
     // Add participant name to group messages
-    const manyParticipants = isJidGroup(chatId) || isJidStatusBroadcast(chatId);
+    const manyParticipants = isJidGroup(chatId) || isJidBroadcast(chatId);
     if (!payload.fromMe && manyParticipants) {
       const key = parseMessageIdSerialized(payload.id, true);
       let participant = toCusFormat(key.participant);
