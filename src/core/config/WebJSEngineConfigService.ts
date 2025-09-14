@@ -19,6 +19,7 @@ export class WebJSEngineConfigService {
     return {
       webVersion: webVersion,
       cacheType: this.getCacheType(),
+      puppeteerArgs: this.getPuppeterArgs(),
     };
   }
 
@@ -33,5 +34,13 @@ export class WebJSEngineConfigService {
     }
 
     return cacheType;
+  }
+
+  getPuppeterArgs(): string[] {
+    const args = this.configService.get<string>('WAHA_WEBJS_PUPPETER_ARGS', '');
+    return args
+      .split(' ')
+      .map((arg) => arg.trim())
+      .filter(Boolean);
   }
 }

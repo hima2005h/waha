@@ -153,6 +153,7 @@ import { WAJSPresenceChatStateType, WebJSPresence } from './types';
 export interface WebJSConfig {
   webVersion?: string;
   cacheType: 'local' | 'none';
+  puppeteerArgs: string[];
 }
 
 export class WhatsappSessionWebJSCore extends WhatsappSession {
@@ -204,6 +205,7 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       this.logger.info(`Using web version: '${webVersion}'`);
     }
     const args = this.getBrowserArgsForPuppeteer();
+    args.push(...this.engineConfig.puppeteerArgs);
     // add at the start
     args.unshift(`--a-waha-timestamp=${new Date()}`);
     args.unshift(`--a-waha-session=${this.name}`);
