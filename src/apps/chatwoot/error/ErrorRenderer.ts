@@ -61,7 +61,7 @@ export class ErrorRenderer {
    * @returns Formatted error text
    */
   private renderApiError(error: ApiError): string {
-    let errorText = `API Error: ${error.message}`;
+    let errorText = `ChatWoot API Error: ${error.message}`;
     errorText += `\nStatus: ${error.status}`;
 
     // Add body if it exists
