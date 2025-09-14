@@ -91,7 +91,7 @@
     "pino-pretty": "^11.2.1",
     "pretty-bytes": "5.6.0",
     "promise-retry": "^2.0.1",
-    "puppeteer": "^24.10.0",
+    "puppeteer": "^24.19.0",
     "qrcode": "^1.5.1",
     "qrcode-terminal": "^0.12.0",
     "reflect-metadata": "^0.1.13",
@@ -111,7 +111,7 @@
   "resolutions": {
     "bufferutil": "^4.0.8",
     "ws": "^8.18.0",
-    "puppeteer": "^24.10.0",
+    "puppeteer": "^24.19.0",
     "whatwg-url": "13.0.0",
     "libsignal": "github:devlikeapro/libsignal-node#fork-master",
     "axios": "^1.9.0"
