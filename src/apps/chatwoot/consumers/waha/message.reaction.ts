@@ -4,6 +4,7 @@ import { SendAttachment } from '@waha/apps/chatwoot/client/types';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { EventData } from '@waha/apps/chatwoot/consumers/types';
 import {
+  ChatWootMessagePartial,
   ChatWootWAHABaseConsumer,
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
@@ -55,15 +56,24 @@ export class WAHAMessageReactionConsumer extends ChatWootWAHABaseConsumer {
 }
 
 export class MessageReactionHandler extends MessageBaseHandler<WAMessageReaction> {
-  getContent(payload: WAMessageReaction): string {
+  protected async getMessage(
+    payload: WAMessageReaction,
+  ): Promise<ChatWootMessagePartial> {
     const reaction = payload.reaction as WAReaction;
     const emoji = reaction.text;
-    if (!emoji) {
-      return this.l.key(TKey.WHATSAPP_REACTION_REMOVED).render();
+    let content: string;
+    if (emoji) {
+      content = this.l.key(TKey.WHATSAPP_REACTION_ADDED).render({
+        emoji: emoji,
+      });
+    } else {
+      content = this.l.key(TKey.WHATSAPP_REACTION_REMOVED).render();
     }
-    return this.l.key(TKey.WHATSAPP_REACTION_ADDED).render({
-      emoji: emoji,
-    });
+    return {
+      content: content,
+      attachments: [],
+      private: undefined,
+    };
   }
 
   getReplyToWhatsAppID(payload: WAMessageReaction) {

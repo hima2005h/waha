@@ -78,6 +78,24 @@ chatwoot.to.whatsapp.message.media.caption: |
 whatsapp.to.chatwoot.message: |
   {{{payload.body}}}
 
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **Shared current location.**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **Sharing live location.**
+  Open **WhatsApp** to see real-time updates.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
 whatsapp.to.chatwoot.message.unsupported: |
   ⚠️ **This message type is not supported in ChatWoot.**
   📱 Please open **WhatsApp** to view it.

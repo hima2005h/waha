@@ -202,23 +202,11 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
     protected waha: WAHASelf,
   ) {}
 
-  protected async getMessage(
+  protected abstract getMessage(
     payload: Payload,
-  ): Promise<ChatWootMessagePartial> {
-    const content = this.getContent(payload);
-    const attachments = await this.getAttachments(payload);
-    return {
-      content: content,
-      attachments: attachments,
-      private: undefined,
-    };
-  }
-
-  abstract getContent(payload: Payload): string;
+  ): Promise<ChatWootMessagePartial>;
 
   abstract getReplyToWhatsAppID(payload: Payload): string | undefined;
-
-  abstract getAttachments(payload: Payload): Promise<SendAttachment[]>;
 
   async handle(data: WAHAWebhook<Payload>) {
     const payload = data.payload;

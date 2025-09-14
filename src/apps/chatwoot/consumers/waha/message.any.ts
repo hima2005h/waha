@@ -21,6 +21,8 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 import { JobLink } from '@waha/apps/app_sdk/JobUtils';
+import { proto } from '@adiwajshing/baileys';
+import * as lodash from 'lodash';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -60,19 +62,51 @@ export class WAHAMessageAnyConsumer extends ChatWootWAHABaseConsumer {
   }
 }
 
+function isEmptyString(content: string) {
+  if (!content) {
+    return true;
+  }
+  return content == '' || content == '\n';
+}
+
 class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
   protected async getMessage(
     payload: WAMessage,
   ): Promise<ChatWootMessagePartial> {
     const attachments = await this.getAttachments(payload);
-    const content = this.getContent(payload);
-    if (content || attachments.length > 0) {
+    const content = this.l
+      .key(TKey.WA_TO_CW_MESSAGE)
+      .render({ payload: payload });
+    // Regular text or media message
+    if (!isEmptyString(content) || attachments.length > 0) {
       return {
-        content: content,
+        content: WhatsappToMarkdown(content),
         attachments: attachments,
         private: undefined,
       };
     }
+
+    const message = this.getProtoMessage(payload);
+
+    // Location
+    if (
+      !lodash.isEmpty(message.locationMessage) ||
+      !lodash.isEmpty(message.liveLocationMessage)
+    ) {
+      const location = this.l.key(TKey.WA_TO_CW_MESSAGE_LOCATION).r({
+        payload: payload,
+        message: message,
+      });
+      if (!isEmptyString(location)) {
+        return {
+          content: location,
+          attachments: [],
+          private: false,
+        };
+      }
+    }
+
+    // Unsupported
     const unsupported = this.l
       .key(TKey.WA_TO_CW_MESSAGE_UNSUPPORTED)
       .render({ details: JobLink(this.job) });
@@ -81,16 +115,6 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
       attachments: [],
       private: true,
     };
-  }
-
-  getContent(payload: WAMessage): string {
-    const content = this.l
-      .key(TKey.WA_TO_CW_MESSAGE)
-      .render({ payload: payload });
-    if (content == '' || content == '\n') {
-      return '';
-    }
-    return WhatsappToMarkdown(content);
   }
 
   getReplyToWhatsAppID(payload: WAMessage): string {
@@ -102,7 +126,23 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     return key.id;
   }
 
+  getProtoMessage(payload: WAMessage): proto.Message | null {
+    // GOWS
+    if (payload._data.Message) {
+      return payload._data.Message;
+    }
+    // NOWEB
+    if (payload._data.message) {
+      return payload._data.message;
+    }
+    // WEBJS - not available
+    return null;
+  }
+
   async getAttachments(payload: WAMessage): Promise<SendAttachment[]> {
+    //
+    // WAHA
+    //
     const hasMedia = payload.media?.url;
     if (!hasMedia) {
       return [];

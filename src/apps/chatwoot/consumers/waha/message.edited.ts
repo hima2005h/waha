@@ -3,6 +3,7 @@ import { JOB_CONCURRENCY } from '@waha/apps/app_sdk/constants';
 import { QueueName } from '@waha/apps/chatwoot/consumers/QueueName';
 import { EventData } from '@waha/apps/chatwoot/consumers/types';
 import {
+  ChatWootMessagePartial,
   ChatWootWAHABaseConsumer,
   IMessageInfo,
 } from '@waha/apps/chatwoot/consumers/waha/base';
@@ -59,12 +60,19 @@ export class WAHAMessageEditedConsumer extends ChatWootWAHABaseConsumer {
 }
 
 class MessageEditedHandler extends MessageBaseHandler<WAMessageEditedBody> {
-  getContent(payload: WAMessageEditedBody): string {
+  protected async getMessage(
+    payload: WAMessageEditedBody,
+  ): Promise<ChatWootMessagePartial> {
     const body = payload.body;
     const formatted = WhatsappToMarkdown(body);
-    return this.l
+    const content = this.l
       .key(TKey.MESSAGE_EDITED_IN_WHATSAPP)
       .render({ text: formatted });
+    return {
+      content: content,
+      attachments: [],
+      private: undefined,
+    };
   }
 
   getReplyToWhatsAppID(payload: WAMessageEditedBody): string {
