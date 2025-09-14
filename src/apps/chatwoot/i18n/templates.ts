@@ -1,6 +1,7 @@
 import { ChatWootCommandsConfig } from '@waha/apps/chatwoot/dto/config.dto';
 import { WAMessage } from '@waha/structures/responses.dto';
 import { proto } from '@adiwajshing/baileys';
+import { SimpleVCardInfo } from '@waha/core/vcard';
 
 export enum TKey {
   LOCALE_NAME = 'locale.name',
@@ -47,6 +48,7 @@ export enum TKey {
   // WhatsApp to ChatWoot
   //
   WA_TO_CW_MESSAGE = 'whatsapp.to.chatwoot.message',
+  WA_TO_CW_MESSAGE_CONTACTS = 'whatsapp.to.chatwoot.message.contacts',
   WA_TO_CW_MESSAGE_LOCATION = 'whatsapp.to.chatwoot.message.location',
   WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
 
@@ -125,6 +127,7 @@ export type TemplatePayloads = {
   [TKey.WA_TO_CW_MESSAGE]: {
     payload: WAMessage;
   };
+  [TKey.WA_TO_CW_MESSAGE_CONTACTS]: { contacts: SimpleVCardInfo[] };
   [TKey.WA_TO_CW_MESSAGE_LOCATION]: { payload: any; message: proto.Message };
   [TKey.WA_TO_CW_MESSAGE_UNSUPPORTED]: { details: Link };
   [TKey.JOB_SCHEDULED_ERROR_HEADER]: void;

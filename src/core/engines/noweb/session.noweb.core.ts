@@ -65,7 +65,7 @@ import {
   AvailableInPlusVersion,
   NotImplementedByEngineError,
 } from '@waha/core/exceptions';
-import { toVcard } from '@waha/core/helpers';
+import { toVcardV3 } from '@waha/core/vcard';
 import { createAgentProxy } from '@waha/core/helpers.proxy';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
@@ -882,7 +882,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   async sendContactVCard(request: MessageContactVcardRequest) {
     const chatId = toJID(this.ensureSuffix(request.chatId));
-    const contacts = request.contacts.map((el) => ({ vcard: toVcard(el) }));
+    const contacts = request.contacts.map((el) => ({ vcard: toVcardV3(el) }));
     const options = await this.getMessageOptions(request);
     const msg = { contacts: { contacts: contacts } };
     return await this.sock.sendMessage(chatId, msg, options);

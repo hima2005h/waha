@@ -23,6 +23,7 @@ import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 import { JobLink } from '@waha/apps/app_sdk/JobUtils';
 import { proto } from '@adiwajshing/baileys';
 import * as lodash from 'lodash';
+import { parseVCardV3, SimpleVCardInfo } from '@waha/core/vcard';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mime = require('mime-types');
@@ -90,8 +91,8 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
 
     // Location
     if (
-      !lodash.isEmpty(message.locationMessage) ||
-      !lodash.isEmpty(message.liveLocationMessage)
+      !lodash.isEmpty(message?.locationMessage) ||
+      !lodash.isEmpty(message?.liveLocationMessage)
     ) {
       const location = this.l.key(TKey.WA_TO_CW_MESSAGE_LOCATION).r({
         payload: payload,
@@ -101,6 +102,46 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
         return {
           content: location,
           attachments: [],
+          private: false,
+        };
+      }
+    }
+
+    // Share Contact
+    let vcards: string[] | null = null;
+    if (!lodash.isEmpty(message?.contactMessage)) {
+      vcards = [message.contactMessage?.vcard];
+    }
+    if (!lodash.isEmpty(message?.contactsArrayMessage)) {
+      vcards = message.contactsArrayMessage.contacts.map(
+        (contact) => contact.vcard,
+      );
+    }
+    if (vcards && vcards.length > 0) {
+      for (const [index, vcard] of vcards.entries()) {
+        const attachment: SendAttachment = {
+          content: Buffer.from(vcard, 'utf8').toString('base64'),
+          encoding: 'base64',
+          filename: `vcard-${index + 1}.vcf`,
+        };
+        attachments.push(attachment);
+      }
+      let contacts: SimpleVCardInfo[] = [];
+
+      try {
+        contacts = vcards.map(parseVCardV3);
+      } catch (err) {
+        this.logger.error(
+          `Error parsing some vcards: vcards=${vcards}, err=${err}`,
+        );
+      }
+      const msg = this.l.key(TKey.WA_TO_CW_MESSAGE_CONTACTS).r({
+        contacts: contacts,
+      });
+      if (contacts.length > 0 || attachments.length > 0) {
+        return {
+          content: msg,
+          attachments: attachments,
           private: false,
         };
       }

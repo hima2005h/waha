@@ -78,6 +78,17 @@ chatwoot.to.whatsapp.message.media.caption: |
 whatsapp.to.chatwoot.message: |
   {{{payload.body}}}
 
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **Shared contacts**
+
+  {{#contacts}}
+  🪪 Name: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 Phone: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
 whatsapp.to.chatwoot.message.location: |
   {{#message}}
   {{#locationMessage}}
