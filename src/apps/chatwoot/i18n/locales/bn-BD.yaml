@@ -185,3 +185,51 @@ waha.core.version.used: |
   আপনার সমর্থন হল একমাত্র উপায় যা দিয়ে আমরা আপডেট, ফিক্স এবং নতুন বৈশিষ্ট্যগুলিতে কাজ চালিয়ে যেতে পারি।
 
   [**🎁 আমাদের সমর্থন করুন**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **শেয়ার করা যোগাযোগ**
+
+  {{#contacts}}
+  🪪 নাম: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 ফোন: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **শেয়ার করা লোকেশন**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **লাইভ লোকেশন শেয়ার করা হচ্ছে**
+  রিয়েল-টাইম আপডেট দেখতে **WhatsApp** খুলুন।
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **এই ধরনের বার্তা ChatWoot-এ সমর্থিত নয়।**
+  📱 এটি দেখতে অনুগ্রহ করে **WhatsApp** খুলুন।
+
+  বিস্তারিত: [{{{details.text}}}]({{{details.url}}})

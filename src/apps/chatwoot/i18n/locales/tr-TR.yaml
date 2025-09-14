@@ -185,3 +185,51 @@ waha.core.version.used: |
   Desteğiniz, güncellemeler, düzeltmeler ve yeni özellikler üzerinde çalışmaya devam edebilmemizin tek yoludur.
 
   [**🎁 Bizi Destekleyin**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **Paylaşılan Kişi(ler)**
+
+  {{#contacts}}
+  🪪 İsim: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 Telefon: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **Paylaşılan Konum**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **Canlı Konum Paylaşılıyor**
+  Gerçek zamanlı güncellemeleri görmek için **WhatsApp’ı** açın.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **Bu mesaj türü ChatWoot’ta desteklenmiyor.**
+  📱 Görüntülemek için lütfen **WhatsApp’ı** açın.
+
+  Ayrıntılar: [{{{details.text}}}]({{{details.url}}})

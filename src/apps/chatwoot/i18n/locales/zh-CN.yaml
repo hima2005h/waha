@@ -187,3 +187,51 @@ waha.core.version.used: |
   你的支持是我们持续进行更新、修复和新增功能的唯一动力。
 
   [**🎁 支持我们**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **共享联系人**
+
+  {{#contacts}}
+  🪪 姓名: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 电话: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **共享位置**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **正在共享实时位置**
+  打开 **WhatsApp** 查看实时更新。
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **ChatWoot 不支持此消息类型。**
+  📱 请打开 **WhatsApp** 查看。
+
+  详情: [{{{details.text}}}]({{{details.url}}})

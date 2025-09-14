@@ -185,3 +185,51 @@ waha.core.version.used: |
   התמיכה שלך היא הדרך היחידה שבה אנחנו יכולים להמשיך לעבוד על עדכונים, תיקונים ותכונות חדשות.
 
   [**🎁 תמוך בנו**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **אנשי קשר משותפים**
+
+  {{#contacts}}
+  🪪 שם: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 טלפון: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **מיקום משותף**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **משתף מיקום חי**
+  פתח/י את **WhatsApp** כדי לראות עדכונים בזמן אמת.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **סוג הודעה זה אינו נתמך ב-ChatWoot.**
+  📱 אנא פתח/י את **WhatsApp** כדי לצפות בזה.
+
+  פרטים: [{{{details.text}}}]({{{details.url}}})

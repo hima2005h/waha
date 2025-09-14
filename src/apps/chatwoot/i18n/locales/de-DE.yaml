@@ -188,3 +188,51 @@ waha.core.version.used: |
   Ihre Unterstützung ist der einzige Weg, wie wir weiterhin an Updates, Fehlerbehebungen und neuen Funktionen arbeiten können.
 
   [**🎁 Unterstützen Sie uns**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **Geteilte Kontakte**
+
+  {{#contacts}}
+  🪪 Name: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 Telefon: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **Geteilter Standort**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **Live-Standort wird geteilt**
+  Öffne **WhatsApp**, um Aktualisierungen in Echtzeit zu sehen.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **Dieser Nachrichtentyp wird in ChatWoot nicht unterstützt.**
+  📱 Bitte öffne **WhatsApp**, um ihn anzusehen.
+
+  Details: [{{{details.text}}}]({{{details.url}}})

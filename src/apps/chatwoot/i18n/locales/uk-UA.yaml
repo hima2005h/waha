@@ -185,3 +185,51 @@ waha.core.version.used: |
   Ваша підтримка - єдиний спосіб, яким ми можемо продовжувати працювати над оновленнями, виправленнями та новими функціями.
 
   [**🎁 Підтримайте нас**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **Надісланий контакт(и)**
+
+  {{#contacts}}
+  🪪 Ім’я: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 Телефон: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **Надіслана локація**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **Надсилання геолокації в реальному часі**
+  Відкрийте **WhatsApp**, щоб побачити оновлення в реальному часі.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **Цей тип повідомлення не підтримується в ChatWoot.**
+  📱 Будь ласка, відкрийте **WhatsApp**, щоб переглянути.
+
+  Подробиці: [{{{details.text}}}]({{{details.url}}})

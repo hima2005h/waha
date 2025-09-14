@@ -185,3 +185,51 @@ waha.core.version.used: |
   حمایت شما تنها راهی است که ما می‌توانیم به کار بر روی به‌روزرسانی‌ها، رفع اشکالات و ویژگی‌های جدید ادامه دهیم.
 
   [**🎁 از ما حمایت کنید**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **مخاطب(ها)ی به‌اشتراک‌گذاشته‌شده**
+
+  {{#contacts}}
+  🪪 نام: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 تلفن: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **موقعیت مکانی به‌اشتراک‌گذاشته‌شده**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **اشتراک‌گذاری موقعیت مکانی زنده**
+  برای دیدن به‌روزرسانی‌های لحظه‌ای **WhatsApp** را باز کنید.
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **این نوع پیام در ChatWoot پشتیبانی نمی‌شود.**
+  📱 لطفاً برای مشاهده آن **WhatsApp** را باز کنید.
+
+  جزئیات: [{{{details.text}}}]({{{details.url}}})

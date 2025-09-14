@@ -185,3 +185,51 @@ waha.core.version.used: |
   ਤੁਹਾਡਾ ਸਮਰਥਨ ਹੀ ਇੱਕੋ ਇੱਕ ਤਰੀਕਾ ਹੈ ਜਿਸ ਨਾਲ ਅਸੀਂ ਅਪਡੇਟਾਂ, ਫਿਕਸਾਂ, ਅਤੇ ਨਵੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ 'ਤੇ ਕੰਮ ਕਰਨਾ ਜਾਰੀ ਰੱਖ ਸਕਦੇ ਹਾਂ।
 
   [**🎁 ਸਾਡਾ ਸਮਰਥਨ ਕਰੋ**]({{{supportUrl}}})
+
+chatwoot.to.whatsapp.message.text: |
+  {{{ content }}}
+
+chatwoot.to.whatsapp.message.media.caption: |
+  {{#singleAttachment}}
+  {{#content}}
+  {{{ content }}}
+  {{/content}}
+  {{/singleAttachment}}
+
+whatsapp.to.chatwoot.message: |
+  {{{payload.body}}}
+
+whatsapp.to.chatwoot.message.contacts: |
+  👤 **ਸਾਂਝੇ ਕੀਤੇ ਸੰਪਰਕ**
+
+  {{#contacts}}
+  🪪 ਨਾਮ: **{{fullName}}**
+  {{#phoneNumbers}}
+  - 📞 ਫ਼ੋਨ: **{{.}}**
+  {{/phoneNumbers}}
+
+  {{/contacts}}
+
+whatsapp.to.chatwoot.message.location: |
+  {{#message}}
+  {{#locationMessage}}
+  📍 **ਸਾਂਝੀ ਸਥਿਤੀ**
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/locationMessage}}
+
+  {{#liveLocationMessage}}
+  📍📡 **ਲਾਈਵ ਸਥਿਤੀ ਸਾਂਝੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ**
+  ਰੀਅਲ-ਟਾਈਮ ਅੱਪਡੇਟ ਦੇਖਣ ਲਈ **WhatsApp** ਖੋਲ੍ਹੋ।
+
+  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#caption}}{{caption}}{{/caption}}
+  {{/liveLocationMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.unsupported: |
+  ⚠️ **ਇਹ ਸੁਨੇਹੇ ਦੀ ਕਿਸਮ ChatWoot ਵਿੱਚ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।**
+  📱 ਇਸਨੂੰ ਦੇਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ **WhatsApp** ਖੋਲ੍ਹੋ।
+
+  ਵੇਰਵੇ: [{{{details.text}}}]({{{details.url}}})
