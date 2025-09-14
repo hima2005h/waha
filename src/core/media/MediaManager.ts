@@ -107,14 +107,14 @@ export class MediaManager implements IMediaManager {
     try {
       messageId = processor.getMessageId(message);
       if (!processor.hasMedia(message)) {
-        return message;
+        return null;
       }
     } catch (error) {
       this.log.error(
         error,
         `Error checking if message has media for message '${messageId}'`,
       );
-      return message;
+      return null;
     }
 
     let media: WAMedia = {
