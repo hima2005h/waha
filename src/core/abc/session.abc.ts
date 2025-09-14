@@ -341,6 +341,7 @@ export abstract class WhatsappSession {
       '--safebrowsing-disable-auto-update',
       '--use-mock-keychain',
       '--window-size=1280,720',
+      '--disable-blink-features=AutomationControlled',
       //
       // Cache options
       //
