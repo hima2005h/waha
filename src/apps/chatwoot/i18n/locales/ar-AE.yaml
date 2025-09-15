@@ -3,7 +3,7 @@ locale.name: '🇦🇪 العربية (Arabic)'
 app.inbox.contact.name: 'تكامل واتساب (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
-job.report.error: |
+job.report.error: |-
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 إعادة المحاولة في {{attempts.nextDelay}} ثانية...
@@ -20,7 +20,7 @@ job.report.error: |
   ```
   {{/error}}
 
-job.report.succeeded: |
+job.report.succeeded: |-
   ✅ **نجاح**
   المحاولة: {{{attempts.current}}} / {{{attempts.max}}}
   التفاصيل: [{{{details.text}}}]({{{details.url}}})
@@ -30,33 +30,33 @@ whatsapp.message.receiving.error: تعذر استلام رسالة من واتس
 whatsapp.message.removing.error: تعذر إزالة رسالة من واتساب
 job.scheduled.error.header: فشل تنفيذ المهمة المجدولة
 
-message.from.whatsapp: |
+message.from.whatsapp: |-
   {{{text}}}
 
   📱 *أرسلت من واتساب*
 
-message.from.api: |
+message.from.api: |-
   {{{text}}}
 
   📱 *أرسلت عبر API*
 
-message.removed.in.whatsapp: |
+message.removed.in.whatsapp: |-
   ❌ *تم حذف هذه الرسالة في واتساب*
 
-message.edited.in.whatsapp: |
+message.edited.in.whatsapp: |-
   {{{text}}}
 
   ✏️ *تم تعديلها في واتساب*
 
-whatsapp.group.message: |
+whatsapp.group.message: |-
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-whatsapp.reaction.added: |
+whatsapp.reaction.added: |-
   *تفاعل* {{{emoji}}}
 
-whatsapp.reaction.removed: |
+whatsapp.reaction.removed: |-
   *تمت إزالة التفاعل*
 
 whatsapp.contact.group.suffix: 'مجموعة'
@@ -65,7 +65,7 @@ whatsapp.contact.broadcast.suffix: 'قائمة البث'
 # Aka Stories
 whatsapp.contact.status.name: 'الحالة'
 
-app.connected.message: |
+app.connected.message: |-
   🔗 **متصل: جلسة واتساب إلى صندوق وارد ChatWoot**
 
   ✅ تم توصيل جلسة واتساب **{{{name}}}** بنجاح بصندوق وارد ChatWoot هذا.
@@ -83,7 +83,7 @@ app.connected.message: |
 
   لنبدأ! 🚀
 
-app.disconnected.message: |
+app.disconnected.message: |-
   🔌 **غير متصل: جلسة واتساب من صندوق وارد ChatWoot**
 
   ❌ تم قطع اتصال جلسة واتساب **{{{name}}}** من صندوق وارد ChatWoot هذا.
@@ -92,12 +92,12 @@ app.disconnected.message: |
 
   لإعادة الاتصال، يرجى الاتصال بالمسؤول الخاص بك.
 
-app.updated.message: |
+app.updated.message: |-
   🔄 **تم التحديث: إعدادات جلسة واتساب**
 
   ✅ تم تحديث إعدادات جلسة واتساب **{{{name}}}**.
 
-app.commands.list: |
+app.commands.list: |-
   يمكنك إدارة **تكامل واتساب** عن طريق إرسال أحد الأوامر التالية:
 
   🖥️ **الجلسة**:
@@ -125,32 +125,32 @@ app.commands.server.disabled: ⛔ **تم تعطيل أوامر الخادم**.
 
   أرسل **help** للحصول على قائمة الأوامر المتاحة.
 
-app.help.reminder: |
+app.help.reminder: |-
   أرسل **help** للحصول على قائمة الأوامر المتاحة.
 
-app.session.status.change: |
+app.session.status.change: |-
   {{{emoji}}} تم تغيير حالة جلسة "{{{session}}}" إلى {{{status}}}
 
-app.session.current.status: |
+app.session.current.status: |-
   {{{emoji}}} حالة جلسة **{{{session}}}** هي **{{{status}}}**
   **حساب واتساب:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.working: |
+app.session.status.working: |-
   ✅ صندوق وارد ChatWoot هذا مرتبط بـ **حساب واتساب** وجاهز لإرسال واستقبال الرسائل!
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.error: |
+app.session.status.error: |-
   ⚠️ **صندوق وارد ChatWoot هذا مرتبط بحساب واتساب ولكنه غير جاهز لإرسال واستقبال الرسائل!**
 
   يرجى التحقق من حالة الجلسة ومحاولة إعادة تشغيلها أو تسجيل الخروج ومسح رمز QR مرة أخرى.
 
-app.session.scan.qr.code: |
+app.session.scan.qr.code: |-
   ⚠️ **امسح رمز QR على هاتفك لربط حساب واتساب بصندوق وارد ChatWoot هذا!**
 
-app.server.version.and.status: |
+app.server.version.and.status: |-
   **الإصدار:**
   ```
   {{{version}}}
@@ -161,16 +161,16 @@ app.server.version.and.status: |
   {{{status}}}
   ```
 
-app.server.reboot: |
+app.server.reboot: |-
   يتم إعادة تشغيل الخادم بسلاسة...
 
-app.server.reboot.force: |
+app.server.reboot.force: |-
   يتم إعادة تشغيل الخادم بالقوة...
 
-app.logout.success: |
+app.logout.success: |-
   ✅ تم إلغاء تفويض الحساب بنجاح!
 
-waha.new.version.available: |
+waha.new.version.available: |-
   🔄 **إصدار جديد متاح!**
 
   الإصدار الحالي: **{{{currentVersion}}}**
@@ -178,7 +178,7 @@ waha.new.version.available: |
 
   👉 تحقق مما هو جديد في [**🆕 سجل التغييرات**]({{{changelogUrl}}})
 
-waha.core.version.used: |
+waha.core.version.used: |-
   ❤️ **ادعم WAHA!**
 
   أنت تستخدم إصدار **WAHA Core** المجاني. إذا وجدت هذا المشروع مفيدًا، فيرجى التفكير في دعم تطويره.
@@ -187,20 +187,20 @@ waha.core.version.used: |
 
   [**🎁 ادعمنا**]({{{supportUrl}}})
 
-chatwoot.to.whatsapp.message.text: |
+chatwoot.to.whatsapp.message.text: |-
   {{{ content }}}
 
-chatwoot.to.whatsapp.message.media.caption: |
+chatwoot.to.whatsapp.message.media.caption: |-
   {{#singleAttachment}}
   {{#content}}
   {{{ content }}}
   {{/content}}
   {{/singleAttachment}}
 
-whatsapp.to.chatwoot.message: |
+whatsapp.to.chatwoot.message: |-
   {{{payload.body}}}
 
-whatsapp.to.chatwoot.message.contacts: |
+whatsapp.to.chatwoot.message.contacts: |-
   👤 **جهات الاتصال المشتركة**
 
   {{#contacts}}
@@ -211,7 +211,7 @@ whatsapp.to.chatwoot.message.contacts: |
 
   {{/contacts}}
 
-whatsapp.to.chatwoot.message.location: |
+whatsapp.to.chatwoot.message.location: |-
   {{#message}}
   {{#locationMessage}}
   📍 **الموقع المشترك**
@@ -229,7 +229,7 @@ whatsapp.to.chatwoot.message.location: |
   {{/liveLocationMessage}}
   {{/message}}
 
-whatsapp.to.chatwoot.message.unsupported: |
+whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **هذا النوع من الرسائل غير مدعوم في ChatWoot.**
   📱 يرجى فتح **WhatsApp** لعرضه.
 

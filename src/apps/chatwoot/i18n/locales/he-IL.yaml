@@ -3,7 +3,7 @@ locale.name: '🇮🇱 עברית (Hebrew)'
 app.inbox.contact.name: 'אינטגרציית וואטסאפ (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
-job.report.error: |
+job.report.error: |-
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 מנסה שוב בעוד {{attempts.nextDelay}} שניות...
@@ -20,7 +20,7 @@ job.report.error: |
   ```
   {{/error}}
 
-job.report.succeeded: |
+job.report.succeeded: |-
   ✅ **הצליח**
   ניסיון: {{{attempts.current}}} / {{{attempts.max}}}
   פרטים: [{{{details.text}}}]({{{details.url}}})
@@ -30,33 +30,33 @@ whatsapp.message.receiving.error: לא ניתן לקבל הודעה מוואטס
 whatsapp.message.removing.error: לא ניתן להסיר הודעה מוואטסאפ
 job.scheduled.error.header: המשימה המתוזמנת נכשלה בביצוע
 
-message.from.whatsapp: |
+message.from.whatsapp: |-
   {{{text}}}
 
   📱 *נשלח מוואטסאפ*
 
-message.from.api: |
+message.from.api: |-
   {{{text}}}
 
   📱 *נשלח דרך API*
 
-message.removed.in.whatsapp: |
+message.removed.in.whatsapp: |-
   ❌ *הודעה זו נמחקה בוואטסאפ*
 
-message.edited.in.whatsapp: |
+message.edited.in.whatsapp: |-
   {{{text}}}
 
   ✏️ *נערך בוואטסאפ*
 
-whatsapp.group.message: |
+whatsapp.group.message: |-
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-whatsapp.reaction.added: |
+whatsapp.reaction.added: |-
   *הגיב* {{{emoji}}}
 
-whatsapp.reaction.removed: |
+whatsapp.reaction.removed: |-
   *התגובה הוסרה*
 
 whatsapp.contact.group.suffix: 'קבוצה'
@@ -65,7 +65,7 @@ whatsapp.contact.broadcast.suffix: 'רשימת שידור'
 # Aka Stories
 whatsapp.contact.status.name: 'סטטוס'
 
-app.connected.message: |
+app.connected.message: |-
   🔗 **מחובר: הפעלת וואטסאפ לתיבת הדואר הנכנס של ChatWoot**
 
   ✅ הפעלת וואטסאפ **{{{name}}}** חוברה בהצלחה לתיבת הדואר הנכנס של ChatWoot.
@@ -83,7 +83,7 @@ app.connected.message: |
 
   בוא נתחיל! 🚀
 
-app.disconnected.message: |
+app.disconnected.message: |-
   🔌 **מנותק: הפעלת וואטסאפ מתיבת הדואר הנכנס של ChatWoot**
 
   ❌ הפעלת וואטסאפ **{{{name}}}** נותקה מתיבת הדואר הנכנס של ChatWoot.
@@ -92,12 +92,12 @@ app.disconnected.message: |
 
   כדי להתחבר מחדש, אנא פנה למנהל המערכת שלך.
 
-app.updated.message: |
+app.updated.message: |-
   🔄 **עודכן: הגדרות הפעלת וואטסאפ**
 
   ✅ ההגדרות עבור הפעלת וואטסאפ **{{{name}}}** עודכנו.
 
-app.commands.list: |
+app.commands.list: |-
   אתה יכול לנהל **אינטגרציית וואטסאפ** על ידי שליחת אחת מהפקודות הבאות:
 
   🖥️ **הפעלה**:
@@ -125,32 +125,32 @@ app.commands.server.disabled: ⛔ **פקודות השרת מושבתות**.
 
   שלחו **help** כדי לקבל את רשימת הפקודות הזמינות.
 
-app.help.reminder: |
+app.help.reminder: |-
   שלח **help** כדי לקבל את רשימת הפקודות הזמינות.
 
-app.session.status.change: |
+app.session.status.change: |-
   {{{emoji}}} הפעלה "{{{session}}}" עברה לסטטוס {{{status}}}
 
-app.session.current.status: |
+app.session.current.status: |-
   {{{emoji}}} סטטוס ההפעלה **{{{session}}}** הוא **{{{status}}}**
   **חשבון וואטסאפ:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.working: |
+app.session.status.working: |-
   ✅ תיבת הדואר הנכנס של ChatWoot מקושרת ל**חשבון וואטסאפ** ומוכנה לשלוח ולקבל הודעות!
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.error: |
+app.session.status.error: |-
   ⚠️ **תיבת הדואר הנכנס של ChatWoot מקושרת לחשבון וואטסאפ אך אינה מוכנה לשלוח ולקבל הודעות!**
 
   אנא בדוק את סטטוס ההפעלה ונסה להפעיל אותה מחדש או התנתק וסרוק את קוד ה-QR שוב.
 
-app.session.scan.qr.code: |
+app.session.scan.qr.code: |-
   ⚠️ **סרוק את קוד ה-QR בטלפון שלך כדי לקשר את חשבון הוואטסאפ לתיבת הדואר הנכנס של ChatWoot!**
 
-app.server.version.and.status: |
+app.server.version.and.status: |-
   **גרסה:**
   ```
   {{{version}}}
@@ -161,16 +161,16 @@ app.server.version.and.status: |
   {{{status}}}
   ```
 
-app.server.reboot: |
+app.server.reboot: |-
   השרת מופעל מחדש בצורה חלקה...
 
-app.server.reboot.force: |
+app.server.reboot.force: |-
   השרת מופעל מחדש בכוח...
 
-app.logout.success: |
+app.logout.success: |-
   ✅ החשבון בוטל בהצלחה!
 
-waha.new.version.available: |
+waha.new.version.available: |-
   🔄 **גרסה חדשה זמינה!**
 
   גרסה נוכחית: **{{{currentVersion}}}**
@@ -178,7 +178,7 @@ waha.new.version.available: |
 
   👉 בדוק מה חדש ב[**🆕 יומן שינויים**]({{{changelogUrl}}})
 
-waha.core.version.used: |
+waha.core.version.used: |-
   ❤️ **תמוך ב-WAHA!**
 
   אתה משתמש בגרסת **WAHA Core** החינמית. אם אתה מוצא פרויקט זה שימושי, אנא שקול לתמוך בפיתוח שלו.
@@ -187,20 +187,20 @@ waha.core.version.used: |
 
   [**🎁 תמוך בנו**]({{{supportUrl}}})
 
-chatwoot.to.whatsapp.message.text: |
+chatwoot.to.whatsapp.message.text: |-
   {{{ content }}}
 
-chatwoot.to.whatsapp.message.media.caption: |
+chatwoot.to.whatsapp.message.media.caption: |-
   {{#singleAttachment}}
   {{#content}}
   {{{ content }}}
   {{/content}}
   {{/singleAttachment}}
 
-whatsapp.to.chatwoot.message: |
+whatsapp.to.chatwoot.message: |-
   {{{payload.body}}}
 
-whatsapp.to.chatwoot.message.contacts: |
+whatsapp.to.chatwoot.message.contacts: |-
   👤 **אנשי קשר משותפים**
 
   {{#contacts}}
@@ -211,7 +211,7 @@ whatsapp.to.chatwoot.message.contacts: |
 
   {{/contacts}}
 
-whatsapp.to.chatwoot.message.location: |
+whatsapp.to.chatwoot.message.location: |-
   {{#message}}
   {{#locationMessage}}
   📍 **מיקום משותף**
@@ -229,7 +229,7 @@ whatsapp.to.chatwoot.message.location: |
   {{/liveLocationMessage}}
   {{/message}}
 
-whatsapp.to.chatwoot.message.unsupported: |
+whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **סוג הודעה זה אינו נתמך ב-ChatWoot.**
   📱 אנא פתח/י את **WhatsApp** כדי לצפות בזה.
 

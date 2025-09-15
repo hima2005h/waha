@@ -3,7 +3,7 @@ locale.name: '🇮🇷 فارسی (Persian)'
 app.inbox.contact.name: 'ادغام واتساپ (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
-job.report.error: |
+job.report.error: |-
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
   🔄 تلاش مجدد در {{attempts.nextDelay}} ثانیه...
@@ -20,7 +20,7 @@ job.report.error: |
   ```
   {{/error}}
 
-job.report.succeeded: |
+job.report.succeeded: |-
   ✅ **موفقیت‌آمیز**
   تلاش: {{{attempts.current}}} / {{{attempts.max}}}
   جزئیات: [{{{details.text}}}]({{{details.url}}})
@@ -30,33 +30,33 @@ whatsapp.message.receiving.error: دریافت پیام از واتساپ امک
 whatsapp.message.removing.error: حذف پیام از واتساپ امکان‌پذیر نبود
 job.scheduled.error.header: اجرای کار زمان‌بندی شده ناموفق بود
 
-message.from.whatsapp: |
+message.from.whatsapp: |-
   {{{text}}}
 
   📱 *ارسال شده از واتساپ*
 
-message.from.api: |
+message.from.api: |-
   {{{text}}}
 
   📱 *ارسال شده از طریق API*
 
-message.removed.in.whatsapp: |
+message.removed.in.whatsapp: |-
   ❌ *این پیام در واتساپ حذف شده است*
 
-message.edited.in.whatsapp: |
+message.edited.in.whatsapp: |-
   {{{text}}}
 
   ✏️ *ویرایش شده در واتساپ*
 
-whatsapp.group.message: |
+whatsapp.group.message: |-
   {{{text}}}
 
   👥 *{{{participant}}}*
 
-whatsapp.reaction.added: |
+whatsapp.reaction.added: |-
   *واکنش* {{{emoji}}}
 
-whatsapp.reaction.removed: |
+whatsapp.reaction.removed: |-
   *واکنش حذف شد*
 
 whatsapp.contact.group.suffix: 'گروه'
@@ -65,7 +65,7 @@ whatsapp.contact.broadcast.suffix: 'فهرست انتشار'
 # Aka Stories
 whatsapp.contact.status.name: 'وضعیت'
 
-app.connected.message: |
+app.connected.message: |-
   🔗 **متصل: جلسه واتساپ به صندوق ورودی ChatWoot**
 
   ✅ جلسه واتساپ **{{{name}}}** با موفقیت به این صندوق ورودی ChatWoot متصل شده است.
@@ -83,7 +83,7 @@ app.connected.message: |
 
   بیایید شروع کنیم! 🚀
 
-app.disconnected.message: |
+app.disconnected.message: |-
   🔌 **قطع اتصال: جلسه واتساپ از صندوق ورودی ChatWoot**
 
   ❌ جلسه واتساپ **{{{name}}}** از این صندوق ورودی ChatWoot قطع شده است.
@@ -92,12 +92,12 @@ app.disconnected.message: |
 
   برای اتصال مجدد، لطفاً با مدیر خود تماس بگیرید.
 
-app.updated.message: |
+app.updated.message: |-
   🔄 **به‌روزرسانی: تنظیمات جلسه واتساپ**
 
   ✅ تنظیمات جلسه واتساپ **{{{name}}}** به‌روزرسانی شده است.
 
-app.commands.list: |
+app.commands.list: |-
   شما می‌توانید **ادغام واتساپ** را با ارسال یکی از دستورات زیر مدیریت کنید:
 
   🖥️ **جلسه**:
@@ -125,32 +125,32 @@ app.commands.server.disabled: ⛔ **دستورات سرور غیرفعال اس�
 
   برای دریافت فهرست دستورات، **help** را ارسال کنید.
 
-app.help.reminder: |
+app.help.reminder: |-
   برای دریافت لیست دستورات موجود، **help** را ارسال کنید.
 
-app.session.status.change: |
+app.session.status.change: |-
   {{{emoji}}} جلسه "{{{session}}}" به وضعیت {{{status}}} تغییر کرد
 
-app.session.current.status: |
+app.session.current.status: |-
   {{{emoji}}} وضعیت جلسه **{{{session}}}** در **{{{status}}}** است
   **حساب واتساپ:**
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.working: |
+app.session.status.working: |-
   ✅ این صندوق ورودی ChatWoot به **حساب واتساپ** متصل است و آماده ارسال و دریافت پیام است!
 
   📱 **{{{name}}} ({{{id}}})**
 
-app.session.status.error: |
+app.session.status.error: |-
   ⚠️ **این صندوق ورودی ChatWoot به حساب واتساپ متصل است اما آماده ارسال و دریافت پیام نیست!**
 
   لطفاً وضعیت جلسه را بررسی کنید و سعی کنید آن را مجدداً راه‌اندازی کنید یا خارج شوید و کد QR را دوباره اسکن کنید.
 
-app.session.scan.qr.code: |
+app.session.scan.qr.code: |-
   ⚠️ **کد QR را در تلفن خود اسکن کنید تا حساب واتساپ را با این صندوق ورودی ChatWoot پیوند دهید!**
 
-app.server.version.and.status: |
+app.server.version.and.status: |-
   **نسخه:**
   ```
   {{{version}}}
@@ -161,16 +161,16 @@ app.server.version.and.status: |
   {{{status}}}
   ```
 
-app.server.reboot: |
+app.server.reboot: |-
   سرور در حال راه‌اندازی مجدد نرم است...
 
-app.server.reboot.force: |
+app.server.reboot.force: |-
   سرور در حال راه‌اندازی مجدد اجباری است...
 
-app.logout.success: |
+app.logout.success: |-
   ✅ حساب با موفقیت غیرمجاز شد!
 
-waha.new.version.available: |
+waha.new.version.available: |-
   🔄 **نسخه جدید در دسترس است!**
 
   نسخه فعلی: **{{{currentVersion}}}**
@@ -178,7 +178,7 @@ waha.new.version.available: |
 
   👉 موارد جدید را در [**🆕 تغییرات**]({{{changelogUrl}}}) مشاهده کنید
 
-waha.core.version.used: |
+waha.core.version.used: |-
   ❤️ **از WAHA پشتیبانی کنید!**
 
   شما از نسخه رایگان **WAHA Core** استفاده می‌کنید. اگر این پروژه را مفید می‌دانید، لطفاً حمایت از توسعه آن را در نظر بگیرید.
@@ -187,20 +187,20 @@ waha.core.version.used: |
 
   [**🎁 از ما حمایت کنید**]({{{supportUrl}}})
 
-chatwoot.to.whatsapp.message.text: |
+chatwoot.to.whatsapp.message.text: |-
   {{{ content }}}
 
-chatwoot.to.whatsapp.message.media.caption: |
+chatwoot.to.whatsapp.message.media.caption: |-
   {{#singleAttachment}}
   {{#content}}
   {{{ content }}}
   {{/content}}
   {{/singleAttachment}}
 
-whatsapp.to.chatwoot.message: |
+whatsapp.to.chatwoot.message: |-
   {{{payload.body}}}
 
-whatsapp.to.chatwoot.message.contacts: |
+whatsapp.to.chatwoot.message.contacts: |-
   👤 **مخاطب(ها)ی به‌اشتراک‌گذاشته‌شده**
 
   {{#contacts}}
@@ -211,7 +211,7 @@ whatsapp.to.chatwoot.message.contacts: |
 
   {{/contacts}}
 
-whatsapp.to.chatwoot.message.location: |
+whatsapp.to.chatwoot.message.location: |-
   {{#message}}
   {{#locationMessage}}
   📍 **موقعیت مکانی به‌اشتراک‌گذاشته‌شده**
@@ -229,7 +229,7 @@ whatsapp.to.chatwoot.message.location: |
   {{/liveLocationMessage}}
   {{/message}}
 
-whatsapp.to.chatwoot.message.unsupported: |
+whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **این نوع پیام در ChatWoot پشتیبانی نمی‌شود.**
   📱 لطفاً برای مشاهده آن **WhatsApp** را باز کنید.
 
