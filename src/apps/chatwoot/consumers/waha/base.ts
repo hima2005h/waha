@@ -152,7 +152,7 @@ export abstract class ChatWootWAHABaseConsumer extends AppConsumer {
         .ContactConversationService()
         .ConversationById(info.conversationId);
     } else {
-      const conversation = await container
+      conversation = await container
         .ContactConversationService()
         .InboxNotifications();
     }
