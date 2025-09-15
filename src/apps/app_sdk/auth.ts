@@ -8,9 +8,11 @@ export function BullAuthMiddleware() {
   let password = process.env.WAHA_DASHBOARD_PASSWORD;
   if (process.env.WAHA_DASHBOARD_ENABLED) {
     const enabled = parseBool(process.env.WAHA_DASHBOARD_ENABLED);
-    // Generate a random uuid4 username /password to prevent access
-    username = 'admin';
-    password = crypto.randomUUID();
+    if (!enabled) {
+      // Generate a random uuid4 username /password to prevent access
+      username = 'admin';
+      password = crypto.randomUUID();
+    }
   }
 
   return basicAuth({
