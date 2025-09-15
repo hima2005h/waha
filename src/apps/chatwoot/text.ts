@@ -26,6 +26,9 @@ export function MarkdownToWhatsApp(text: string): string {
 
 export function WhatsappToMarkdown(text: string): string {
   if (!text) {
+    return text;
+  }
+  if (text == '') {
     return '';
   }
   return (

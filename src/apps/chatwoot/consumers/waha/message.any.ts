@@ -95,11 +95,14 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     _: proto.Message | null,
   ): Promise<ChatWootMessagePartial | null> {
     const attachments = await this.getAttachments(payload);
-    const content = this.l
+    let content = this.l
       .key(TKey.WA_TO_CW_MESSAGE)
       .render({ payload: payload });
     if (isEmptyString(content) && attachments.length == 0) {
       return null;
+    }
+    if (isEmptyString(content)) {
+      content = null;
     }
     return {
       content: WhatsappToMarkdown(content),
