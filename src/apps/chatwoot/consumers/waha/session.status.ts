@@ -64,9 +64,9 @@ export class SessionStatusHandler {
   async handle(data: WAHAWebhookSessionStatus) {
     const payload = data.payload;
     let text = '';
-    const current = payload.statuses.at(-1);
-    const previous = payload.statuses.at(-2);
-    const older = payload.statuses.at(-3);
+    const current = payload.statuses?.at(-1);
+    const previous = payload.statuses?.at(-2);
+    const older = payload.statuses?.at(-3);
     switch (payload.status) {
       case WAHASessionStatus.STARTING:
         // WORKING => STARTING [=> WORKING]
@@ -92,7 +92,7 @@ export class SessionStatusHandler {
           previous?.status == WAHASessionStatus.STARTING &&
           older?.status == WAHASessionStatus.WORKING
         ) {
-          if (current.timestamp - previous.timestamp < RECOVER_TIME_MS) {
+          if (current?.timestamp - previous?.timestamp < RECOVER_TIME_MS) {
             // Session got recovered fast, no needs to notify about that
             return;
           }
