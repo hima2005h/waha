@@ -20,6 +20,8 @@ import { WAHAWebhookSessionStatus } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { sleep } from '@nestjs/terminus/dist/utils';
+import { waitUntil } from '@waha/utils/promiseTimeout';
 
 @Processor(QueueName.WAHA_SESSION_STATUS, { concurrency: JOB_CONCURRENCY })
 export class WAHASessionStatusConsumer extends ChatWootWAHABaseConsumer {
@@ -49,6 +51,9 @@ export class WAHASessionStatusConsumer extends ChatWootWAHABaseConsumer {
   }
 }
 
+const RECOVER_TIME_MS = 10_000;
+const CHECK_STATUS_INTERVAL_MS = 2_000;
+
 export class SessionStatusHandler {
   constructor(
     private repo: ContactConversationService,
@@ -57,22 +62,41 @@ export class SessionStatusHandler {
   ) {}
 
   async handle(data: WAHAWebhookSessionStatus) {
-    const conversation = await this.repo.InboxNotifications();
-    // Report session status
-    const emoji = SessionStatusEmoji(data.payload.status);
-    const activity = this.l.key(TKey.APP_SESSION_STATUS_CHANGE).r({
-      emoji: emoji,
-      session: data.session,
-      status: data.payload.status,
-    });
-    await conversation.activity(activity);
-
     const payload = data.payload;
     let text = '';
+    const current = payload.statuses.at(-1);
+    const previous = payload.statuses.at(-2);
+    const older = payload.statuses.at(-3);
     switch (payload.status) {
       case WAHASessionStatus.STARTING:
+        // WORKING => STARTING [=> WORKING]
+        if (previous?.status == WAHASessionStatus.WORKING) {
+          // if previous is WORKING - wait, give time to recover
+          const recovered = await waitUntil(
+            async () => {
+              const response = await this.waha.get(data.session);
+              return response.status == WAHASessionStatus.WORKING;
+            },
+            CHECK_STATUS_INTERVAL_MS,
+            RECOVER_TIME_MS,
+          );
+          if (recovered) {
+            // Current status is WORKING, no needs for an alert
+            return;
+          }
+        }
         break;
       case WAHASessionStatus.WORKING:
+        // WORKING => STARTING => WORKING
+        if (
+          previous?.status == WAHASessionStatus.STARTING &&
+          older?.status == WAHASessionStatus.WORKING
+        ) {
+          if (current.timestamp - previous.timestamp < RECOVER_TIME_MS) {
+            // Session got recovered fast, no needs to notify about that
+            return;
+          }
+        }
         text = this.l.key(TKey.APP_SESSION_STATUS_WORKING).r({
           name: data.me?.pushName || 'Unknown',
           id: data.me?.id || 'No phone number',
@@ -88,6 +112,18 @@ export class SessionStatusHandler {
       case WAHASessionStatus.SCAN_QR_CODE:
         text = this.l.key(TKey.APP_SESSION_SCAN_QR_CODE).r();
     }
+    //
+    // Report Status Change if required
+    //
+    const conversation = await this.repo.InboxNotifications();
+    const emoji = SessionStatusEmoji(data.payload.status);
+    const activity = this.l.key(TKey.APP_SESSION_STATUS_CHANGE).r({
+      emoji: emoji,
+      session: data.session,
+      status: data.payload.status,
+    });
+    await conversation.activity(activity);
+
     if (text) {
       const message: conversation_message_create = {
         content: text,
