@@ -111,6 +111,11 @@ export class WAMessageEditedBody extends WAMessage {
   editedMessageId?: string;
 }
 
+export class SessionStatusPoint {
+  status: WAHASessionStatus;
+  timestamp: number;
+}
+
 export class WASessionStatusBody {
   @ApiProperty({
     example: 'default',
@@ -118,6 +123,8 @@ export class WASessionStatusBody {
   name: string;
 
   status: WAHASessionStatus;
+
+  statuses: SessionStatusPoint[];
 }
 
 export class WAHAWebhook<Payload = any> {

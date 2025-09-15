@@ -53,10 +53,13 @@ import {
   delay,
   filter,
   of,
+  pairwise,
   retry,
+  scan,
   share,
   Subject,
   switchMap,
+  timestamp,
 } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { MessageId } from 'whatsapp-web.js';
@@ -115,7 +118,10 @@ import {
   VideoStatus,
   VoiceStatus,
 } from '../../structures/status.dto';
-import { WASessionStatusBody } from '../../structures/webhooks.dto';
+import {
+  SessionStatusPoint,
+  WASessionStatusBody,
+} from '../../structures/webhooks.dto';
 import {
   AvailableInPlusVersion,
   NotImplementedByEngineError,
@@ -202,7 +208,7 @@ export abstract class WhatsappSession {
     engineConfig,
     ignore,
   }: SessionParams) {
-    this.status$ = new BehaviorSubject(null);
+    this.status$ = new BehaviorSubject(WAHASessionStatus.STOPPED);
 
     this.name = name;
     this.proxyConfig = proxyConfig;
@@ -233,8 +239,6 @@ export abstract class WhatsappSession {
 
     this.events2.get(WAHAEvents.SESSION_STATUS).switch(
       this.status$
-        // initial value is null
-        .pipe(filter(Boolean))
         // Wait for WORKING status to get all the info
         // https://github.com/devlikeapro/waha/issues/409
         .pipe(
@@ -252,12 +256,32 @@ export abstract class WhatsappSession {
           distinctUntilChanged(
             (prev, curr) => prev === curr && curr === WAHASessionStatus.WORKING,
           ),
-        )
-        // Populate the session info
-        .pipe(
-          map<WAHASessionStatus, WASessionStatusBody>((status) => {
-            return { name: this.name, status: status };
-          }),
+          // attach current time (ms)
+          timestamp(),
+          map(
+            ({ value, timestamp }) =>
+              ({
+                status: value,
+                timestamp: timestamp,
+              }) as SessionStatusPoint,
+          ),
+          // keep the last 3 entries
+          scan<SessionStatusPoint, SessionStatusPoint[]>(
+            (statuses, status: SessionStatusPoint) => {
+              const next = [...statuses, status];
+              return next.length > 3 ? next.slice(-3) : next;
+            },
+            [],
+          ),
+          // shape final payload
+          map(
+            (statuses) =>
+              ({
+                name: this.name,
+                status: statuses.at(-1)?.status, // current
+                statuses: statuses,
+              }) as WASessionStatusBody,
+          ),
         ),
     );
 
