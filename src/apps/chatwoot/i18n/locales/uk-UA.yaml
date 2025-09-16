@@ -49,9 +49,9 @@ message.edited.in.whatsapp: |-
   ✏️ *Відредаговано у WhatsApp*
 
 whatsapp.group.message: |-
-  {{{text}}}
-
   👥 *{{{participant}}}*
+
+  {{{text}}}
 
 whatsapp.reaction.added: |-
   *Реакція* {{{emoji}}}

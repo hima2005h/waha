@@ -52,9 +52,9 @@ message.edited.in.whatsapp: |-
   ✏️ *In WhatsApp bearbeitet*
 
 whatsapp.group.message: |-
-  {{{text}}}
-
   👥 *{{{participant}}}*
+
+  {{{text}}}
 
 whatsapp.reaction.added: |-
   *Reagiert mit* {{{emoji}}}
