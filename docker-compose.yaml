@@ -36,7 +36,7 @@ services:
 # NOTE: Only if you're using PostgreSQL to save sessions
 # https://waha.devlike.pro/docs/how-to/storages/#media---postgresql
 #  postgres:
-#    image: postgres:17
+#    image: postgres:17.6
 #    restart: always
 #    environment:
 #      POSTGRES_USER: postgres
