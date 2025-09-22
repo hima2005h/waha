@@ -185,6 +185,16 @@ export class NowebPersistentStore implements INowebStore {
       ),
     );
 
+    // Lids
+    ev.on('lid-mapping.update', (data) => {
+      this.withLock('lids', async () => {
+        const lids = await this.handleLidPNUpdates([data]);
+        this.logger.debug(
+          `lid-mapping.update - '${lids.length}' synced lid to pn mapping`,
+        );
+      });
+    });
+
     // Contacts
     ev.on('contacts.upsert', (data) => {
       this.withLock('contacts', () => this.onContactsUpsert(data));
