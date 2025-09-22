@@ -4615,7 +4615,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:>=0.2.9, async@npm:^3.2.3, async@npm:^3.2.4":
+"async@npm:^0.2.9":
+  version: 0.2.10
+  resolution: "async@npm:0.2.10"
+  checksum: 9ea83419ba67dc4ecf42d4eb0d93ce0ac80a67cabb612f160ed096aef5d001e3184ec9e9be5d4dc39b2c51a34e2ae16f9b21d737068b0f615fccb4eea16d0138
+  languageName: node
+  linkType: hard
+
+"async@npm:^3.2.3, async@npm:^3.2.4":
   version: 3.2.6
   resolution: "async@npm:3.2.6"
   checksum: ee6eb8cd8a0ab1b58bd2a3ed6c415e93e773573a91d31df9d5ef559baafa9dab37d3b096fa7993e84585cac3697b2af6ddb9086f45d3ac8cae821bb2aab65682
@@ -6821,13 +6828,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fluent-ffmpeg@npm:2.1.2":
-  version: 2.1.2
-  resolution: "fluent-ffmpeg@npm:2.1.2"
+"fluent-ffmpeg@npm:2.1.3":
+  version: 2.1.3
+  resolution: "fluent-ffmpeg@npm:2.1.3"
   dependencies:
-    async: ">=0.2.9"
+    async: ^0.2.9
     which: ^1.1.1
-  checksum: ab7ed909486298f33b991af051c38e40410ae5b03b0b6d33d0855636a0b56330ffe9efed6c7eedb00f1c6c713c795cbdb283f6f2216db925ae5e737a22c6a97f
+  checksum: 89d548527c3bb1746acb4c4fa8dc3f660397fcdf598ce455f5a6ec0df2df402ed977f329279e695c549df52822590e3f38c815e8efd740a47c00e9e0f685f083
   languageName: node
   linkType: hard
 
@@ -12561,7 +12568,7 @@ __metadata:
     tsconfig-paths: ^4.1.0
     typescript: 5.9.2
     ulid: ^2.3.0
-    whatsapp-web.js: "github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09"
+    whatsapp-web.js: "github:devlikeapro/whatsapp-web.js#fork-main-2025-09-10"
     write-file-atomic: ^6.0.0
     yaml: ^2.7.1
     yargs: ^17.7.2
@@ -12663,13 +12670,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatsapp-web.js@github:devlikeapro/whatsapp-web.js#fork-main-2025-06-09":
-  version: 1.30.1-alpha.2
-  resolution: "whatsapp-web.js@https://github.com/devlikeapro/whatsapp-web.js.git#commit=d3c1b36c643ea671b64a1d369b6526de7ffa705a"
+"whatsapp-web.js@github:devlikeapro/whatsapp-web.js#fork-main-2025-09-10":
+  version: 1.34.1
+  resolution: "whatsapp-web.js@https://github.com/devlikeapro/whatsapp-web.js.git#commit=1d4635599c173905ba3bf19ac8dd56015d53d378"
   dependencies:
     "@pedroslopez/moduleraid": ^5.0.2
     archiver: ^5.3.1
-    fluent-ffmpeg: 2.1.2
+    fluent-ffmpeg: 2.1.3
     fs-extra: ^10.1.0
     mime: ^3.0.0
     node-fetch: ^2.6.9
@@ -12683,7 +12690,7 @@ __metadata:
       optional: true
     unzipper:
       optional: true
-  checksum: 98e574d1e443d11c8b237392d6e66b75451061d0a489cc66bf776f52bf702c94dad9ff4d65912b69bb871e471372b8a3565b26a1d9e736aeef69c5dcba14b0db
+  checksum: d5a62fa9c78f99bf53b2604a2bbe86d56d62871f459cd046b93d73de1b3406d593b355b3cf7e8b23f7aa55df34bff8c9bb5db2e9d5c745a66a9c8c6bcdeeecb0
   languageName: node
   linkType: hard
 
