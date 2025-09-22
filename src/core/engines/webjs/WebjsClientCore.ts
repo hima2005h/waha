@@ -223,7 +223,7 @@ export class WebjsClientCore extends Client {
       // @ts-ignore
       await window.Store.SendStatus.sendStatusTextMsgAction(status);
       // @ts-ignore
-      const meUser = window.Store.User.getMeUser();
+      const meUser = window.Store.User.getMaybeMePnUser();
       // @ts-ignore
       const myStatus = window.Store.Status.getModelsArray().findLast(
         (x) => x.id == meUser,
