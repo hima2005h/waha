@@ -1,10 +1,6 @@
-import makeWASocket, {
-  Chat,
-  Contact,
-  GroupMetadata,
-  proto,
-} from '@adiwajshing/baileys';
-import { Label } from '@adiwajshing/baileys/lib/Types/Label';
+import type { Chat, Contact, GroupMetadata, proto } from '@adiwajshing/baileys';
+import type makeWASocket from '@adiwajshing/baileys';
+import type { Label } from '@adiwajshing/baileys/lib/Types/Label';
 import { BadRequestException } from '@nestjs/common';
 import { GetChatMessagesFilter } from '@waha/structures/chats.dto';
 import { LidToPhoneNumber } from '@waha/structures/lids.dto';

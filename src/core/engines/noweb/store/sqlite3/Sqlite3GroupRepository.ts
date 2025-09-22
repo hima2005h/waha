@@ -1,4 +1,4 @@
-import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
+import type { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
 import { IGroupRepository } from '@waha/core/engines/noweb/store/IGroupRepository';
 import { NowebGroupsSchema } from '@waha/core/engines/noweb/store/schemas';
 import { KnexPaginator } from '@waha/utils/Paginator';

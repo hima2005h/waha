@@ -1,9 +1,9 @@
-import { BinaryNode, WAPresence } from '@adiwajshing/baileys';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
+import type { BinaryNode, WAPresence } from '@adiwajshing/baileys';
 import { WAHAPresenceStatus } from '@waha/structures/enums.dto';
 import { WAHAChatPresences } from '@waha/structures/presence.dto';
 
 import { jid } from './ack.webjs';
+import { toCusFormat } from '@waha/core/utils/jids';
 
 export function TagPresenceToPresence(node: BinaryNode): WAHAChatPresences {
   const { attrs } = node;

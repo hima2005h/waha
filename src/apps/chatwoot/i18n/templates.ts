@@ -1,6 +1,6 @@
+import type { proto } from '@adiwajshing/baileys';
 import { ChatWootCommandsConfig } from '@waha/apps/chatwoot/dto/config.dto';
 import { WAMessage } from '@waha/structures/responses.dto';
-import { proto } from '@adiwajshing/baileys';
 import { SimpleVCardInfo } from '@waha/core/vcard';
 
 export enum TKey {

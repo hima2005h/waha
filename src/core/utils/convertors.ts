@@ -1,6 +1,6 @@
-import { isJidGroup, WAMessageKey } from '@adiwajshing/baileys';
+import type { WAMessageKey } from '@adiwajshing/baileys';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
-import { toJID } from '@waha/core/utils/jids';
+import { isJidGroup, toJID } from '@waha/core/utils/jids';
 import {
   GetChatMessagesFilter,
   GetChatMessagesQuery,

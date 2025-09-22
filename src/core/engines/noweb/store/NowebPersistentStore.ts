@@ -1,31 +1,25 @@
-import makeWASocket, {
-  areJidsSameUser,
+import type makeWASocket from '@adiwajshing/baileys';
+import type {
   BaileysEventEmitter,
   Chat,
   ChatUpdate,
-  Contact,
   GroupParticipant,
-  isJidUser,
-  isRealMessage,
-  jidNormalizedUser,
+  Contact,
   ParticipantAction,
-  proto,
-  updateMessageWithReaction,
-  updateMessageWithReceipt,
   WAMessage,
 } from '@adiwajshing/baileys';
-import { WACallEvent } from '@adiwajshing/baileys/lib/Types/Call';
-import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
-import { Label } from '@adiwajshing/baileys/lib/Types/Label';
-import {
-  LabelAssociation,
-  LabelAssociationType,
-} from '@adiwajshing/baileys/lib/Types/LabelAssociation';
-import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import type { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
+import type { Label } from '@adiwajshing/baileys/lib/Types/Label';
+import type { LabelAssociation } from '@adiwajshing/baileys/lib/Types/LabelAssociation';
 import { IGroupRepository } from '@waha/core/engines/noweb/store/IGroupRepository';
 import { ILabelAssociationRepository } from '@waha/core/engines/noweb/store/ILabelAssociationsRepository';
 import { ILabelsRepository } from '@waha/core/engines/noweb/store/ILabelsRepository';
-import { JidFilter } from '@waha/core/utils/jids';
+import {
+  isLidUser,
+  isPnUser,
+  JidFilter,
+  jidsFromKey,
+} from '@waha/core/utils/jids';
 import {
   GetChatMessagesFilter,
   OverviewFilter,
@@ -41,7 +35,6 @@ import { waitUntil } from '@waha/utils/promiseTimeout';
 import * as lodash from 'lodash';
 import { toNumber } from 'lodash';
 import { Logger } from 'pino';
-import { filter } from 'rxjs';
 
 import { IChatRepository } from './IChatRepository';
 import { IContactRepository } from './IContactRepository';
@@ -49,6 +42,8 @@ import { IMessagesRepository } from './IMessagesRepository';
 import { INowebLidPNRepository, LidToPN } from './INowebLidPNRepository';
 import { INowebStorage } from './INowebStorage';
 import { INowebStore } from './INowebStore';
+import { LabelAssociationType } from '../labels/LabelAssociationType';
+import esm from '@waha/vendor/esm';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AsyncLock = require('async-lock');
@@ -118,18 +113,20 @@ export class NowebPersistentStore implements INowebStore {
             if (!message.key) {
               return null;
             }
-            // Phone
-            let pn = message.key.senderPn || message.key.participantPn;
+            const jids = jidsFromKey(message.key);
+            if (!jids) {
+              return null;
+            }
+            let { lid, pn } = jids;
             // 123 => 123@s.whatsapp.net
             if (pn && !pn.includes('@')) {
               pn = `${pn}@s.whatsapp.net`;
             }
             // 123@c.us => 123@s.whatsapp.net
-            if (pn && !isJidUser(pn)) {
-              pn = jidNormalizedUser(pn);
+            if (pn && !isPnUser(pn)) {
+              pn = esm.b.jidNormalizedUser(pn);
             }
             // 999@lid
-            const lid = message.key.senderLid || message.key.participantLid;
             return {
               id: message.key.remoteJid,
               lid: lid,
@@ -250,7 +247,7 @@ export class NowebPersistentStore implements INowebStore {
   }
 
   private async syncMessagesHistory(messages) {
-    const realMessages = messages.filter(isRealMessage);
+    const realMessages = messages.filter(esm.b.isRealMessage);
     messages = messages.filter((msg) => this.jids.include(msg.key.remoteJid));
     await this.messagesRepo.upsert(realMessages);
     this.logger.info(
@@ -266,7 +263,7 @@ export class NowebPersistentStore implements INowebStore {
     }
     let messages = update.messages;
     messages = messages.filter((msg) => this.jids.include(msg.key.remoteJid));
-    const realMessages = messages.filter(isRealMessage);
+    const realMessages = messages.filter(esm.b.isRealMessage);
     await this.messagesRepo.upsert(realMessages);
     this.logger.debug(
       `messages.upsert - ${messages.length} got messages, ${realMessages.length} real messages`,
@@ -276,7 +273,7 @@ export class NowebPersistentStore implements INowebStore {
   private async onMessageUpdate(updates) {
     for (const update of updates) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const jid = jidNormalizedUser(update.key.remoteJid!);
+      const jid = esm.b.jidNormalizedUser(update.key.remoteJid!);
       if (!this.jids.include(jid)) {
         continue;
       }
@@ -319,7 +316,8 @@ export class NowebPersistentStore implements INowebStore {
       // In case of revoked messages - remove it
       // TODO: May be we should save the flag instead of completely removing the message
       const isYetRealMessage =
-        isRealMessage(message, this.socket?.authState?.creds?.me?.id) || false;
+        esm.b.isRealMessage(message, this.socket?.authState?.creds?.me?.id) ||
+        false;
       if (isYetRealMessage) {
         await this.messagesRepo.upsertOne(message);
       } else {
@@ -333,7 +331,7 @@ export class NowebPersistentStore implements INowebStore {
       await this.messagesRepo.deleteAllByJid(item.jid);
       return;
     }
-    const jid = jidNormalizedUser(item.keys[0].remoteJid);
+    const jid = esm.b.jidNormalizedUser(item.keys[0].remoteJid);
     const ids = item.keys.map((key) => key.id);
     await this.messagesRepo.deleteByJidByIds(jid, ids);
   }
@@ -383,7 +381,7 @@ export class NowebPersistentStore implements INowebStore {
       // Remove the group if the current user is removed
       const myJid = this.socket?.authState?.creds?.me?.id;
       const participantsIncludesMe = lodash.find(participants, (p) =>
-        areJidsSameUser(p, myJid),
+        esm.b.areJidsSameUser(p, myJid),
       );
       if (participantsIncludesMe) {
         await this.groupRepo.deleteById(id);
@@ -534,7 +532,7 @@ export class NowebPersistentStore implements INowebStore {
         );
         continue;
       }
-      updateMessageWithReaction(msg, reaction);
+      esm.b.updateMessageWithReaction(msg, reaction);
       await this.messagesRepo.upsertOne(msg);
     }
   }
@@ -553,7 +551,7 @@ export class NowebPersistentStore implements INowebStore {
         );
         continue;
       }
-      updateMessageWithReceipt(msg, receipt);
+      esm.b.updateMessageWithReceipt(msg, receipt);
       await this.messagesRepo.upsertOne(msg);
     }
   }
@@ -596,7 +594,7 @@ export class NowebPersistentStore implements INowebStore {
     if (!data) {
       return null;
     }
-    return proto.WebMessageInfo.fromObject(data);
+    return esm.b.proto.WebMessageInfo.create(data);
   }
 
   getMessagesByJid(
@@ -702,23 +700,23 @@ export class NowebPersistentStore implements INowebStore {
     let lids: LidToPN[] = [];
     for (const contact of contacts) {
       // contact.id = pn, contact.lid = lid
-      if (isJidUser(contact.id) && isLidUser(contact.lid)) {
+      if (isPnUser(contact.id) && isLidUser(contact.lid)) {
         lids.push({
           pn: contact.id,
           id: contact.lid,
         });
       }
-      // contact.pn = pn, contact.lid = lid
-      else if (isJidUser(contact.jid) && isLidUser(contact.lid)) {
+      // contact.phoneNumber = pn, contact.lid = lid
+      else if (isPnUser(contact.phoneNumber) && isLidUser(contact.lid)) {
         lids.push({
-          pn: contact.jid,
+          pn: contact.phoneNumber,
           id: contact.lid,
         });
       }
-      // contact.pn = pn, contact.id = lid
-      else if (isJidUser(contact.jid) && isLidUser(contact.id)) {
+      // contact.phoneNumber = pn, contact.id = lid
+      else if (isPnUser(contact.phoneNumber) && isLidUser(contact.id)) {
         lids.push({
-          pn: contact.jid,
+          pn: contact.phoneNumber,
           id: contact.id,
         });
       }

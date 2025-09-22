@@ -1,8 +1,6 @@
-import {
-  LabelAssociation,
-  LabelAssociationType,
-} from '@adiwajshing/baileys/lib/Types/LabelAssociation';
+import type { LabelAssociation } from '@adiwajshing/baileys/lib/Types/LabelAssociation';
 import { SqlKVRepository } from '@waha/core/storage/sql/SqlKVRepository';
+import { LabelAssociationType } from '@waha/core/engines/noweb/labels/LabelAssociationType';
 
 export class SqlLabelAssociationsMethods {
   constructor(private repository: SqlKVRepository<any>) {}

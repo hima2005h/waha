@@ -1,4 +1,4 @@
-import { WAMessageKey } from '@adiwajshing/baileys';
+import type { WAMessageKey } from '@adiwajshing/baileys';
 import { toJID } from '@waha/core/utils/jids';
 
 /**

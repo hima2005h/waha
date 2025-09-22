@@ -16,13 +16,13 @@ import {
   MessageMappingService,
 } from '@waha/apps/chatwoot/storage';
 import { SessionManager } from '@waha/core/abc/manager.abc';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { WAHAEvents } from '@waha/structures/enums.dto';
 import { WAHAWebhookMessageRevoked } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { toCusFormat } from '@waha/core/utils/jids';
 
 @Processor(QueueName.WAHA_MESSAGE_REVOKED, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageRevokedConsumer extends ChatWootWAHABaseConsumer {

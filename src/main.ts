@@ -17,6 +17,7 @@ import { AppModuleCore } from './core/app.module.core';
 import { SwaggerConfiguratorCore } from './core/SwaggerConfiguratorCore';
 import { AllExceptionsFilter } from './nestjs/AllExceptionsFilter';
 import { getWAHAVersion, VERSION, WAHAVersion } from './version';
+import { loadESMModules } from '@waha/vendor/esm';
 
 const logger: Logger = pino({
   level: getPinoLogLevel(),
@@ -48,8 +49,9 @@ process.on('SIGTERM', () => {
 });
 
 async function loadModules(): Promise<typeof AppModuleCore> {
-  const version = getWAHAVersion();
+  await loadESMModules();
 
+  const version = getWAHAVersion();
   if (version === WAHAVersion.CORE) {
     const { AppModuleCore } = await import('./core/app.module.core');
     return AppModuleCore;

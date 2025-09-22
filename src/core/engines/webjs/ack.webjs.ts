@@ -1,14 +1,7 @@
-import {
-  areJidsSameUser,
-  BinaryNode,
-  getBinaryNodeChildren,
-  getStatusFromReceiptType,
-  isJidGroup,
-  isJidStatusBroadcast,
-  jidEncode,
-  jidNormalizedUser,
-  proto,
-} from '@adiwajshing/baileys';
+import type { proto } from '@adiwajshing/baileys';
+import type { BinaryNode } from '@adiwajshing/baileys';
+import { isJidGroup, isJidStatusBroadcast } from '@waha/core/utils/jids';
+import esm from '@waha/vendor/esm';
 
 export interface ReceiptEvent {
   key: proto.IMessageKey;
@@ -39,7 +32,7 @@ export function jid(field: any) {
         ? 's.whatsapp.net'
         : 'lid';
   }
-  return jidEncode(data.user, server, data.device);
+  return esm.b.jidEncode(data.user, server, data.device);
 }
 
 export function TagReceiptNodeToReceiptEvent(
@@ -47,17 +40,17 @@ export function TagReceiptNodeToReceiptEvent(
   me: Me,
 ): ReceiptEvent[] {
   const { attrs, content } = node;
-  const status = getStatusFromReceiptType(attrs.type);
+  const status = esm.b.getStatusFromReceiptType(attrs.type);
   if (status == null) {
     return [];
   }
 
-  const from = jidNormalizedUser(jid(attrs.from));
-  const participant = jidNormalizedUser(jid(attrs.participant));
-  const recipient = jidNormalizedUser(jid(attrs.recipient));
+  const from = esm.b.jidNormalizedUser(jid(attrs.from));
+  const participant = esm.b.jidNormalizedUser(jid(attrs.participant));
+  const recipient = esm.b.jidNormalizedUser(jid(attrs.recipient));
 
   const isLid = from.includes('lid');
-  const isNodeFromMe = areJidsSameUser(
+  const isNodeFromMe = esm.b.areJidsSameUser(
     participant || from,
     isLid ? me?.lid : me?.id,
   );
@@ -66,7 +59,7 @@ export function TagReceiptNodeToReceiptEvent(
 
   // basically, we only want to know when a message from us has been delivered to/read by the other person
   // or another device of ours has read some messages
-  if (status < proto.WebMessageInfo.Status.SERVER_ACK && isNodeFromMe) {
+  if (status < esm.b.proto.WebMessageInfo.Status.SERVER_ACK && isNodeFromMe) {
     return [];
   }
 
@@ -78,7 +71,7 @@ export function TagReceiptNodeToReceiptEvent(
 
   const ids = [attrs.id];
   if (Array.isArray(content)) {
-    const items = getBinaryNodeChildren(content[0], 'item');
+    const items = esm.b.getBinaryNodeChildren(content[0], 'item');
     ids.push(...items.map((i) => i.attrs.id));
   }
 
@@ -134,12 +127,12 @@ function handleGroupedReceipts(
     const participantKey = participants.attrs?.key;
     if (!participantKey) continue;
 
-    const users = getBinaryNodeChildren(participants, 'user');
+    const users = esm.b.getBinaryNodeChildren(participants, 'user');
     for (const user of users) {
       const userAttrs = user.attrs;
       if (!userAttrs) continue;
 
-      const userJid = jidNormalizedUser(jid(userAttrs.jid));
+      const userJid = esm.b.jidNormalizedUser(jid(userAttrs.jid));
       if (!userJid) continue;
 
       key.participant = fromMe ? (isLid ? me.lid : me.id) : userJid;

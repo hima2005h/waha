@@ -1,7 +1,7 @@
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import { Label, LabelChatAssociation } from '@waha/structures/labels.dto';
 
 import * as gows from './types';
+import { toCusFormat } from '@waha/core/utils/jids';
 
 /**
  * Converts a GOWS LabelEdit event to a Label DTO

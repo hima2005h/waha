@@ -1,4 +1,3 @@
-import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import {
   CoreMediaConverter,
   IMediaConverter,
@@ -7,6 +6,7 @@ import { MessagesForRead } from '@waha/core/utils/convertors';
 import {
   IgnoreJidConfig,
   isJidNewsletter,
+  isJidBroadcast,
   JidFilter,
 } from '@waha/core/utils/jids';
 import {

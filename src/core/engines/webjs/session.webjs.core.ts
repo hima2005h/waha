@@ -1,13 +1,9 @@
-import { isJidGroup, isJidStatusBroadcast } from '@adiwajshing/baileys';
 import { UnprocessableEntityException } from '@nestjs/common';
 import {
   getChannelInviteLink,
   WhatsappSession,
 } from '@waha/core/abc/session.abc';
-import {
-  getFromToParticipant,
-  toCusFormat,
-} from '@waha/core/engines/noweb/session.noweb.core';
+import { getFromToParticipant } from '@waha/core/engines/noweb/session.noweb.core';
 import {
   ReceiptEvent,
   TagReceiptNodeToReceiptEvent,
@@ -149,6 +145,11 @@ import {
 import { Message as MessageInstance } from 'whatsapp-web.js/src/structures';
 
 import { WAJSPresenceChatStateType, WebJSPresence } from './types';
+import {
+  isJidGroup,
+  isJidStatusBroadcast,
+  toCusFormat,
+} from '@waha/core/utils/jids';
 
 export interface WebJSConfig {
   webVersion?: string;

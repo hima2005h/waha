@@ -1,4 +1,3 @@
-import { isJidGroup, isJidStatusBroadcast } from '@adiwajshing/baileys';
 import { conversation_message_create } from '@figuro/chatwoot-sdk';
 import type { generic_id } from '@figuro/chatwoot-sdk/dist/models/generic_id';
 import type { message } from '@figuro/chatwoot-sdk/dist/models/message';
@@ -22,7 +21,6 @@ import {
   WhatsAppMessage,
 } from '@waha/apps/chatwoot/storage';
 import { SessionManager } from '@waha/core/abc/manager.abc';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { WAHAEvents } from '@waha/structures/enums.dto';
@@ -36,7 +34,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
-import { isJidBroadcast } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import { isJidBroadcast, isJidGroup, toCusFormat } from '@waha/core/utils/jids';
 
 export function ListenEventsForChatWoot() {
   return [

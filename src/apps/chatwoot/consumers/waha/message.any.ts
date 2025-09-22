@@ -1,3 +1,4 @@
+import type { proto } from '@adiwajshing/baileys';
 import { Processor } from '@nestjs/bullmq';
 import { JOB_CONCURRENCY } from '@waha/apps/app_sdk/constants';
 import { SendAttachment } from '@waha/apps/chatwoot/client/types';
@@ -21,7 +22,6 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 import { JobLink } from '@waha/apps/app_sdk/JobUtils';
-import { proto } from '@adiwajshing/baileys';
 import * as lodash from 'lodash';
 import { parseVCardV3, SimpleVCardInfo } from '@waha/core/vcard';
 

@@ -1,8 +1,8 @@
 import { WhatsAppMessage } from '@waha/apps/chatwoot/storage';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import { WAHAEngine } from '@waha/structures/enums.dto';
 import { getEngineName } from '@waha/version';
 import { Message as MessageInstance } from 'whatsapp-web.js/src/structures';
+import { toCusFormat } from '@waha/core/utils/jids';
 
 interface IEngineHelper {
   WhatsAppMessageKeys(message: any): WhatsAppMessage;

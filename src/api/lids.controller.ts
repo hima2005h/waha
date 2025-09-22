@@ -1,4 +1,3 @@
-import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import {
   Controller,
   Get,
@@ -22,6 +21,7 @@ import {
 import { PaginationParams, SortOrder } from '@waha/structures/pagination.dto';
 
 import { SessionManager } from '../core/abc/manager.abc';
+import { isLidUser } from '@waha/core/utils/jids';
 
 @ApiSecurity('api_key')
 @Controller('api/:session/lids')

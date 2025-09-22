@@ -11,7 +11,7 @@ import makeWASocket, {
   getContentType,
   getKeyAuthor,
   isJidGroup,
-  isJidUser,
+  isPnUser,
   isRealMessage,
   jidNormalizedUser,
   makeCacheableSignalKeyStore,
@@ -439,7 +439,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     key: WAMessageKey,
   ): Promise<WAMessageContent | undefined> {
     if (!this.store) {
-      return proto.Message.fromObject({});
+      return proto.Message.create({});
     }
     const msg = await this.store.loadMessage(key.remoteJid, key.id);
     return msg?.message || undefined;
@@ -2141,7 +2141,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
         this.logger.debug({ jid: update.id }, 'Profile picture updated');
         const url = await this.refreshProfilePicture(update.id);
-        if (isJidUser(update.id)) {
+        if (isPnUser(update.id) || isLidUser(update.id)) {
           // update 123@c.us and 123 profiles as well
           const cus = toCusFormat(update.id);
           this.profilePictures.set(cus, url);

@@ -1,7 +1,7 @@
-import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
 import { AttributeKey } from '@waha/apps/chatwoot/const';
 import { WhatsAppMessage } from '@waha/apps/chatwoot/storage';
 import { buildMessageId } from '@waha/core/engines/noweb/session.noweb.core';
+import { isLidUser } from '@waha/core/utils/jids';
 
 export function GetJID(contact: any): string | null {
   return contact?.custom_attributes?.[AttributeKey.WA_JID];

@@ -1,11 +1,10 @@
-import { GroupMetadata, jidNormalizedUser } from '@adiwajshing/baileys';
+import type { GroupMetadata } from '@adiwajshing/baileys';
 import type { Contact } from '@adiwajshing/baileys/lib/Types/Contact';
-import {
+import type {
   GroupParticipant as NOWEBGroupParticipant,
   ParticipantAction,
 } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
 import { getGroupInviteLink } from '@waha/core/abc/session.abc';
-import { toCusFormat } from '@waha/core/engines/noweb/session.noweb.core';
 import {
   GroupInfo,
   GroupParticipant,
@@ -18,6 +17,8 @@ import {
   GroupV2ParticipantsEvent,
   GroupV2UpdateEvent,
 } from '@waha/structures/groups.events.dto';
+import { toCusFormat } from '@waha/core/utils/jids';
+import esm from '@waha/vendor/esm';
 
 export function ToGroupInfo(group: Partial<GroupMetadata>): GroupInfo {
   let participants: GroupParticipant[] = undefined;
@@ -128,7 +129,7 @@ export function ToGroupV2LeaveEvent(
   if (!me) {
     return null;
   }
-  const meId = jidNormalizedUser(me.id);
+  const meId = esm.b.jidNormalizedUser(me.id);
   if (!update.participants.includes(meId)) {
     return null;
   }

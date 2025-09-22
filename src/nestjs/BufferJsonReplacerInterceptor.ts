@@ -1,4 +1,3 @@
-import { BufferJSON } from '@adiwajshing/baileys/lib/Utils';
 import {
   CallHandler,
   ExecutionContext,
@@ -8,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import esm from '@waha/vendor/esm';
 
 @Injectable()
 export class BufferJsonReplacerInterceptor implements NestInterceptor {
@@ -27,7 +27,7 @@ export class BufferJsonReplacerInterceptor implements NestInterceptor {
           return data;
         }
 
-        return JSON.parse(JSON.stringify(data, BufferJSON.replacer));
+        return JSON.parse(JSON.stringify(data, esm.b.BufferJSON.replacer));
       }),
     );
   }

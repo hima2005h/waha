@@ -1,9 +1,10 @@
-import { extractMessageContent, proto } from '@adiwajshing/baileys';
+import type { proto } from '@adiwajshing/baileys';
+import esm from '@waha/vendor/esm';
 
 export function extractMediaContent(
   content: any | proto.IMessage | null | undefined,
 ) {
-  content = extractMessageContent(content);
+  content = esm.b.extractMessageContent(content);
   const mediaContent =
     content?.documentMessage ||
     content?.imageMessage ||

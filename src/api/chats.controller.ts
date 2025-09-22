@@ -1,4 +1,3 @@
-import { isJidGroup } from '@adiwajshing/baileys';
 import {
   Body,
   Controller,

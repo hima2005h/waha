@@ -1,5 +1,5 @@
-import { generateWAMessageFromContent, proto } from '@adiwajshing/baileys';
 import { Button, ButtonType } from '@waha/structures/chatting.buttons.dto';
+import esm from '@waha/vendor/esm';
 
 function toName(type: ButtonType) {
   switch (type) {
@@ -96,8 +96,8 @@ export async function sendButtonMessage(
     };
   }
 
-  const msg = proto.Message.fromObject(data);
-  const fullMessage = generateWAMessageFromContent(chatId, msg, {
+  const msg = esm.b.proto.Message.create(data);
+  const fullMessage = esm.b.generateWAMessageFromContent(chatId, msg, {
     userJid: sock?.user?.id,
   });
   await sock.relayMessage(chatId, fullMessage.message, {

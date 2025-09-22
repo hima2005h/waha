@@ -11,28 +11,19 @@ import type {
   WAMessageCursor,
   WAMessageKey,
 } from '@adiwajshing/baileys/lib/Types';
-import { Label } from '@adiwajshing/baileys/lib/Types/Label';
-import {
+import type { Label } from '@adiwajshing/baileys/lib/Types/Label';
+import * as lodash from 'lodash';
+import type {
   LabelAssociation,
-  LabelAssociationType,
   MessageLabelAssociation,
 } from '@adiwajshing/baileys/lib/Types/LabelAssociation';
-import {
-  md5,
-  toNumber,
-  updateMessageWithReaction,
-  updateMessageWithReceipt,
-} from '@adiwajshing/baileys/lib/Utils';
-import {
-  jidDecode,
-  jidNormalizedUser,
-} from '@adiwajshing/baileys/lib/WABinary';
-import { proto } from '@adiwajshing/baileys/WAProto';
 import type { Comparable } from '@adiwajshing/keyed-db/lib/Types';
 import type { Logger } from 'pino';
 
 import makeOrderedDictionary from './make-ordered-dictionary';
 import { ObjectRepository } from './object-repository';
+import { LabelAssociationType } from '@waha/core/engines/noweb/labels/LabelAssociationType';
+import esm from '@waha/vendor/esm';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const KeyedDB = require('@adiwajshing/keyed-db').default;
@@ -137,7 +128,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
         isLatest,
         syncType,
       }) => {
-        if (syncType === proto.HistorySync.HistorySyncType.ON_DEMAND) {
+        if (syncType === esm.b.proto.HistorySync.HistorySyncType.ON_DEMAND) {
           return; // FOR NOW,
           //TODO: HANDLE
         }
@@ -187,10 +178,11 @@ export default (config: BaileysInMemoryStoreConfig) => {
         } else {
           const contactHashes = await Promise.all(
             Object.keys(contacts).map(async (contactId) => {
-              const { user } = jidDecode(contactId)!;
+              const { user } = esm.b.jidDecode(contactId)!;
               return [
                 contactId,
-                (await md5(Buffer.from(user + 'WA_ADD_NOTIF', 'utf8')))
+                esm.b
+                  .md5(Buffer.from(user + 'WA_ADD_NOTIF', 'utf8'))
                   .toString('base64')
                   .slice(0, 3),
               ];
@@ -279,7 +271,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
         case 'append':
         case 'notify':
           for (const msg of newMessages) {
-            const jid = jidNormalizedUser(msg.key.remoteJid!);
+            const jid = esm.b.jidNormalizedUser(msg.key.remoteJid!);
             const list = assertMessageList(jid);
             list.upsert(msg, 'append');
 
@@ -287,7 +279,9 @@ export default (config: BaileysInMemoryStoreConfig) => {
               ev.emit('chats.upsert', [
                 {
                   id: jid,
-                  conversationTimestamp: toNumber(msg.messageTimestamp as any),
+                  conversationTimestamp: lodash.toNumber(
+                    msg.messageTimestamp as any,
+                  ),
                   unreadCount: 1,
                 },
               ]);
@@ -299,7 +293,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
     });
     ev.on('messages.update', (updates) => {
       for (const { update, key } of updates) {
-        const list = assertMessageList(jidNormalizedUser(key.remoteJid!));
+        const list = assertMessageList(esm.b.jidNormalizedUser(key.remoteJid!));
         if (update?.status) {
           const listStatus = list.get(key.id!)?.status;
           if (listStatus && update?.status <= listStatus) {
@@ -382,7 +376,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
         const obj = messages[key.remoteJid!];
         const msg = obj?.get(key.id!);
         if (msg) {
-          updateMessageWithReceipt(msg, receipt);
+          esm.b.updateMessageWithReceipt(msg, receipt);
         }
       }
     });
@@ -392,7 +386,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
         const obj = messages[key.remoteJid!];
         const msg = obj?.get(key.id!);
         if (msg) {
-          updateMessageWithReaction(msg, reaction);
+          esm.b.updateMessageWithReaction(msg, reaction);
         }
       }
     });
@@ -420,7 +414,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
     for (const jid in json.messages) {
       const list = assertMessageList(jid);
       for (const msg of json.messages[jid]) {
-        list.upsert(proto.WebMessageInfo.fromObject(msg), 'append');
+        list.upsert(esm.b.proto.WebMessageInfo.create(msg), 'append');
       }
     }
   };

@@ -1,11 +1,11 @@
-import {
+import type {
   BaileysEventEmitter,
   Chat,
   Contact,
   proto,
 } from '@adiwajshing/baileys';
-import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
-import { Label } from '@adiwajshing/baileys/lib/Types/Label';
+import type { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
+import type { Label } from '@adiwajshing/baileys/lib/Types/Label';
 import {
   GetChatMessagesFilter,
   OverviewFilter,

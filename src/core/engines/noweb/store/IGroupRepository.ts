@@ -1,4 +1,4 @@
-import { GroupMetadata } from '@adiwajshing/baileys';
+import type { GroupMetadata } from '@adiwajshing/baileys';
 import { PaginationParams } from '@waha/structures/pagination.dto';
 
 export interface IGroupRepository {

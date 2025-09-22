@@ -35,7 +35,7 @@ for-swagger:
 	WHATSAPP_SWAGGER_CONFIG_ADVANCED=true . ${NVM_DIR}/nvm.sh && nvm exec yarn start
 
 up-noweb:
-	. ${NVM_DIR}/nvm.sh && nvm exec yarn up @adiwajshing/baileys@github:devlikeapro/Baileys#fork-master-2025-07-04
+	. ${NVM_DIR}/nvm.sh && nvm exec yarn up @adiwajshing/baileys@github:devlikeapro/Baileys#fork-master-2025-09-21
 
 up-noweb-libsignal:
 	. ${NVM_DIR}/nvm.sh && nvm exec yarn up libsignal@github:devlikeapro/libsignal-node#fork-master

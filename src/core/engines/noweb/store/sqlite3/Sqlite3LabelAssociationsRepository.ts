@@ -1,4 +1,4 @@
-import {
+import type {
   LabelAssociation,
   LabelAssociationType,
 } from '@adiwajshing/baileys/lib/Types/LabelAssociation';

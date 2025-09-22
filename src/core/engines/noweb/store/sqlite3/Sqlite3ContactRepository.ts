@@ -1,4 +1,4 @@
-import { Contact } from '@adiwajshing/baileys';
+import type { Contact } from '@adiwajshing/baileys';
 import { NowebContactSchema } from '@waha/core/engines/noweb/store/schemas';
 import { KnexPaginator } from '@waha/utils/Paginator';
 
