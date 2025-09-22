@@ -221,17 +221,7 @@ export class NowebPersistentStore implements INowebStore {
   }
 
   private async onMessagingHistorySet(history) {
-    const { contacts, chats, messages, isLatest } = history;
-    if (isLatest) {
-      this.logger.debug(
-        'history sync - clearing all entities, got latest history',
-      );
-      await Promise.all([
-        this.withLock('contacts', () => this.contactRepo.deleteAll()),
-        this.withLock('chats', () => this.chatRepo.deleteAll()),
-        this.withLock('messages', () => this.messagesRepo.deleteAll()),
-      ]);
-    }
+    const { contacts, chats, messages } = history;
 
     await Promise.all([
       this.withLock('contacts', async () => {
