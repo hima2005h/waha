@@ -410,9 +410,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     await this.ensureStore();
     this.sock = await this.makeSocket();
 
+    this.fixMessages();
     this.issueMessageUpdateOnEdits();
     this.issueMessageUpdateOnPoll();
-    this.fixMessageUpsertStatus();
     this.issuePresenceUpdateOnMessageUpsert();
     if (this.isDebugEnabled()) {
       this.listenEngineEventsInDebugMode();
@@ -586,12 +586,16 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     await this.store?.close();
   }
 
-  private fixMessageUpsertStatus() {
-    // If no status - set it to WAMessageAck.DEVICE
+  private fixMessages() {
     this.sock.ev.on('messages.upsert', ({ messages }) => {
       for (const message of messages) {
-        if (message.status == null) {
-          message.status = AckToStatus(WAMessageAck.DEVICE);
+        // If no status - set it to WAMessageAck.DEVICE
+        message.status = message.status ?? AckToStatus(WAMessageAck.DEVICE);
+
+        // Fix fromMe in @lid addressed groups
+        // https://github.com/devlikeapro/waha/issues/1350
+        if (message.key.participant === this.getSessionMeInfo()?.lid) {
+          message.key.fromMe = true;
         }
       }
     });
