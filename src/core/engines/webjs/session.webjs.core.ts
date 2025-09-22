@@ -1240,8 +1240,10 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   }
 
   protected ChannelMetadataToChannel(metadata: any): Channel {
-    let role = metadata.membershipType.toUpperCase();
+    let role = metadata.membershipType?.toUpperCase();
     if (role === 'VIEWER') {
+      role = ChannelRole.GUEST;
+    } else if (!role) {
       role = ChannelRole.GUEST;
     }
     return {
