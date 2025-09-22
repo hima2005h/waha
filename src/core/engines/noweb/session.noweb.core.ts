@@ -24,6 +24,7 @@ import makeWASocket, {
   WAMessageKey,
   WAMessageUpdate,
 } from '@adiwajshing/baileys';
+import type { WABrowserDescription } from '@adiwajshing/baileys';
 import { WACallEvent } from '@adiwajshing/baileys/lib/Types/Call';
 import { BaileysEventMap } from '@adiwajshing/baileys/lib/Types/Events';
 import { GroupMetadata } from '@adiwajshing/baileys/lib/Types/GroupMetadata';
@@ -308,9 +309,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   getSocketConfig(agent, state): Partial<SocketConfig> {
     const fullSyncEnabled = this.sessionConfig?.noweb?.store?.fullSync || false;
-    const browser = fullSyncEnabled
-      ? Browsers.ubuntu('Desktop')
-      : Browsers.ubuntu('Chrome');
+    const browser = ['Ubuntu', 'Chrome', '20.0.04'] as WABrowserDescription;
     let markOnlineOnConnect = this.sessionConfig?.noweb?.markOnline;
     if (markOnlineOnConnect == undefined) {
       markOnlineOnConnect = true;
