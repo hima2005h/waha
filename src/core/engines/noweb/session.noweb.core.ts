@@ -2577,11 +2577,16 @@ export class NOWEBEngineMediaProcessor implements IMediaEngineProcessor<any> {
 
   async getMediaBuffer(message: any): Promise<Buffer | null> {
     const content = extractMediaContent(message.message);
+    const url = content.url;
     // Fix Stickers
     // https://github.com/devlikeapro/waha/issues/504
-    const url = content.url;
+    // Set it to null so the engine handles it right
     if (!hasPath(url)) {
-      // Set it to null so the engine handles it right
+      content.url = null;
+    }
+    // Fix Newsletter
+    // directPath has the unencrypted path
+    if (isJidNewsletter(message.key.remoteJid) && content.directPath) {
       content.url = null;
     }
 
@@ -2594,8 +2599,7 @@ export class NOWEBEngineMediaProcessor implements IMediaEngineProcessor<any> {
         reuploadRequest: this.session.sock.updateMediaMessage,
       },
     ).finally(() => {
-      // Fix Stickers - set url back, just to have it in the response
-      // https://github.com/devlikeapro/waha/issues/504
+      // Set url back in case we removed it
       content.url = url;
     })) as Buffer;
   }
