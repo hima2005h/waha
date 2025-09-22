@@ -62,7 +62,10 @@ export class MediaManager implements IMediaManager {
       return null;
     }
 
-    const extension = mime.extension(mimetype);
+    let extension = mime.extension(mimetype);
+    if (mimetype == 'application/was' && !extension) {
+      extension = 'zip';
+    }
     const mediaData: MediaData = {
       session: session,
       message: {
@@ -125,7 +128,6 @@ export class MediaManager implements IMediaManager {
     try {
       media.filename = processor.getFilename(message);
       media.mimetype = processor.getMimetype(message);
-      media.filename = processor.getFilename(message);
       const data = await this.processMediaInternal(processor, message, session);
       media = { ...media, ...data };
     } catch (err) {
