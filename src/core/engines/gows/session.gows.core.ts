@@ -142,6 +142,7 @@ import {
   retry,
   share,
 } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { promisify } from 'util';
 
@@ -211,6 +212,8 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   protected me: MeInfo | null;
   public session: messages.Session;
   protected presences: any;
+
+  private local$ = new Subject<EnginePayload>();
 
   public constructor(config) {
     super(config);
@@ -298,7 +301,11 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     );
 
     // Retry on error with delay
-    this.all$ = this.stream$.pipe(retry({ delay: 2_000 }), share());
+    // Accept locally re-issued events as well
+    this.all$ = merge(this.stream$, this.local$).pipe(
+      retry({ delay: 2_000 }),
+      share(),
+    );
   }
 
   subscribeEvents() {
@@ -384,6 +391,48 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
       // add new value
       this.presences.set(Chat, [...filtered, event]);
     });
+
+    //
+    // Fix for "typing" after sending a message
+    // Re-issue a synthetic ChatPresence(PAUSED) to cancel COMPOSING state
+    // Works for both DM and Group chats
+    //
+    events.on(WhatsMeowEvent.MESSAGE, (message: any) => {
+      const chat = message?.Info?.Chat;
+      if (!this.jids.include(chat)) {
+        return;
+      }
+      if (message?.Info?.IsFromMe) {
+        return;
+      }
+      const sender = message?.Info?.Sender || chat;
+      if (!chat || !sender) {
+        return;
+      }
+      const stored: Array<gows.Presence | gows.ChatPresence> =
+        this.presences.get(chat) || [];
+      const composing = stored.find(
+        (presence: any) =>
+          (presence?.Sender === sender || presence?.From === sender) &&
+          presence?.State === gows.ChatPresenceState.COMPOSING,
+      ) as gows.ChatPresence | undefined;
+      if (!composing) {
+        return;
+      }
+      const presence: gows.ChatPresence = {
+        Chat: chat,
+        Sender: sender,
+        IsFromMe: false,
+        IsGroup: !!isJidGroup(chat),
+        State: gows.ChatPresenceState.PAUSED,
+        Media: (composing as any)?.Media ?? gows.ChatPresenceMedia.TEXT,
+      } as any;
+      this.local$.next({
+        event: WhatsMeowEvent.CHAT_PRESENCE,
+        data: presence,
+      } as any);
+    });
+
     events.start();
   }
 
