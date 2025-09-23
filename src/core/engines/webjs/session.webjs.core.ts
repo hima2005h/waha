@@ -64,6 +64,7 @@ import {
   CheckNumberStatusQuery,
   EditMessageRequest,
   MessageButtonReply,
+  MessageContactVcardRequest,
   MessageFileRequest,
   MessageForwardRequest,
   MessageImageRequest,
@@ -76,6 +77,7 @@ import {
   SendSeenRequest,
   WANumberExistResult,
 } from '@waha/structures/chatting.dto';
+import { toVcardV3 } from '@waha/core/vcard';
 import {
   ContactQuery,
   ContactRequest,
@@ -661,6 +663,28 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
       linkPreview: request.linkPreview,
     };
     return message.edit(request.text, options);
+  }
+
+  async sendContactVCard(request: MessageContactVcardRequest) {
+    const chatId = this.ensureSuffix(request.chatId);
+    const vcards = request.contacts.map((el) => toVcardV3(el as any));
+    const options = this.getMessageOptions(request);
+
+    // Single vCard: pass raw vcard text as a message body.
+    // WEBJS will detect BEGIN:VCARD when parseVCards=true and send as a contact card.
+    if (vcards.length <= 1) {
+      const vcard = vcards[0] || '';
+      return this.whatsapp.sendMessage(chatId, vcard, options);
+    }
+
+    // Multiple vCards: send as a single multi_vcard message using extra options.
+    const extra = {
+      type: 'multi_vcard',
+      vcardList: vcards.map((v) => ({ vcard: v })),
+      body: null,
+    } as any;
+
+    return this.whatsapp.sendMessage(chatId, '', { ...options, extra });
   }
 
   reply(request: MessageReplyRequest) {
