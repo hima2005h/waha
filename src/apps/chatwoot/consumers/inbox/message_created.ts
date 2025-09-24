@@ -90,7 +90,9 @@ export class MessageHandler {
     const results = [];
     let part = 1;
     const replyTo = await this.getReplyTo(message).catch((err) => {
-      this.logger.error(`Error getting reply to message ID: ${err}`);
+      this.logger.error(
+        `ChatWoot => WhatsApp: error getting reply to message ID: ${err}`,
+      );
       return undefined;
     });
 

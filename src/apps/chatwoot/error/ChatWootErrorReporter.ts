@@ -11,8 +11,10 @@ import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { Job } from 'bullmq';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
 
+const renderer: ErrorRenderer = new ErrorRenderer();
+
 export class ChatWootErrorReporter {
-  private errorRenderer: ErrorRenderer = new ErrorRenderer();
+  private errorRenderer: ErrorRenderer = renderer;
 
   constructor(
     private logger: ILogger,
@@ -27,8 +29,14 @@ export class ChatWootErrorReporter {
     error: any,
     replyTo?: number,
   ) {
-    const errorText = this.errorRenderer.renderError(error);
+    const errorText = this.errorRenderer.text(error);
     this.logger.error(errorText);
+    try {
+      const data = this.errorRenderer.data(error);
+      this.logger.error(JSON.stringify(data, null, 2));
+    } catch (err) {
+      this.logger.error(`Error occurred while login details for error: ${err}`);
+    }
     const template = this.l.key(TKey.JOB_REPORT_ERROR);
     const nextDelay = NextAttemptDelayInWholeSeconds(this.job);
     const attempts = {

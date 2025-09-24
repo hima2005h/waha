@@ -299,7 +299,9 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
     }
     const replyTo = await this.getReplyToChatWootMessageID(payload).catch(
       (err) => {
-        this.logger.error(`Error getting reply to message ID: ${err}`);
+        this.logger.error(
+          `WhatsApp => ChatWoot - error getting reply to message ID: ${err}`,
+        );
         return undefined;
       },
     );
