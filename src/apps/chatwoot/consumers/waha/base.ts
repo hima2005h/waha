@@ -327,6 +327,6 @@ export abstract class MessageBaseHandler<Payload extends WAMessageBase> {
       chat_id: payload.from,
       message_id: replyToWhatsAppID,
     });
-    return chatwoot.message_id;
+    return chatwoot?.message_id;
   }
 }
