@@ -51,10 +51,17 @@ export function HasBeenRetried(job: Job): boolean {
   return attemptsMade > 1;
 }
 
+let base =
+  process.env.WAHA_PUBLIC_URL ||
+  process.env.WAHA_BASE_URL ||
+  'http://localhost:3000';
+// cut / at the end
+base = base.replace(/\/+$/, '');
+
 export function JobLink(job: Job): { text: string; url: string } {
   const text = `${job.queueName} => ${job.id}`;
-  const url = `http://localhost:3000/jobs/queue/${encodeURIComponent(
-    job.queueName,
-  )}/${job.id}`;
+  const url = `${base}/jobs/queue/${encodeURIComponent(job.queueName)}/${
+    job.id
+  }`;
   return { text: text, url: url };
 }
