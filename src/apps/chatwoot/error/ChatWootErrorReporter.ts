@@ -77,9 +77,6 @@ export class ChatWootErrorReporter {
     type: MessageType,
     replyTo?: number,
   ): Promise<void> {
-    const jobUrl = `http://localhost:3000/jobs/queue/${encodeURIComponent(
-      this.job.queueName,
-    )}/${this.job.id}`;
     const template = this.l.key(TKey.JOB_REPORT_SUCCEEDED);
     const attempts = {
       current: this.job.attemptsMade + 1,
@@ -87,10 +84,7 @@ export class ChatWootErrorReporter {
     };
 
     const content = template.render({
-      details: {
-        text: `${this.job.queueName} => ${this.job.id}`,
-        url: jobUrl,
-      },
+      details: JobLink(this.job),
       attempts: attempts,
     });
 
