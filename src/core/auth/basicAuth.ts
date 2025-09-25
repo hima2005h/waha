@@ -11,7 +11,7 @@ export function BasicAuthFunction(username, password, exclude: string[] = []) {
     const auth = basicAuth({
       challenge: true,
       users: {
-        [username]: password,
+        [String(username)]: String(password),
       },
     });
     auth(req, res, next);
