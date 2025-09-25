@@ -142,7 +142,7 @@ export class ContactAPI {
       })
       .catch((e) => {
         this.logger.warn(
-          'Error updating avatar_url for contact.id: ' + contactId,
+          `Error updating avatar_url for contact.id: ${contactId}`,
         );
         this.logger.warn(e);
       });
