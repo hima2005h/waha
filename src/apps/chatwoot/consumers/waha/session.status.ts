@@ -20,7 +20,6 @@ import { WAHAWebhookSessionStatus } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { TKey } from '@waha/apps/chatwoot/i18n/templates';
-import { sleep } from '@nestjs/terminus/dist/utils';
 import { waitUntil } from '@waha/utils/promiseTimeout';
 
 @Processor(QueueName.WAHA_SESSION_STATUS, { concurrency: JOB_CONCURRENCY })
@@ -103,6 +102,20 @@ export class SessionStatusHandler {
         });
         break;
       case WAHASessionStatus.STOPPED:
+        try {
+          // Check the session is yet in STOPPED status.
+          // In case of server restarts,
+          //  the consumer can process STOPPED after STARTING/WORKING
+          const response = await this.waha.get(data.session);
+          if (response.status != WAHASessionStatus.STOPPED) {
+            return;
+          }
+        } catch (_) {}
+        text = this.l.key(TKey.APP_SESSION_STATUS_ERROR).r();
+        text += '\n\n';
+        text += this.l.key(TKey.APP_HELP_REMINDER).r();
+        text += '\n\n';
+        break;
       case WAHASessionStatus.FAILED:
         text = this.l.key(TKey.APP_SESSION_STATUS_ERROR).r();
         text += '\n\n';
