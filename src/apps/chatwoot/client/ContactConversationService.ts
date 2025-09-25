@@ -68,7 +68,13 @@ export class ContactConversationService {
 
     // Update Avatar if nothing, but keep the original one if any
     if (!contact.data.thumbnail) {
-      const avatarUrl = await contactInfo.AvatarUrl();
+      const avatarUrl = await contactInfo.AvatarUrl().catch((err) => {
+        this.logger.warn(
+          `Error getting avatar for chat.id from WhatsApp: ${chatId}`,
+        );
+        this.logger.warn(err);
+        return null;
+      });
       if (avatarUrl) {
         this.contactAPI.updateAvatarUrlSafe(contact.data.id, avatarUrl);
       }
