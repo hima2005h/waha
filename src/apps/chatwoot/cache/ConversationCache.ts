@@ -1,8 +1,7 @@
-import { public_conversation } from '@figuro/chatwoot-sdk';
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
 import * as NodeCache from 'node-cache';
 
-import { IConversationCache } from './IConversationCache';
+import { ConversationId, IConversationCache } from './IConversationCache';
 
 const cache: NodeCache = new NodeCache({
   stdTTL: 24 * 60 * 60, // 1 day
@@ -16,7 +15,7 @@ export function CacheForConfig(config: ChatWootAPIConfig): ConversationCache {
 class ConversationCache implements IConversationCache {
   constructor(private prefix: string) {}
 
-  fullKey(key: string) {
+  private fullKey(key: string) {
     return `${this.prefix}.${key}`;
   }
 
@@ -25,7 +24,7 @@ class ConversationCache implements IConversationCache {
     cache.del(fullKey);
   }
 
-  get(key: string): public_conversation | null {
+  get(key: string): ConversationId | null {
     const fullKey = this.fullKey(key);
     return cache.get(fullKey) || null;
   }
@@ -35,7 +34,7 @@ class ConversationCache implements IConversationCache {
     return cache.has(fullKey);
   }
 
-  set(key: string, value: public_conversation): void {
+  set(key: string, value: ConversationId): void {
     const fullKey = this.fullKey(key);
     cache.set(fullKey, value);
   }

@@ -137,6 +137,7 @@ export class DIContainer {
     if (!this.conversationAPI) {
       this.conversationAPI = new ConversationAPI(
         this.config,
+        this.AccountAPI(),
         this.InboxAPI(),
         this.logger,
       );

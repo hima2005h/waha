@@ -1,7 +1,6 @@
 import ChatwootClient, {
-  ApiError,
+  ApiError as ChatWootAPIError,
   public_contact_create_update_payload,
-  public_conversation,
 } from '@figuro/chatwoot-sdk';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
 import { ContactAPI } from '@waha/apps/chatwoot/client/ContactAPI';
@@ -12,7 +11,10 @@ import { InboxContactInfo } from '@waha/apps/chatwoot/contacts/InboxContactInfo'
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 
 import { CacheForConfig } from '../cache/ConversationCache';
-import { IConversationCache } from '../cache/IConversationCache';
+import {
+  ConversationId,
+  IConversationCache,
+} from '../cache/IConversationCache';
 
 export interface ContactInfo {
   ChatId(): string;
@@ -40,7 +42,7 @@ export class ContactConversationService {
 
   private async upsertByContactInfo(
     contactInfo: ContactInfo,
-  ): Promise<public_conversation> {
+  ): Promise<ConversationId> {
     const chatId = contactInfo.ChatId();
 
     // Check cache for chat id
@@ -73,39 +75,42 @@ export class ContactConversationService {
     }
 
     this.logger.info(
-      `Using contact for chat.id: ${chatId}, contact.id: ${contact.sourceId}`,
+      `Using contact for chat.id: ${chatId}, contact.id: ${contact.data.id}, contact.sourceId: ${contact.sourceId}`,
     );
 
     //
     // Get or create a conversation for this inbox
     //
-    const conversation = await this.conversationAPI.upsert(contact.sourceId);
+    const conversation = await this.conversationAPI.upsert({
+      id: contact.data.id,
+      sourceId: contact.sourceId,
+    });
     this.logger.info(
       `Using conversation for chat.id: ${chatId}, conversation.id: ${conversation.id}, contact.id: ${contact.sourceId}`,
     );
 
     // Save to cache
-    this.cache.set(chatId, conversation);
-    return conversation;
+    this.cache.set(chatId, conversation.id);
+    return conversation.id;
   }
 
   public async ConversationByContact(
     contactInfo: ContactInfo,
   ): Promise<Conversation> {
     const chatId = contactInfo.ChatId();
-    const publicConversation = await this.upsertByContactInfo(contactInfo);
+    const conversationId = await this.upsertByContactInfo(contactInfo);
     const conversation = new Conversation(
       this.accountAPI,
       this.config.accountId,
-      publicConversation.id,
+      conversationId,
     );
     conversation.onError = (err) => {
-      if (err instanceof ApiError) {
+      if (err instanceof ChatWootAPIError) {
         // invalidate cache
         this.cache.delete(chatId);
         this.logger.error(`ApiError: ${err.message}`);
         this.logger.error(
-          `ApiError occurred, invalidating cache for chat.id: ${chatId}, conversation.id: ${publicConversation.id}`,
+          `ApiError occurred, invalidating cache for chat.id: ${chatId}, conversation.id: ${conversationId}`,
         );
       }
     };
