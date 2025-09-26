@@ -25,6 +25,8 @@ import { WAHASessionStatusConsumer } from './consumers/waha/session.status';
 import { ChatWootQueueService } from './services/ChatWootQueueService';
 import { ChatWootScheduleService } from './services/ChatWootScheduleService';
 import { ChatWootWAHAQueueService } from './services/ChatWootWAHAQueueService';
+import { ChatWootConversationCreatedConsumer } from './consumers/inbox/conversation_created';
+import { ChatWootConversationStatusChangedConsumer } from '@waha/apps/chatwoot/consumers/inbox/conversation_status_changed';
 
 const CONTROLLERS = [ChatwootWebhookController, ChatwootLocalesController];
 
@@ -66,6 +68,14 @@ const IMPORTS = lodash.flatten([
     defaultJobOptions: merge(ExponentialRetriesJobOptions, JobRemoveOptions),
   }),
   RegisterAppQueue({
+    name: QueueName.INBOX_CONVERSATION_CREATED,
+    defaultJobOptions: merge(NoRetriesJobOptions, JobRemoveOptions),
+  }),
+  RegisterAppQueue({
+    name: QueueName.INBOX_CONVERSATION_STATUS_CHANGED,
+    defaultJobOptions: merge(NoRetriesJobOptions, JobRemoveOptions),
+  }),
+  RegisterAppQueue({
     name: QueueName.INBOX_MESSAGE_DELETED,
     defaultJobOptions: merge(ExponentialRetriesJobOptions, JobRemoveOptions),
   }),
@@ -79,6 +89,9 @@ const PROVIDERS = [
   ChatWootInboxMessageCreatedConsumer,
   ChatWootInboxMessageUpdatedConsumer,
   ChatWootInboxMessageDeletedConsumer,
+  // Conversation events
+  ChatWootConversationCreatedConsumer,
+  ChatWootConversationStatusChangedConsumer,
   ChatWootInboxCommandsConsumer,
   WAHASessionStatusConsumer,
   WAHAMessageAnyConsumer,

@@ -25,21 +25,17 @@ import {
 import { Job } from 'bullmq';
 import { Knex } from 'knex';
 import { i18n } from '@waha/apps/chatwoot/i18n';
+import { CacheSync } from '@waha/utils/Cache';
+import {
+  ConversationSelector,
+  ConversationSort,
+} from '@waha/apps/chatwoot/services/ConversationSelector';
 
 /**
  * Dependency Injection Container for ChatWoot
  * Manages the creation and caching of various clients and repositories
  */
 export class DIContainer {
-  private accountAPI: ChatwootClient;
-  private inboxAPI: ChatWootInboxAPI;
-  private contactService: ContactService;
-  private conversationService: ConversationService;
-  private contactConversationService: ContactConversationService;
-  private locale: Locale;
-  private messageMappingService: MessageMappingService;
-  private wahaSelf: WAHASelf;
-
   /**
    * Creates a new DIContainer with the given configuration
    */
@@ -68,123 +64,124 @@ export class DIContainer {
     return this.knex;
   }
 
+  @CacheSync()
   public Locale(): Locale {
-    if (!this.locale) {
-      this.locale = i18n.locale(this.config.locale || DEFAULT_LOCALE);
-      this.locale = this.locale.override(this.ChatWootConfig().templates);
-    }
-    return this.locale;
+    let locale = i18n.locale(this.config.locale || DEFAULT_LOCALE);
+    locale = locale.override(this.ChatWootConfig().templates);
+    return locale;
   }
 
   /**
    * Gets the AccountAPI client
    * @returns ChatwootClient instance
    */
+  @CacheSync()
   public AccountAPI(): ChatwootClient {
-    if (!this.accountAPI) {
-      this.accountAPI = new ChatwootClient({
-        config: {
-          basePath: this.config.url,
-          with_credentials: true,
-          credentials: 'include',
-          token: this.config.accountToken,
-        },
-      });
-    }
-    return this.accountAPI;
+    return new ChatwootClient({
+      config: {
+        basePath: this.config.url,
+        with_credentials: true,
+        credentials: 'include',
+        token: this.config.accountToken,
+      },
+    });
   }
 
   /**
    * Gets the InboxAPI client
    * @returns ChatWootInboxAPI instance
    */
+  @CacheSync()
   public InboxAPI(): ChatWootInboxAPI {
-    if (!this.inboxAPI) {
-      const chatwootClientAPI = new ChatwootClient({
-        config: {
-          basePath: this.config.url,
-          with_credentials: true,
-          credentials: 'include',
-          token: this.config.inboxIdentifier,
-        },
-      });
-      this.inboxAPI = chatwootClientAPI.client as ChatWootInboxAPI;
-    }
-    return this.inboxAPI;
+    const chatwootClientAPI = new ChatwootClient({
+      config: {
+        basePath: this.config.url,
+        with_credentials: true,
+        credentials: 'include',
+        token: this.config.inboxIdentifier,
+      },
+    });
+    return chatwootClientAPI.client as ChatWootInboxAPI;
   }
 
   /**
    * Gets the ContactService
    * @returns ContactService instance
    */
+  @CacheSync()
   private ContactService(): ContactService {
-    if (!this.contactService) {
-      this.contactService = new ContactService(
-        this.config,
-        this.AccountAPI(),
-        this.InboxAPI(),
-        this.logger,
-      );
-    }
-    return this.contactService;
+    return new ContactService(
+      this.config,
+      this.AccountAPI(),
+      this.InboxAPI(),
+      this.logger,
+    );
+  }
+
+  @CacheSync()
+  public ConversationSelector() {
+    const config = this.ChatWootConfig();
+    return new ConversationSelector({
+      sort: config.conversations.sort,
+      status: config.conversations.status,
+      inboxId: this.config.inboxId,
+    });
   }
 
   /**
    * Gets the ConversationService
    * @returns ConversationService instance
    */
+  @CacheSync()
   private ConversationService(): ConversationService {
-    if (!this.conversationService) {
-      this.conversationService = new ConversationService(
-        this.config,
-        this.AccountAPI(),
-        this.InboxAPI(),
-        this.logger,
-      );
-    }
-    return this.conversationService;
+    return new ConversationService(
+      this.config,
+      this.AccountAPI(),
+      this.InboxAPI(),
+      this.ConversationSelector(),
+      this.logger,
+    );
   }
 
   /**
    * Gets the ContactConversationService
    * @returns ContactConversationService instance
    */
+  @CacheSync()
   public ContactConversationService(): ContactConversationService {
-    if (!this.contactConversationService) {
-      this.contactConversationService = new ContactConversationService(
-        this.config,
-        this.ContactService(),
-        this.ConversationService(),
-        this.AccountAPI(),
-        this.logger,
-        this.Locale(),
-      );
-    }
-    return this.contactConversationService;
+    return new ContactConversationService(
+      this.config,
+      this.ContactService(),
+      this.ConversationService(),
+      this.AccountAPI(),
+      this.logger,
+      this.Locale(),
+    );
   }
 
+  @CacheSync()
   private ChatwootMessageRepository(): ChatwootMessageRepository {
     return new ChatwootMessageRepository(this.Knex(), this.AppPk());
   }
 
+  @CacheSync()
   private WhatsAppMessageRepository(): WhatsAppMessageRepository {
     return new WhatsAppMessageRepository(this.Knex(), this.AppPk());
   }
 
+  @CacheSync()
   private MessageMappingRepository(): MessageMappingRepository {
     return new MessageMappingRepository(this.Knex(), this.AppPk());
   }
 
+  @CacheSync()
   public MessageMappingService(): MessageMappingService {
-    if (!this.messageMappingService) {
-      this.messageMappingService = new MessageMappingService(
-        this.Knex(),
-        this.WhatsAppMessageRepository(),
-        this.ChatwootMessageRepository(),
-        this.MessageMappingRepository(),
-      );
-    }
-    return this.messageMappingService;
+    return new MessageMappingService(
+      this.Knex(),
+      this.WhatsAppMessageRepository(),
+      this.ChatwootMessageRepository(),
+      this.MessageMappingRepository(),
+    );
   }
 
   public ChatWootErrorReporter(job: Job): ChatWootErrorReporter {
@@ -195,25 +192,30 @@ export class DIContainer {
    * Gets the WAHASelf instance
    * @returns WAHASelf instance
    */
+  @CacheSync()
   public WAHASelf(): WAHASelf {
-    if (!this.wahaSelf) {
-      this.wahaSelf = new WAHASelf();
-      const logging = new AxiosLogging(this.Logger());
-      logging.applyTo(this.wahaSelf.client);
-    }
-    return this.wahaSelf;
+    const self = new WAHASelf();
+    const logging = new AxiosLogging(this.Logger());
+    logging.applyTo(self.client);
+    return self;
   }
 
+  @CacheSync()
   public CustomAttributesService() {
     return new CustomAttributesService(this.config, this.AccountAPI());
   }
 
+  @CacheSync()
   public ChatWootConfig(): ChatWootConfig {
     const defaults: ChatWootConfig = {
       templates: {},
       linkPreview: LinkPreview.OFF,
       commands: {
         server: true,
+      },
+      conversations: {
+        sort: ConversationSort.created_newest,
+        status: null,
       },
     };
     return lodash.defaults({}, this.config, defaults);

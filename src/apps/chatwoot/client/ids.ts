@@ -15,6 +15,16 @@ export function GetChatID(contact: any): string | null {
   return contact?.custom_attributes?.[AttributeKey.WA_CHAT_ID];
 }
 
+export function GetAllChatIDs(contact: any): Array<string> {
+  const attrs = contact?.custom_attributes || {};
+  const ids = [
+    attrs[AttributeKey.WA_CHAT_ID],
+    attrs[AttributeKey.WA_JID],
+    attrs[AttributeKey.WA_LID],
+  ];
+  return ids.filter(Boolean);
+}
+
 export function FindChatID(contact: any): string | null {
   if (GetJID(contact)) {
     return GetJID(contact);

@@ -18,6 +18,8 @@ export enum QueueName {
   //
   INBOX_MESSAGE_CREATED = 'chatwoot.inbox | message_created',
   INBOX_MESSAGE_UPDATED = 'chatwoot.inbox | message_updated',
+  INBOX_CONVERSATION_CREATED = 'chatwoot.inbox | conversation_created',
+  INBOX_CONVERSATION_STATUS_CHANGED = 'chatwoot.inbox | conversation_status_changed',
   //
   // ChatWoot Events - Artificial
   //

@@ -89,6 +89,7 @@ export class ChatwootWebhookController {
         return { success: true };
       default:
         // Ignore other events
+        await this.chatWootQueueService.addJobToQueue(body.event, data);
         return { success: true };
     }
   }

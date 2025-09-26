@@ -138,4 +138,26 @@ export class ContactConversationService {
   public async InboxNotifications() {
     return this.ConversationByContact(new InboxContactInfo(this.l));
   }
+
+  public ResetCache(chatIds: Array<string>) {
+    this.logger.info(`Resetting cache chat ids: ${chatIds.join(', ')}`);
+    for (const chatId of chatIds) {
+      this.cache.delete(chatId);
+    }
+  }
+
+  public ResetMismatchedCache(chatIds: Array<string>, value: ConversationId) {
+    for (const chatId of chatIds) {
+      if (!this.cache.has(chatId)) {
+        continue;
+      }
+      const current = this.cache.get(chatId);
+      if (current !== value) {
+        this.logger.info(
+          `Resetting cache for chat id: ${chatId}, value changed from ${current} to ${value}`,
+        );
+        this.cache.delete(chatId);
+      }
+    }
+  }
 }

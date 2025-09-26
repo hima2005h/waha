@@ -19,6 +19,10 @@ export class ChatWootQueueService {
     private readonly messageUpdatedQueue: Queue,
     @InjectQueue(QueueName.INBOX_MESSAGE_DELETED)
     private readonly messageDeletedQueue: Queue,
+    @InjectQueue(QueueName.INBOX_CONVERSATION_CREATED)
+    private readonly conversationCreatedQueue: Queue,
+    @InjectQueue(QueueName.INBOX_CONVERSATION_STATUS_CHANGED)
+    private readonly conversationStatusChanged: Queue,
     @InjectQueue(QueueName.INBOX_COMMANDS)
     private readonly commandsQueue: Queue,
   ) {}
@@ -41,10 +45,14 @@ export class ChatWootQueueService {
    */
   private getQueueForEvent(event: string): Queue | null {
     switch (event) {
+      case EventName.CONVERSATION_CREATED:
+        return this.conversationCreatedQueue;
       case EventName.MESSAGE_CREATED:
         return this.messageCreatedQueue;
       case EventName.MESSAGE_UPDATED:
         return this.messageUpdatedQueue;
+      case EventName.CONVERSATION_STATUS_CHANGED:
+        return this.conversationStatusChanged;
       case 'message_deleted':
         return this.messageDeletedQueue;
       case 'commands':
@@ -95,9 +103,9 @@ export class ChatWootQueueService {
    */
   async addJobToQueue(event: string, data: InboxData): Promise<any> {
     const queue = this.getQueueForEvent(event);
-    if (queue) {
-      return await this.add(queue, event, data);
+    if (!queue) {
+      return;
     }
-    return { ignored: true, event };
+    await this.add(queue, event, data);
   }
 }

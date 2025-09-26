@@ -58,13 +58,20 @@ export abstract class ChatWootInboxMessageConsumer extends AppConsumer {
     job: Job,
   ): Promise<any>;
 
+  protected GetConversationID(body) {
+    return body.conversation.id;
+  }
+
   /**
    * Process the job
    * This method is called by the queue processor
    */
   async processJob(job: Job<InboxData, any, EventName>): Promise<any> {
     const body = job.data.body;
-    const key = ChatWootConversationKey(job.data.app, body.conversation.id);
+    const key = ChatWootConversationKey(
+      job.data.app,
+      this.GetConversationID(body),
+    );
     return await this.withMutex(job, key, () =>
       this.ProcessAndReportStatus(job),
     );

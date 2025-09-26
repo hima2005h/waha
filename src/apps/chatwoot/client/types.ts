@@ -51,3 +51,10 @@ export enum CustomAttributeModel {
   CONVERSATION = 0,
   CONTACT = 1,
 }
+
+export enum ConversationStatus {
+  OPEN = 'open',
+  PENDING = 'pending',
+  SNOOZED = 'snoozed',
+  RESOLVED = 'resolved',
+}

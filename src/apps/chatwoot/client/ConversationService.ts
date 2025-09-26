@@ -5,7 +5,7 @@ import {
   ChatWootInboxAPI,
 } from '@waha/apps/chatwoot/client/interfaces';
 import type { conversation } from '@figuro/chatwoot-sdk/dist/models/conversation';
-import * as lodash from 'lodash';
+import { ConversationSelector } from '@waha/apps/chatwoot/services/ConversationSelector';
 
 export type ConversationResult = Pick<conversation, 'id' | 'account_id'>;
 
@@ -19,6 +19,7 @@ export class ConversationService {
     private config: ChatWootAPIConfig,
     private accountAPI: ChatwootClient,
     private inboxAPI: ChatWootInboxAPI,
+    private selector: ConversationSelector,
     private logger: ILogger,
   ) {}
 
@@ -28,13 +29,8 @@ export class ConversationService {
         accountId: this.config.accountId,
         id: contact.id,
       })) as any;
-    const conversationsForInbox = lodash.filter(result.payload, {
-      inbox_id: this.config.inboxId,
-    }) as contact_conversations;
-    if (conversationsForInbox.length == 0) {
-      return null;
-    }
-    return conversationsForInbox[0];
+    const conversations = result.payload;
+    return this.selector.select(conversations);
   }
 
   private async create(contact: ContactIds): Promise<ConversationResult> {
