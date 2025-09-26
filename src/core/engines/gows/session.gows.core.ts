@@ -951,8 +951,8 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const data = response.toObject();
     const info = data.infos[0];
     return {
-      numberExists: info.registered,
-      chatId: toCusFormat(info.jid),
+      numberExists: info?.registered || false,
+      chatId: toCusFormat(info?.jid || null),
     };
   }
 
