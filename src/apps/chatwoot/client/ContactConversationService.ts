@@ -62,9 +62,9 @@ export class ContactConversationService {
     // Update custom attributes - always
     const attributes = await contactInfo.Attributes();
     this.logger.info(
-      `Updating contact custom attributes for chat.id: ${chatId}, contact.id: ${contact.data.id}`,
+      `Updating if required contact custom attributes for chat.id: ${chatId}, contact.id: ${contact.data.id}`,
     );
-    await this.contactAPI.updateCustomAttributes(contact.data, attributes);
+    await this.contactAPI.upsertCustomAttributes(contact.data, attributes);
 
     // Update Avatar if nothing, but keep the original one if any
     if (!contact.data.thumbnail) {

@@ -96,18 +96,22 @@ export class ContactAPI {
     };
   }
 
-  public updateCustomAttributes(
+  public async upsertCustomAttributes(
     contact: generic_id & contact,
     attributes: any,
-  ) {
+  ): Promise<boolean> {
+    if (lodash.isEqual(attributes, contact.custom_attributes)) {
+      return false;
+    }
     const update: contact_update = {
       custom_attributes: { ...contact.custom_attributes, ...attributes },
     };
-    return this.accountAPI.contacts.update({
+    await this.accountAPI.contacts.update({
       id: contact.id,
       accountId: this.config.accountId,
       data: update,
     });
+    return true;
   }
 
   public async create(
