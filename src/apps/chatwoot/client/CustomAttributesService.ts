@@ -13,7 +13,7 @@ export interface CustomAttribute {
   model: CustomAttributeModel;
 }
 
-export class CustomAttributesAPI {
+export class CustomAttributesService {
   constructor(
     private config: ChatWootAccountAPIConfig,
     private accountAPI: ChatwootClient,

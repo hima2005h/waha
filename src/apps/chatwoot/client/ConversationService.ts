@@ -14,7 +14,7 @@ export interface ContactIds {
   sourceId: string;
 }
 
-export class ConversationAPI {
+export class ConversationService {
   constructor(
     private config: ChatWootAPIConfig,
     private accountAPI: ChatwootClient,

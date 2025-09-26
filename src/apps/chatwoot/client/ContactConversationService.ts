@@ -3,9 +3,9 @@ import ChatwootClient, {
   public_contact_create_update_payload,
 } from '@figuro/chatwoot-sdk';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
-import { ContactAPI } from '@waha/apps/chatwoot/client/ContactAPI';
+import { ContactService } from '@waha/apps/chatwoot/client/ContactService';
 import { Conversation } from '@waha/apps/chatwoot/client/Conversation';
-import { ConversationAPI } from '@waha/apps/chatwoot/client/ConversationAPI';
+import { ConversationService } from '@waha/apps/chatwoot/client/ConversationService';
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
 import { InboxContactInfo } from '@waha/apps/chatwoot/contacts/InboxContactInfo';
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
@@ -31,8 +31,8 @@ export class ContactConversationService {
 
   constructor(
     private config: ChatWootAPIConfig,
-    private contactAPI: ContactAPI,
-    private conversationAPI: ConversationAPI,
+    private contactService: ContactService,
+    private conversationService: ConversationService,
     private accountAPI: ChatwootClient,
     private logger: ILogger,
     private l: Locale,
@@ -53,10 +53,10 @@ export class ContactConversationService {
     //
     // Find or create contact
     //
-    let contact = await this.contactAPI.searchByAnyID(chatId);
+    let contact = await this.contactService.searchByAnyID(chatId);
     if (!contact) {
       const request = await contactInfo.PublicContactCreate();
-      contact = await this.contactAPI.create(chatId, request);
+      contact = await this.contactService.create(chatId, request);
     }
 
     // Update custom attributes - always
@@ -64,7 +64,7 @@ export class ContactConversationService {
     this.logger.info(
       `Updating if required contact custom attributes for chat.id: ${chatId}, contact.id: ${contact.data.id}`,
     );
-    await this.contactAPI.upsertCustomAttributes(contact.data, attributes);
+    await this.contactService.upsertCustomAttributes(contact.data, attributes);
 
     // Update Avatar if nothing, but keep the original one if any
     if (!contact.data.thumbnail) {
@@ -76,7 +76,7 @@ export class ContactConversationService {
         return null;
       });
       if (avatarUrl) {
-        this.contactAPI.updateAvatarUrlSafe(contact.data.id, avatarUrl);
+        this.contactService.updateAvatarUrlSafe(contact.data.id, avatarUrl);
       }
     }
 
@@ -87,7 +87,7 @@ export class ContactConversationService {
     //
     // Get or create a conversation for this inbox
     //
-    const conversation = await this.conversationAPI.upsert({
+    const conversation = await this.conversationService.upsert({
       id: contact.data.id,
       sourceId: contact.sourceId,
     });

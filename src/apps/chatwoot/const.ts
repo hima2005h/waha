@@ -1,4 +1,4 @@
-import { CustomAttribute } from '@waha/apps/chatwoot/client/CustomAttributesAPI';
+import { CustomAttribute } from '@waha/apps/chatwoot/client/CustomAttributesService';
 
 import { CustomAttributeModel, CustomAttributeType } from './client/types';
 

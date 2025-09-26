@@ -2,10 +2,10 @@ import ChatwootClient from '@figuro/chatwoot-sdk';
 import * as lodash from 'lodash';
 import { AxiosLogging } from '@waha/apps/app_sdk/AxiosLogging';
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
-import { ContactAPI } from '@waha/apps/chatwoot/client/ContactAPI';
+import { ContactService } from '@waha/apps/chatwoot/client/ContactService';
 import { ContactConversationService } from '@waha/apps/chatwoot/client/ContactConversationService';
-import { ConversationAPI } from '@waha/apps/chatwoot/client/ConversationAPI';
-import { CustomAttributesAPI } from '@waha/apps/chatwoot/client/CustomAttributesAPI';
+import { ConversationService } from '@waha/apps/chatwoot/client/ConversationService';
+import { CustomAttributesService } from '@waha/apps/chatwoot/client/CustomAttributesService';
 import { ChatWootInboxAPI } from '@waha/apps/chatwoot/client/interfaces';
 import {
   ChatWootAppConfig,
@@ -33,8 +33,8 @@ import { i18n } from '@waha/apps/chatwoot/i18n';
 export class DIContainer {
   private accountAPI: ChatwootClient;
   private inboxAPI: ChatWootInboxAPI;
-  private contactAPI: ContactAPI;
-  private conversationAPI: ConversationAPI;
+  private contactService: ContactService;
+  private conversationService: ConversationService;
   private contactConversationService: ContactConversationService;
   private locale: Locale;
   private messageMappingService: MessageMappingService;
@@ -114,35 +114,35 @@ export class DIContainer {
   }
 
   /**
-   * Gets the ContactAPI
-   * @returns ContactAPI instance
+   * Gets the ContactService
+   * @returns ContactService instance
    */
-  private ContactAPI(): ContactAPI {
-    if (!this.contactAPI) {
-      this.contactAPI = new ContactAPI(
+  private ContactService(): ContactService {
+    if (!this.contactService) {
+      this.contactService = new ContactService(
         this.config,
         this.AccountAPI(),
         this.InboxAPI(),
         this.logger,
       );
     }
-    return this.contactAPI;
+    return this.contactService;
   }
 
   /**
-   * Gets the ConversationAPI
-   * @returns ConversationAPI instance
+   * Gets the ConversationService
+   * @returns ConversationService instance
    */
-  private ConversationAPI(): ConversationAPI {
-    if (!this.conversationAPI) {
-      this.conversationAPI = new ConversationAPI(
+  private ConversationService(): ConversationService {
+    if (!this.conversationService) {
+      this.conversationService = new ConversationService(
         this.config,
         this.AccountAPI(),
         this.InboxAPI(),
         this.logger,
       );
     }
-    return this.conversationAPI;
+    return this.conversationService;
   }
 
   /**
@@ -153,8 +153,8 @@ export class DIContainer {
     if (!this.contactConversationService) {
       this.contactConversationService = new ContactConversationService(
         this.config,
-        this.ContactAPI(),
-        this.ConversationAPI(),
+        this.ContactService(),
+        this.ConversationService(),
         this.AccountAPI(),
         this.logger,
         this.Locale(),
@@ -204,8 +204,8 @@ export class DIContainer {
     return this.wahaSelf;
   }
 
-  public CustomAttributesAPI() {
-    return new CustomAttributesAPI(this.config, this.AccountAPI());
+  public CustomAttributesService() {
+    return new CustomAttributesService(this.config, this.AccountAPI());
   }
 
   public ChatWootConfig(): ChatWootConfig {

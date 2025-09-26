@@ -20,7 +20,7 @@ export interface ContactResponse {
   sourceId: string;
 }
 
-export class ContactAPI {
+export class ContactService {
   constructor(
     private config: ChatWootAPIConfig,
     private accountAPI: ChatwootClient,

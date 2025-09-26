@@ -129,9 +129,9 @@ export class ChatWootAppService implements IAppService {
 
   private async setupCustomAttributes(app: App<ChatWootAppConfig>) {
     const di = new DIContainer(0, app.config, this.logger, null);
-    const api = di.CustomAttributesAPI();
+    const service = di.CustomAttributesService();
     for (const attr of CHATWOOT_CUSTOM_ATTRIBUTES) {
-      await api.upsert(attr);
+      await service.upsert(attr);
     }
   }
 
