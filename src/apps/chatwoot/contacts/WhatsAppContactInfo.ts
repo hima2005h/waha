@@ -149,6 +149,7 @@ class GroupContactInfo extends ChatContactInfo {
     const group: any = await this.session?.getGroup(this.chatId);
     if (group) {
       name = group.subject || group.name || group.topic || name;
+      name = group.Name || name;
       const suffix = this.locale
         .key(TKey.WHATSAPP_CONTACT_GROUP_SUFFIX)
         .render();
