@@ -13,6 +13,7 @@ import { isJidCusFormat } from '@waha/utils/wa';
 import * as lodash from 'lodash';
 
 import { AttributeKey } from '../const';
+import { E164Parser } from '@waha/core/utils/PhoneJidNormalizer';
 
 export interface ContactResponse {
   data: generic_id & contact;
@@ -64,8 +65,8 @@ export class ContactAPI {
 
     if (isJidCusFormat(chatId)) {
       // Search by phone
-      let phone_number = chatId.split('@')[0];
-      phone_number = phone_number.replace('+', '');
+      const phoneNumberE164 = E164Parser.fromJid(chatId);
+      const phone_number = phoneNumberE164.replace('+', '');
       payload[payload.length - 1].query_operator = 'OR';
       payload.push({
         attribute_key: 'phone_number',

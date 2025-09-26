@@ -15,6 +15,7 @@ import {
   isPnUser,
 } from '@waha/core/utils/jids';
 import { UnknownJIDFormat } from '@waha/apps/chatwoot/errors';
+import { E164Parser } from '@waha/core/utils/PhoneJidNormalizer';
 
 /**
  * Base WhatsApp contact info class
@@ -68,8 +69,7 @@ class JidContactInfo extends ChatContactInfo {
     const contact: any = await this.session.getContact(this.chatId);
     const name =
       contact?.name || contact?.pushName || contact?.pushname || this.chatId;
-    const phoneNumber = this.chatId.split('@')[0];
-    const phoneNumberE164 = '+' + phoneNumber;
+    const phoneNumberE164 = E164Parser.fromJid(this.chatId);
 
     const result: Contact = {
       name: name,
