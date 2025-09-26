@@ -12,7 +12,9 @@ import {
   isJidNewsletter,
   isJidStatusBroadcast,
   isLidUser,
+  isPnUser,
 } from '@waha/core/utils/jids';
+import { UnknownJIDFormat } from '@waha/apps/chatwoot/errors';
 
 /**
  * Base WhatsApp contact info class
@@ -267,6 +269,9 @@ export function WhatsAppContactInfo(
     return new BroadcastContactInfo(session, chatId, locale);
   } else if (isLidUser(chatId)) {
     return new LidContactInfo(session, chatId, locale);
+  } else if (isPnUser(chatId)) {
+    return new JidContactInfo(session, chatId, locale);
+  } else {
+    throw new UnknownJIDFormat(chatId);
   }
-  return new JidContactInfo(session, chatId, locale);
 }
