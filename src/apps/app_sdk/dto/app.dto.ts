@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 
 export type AllowedAppConfig = ChatWootAppConfig;
 
@@ -15,6 +15,7 @@ export enum AppName {
   chatwoot = 'chatwoot',
 }
 
+@ApiExtraModels(ChatWootAppConfig)
 export class App<T extends AllowedAppConfig = any> {
   @IsString()
   id: string;
