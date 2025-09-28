@@ -12,6 +12,7 @@ import { EngineHelper } from '@waha/apps/chatwoot/session';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import {
   ChatwootMessage,
+  MessageMapping,
   MessageMappingService,
 } from '@waha/apps/chatwoot/storage';
 import { MarkdownToWhatsApp } from '@waha/apps/chatwoot/text';
@@ -88,7 +89,7 @@ export class MessageHandler {
 
     const content = MarkdownToWhatsApp(message.content);
     const results = [];
-    let part = 1;
+    let part = 0; // Start from 0 and increment before each send/check
     const replyTo = await this.getReplyTo(message).catch((err) => {
       this.logger.error(
         `ChatWoot => WhatsApp: error getting reply to message ID: ${err}`,
@@ -96,23 +97,40 @@ export class MessageHandler {
       return undefined;
     });
 
-    // Send text
+    // Send text (Part 1 if present)
     const attachments = message.attachments || [];
-    if (content && attachments.length !== 1) {
-      const textTemplate = this.l.key(TKey.CW_TO_WA_MESSAGE_TEXT);
-      const text = textTemplate.render({
-        content: content,
-        chatwoot: body,
-      });
-      const msg = await this.sendTextMessage(chatId, text, replyTo);
-      results.push(msg);
-      part = await this.saveMapping(message, msg, part);
-      this.logger.info(`Text message sent: ${msg.id}`);
+    const sendText = content && attachments.length !== 1;
+    if (sendText) {
+      part += 1; // Text is the first possible part
+      const exists = await this.getMapping(message, part);
+      if (exists) {
+        this.logger.warn(
+          `Skip part ${part}: mapping exists for Chatwoot message ${message.id}`,
+        );
+      } else {
+        const textTemplate = this.l.key(TKey.CW_TO_WA_MESSAGE_TEXT);
+        const text = textTemplate.render({
+          content: content,
+          chatwoot: body,
+        });
+        const msg = await this.sendTextMessage(chatId, text, replyTo);
+        results.push(msg);
+        await this.saveMapping(message, msg, part);
+        this.logger.info(`Text message sent: ${msg.id}`);
+      }
     }
 
     // Send files
     const captionTemplate = this.l.key(TKey.CW_TO_WA_MESSAGE_MEDIA_CAPTION);
     for (const file of attachments) {
+      part += 1; // Increment before each attachment send/check
+      const exists = await this.getMapping(message, part);
+      if (exists) {
+        this.logger.warn(
+          `Skip part ${part}: mapping exists for Chatwoot message ${message.id}`,
+        );
+        continue;
+      }
       const caption = captionTemplate.render({
         content: content,
         chatwoot: body,
@@ -123,7 +141,7 @@ export class MessageHandler {
         `File message sent: ${msg.id} - ${file.data_url} - ${file.file_type}`,
       );
       results.push(msg);
-      part = await this.saveMapping(message, msg, part);
+      await this.saveMapping(message, msg, part);
     }
     return results;
   }
@@ -132,15 +150,27 @@ export class MessageHandler {
     chatwootMessage: any,
     whatsappMessage: any,
     part: number,
-  ): Promise<number> {
+  ): Promise<void> {
     const chatwoot: Omit<ChatwootMessage, 'id'> = {
       timestamp: new Date(chatwootMessage.created_at),
       conversation_id: chatwootMessage.conversation.id,
       message_id: chatwootMessage.id,
     };
     const whatsapp = EngineHelper.WhatsAppMessageKeys(whatsappMessage);
-    await this.mappingService.map(chatwoot, whatsapp, 1);
-    return part + 1;
+    await this.mappingService.map(chatwoot, whatsapp, part);
+  }
+
+  private async getMapping(
+    message: any,
+    part: number,
+  ): Promise<MessageMapping | null> {
+    return this.mappingService.getMappingByChatwootCombinedKeyAndPart(
+      {
+        conversation_id: message.conversation.id,
+        message_id: message.id,
+      },
+      part,
+    );
   }
 
   async getReplyTo(message): Promise<string | undefined> {

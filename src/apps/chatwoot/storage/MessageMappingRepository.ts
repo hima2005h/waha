@@ -74,4 +74,17 @@ export class MessageMappingRepository {
       })
       .first();
   }
+
+  async getByChatwootMessageIdAndPart(
+    id: number,
+    part: number,
+  ): Promise<MessageMapping | null> {
+    return this.knex(this.tableName)
+      .where({
+        app_pk: this.appPk,
+        chatwoot_message_id: id,
+        part: part,
+      })
+      .first();
+  }
 }

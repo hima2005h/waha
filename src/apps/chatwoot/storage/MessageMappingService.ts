@@ -123,4 +123,26 @@ export class MessageMappingService {
     }
     return whatsapp;
   }
+
+  async getMappingByChatwootCombinedKeyAndPart(
+    chatwoot: ChatWootCombinedKey,
+    part: number,
+  ): Promise<MessageMapping | null> {
+    const chatwootMessages =
+      await this.chatwootMessageRepository.getByCombinedKey(chatwoot);
+    if (!chatwootMessages || chatwootMessages.length === 0) {
+      return null;
+    }
+    for (const cw of chatwootMessages) {
+      const mapping =
+        await this.messageMappingRepository.getByChatwootMessageIdAndPart(
+          cw.id,
+          part,
+        );
+      if (mapping) {
+        return mapping;
+      }
+    }
+    return null;
+  }
 }
