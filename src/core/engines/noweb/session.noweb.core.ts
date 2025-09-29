@@ -641,7 +641,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
         }
         const creationMsgKey = content.pollUpdateMessage.pollCreationMessageKey;
         // we need to fetch the poll creation message to get the poll enc key
-        const pollMsg = await this.getMessage(creationMsgKey);
+        const pkey = { ...creationMsgKey };
+        pkey.remoteJid = null; // try to find message creation by id only
+        const pollMsg = await this.getMessage(pkey);
         if (!pollMsg) {
           this.logger.warn(
             { creationMsgKey },
@@ -2377,7 +2379,16 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     }
 
     const pollCreationMessageKey = key;
-    const pollCreationMessage = await this.getMessage(key);
+    const pkey = { ...key };
+    pkey.remoteJid = null; // try to find message creation by id only
+    const pollCreationMessage = await this.getMessage(pkey);
+    if (!pollCreationMessage) {
+      this.logger.warn(
+        { pollCreationMessageKey },
+        'poll creation message not found, cannot aggregate votes',
+      );
+      return;
+    }
     // Handle updates one by one, so we can get Vote Message for the specific vote
     for (const pollUpdate of pollUpdates) {
       const votes = getAggregateVotesInPollMessage({
@@ -2416,7 +2427,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       return;
     }
     const pollCreationMessageKey = pollUpdateMessage.pollCreationMessageKey;
-    const pollCreationMessage = await this.getMessage(pollCreationMessageKey);
+    const pkey = { ...pollCreationMessageKey };
+    pkey.remoteJid = null; // try to find message creation by id only
+    const pollCreationMessage = await this.getMessage(pkey);
     if (pollCreationMessage) {
       // We found message, so later the engine will issue a message.update message
       return;
