@@ -53,12 +53,10 @@ export class PhoneJidNormalizer {
 }
 
 const RULES = [
-  // Brazil - add 9 before Direct Distance Dialing
-  // +55 <DDD:2> <local:8>, not already starting with 9
-  // +553188888888 => +5531988888888
+  // Brazil - ensure mobile numbers have 9 digits after DDD
   {
     name: 'br-add-9-after-ddd',
-    re: /^\+55(\d{2})(?!9)(\d{8})$/,
+    re: /^\+55(\d{2})(\d{8})$/,
     replace: '+55$19$2',
   },
 ];

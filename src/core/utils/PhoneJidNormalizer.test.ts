@@ -12,19 +12,25 @@ describe('E164Parser.fromJid', () => {
     expect(E164Parser.fromJid('@s.whatsapp.net')).toBeNull();
   });
 
-  it('applies Brazil DDD + add-9 rule when local has 8 digits and not starting with 9', () => {
-    // +55 <DDD:2> <local:8> and local does not start with 9
+  it('applies Brazil add-9 rule when local has 8 digits (any first digit)', () => {
+    // +55 <DDD:2> <local:8>
     expect(E164Parser.fromJid('553188888888@s.whatsapp.net')).toBe(
       '+5531988888888',
     );
   });
 
-  it('does not add 9 when local already starts with 9 (Brazil)', () => {
+  it('554999111111 => 5549999111111', () => {
+    expect(E164Parser.fromJid('554999111111@s.whatsapp.net')).toBe(
+      '+5549999111111',
+    );
+  });
+
+  it('adds 9 even when local already starts with 9 (Brazil)', () => {
     expect(E164Parser.fromJid('553198888888@s.whatsapp.net')).toBe(
-      '+553198888888',
+      '+5531998888888',
     );
     expect(E164Parser.fromJid('553199999999@s.whatsapp.net')).toBe(
-      '+553199999999',
+      '+5531999999999',
     );
   });
 
