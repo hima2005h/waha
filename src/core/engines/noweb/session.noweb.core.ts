@@ -293,7 +293,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
 
   async start() {
     this.status = WAHASessionStatus.STARTING;
-    await this.buildClient().catch((err) => {
+    this.buildClient().catch((err) => {
       this.logger.error('Failed to start the client');
       this.logger.error(err, err.stack);
       this.status = WAHASessionStatus.FAILED;
