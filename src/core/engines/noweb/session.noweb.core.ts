@@ -991,7 +991,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       force: true,
     };
     const options = await this.getMessageOptions(request);
-    const result = await this.sock.sendMessage(chatId, message, options);
+    const result = await this.sock.sendMessage(chatId, message as any, options);
     return this.toWAMessage(result);
   }
 
