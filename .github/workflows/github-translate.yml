@@ -1,0 +1,51 @@
+name: 'github-translate'
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+  discussion:
+    types: [created]
+  discussion_comment:
+    types: [created]
+  # pull_request_target:
+  #   types: [opened, edited]
+  # pull_request_review_comment:
+  #   types: [created, edited]
+
+jobs:
+  en:
+    permissions:
+      issues: write
+      discussions: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: devlikeapro/github-translate-action@main
+        env:
+          # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          IS_MODIFY_TITLE: true
+          CUSTOM_BOT_NOTE: 'English'
+          TARGET_LANGUAGE: 'eng'
+          TRANSLATED_LANGUAGE: 'en'
+
+  pt:
+    permissions:
+      issues: write
+      discussions: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: devlikeapro/github-translate-action@main
+        env:
+          # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          IS_MODIFY_TITLE: true
+          CUSTOM_BOT_NOTE: 'Portuguese'
+          TARGET_LANGUAGE: 'por'
+          TRANSLATED_LANGUAGE: 'pt'
