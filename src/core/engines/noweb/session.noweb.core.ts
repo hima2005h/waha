@@ -2215,6 +2215,12 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       proto.Message.ProtocolMessage.Type.EPHEMERAL_SYNC_RESPONSE
     )
       return;
+    if (
+      message.message?.protocolMessage?.type ===
+      proto.Message.ProtocolMessage.Type
+        .PEER_DATA_OPERATION_REQUEST_RESPONSE_MESSAGE
+    )
+      return;
 
     const normalizedContent = normalizeMessageContent(message.message);
     const contentType = getContentType(normalizedContent);
