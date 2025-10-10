@@ -15,7 +15,7 @@ import {
   MessageMapping,
   MessageMappingService,
 } from '@waha/apps/chatwoot/storage';
-import { MarkdownToWhatsApp } from '@waha/apps/chatwoot/text';
+import { MarkdownToWhatsApp } from '@waha/apps/chatwoot/messages/to/whatsapp/markdown';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import {

@@ -6,9 +6,8 @@ import {
   ChatWootMessagePartial,
   ChatWootWAHABaseConsumer,
   IMessageInfo,
+  MessageBaseHandler,
 } from '@waha/apps/chatwoot/consumers/waha/base';
-import { MessageBaseHandler } from '@waha/apps/chatwoot/consumers/waha/base';
-import { WhatsappToMarkdown } from '@waha/apps/chatwoot/text';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
 import { WAHAEvents } from '@waha/structures/enums.dto';
@@ -19,10 +18,12 @@ import {
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 
-import { SendAttachment } from '../../client/types';
 import { WAHASessionAPI } from '../../session/WAHASelf';
-import { TKey } from '@waha/apps/chatwoot/i18n/templates';
-import { WAMessage } from '@waha/structures/responses.dto';
+import {
+  MessageEdited,
+  MessageToChatWootConverter,
+  resolveProtoMessage,
+} from '@waha/apps/chatwoot/messages/to/chatwoot';
 
 @Processor(QueueName.WAHA_MESSAGE_EDITED, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageEditedConsumer extends ChatWootWAHABaseConsumer {
@@ -63,25 +64,12 @@ class MessageEditedHandler extends MessageBaseHandler<WAMessageEditedBody> {
   protected async getMessage(
     payload: WAMessageEditedBody,
   ): Promise<ChatWootMessagePartial> {
-    const body = payload.body;
-    const formatted = WhatsappToMarkdown(body);
-    const content = this.l
-      .key(TKey.MESSAGE_EDITED_IN_WHATSAPP)
-      .render({ text: formatted });
-    return {
-      content: content,
-      attachments: [],
-      private: undefined,
-    };
+    const protoMessage = resolveProtoMessage(payload);
+    const converter: MessageToChatWootConverter = new MessageEdited(this.l);
+    return converter.convert(payload, protoMessage);
   }
 
   getReplyToWhatsAppID(payload: WAMessageEditedBody): string {
     return payload.editedMessageId;
-  }
-
-  async getAttachments(
-    payload: WAMessageEditedBody,
-  ): Promise<SendAttachment[]> {
-    return [];
   }
 }
