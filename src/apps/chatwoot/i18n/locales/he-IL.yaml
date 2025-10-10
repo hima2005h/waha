@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **מיקום משותף**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **כתובת:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **אתר אינטרנט:** {{URL}}
+  {{/URL}}
+
+  🔗 **הצג במפה:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **משתף מיקום חי**
   פתח/י את **WhatsApp** כדי לראות עדכונים בזמן אמת.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **כתובת:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **אתר אינטרנט:** {{URL}}
+  {{/URL}}
+
+  🔗 **הצג במפה:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

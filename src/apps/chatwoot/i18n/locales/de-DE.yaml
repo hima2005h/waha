@@ -219,18 +219,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **Geteilter Standort**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Adresse:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Webseite:** {{URL}}
+  {{/URL}}
+
+  🔗 **Auf Karte ansehen:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **Live-Standort wird geteilt**
   Öffne **WhatsApp**, um Aktualisierungen in Echtzeit zu sehen.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Adresse:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Webseite:** {{URL}}
+  {{/URL}}
+
+  🔗 **Auf Karte ansehen:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

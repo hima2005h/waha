@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **Надіслана локація**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Адреса:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Вебсайт:** {{URL}}
+  {{/URL}}
+
+  🔗 **Переглянути на карті:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **Надсилання геолокації в реальному часі**
   Відкрийте **WhatsApp**, щоб побачити оновлення в реальному часі.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Адреса:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Вебсайт:** {{URL}}
+  {{/URL}}
+
+  🔗 **Переглянути на карті:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

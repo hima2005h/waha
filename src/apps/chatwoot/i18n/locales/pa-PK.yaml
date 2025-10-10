@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **ਸਾਂਝੀ ਸਥਿਤੀ**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **ਪਤਾ:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **ਵੈਬਸਾਈਟ:** {{URL}}
+  {{/URL}}
+
+  🔗 **ਨਕਸ਼ੇ 'ਤੇ ਵੇਖੋ:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **ਲਾਈਵ ਸਥਿਤੀ ਸਾਂਝੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ**
   ਰੀਅਲ-ਟਾਈਮ ਅੱਪਡੇਟ ਦੇਖਣ ਲਈ **WhatsApp** ਖੋਲ੍ਹੋ।
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **ਪਤਾ:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **ਵੈਬਸਾਈਟ:** {{URL}}
+  {{/URL}}
+
+  🔗 **ਨਕਸ਼ੇ 'ਤੇ ਵੇਖੋ:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

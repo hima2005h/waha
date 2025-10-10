@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **موقعیت مکانی به‌اشتراک‌گذاشته‌شده**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **آدرس:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **وب‌سایت:** {{URL}}
+  {{/URL}}
+
+  🔗 **مشاهده روی نقشه:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **اشتراک‌گذاری موقعیت مکانی زنده**
   برای دیدن به‌روزرسانی‌های لحظه‌ای **WhatsApp** را باز کنید.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **آدرس:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **وب‌سایت:** {{URL}}
+  {{/URL}}
+
+  🔗 **مشاهده روی نقشه:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

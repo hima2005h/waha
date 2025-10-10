@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **الموقع المشترك**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **العنوان:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **الموقع الإلكتروني:** {{URL}}
+  {{/URL}}
+
+  🔗 **عرض على الخريطة:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **مشاركة الموقع المباشر**
   افتح **WhatsApp** لعرض التحديثات اللحظية.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **العنوان:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **الموقع الإلكتروني:** {{URL}}
+  {{/URL}}
+
+  🔗 **عرض على الخريطة:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

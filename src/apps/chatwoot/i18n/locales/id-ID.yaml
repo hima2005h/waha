@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **Lokasi yang dibagikan**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Alamat:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Situs web:** {{URL}}
+  {{/URL}}
+
+  🔗 **Lihat di peta:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **Berbagi Lokasi Langsung**
   Buka **WhatsApp** untuk melihat pembaruan waktu nyata.
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **Alamat:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **Situs web:** {{URL}}
+  {{/URL}}
+
+  🔗 **Lihat di peta:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

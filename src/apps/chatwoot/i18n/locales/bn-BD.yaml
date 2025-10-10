@@ -216,18 +216,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **শেয়ার করা লোকেশন**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **ঠিকানা:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **ওয়েবসাইট:** {{URL}}
+  {{/URL}}
+
+  🔗 **মানচিত্রে দেখুন:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **লাইভ লোকেশন শেয়ার করা হচ্ছে**
   রিয়েল-টাইম আপডেট দেখতে **WhatsApp** খুলুন।
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **ঠিকানা:** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **ওয়েবসাইট:** {{URL}}
+  {{/URL}}
+
+  🔗 **মানচিত্রে দেখুন:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 

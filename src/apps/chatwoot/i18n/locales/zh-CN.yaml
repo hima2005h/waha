@@ -218,18 +218,40 @@ whatsapp.to.chatwoot.message.location: |-
   {{#locationMessage}}
   📍 **共享位置**
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **地址：** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **网站：** {{URL}}
+  {{/URL}}
+
+  🔗 **在地图上查看：** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/locationMessage}}
 
   {{#liveLocationMessage}}
   📍📡 **正在共享实时位置**
   打开 **WhatsApp** 查看实时更新。
 
-  https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
+  {{#name}}
+  **{{name}}**
+  {{/name}}
+
+  {{#address}}
+  📍 **地址：** {{address}}
+  {{/address}}
+
+  {{#URL}}
+  🌐 **网站：** {{URL}}
+  {{/URL}}
+
+  🔗 **在地图上查看：** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
-  {{#name}}{{name}}{{/name}}
   {{/liveLocationMessage}}
   {{/message}}
 
