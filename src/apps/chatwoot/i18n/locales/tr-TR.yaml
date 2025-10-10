@@ -236,3 +236,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 Görüntülemek için lütfen **WhatsApp’ı** açın.
 
   Ayrıntılar: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **FACEBOOK İLANI**
+
+  **Başlık:** {{{adData.title}}}
+
+  **Açıklama:**
+  {{{adData.body}}}
+
+  **İlan Bağlantısı:** [Facebook’ta Görüntüle]({{{adData.sourceUrl}}})
+  **İlan Kimliği:** {{{adData.sourceId}}}
+
+  ---
+  💬 **Müşteri Mesajı:**
+  {{{payload.body}}}

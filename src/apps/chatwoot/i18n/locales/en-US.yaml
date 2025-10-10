@@ -116,6 +116,21 @@ whatsapp.to.chatwoot.message.unsupported: |-
 
   Details: [{{{details.text}}}]({{{details.url}}})
 
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **FACEBOOK AD**
+
+  **Title:** {{{adData.title}}}
+
+  **Description:**
+  {{{adData.body}}}
+
+  **Ad Link:** [View on Facebook]({{{adData.sourceUrl}}})
+  **Ad ID:** {{{adData.sourceId}}}
+
+  ---
+  💬 **CUSTOMER MESSAGE:**
+  {{{payload.body}}}
+
 app.connected.message: |-
   🔗 **CONNECTED: WhatsApp Session to ChatWoot Inbox**
 

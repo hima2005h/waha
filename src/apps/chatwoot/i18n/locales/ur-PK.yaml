@@ -236,3 +236,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 اسے دیکھنے کے لیے براہ کرم **WhatsApp** کھولیں۔
 
   تفصیلات: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **فیس بک اشتہار**
+
+  **عنوان:** {{{adData.title}}}
+
+  **تفصیل:**
+  {{{adData.body}}}
+
+  **اشتہار کا لنک:** [فیس بک پر دیکھیں]({{{adData.sourceUrl}}})
+  **اشتہار کا شناختی نمبر:** {{{adData.sourceId}}}
+
+  ---
+  💬 **گاہک کا پیغام:**
+  {{{payload.body}}}

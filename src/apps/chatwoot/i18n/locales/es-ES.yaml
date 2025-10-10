@@ -239,3 +239,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 Por favor, abre **WhatsApp** para verlo.
 
   Detalles: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **ANUNCIO DE FACEBOOK**
+
+  **Título:** {{{adData.title}}}
+
+  **Descripción:**
+  {{{adData.body}}}
+
+  **Enlace del anuncio:** [Ver en Facebook]({{{adData.sourceUrl}}})
+  **ID del anuncio:** {{{adData.sourceId}}}
+
+  ---
+  💬 **Mensaje del cliente:**
+  {{{payload.body}}}

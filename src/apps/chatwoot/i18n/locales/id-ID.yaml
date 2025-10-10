@@ -236,3 +236,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 Silakan buka **WhatsApp** untuk melihatnya.
 
   Detail: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **IKLAN FACEBOOK**
+
+  **Judul:** {{{adData.title}}}
+
+  **Deskripsi:**
+  {{{adData.body}}}
+
+  **Tautan Iklan:** [Lihat di Facebook]({{{adData.sourceUrl}}})
+  **ID Iklan:** {{{adData.sourceId}}}
+
+  ---
+  💬 **Pesan Pelanggan:**
+  {{{payload.body}}}

@@ -238,3 +238,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 请打开 **WhatsApp** 查看。
 
   详情: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **Facebook 广告**
+
+  **标题:** {{{adData.title}}}
+
+  **描述:**
+  {{{adData.body}}}
+
+  **广告链接:** [在 Facebook 查看]({{{adData.sourceUrl}}})
+  **广告 ID:** {{{adData.sourceId}}}
+
+  ---
+  💬 **客户消息:**
+  {{{payload.body}}}

@@ -8,6 +8,7 @@ export { LocationMessage } from './LocationMessage';
 export { ShareContactMessage } from './ShareContactMessage';
 export { UnsupportedMessage } from './UnsupportedMessage';
 export { MessageEdited } from './MessageEdited';
+export { FacebookAdMessage } from './FacebookAdMessage';
 
 export type Awaitable<T> = T | Promise<T>;
 

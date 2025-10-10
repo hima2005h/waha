@@ -52,6 +52,7 @@ export enum TKey {
   WA_TO_CW_MESSAGE_CONTACTS = 'whatsapp.to.chatwoot.message.contacts',
   WA_TO_CW_MESSAGE_LOCATION = 'whatsapp.to.chatwoot.message.location',
   WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
+  WA_TO_CW_MESSAGE_FACEBOOK_AD = 'whatsapp.to.chatwoot.message.facebook.ad',
 
   //
   // App Inbox
@@ -99,6 +100,15 @@ interface Link {
   url: string;
 }
 
+export interface FacebookAdTemplateData {
+  title: string;
+  body: string;
+  thumbnailUrl: string;
+  originalImageUrl: string;
+  sourceUrl: string;
+  sourceId: string;
+}
+
 export type TemplatePayloads = {
   [TKey.LOCALE_NAME]: void;
   [TKey.APP_INBOX_CONTACT_NAME]: void;
@@ -132,6 +142,10 @@ export type TemplatePayloads = {
   [TKey.WA_TO_CW_MESSAGE_CONTACTS]: { contacts: SimpleVCardInfo[] };
   [TKey.WA_TO_CW_MESSAGE_LOCATION]: { payload: any; message: proto.Message };
   [TKey.WA_TO_CW_MESSAGE_UNSUPPORTED]: { details: Link };
+  [TKey.WA_TO_CW_MESSAGE_FACEBOOK_AD]: {
+    payload: WAMessage;
+    adData: FacebookAdTemplateData;
+  };
   [TKey.JOB_SCHEDULED_ERROR_HEADER]: void;
   [TKey.JOB_REPORT_ERROR]: {
     header: string;

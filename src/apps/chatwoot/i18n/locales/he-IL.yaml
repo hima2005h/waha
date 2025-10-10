@@ -236,3 +236,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 אנא פתח/י את **WhatsApp** כדי לצפות בזה.
 
   פרטים: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **מודעת פייסבוק**
+
+  **כותרת:** {{{adData.title}}}
+
+  **תיאור:**
+  {{{adData.body}}}
+
+  **קישור למודעה:** [לצפייה בפייסבוק]({{{adData.sourceUrl}}})
+  **מזהה המודעה:** {{{adData.sourceId}}}
+
+  ---
+  💬 **הודעת הלקוח:**
+  {{{payload.body}}}

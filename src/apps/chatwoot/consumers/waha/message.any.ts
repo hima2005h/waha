@@ -18,6 +18,7 @@ import { WAHAWebhookMessageAny } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import {
+  FacebookAdMessage,
   LocationMessage,
   MessageToChatWootConverter,
   ShareContactMessage,
@@ -68,6 +69,13 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     let converter: MessageToChatWootConverter;
     let msg: ChatWootMessagePartial;
     const protoMessage = resolveProtoMessage(payload);
+
+    // Check for Facebook Ad first - but let it use the normal flow later
+    converter = new FacebookAdMessage(this.l, this.logger);
+    msg = await converter.convert(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
 
     converter = new TextMessage(this.l, this.logger, this.waha);
     msg = await converter.convert(payload, null);

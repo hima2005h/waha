@@ -236,3 +236,18 @@ whatsapp.to.chatwoot.message.unsupported: |-
   📱 يرجى فتح **WhatsApp** لعرضه.
 
   التفاصيل: [{{{details.text}}}]({{{details.url}}})
+
+whatsapp.to.chatwoot.message.facebook.ad: |-
+  📢 **إعلان فيسبوك**
+
+  **العنوان:** {{{adData.title}}}
+
+  **الوصف:**
+  {{{adData.body}}}
+
+  **رابط الإعلان:** [عرض على فيسبوك]({{{adData.sourceUrl}}})
+  **معرّف الإعلان:** {{{adData.sourceId}}}
+
+  ---
+  💬 **رسالة العميل:**
+  {{{payload.body}}}
