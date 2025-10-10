@@ -82,8 +82,4 @@ export class MessageReactionHandler extends MessageBaseHandler<WAMessageReaction
     const key = parseMessageIdSerialized(messageId, false);
     return key.id;
   }
-
-  async getAttachments(payload: WAMessageReaction): Promise<SendAttachment[]> {
-    return [];
-  }
 }
