@@ -9,6 +9,7 @@ export { ShareContactMessage } from './ShareContactMessage';
 export { UnsupportedMessage } from './UnsupportedMessage';
 export { MessageEdited } from './MessageEdited';
 export { FacebookAdMessage } from './FacebookAdMessage';
+export { PollMessage } from './PollMessage';
 
 export type Awaitable<T> = T | Promise<T>;
 

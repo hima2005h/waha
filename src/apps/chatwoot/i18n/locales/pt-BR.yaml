@@ -256,6 +256,17 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **Enquete**
+
+  **{{name}}**
+
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Esse tipo de mensagem não é suportado no ChatWoot.**
   📱 Por favor, abra o **WhatsApp** para visualizá-la.

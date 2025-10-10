@@ -51,6 +51,7 @@ export enum TKey {
   WA_TO_CW_MESSAGE = 'whatsapp.to.chatwoot.message',
   WA_TO_CW_MESSAGE_CONTACTS = 'whatsapp.to.chatwoot.message.contacts',
   WA_TO_CW_MESSAGE_LOCATION = 'whatsapp.to.chatwoot.message.location',
+  WA_TO_CW_MESSAGE_POLL = 'whatsapp.to.chatwoot.message.poll',
   WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
   WA_TO_CW_MESSAGE_FACEBOOK_AD = 'whatsapp.to.chatwoot.message.facebook.ad',
 
@@ -109,6 +110,15 @@ export interface FacebookAdTemplateData {
   sourceId: string;
 }
 
+export interface PollOption {
+  optionName?: string;
+}
+
+export interface PollCreationMessage {
+  name?: string;
+  options?: Array<PollOption>;
+}
+
 export type TemplatePayloads = {
   [TKey.LOCALE_NAME]: void;
   [TKey.APP_INBOX_CONTACT_NAME]: void;
@@ -141,6 +151,11 @@ export type TemplatePayloads = {
   };
   [TKey.WA_TO_CW_MESSAGE_CONTACTS]: { contacts: SimpleVCardInfo[] };
   [TKey.WA_TO_CW_MESSAGE_LOCATION]: { payload: any; message: proto.Message };
+  [TKey.WA_TO_CW_MESSAGE_POLL]: {
+    payload: WAMessage;
+    poll: PollCreationMessage;
+    message: proto.Message;
+  };
   [TKey.WA_TO_CW_MESSAGE_UNSUPPORTED]: { details: Link };
   [TKey.WA_TO_CW_MESSAGE_FACEBOOK_AD]: {
     payload: WAMessage;

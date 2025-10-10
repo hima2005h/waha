@@ -21,6 +21,7 @@ import {
   FacebookAdMessage,
   LocationMessage,
   MessageToChatWootConverter,
+  PollMessage,
   ShareContactMessage,
   TextMessage,
   UnsupportedMessage,
@@ -90,6 +91,12 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     }
 
     converter = new ShareContactMessage(this.l, this.logger);
+    msg = await converter.convert(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+
+    converter = new PollMessage(this.l);
     msg = await converter.convert(payload, protoMessage);
     if (msg) {
       return msg;
