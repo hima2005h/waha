@@ -45,7 +45,7 @@ jobs:
           # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          IS_MODIFY_TITLE: true
+          IS_MODIFY_TITLE: false
           CUSTOM_BOT_NOTE: 'Portuguese'
           TARGET_LANGUAGE: 'por'
           TRANSLATED_LANGUAGE: 'pt'
