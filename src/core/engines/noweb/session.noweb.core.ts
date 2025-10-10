@@ -698,7 +698,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     this.sock.ev.on('messages.upsert', ({ messages }) => {
       const meId = this.sock?.authState?.creds?.me?.id;
       for (const message of messages) {
-        if (!isRealMessage(message, meId)) {
+        if (!isRealMessage(message)) {
           continue;
         }
         if (message.key.fromMe) {

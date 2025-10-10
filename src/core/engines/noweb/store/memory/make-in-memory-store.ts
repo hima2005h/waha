@@ -346,8 +346,8 @@ export default (config: BaileysInMemoryStoreConfig) => {
         switch (action) {
           case 'add':
             metadata.participants.push(
-              ...participants.map((id) => ({
-                id,
+              ...participants.map((participant) => ({
+                id: participant.id,
                 isAdmin: false,
                 isSuperAdmin: false,
               })),
@@ -356,7 +356,7 @@ export default (config: BaileysInMemoryStoreConfig) => {
           case 'demote':
           case 'promote':
             for (const participant of metadata.participants) {
-              if (participants.includes(participant.id)) {
+              if (participants.find((p) => p.id === participant.id)) {
                 participant.isAdmin = action === 'promote';
               }
             }
@@ -364,7 +364,8 @@ export default (config: BaileysInMemoryStoreConfig) => {
             break;
           case 'remove':
             metadata.participants = metadata.participants.filter(
-              (p) => !participants.includes(p.id),
+              (participant) =>
+                !participants.find((p) => p.id === participant.id),
             );
             break;
         }
