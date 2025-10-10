@@ -829,7 +829,8 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
   async checkNumberStatus(
     request: CheckNumberStatusQuery,
   ): Promise<WANumberExistResult> {
-    const phone = request.phone.split('@')[0];
+    let phone = request.phone.split('@')[0];
+    phone = phone.replace(/\+/g, '');
     const [result] = await this.sock.onWhatsApp(phone);
     if (!result || !result.exists) {
       return { numberExists: false };

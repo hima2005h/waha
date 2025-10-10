@@ -943,9 +943,10 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
   async checkNumberStatus(
     request: CheckNumberStatusQuery,
   ): Promise<WANumberExistResult> {
+    let phone = request.phone.replace(/\+/g, '');
     const req = new messages.CheckPhonesRequest({
       session: this.session,
-      phones: [request.phone],
+      phones: [phone],
     });
     const response = await promisify(this.client.CheckPhones)(req);
     const data = response.toObject();

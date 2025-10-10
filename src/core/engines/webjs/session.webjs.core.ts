@@ -600,7 +600,8 @@ export class WhatsappSessionWebJSCore extends WhatsappSession {
   async checkNumberStatus(
     request: CheckNumberStatusQuery,
   ): Promise<WANumberExistResult> {
-    const phone = request.phone.split('@')[0];
+    let phone = request.phone.split('@')[0];
+    phone = phone.replace(/\+/g, '');
     const result = await this.whatsapp.getNumberId(phone);
     if (!result) {
       return {
