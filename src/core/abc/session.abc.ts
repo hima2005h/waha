@@ -54,7 +54,6 @@ import {
   delay,
   filter,
   of,
-  pairwise,
   retry,
   scan,
   share,
@@ -1077,20 +1076,24 @@ export abstract class WhatsappSession {
   /**
    * Fetches the content from the specified URL and returns it as a Buffer.
    */
-  private static readonly insecureHttpsAgent = new HttpsAgent({
-    rejectUnauthorized: false,
-  });
-
-  public async fetch(url: string): Promise<Buffer> {
-    return axios
-      .get(url, {
-        responseType: 'arraybuffer',
-        httpsAgent: WhatsappSession.insecureHttpsAgent,
-      })
-      .then((res) => {
-        return Buffer.from(res.data);
-      });
+  public fetch(url: string): Promise<Buffer> {
+    return fetchBuffer(url);
   }
+}
+
+const InsecureHttpsAgent = new HttpsAgent({
+  rejectUnauthorized: false,
+});
+
+export async function fetchBuffer(url: string): Promise<Buffer> {
+  return axios
+    .get(url, {
+      responseType: 'arraybuffer',
+      httpsAgent: InsecureHttpsAgent,
+    })
+    .then((res) => {
+      return Buffer.from(res.data);
+    });
 }
 
 export function getGroupInviteLink(code: string) {
