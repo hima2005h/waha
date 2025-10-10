@@ -1,6 +1,16 @@
 import { camelCaseKeysDeep } from './proto';
 
 describe('camelCaseKeysDeep', () => {
+  it('URL to url', () => {
+    const input = { URL: 'https://example.com/image.png' };
+
+    const result = camelCaseKeysDeep(input);
+
+    expect(result).toEqual({
+      url: 'https://example.com/image.png',
+    });
+  });
+
   it('converts originalImageURL to originalImageUrl', () => {
     const input = { originalImageURL: 'https://example.com/image.png' };
 
