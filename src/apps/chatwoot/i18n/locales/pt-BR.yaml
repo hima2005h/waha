@@ -21,7 +21,7 @@ datetime:
   # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezonename
   timeZoneName: shortGeneric
   # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  # timeZone: 'America/Sao_Paulo'
+  timeZone: 'America/Sao_Paulo'
 
 job.report.error: |-
   ⚠️ **{{{header}}}**
