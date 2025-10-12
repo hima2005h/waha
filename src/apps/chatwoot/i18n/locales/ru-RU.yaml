@@ -9,6 +9,8 @@ locale.base: 'ru-RU'
 app.inbox.contact.name: 'WhatsApp Интеграция (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
+# "параметры" из date.toLocaleString
+# https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options
 datetime:
   locales: ru-RU
   day: 2-digit
@@ -16,6 +18,9 @@ datetime:
   year: numeric
   hour: 2-digit
   minute: 2-digit
+  # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezonename
+  timeZoneName: shortGeneric
+  # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   # timeZone: 'Europe/Moscow'
 
 job.report.error: |-

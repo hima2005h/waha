@@ -9,12 +9,17 @@ locale.base: 'en-US'
 app.inbox.contact.name: 'WhatsApp Integration (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
+# "options" from date.toLocaleString
+# https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options
 datetime:
   day: 2-digit
   month: 2-digit
   year: numeric
   hour: 2-digit
   minute: 2-digit
+  # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezonename
+  timeZoneName: shortGeneric
+  # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   # timeZone: 'America/New_York'
 
 job.report.error: |-

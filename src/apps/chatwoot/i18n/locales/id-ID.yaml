@@ -9,6 +9,8 @@ locale.base: 'id-ID'
 app.inbox.contact.name: 'Integrasi WhatsApp (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
+# "opsi" dari date.toLocaleString
+# https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options
 datetime:
   locales: id-ID
   day: 2-digit
@@ -16,6 +18,9 @@ datetime:
   year: numeric
   hour: 2-digit
   minute: 2-digit
+  # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#timezonename
+  timeZoneName: shortGeneric
+  # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   # timeZone: 'Asia/Jakarta'
 
 job.report.error: |-
