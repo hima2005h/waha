@@ -79,12 +79,19 @@ const isObjectALong = (value: any): value is Long => {
   );
 };
 
-export function ensureNumber(value: number | Long): number {
+export function ensureNumber(value: number | Long | string | null): number {
   if (!value) {
     // @ts-ignore
     return value;
   }
-  return typeof value === 'number' ? value : toNumber(value);
+  if (typeof value === 'string') {
+    return Number.parseInt(value, 10);
+  }
+  if (isObjectALong(value)) {
+    return toNumber(value);
+  }
+  // number
+  return value;
 }
 
 const toNumber = (longValue: Long): number => {

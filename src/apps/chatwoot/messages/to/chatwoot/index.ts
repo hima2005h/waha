@@ -10,6 +10,7 @@ export { UnsupportedMessage } from './UnsupportedMessage';
 export { MessageEdited } from './MessageEdited';
 export { FacebookAdMessage } from './FacebookAdMessage';
 export { PollMessage } from './PollMessage';
+export { EventMessage } from './EventMessage';
 
 export type Awaitable<T> = T | Promise<T>;
 

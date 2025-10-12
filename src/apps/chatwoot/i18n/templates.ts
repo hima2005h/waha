@@ -52,6 +52,7 @@ export enum TKey {
   WA_TO_CW_MESSAGE_CONTACTS = 'whatsapp.to.chatwoot.message.contacts',
   WA_TO_CW_MESSAGE_LOCATION = 'whatsapp.to.chatwoot.message.location',
   WA_TO_CW_MESSAGE_POLL = 'whatsapp.to.chatwoot.message.poll',
+  WA_TO_CW_MESSAGE_EVENT = 'whatsapp.to.chatwoot.message.event',
   WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
   WA_TO_CW_MESSAGE_FACEBOOK_AD = 'whatsapp.to.chatwoot.message.facebook.ad',
 
@@ -155,6 +156,12 @@ export type TemplatePayloads = {
     payload: WAMessage;
     poll: PollCreationMessage;
     message: proto.Message;
+  };
+  [TKey.WA_TO_CW_MESSAGE_EVENT]: {
+    payload: WAMessage;
+    message: {
+      eventMessage: Record<string, unknown>;
+    };
   };
   [TKey.WA_TO_CW_MESSAGE_UNSUPPORTED]: { details: Link };
   [TKey.WA_TO_CW_MESSAGE_FACEBOOK_AD]: {

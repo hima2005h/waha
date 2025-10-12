@@ -19,6 +19,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import {
   FacebookAdMessage,
+  EventMessage,
   LocationMessage,
   MessageToChatWootConverter,
   PollMessage,
@@ -97,6 +98,12 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     }
 
     converter = new PollMessage(this.l);
+    msg = await converter.convert(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+
+    converter = new EventMessage(this.l);
     msg = await converter.convert(payload, protoMessage);
     if (msg) {
       return msg;

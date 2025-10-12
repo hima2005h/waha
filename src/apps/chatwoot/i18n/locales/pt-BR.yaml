@@ -267,6 +267,40 @@ whatsapp.to.chatwoot.message.poll: |-
   {{/options}}
   {{/poll}}
 
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  {{#isCanceled}}
+  ❌ **Evento Cancelado**
+  {{/isCanceled}}
+  {{^isCanceled}}
+  📅 **Evento**
+  {{/isCanceled}}
+
+  **{{name}}**
+
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **Local:** {{location.name}}
+  {{/location.name}}
+
+  {{#startTime}}
+  🕐 **Início:** {{startTime}}
+  {{/startTime}}
+
+  {{#endTime}}
+  🕐 **Fim:** {{endTime}}
+  {{/endTime}}
+
+  {{#joinLink}}
+  🔗 **Link de participação:** {{joinLink}}
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Esse tipo de mensagem não é suportado no ChatWoot.**
   📱 Por favor, abra o **WhatsApp** para visualizá-la.
