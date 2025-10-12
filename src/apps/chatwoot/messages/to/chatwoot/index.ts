@@ -11,6 +11,7 @@ export { MessageEdited } from './MessageEdited';
 export { FacebookAdMessage } from './FacebookAdMessage';
 export { PollMessage } from './PollMessage';
 export { EventMessage } from './EventMessage';
+export { PixMessage } from './PixMessage';
 
 export type Awaitable<T> = T | Promise<T>;
 

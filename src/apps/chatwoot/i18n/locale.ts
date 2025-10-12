@@ -6,6 +6,14 @@ import { ensureNumber } from '@waha/core/engines/noweb/utils';
 export class Locale {
   constructor(private readonly strings: Record<string, string>) {}
 
+  /**
+   * Return Base Locale
+   * For number, datetime, currency formats
+   */
+  get locale(): string {
+    return this.strings['locale.base'] || 'en';
+  }
+
   key<K extends TKey>(key: K): Template<K> {
     return new Template(this.strings[key] || key);
   }
@@ -18,13 +26,37 @@ export class Locale {
     return new Locale({ ...this.strings, ...strings });
   }
 
-  FormatDate(date: Date | null): string | null {
+  FormatCurrency(
+    currency: string,
+    value: number | null,
+    offset: number = 1,
+  ): string | null {
+    if (value == null) {
+      return null;
+    }
+    if (!currency) {
+      return null;
+    }
+
+    offset = offset || 1;
+    try {
+      const fmt = new Intl.NumberFormat(this.locale, {
+        style: 'currency',
+        currency: currency,
+      });
+      return fmt.format(value / offset);
+    } catch (err) {
+      return `${currency} ${value}`;
+    }
+  }
+
+  FormatDatetime(date: Date | null): string | null {
     if (!date) {
       return null;
     }
     const options: any = this.strings['datetime'] || {};
-    options.timezone = options.timeZone ?? process.env.TZ;
-    return date.toLocaleString(options.locales, options);
+    options.timeZone = options.timeZone || options.timezone || process.env.TZ;
+    return date.toLocaleString(this.locale, options);
   }
 
   FormatTimestamp(timestamp: Long | string | number | null): string | null {
@@ -40,7 +72,7 @@ export class Locale {
     if (Number.isNaN(date.getTime())) {
       return undefined;
     }
-    return this.FormatDate(date);
+    return this.FormatDatetime(date);
   }
 }
 

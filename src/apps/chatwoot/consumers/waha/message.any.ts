@@ -20,6 +20,7 @@ import { PinoLogger } from 'nestjs-pino';
 import {
   FacebookAdMessage,
   EventMessage,
+  PixMessage,
   LocationMessage,
   MessageToChatWootConverter,
   PollMessage,
@@ -104,6 +105,12 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     }
 
     converter = new EventMessage(this.l);
+    msg = await converter.convert(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+
+    converter = new PixMessage(this.l, this.logger);
     msg = await converter.convert(payload, protoMessage);
     if (msg) {
       return msg;

@@ -149,6 +149,9 @@
       "ts"
     ],
     "rootDir": "src",
+    "moduleNameMapper": {
+      "^@waha/(.*)$": "<rootDir>/$1"
+    },
     "testRegex": ".test.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

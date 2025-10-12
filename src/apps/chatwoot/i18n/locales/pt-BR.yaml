@@ -1,5 +1,11 @@
 # Portuguese translations for ChatWoot integration
 locale.name: '🇧🇷🇵🇹 Português (Portuguese)'
+
+# Base locale code - must be a valid BCP 47 locale
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA uses it for number, currency and datetime representation
+locale.base: 'pt-BR'
+
 app.inbox.contact.name: 'Integração WhatsApp (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
@@ -300,6 +306,24 @@ whatsapp.to.chatwoot.message.event: |-
   {{/joinLink}}
   {{/eventMessage}}
   {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - Copia e Cola**
+
+  {{#pixData}}
+  **{{merchantName}}**
+
+  **Chave PIX:** {{key}}
+  **Tipo:** {{keyType}}
+  {{#totalAmount}}
+  **Valor:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **Referência:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX Copia e Cola enviado**
+  {{/pixData}}
 
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Esse tipo de mensagem não é suportado no ChatWoot.**
