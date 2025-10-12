@@ -13,6 +13,7 @@ export enum QueueName {
   WAHA_MESSAGE_REACTION = 'chatwoot.waha | message.reaction',
   WAHA_MESSAGE_EDITED = 'chatwoot.waha | message.edited',
   WAHA_MESSAGE_REVOKED = 'chatwoot.waha | message.revoked',
+  WAHA_MESSAGE_ACK = 'chatwoot.waha | message.ack',
   //
   // ChatWoot Events - Real
   //

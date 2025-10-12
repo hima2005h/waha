@@ -1,7 +1,8 @@
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
 import * as NodeCache from 'node-cache';
 
-import { ConversationId, IConversationCache } from './IConversationCache';
+import { IConversationCache } from './IConversationCache';
+import { ContactIds } from '@waha/apps/chatwoot/client/ConversationService';
 
 const cache: NodeCache = new NodeCache({
   stdTTL: 24 * 60 * 60, // 1 day
@@ -24,7 +25,7 @@ class ConversationCache implements IConversationCache {
     cache.del(fullKey);
   }
 
-  get(key: string): ConversationId | null {
+  get(key: string): ContactIds | null {
     const fullKey = this.fullKey(key);
     return cache.get(fullKey) || null;
   }
@@ -34,7 +35,7 @@ class ConversationCache implements IConversationCache {
     return cache.has(fullKey);
   }
 
-  set(key: string, value: ConversationId): void {
+  set(key: string, value: ContactIds): void {
     const fullKey = this.fullKey(key);
     cache.set(fullKey, value);
   }

@@ -81,6 +81,19 @@ export class ChatwootWebhookController {
         }
         return { success: true };
       case EventName.MESSAGE_UPDATED:
+        // We handle only "retries" on message_update
+        // This is the attribute ChatWoot send
+        // There's NO other way to identify "status: read" updates right now
+        // There's no "body.status" in message_updated webhook :(
+        const isRetryNull = body.content_attributes?.external_error === null;
+        const isRetrySomething = Boolean(
+          body.content_attributes?.external_error,
+        );
+        const isRetry = isRetryNull || isRetrySomething;
+        if (!isRetry) {
+          return { success: true };
+        }
+
         if (!isCommandsChat) {
           await this.chatWootQueueService.addMessageUpdatedJob(data);
         } else {

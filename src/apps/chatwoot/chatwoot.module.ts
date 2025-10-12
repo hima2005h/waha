@@ -21,6 +21,7 @@ import { WAHAMessageAnyConsumer } from './consumers/waha/message.any';
 import { WAHAMessageEditedConsumer } from './consumers/waha/message.edited';
 import { WAHAMessageReactionConsumer } from './consumers/waha/message.reaction';
 import { WAHAMessageRevokedConsumer } from './consumers/waha/message.revoked';
+import { WAHAMessageAckConsumer } from './consumers/waha/message.ack';
 import { WAHASessionStatusConsumer } from './consumers/waha/session.status';
 import { ChatWootQueueService } from './services/ChatWootQueueService';
 import { ChatWootScheduleService } from './services/ChatWootScheduleService';
@@ -53,6 +54,10 @@ const IMPORTS = lodash.flatten([
   }),
   RegisterAppQueue({
     name: QueueName.WAHA_MESSAGE_REVOKED,
+    defaultJobOptions: merge(ExponentialRetriesJobOptions, JobRemoveOptions),
+  }),
+  RegisterAppQueue({
+    name: QueueName.WAHA_MESSAGE_ACK,
     defaultJobOptions: merge(ExponentialRetriesJobOptions, JobRemoveOptions),
   }),
   RegisterAppQueue({
@@ -98,6 +103,7 @@ const PROVIDERS = [
   WAHAMessageReactionConsumer,
   WAHAMessageEditedConsumer,
   WAHAMessageRevokedConsumer,
+  WAHAMessageAckConsumer,
   MessageCleanupConsumer,
   CheckVersionConsumer,
   ChatWootWAHAQueueService,

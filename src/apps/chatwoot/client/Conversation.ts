@@ -9,6 +9,7 @@ export class Conversation {
     private accountAPI: ChatwootClient,
     private accountId: number,
     public conversationId: number,
+    public sourceId: string | null = null,
   ) {}
 
   public async send(data: conversation_message_create) {

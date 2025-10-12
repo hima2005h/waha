@@ -42,6 +42,7 @@ export function ListenEventsForChatWoot() {
     WAHAEvents.MESSAGE_REACTION,
     WAHAEvents.MESSAGE_EDITED,
     WAHAEvents.MESSAGE_REVOKED,
+    WAHAEvents.MESSAGE_ACK,
     WAHAEvents.SESSION_STATUS,
   ];
 }
@@ -96,8 +97,15 @@ export abstract class ChatWootWAHABaseConsumer extends AppConsumer {
     messageInfo: IMessageInfo,
   ): Promise<any>;
 
+  ShouldProcess(event: any): boolean {
+    return true;
+  }
+
   async processJob(job: Job<EventData, any, WAHAEvents>): Promise<any> {
-    const event: WAHAWebhookMessageRevoked = job.data.event as any;
+    const event = job.data.event as any;
+    if (!this.ShouldProcess(event)) {
+      return;
+    }
     const key = WhatsAppChatIdKey(job.data.app, this.GetChatId(event));
     return await this.withMutex(job, key, () =>
       this.ProcessAndReportErrors(job),

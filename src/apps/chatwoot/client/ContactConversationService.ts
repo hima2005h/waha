@@ -5,16 +5,16 @@ import ChatwootClient, {
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
 import { ContactService } from '@waha/apps/chatwoot/client/ContactService';
 import { Conversation } from '@waha/apps/chatwoot/client/Conversation';
-import { ConversationService } from '@waha/apps/chatwoot/client/ConversationService';
+import {
+  ContactIds,
+  ConversationService,
+} from '@waha/apps/chatwoot/client/ConversationService';
 import { ChatWootAPIConfig } from '@waha/apps/chatwoot/client/interfaces';
 import { InboxContactInfo } from '@waha/apps/chatwoot/contacts/InboxContactInfo';
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 
 import { CacheForConfig } from '../cache/ConversationCache';
-import {
-  ConversationId,
-  IConversationCache,
-} from '../cache/IConversationCache';
+import { IConversationCache } from '../cache/IConversationCache';
 
 export interface ContactInfo {
   ChatId(): string;
@@ -42,7 +42,7 @@ export class ContactConversationService {
 
   private async upsertByContactInfo(
     contactInfo: ContactInfo,
-  ): Promise<ConversationId> {
+  ): Promise<ContactIds> {
     const chatId = contactInfo.ChatId();
 
     // Check cache for chat id
@@ -96,19 +96,24 @@ export class ContactConversationService {
     );
 
     // Save to cache
-    this.cache.set(chatId, conversation.id);
-    return conversation.id;
+    const ids = {
+      id: conversation.id,
+      sourceId: contact.sourceId,
+    };
+    this.cache.set(chatId, ids);
+    return ids;
   }
 
   public async ConversationByContact(
     contactInfo: ContactInfo,
   ): Promise<Conversation> {
     const chatId = contactInfo.ChatId();
-    const conversationId = await this.upsertByContactInfo(contactInfo);
+    const ids = await this.upsertByContactInfo(contactInfo);
     const conversation = new Conversation(
       this.accountAPI,
       this.config.accountId,
-      conversationId,
+      ids.id,
+      ids.sourceId,
     );
     conversation.onError = (err) => {
       if (err instanceof ChatWootAPIError) {
@@ -116,7 +121,7 @@ export class ContactConversationService {
         this.cache.delete(chatId);
         this.logger.error(`ApiError: ${err.message}`);
         this.logger.error(
-          `ApiError occurred, invalidating cache for chat.id: ${chatId}, conversation.id: ${conversationId}`,
+          `ApiError occurred, invalidating cache for chat.id: ${chatId}, conversation.id: ${ids.id}, source.id: ${ids.sourceId}`,
         );
       }
     };
@@ -146,18 +151,25 @@ export class ContactConversationService {
     }
   }
 
-  public ResetMismatchedCache(chatIds: Array<string>, value: ConversationId) {
+  public ResetMismatchedCache(chatIds: Array<string>, contactId: number) {
     for (const chatId of chatIds) {
       if (!this.cache.has(chatId)) {
         continue;
       }
       const current = this.cache.get(chatId);
-      if (current !== value) {
+      if (current.id !== contactId) {
         this.logger.info(
-          `Resetting cache for chat id: ${chatId}, value changed from ${current} to ${value}`,
+          `Resetting cache for chat id: ${chatId}, value changed from ${current} to ${contactId}`,
         );
         this.cache.delete(chatId);
       }
     }
+  }
+
+  public async markConversationAsRead(
+    conversationId: number,
+    sourceId: string,
+  ): Promise<void> {
+    await this.conversationService.markAsRead(conversationId, sourceId);
   }
 }

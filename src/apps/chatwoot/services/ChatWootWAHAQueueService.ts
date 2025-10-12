@@ -23,6 +23,8 @@ export class ChatWootWAHAQueueService {
     private readonly queueMessageEdited: Queue,
     @InjectQueue(QueueName.WAHA_MESSAGE_REVOKED)
     private readonly queueMessageRevoked: Queue,
+    @InjectQueue(QueueName.WAHA_MESSAGE_ACK)
+    private readonly queueMessageAck: Queue,
     @InjectQueue(QueueName.WAHA_SESSION_STATUS)
     private readonly queueSessionStatus: Queue,
   ) {}
@@ -42,6 +44,8 @@ export class ChatWootWAHAQueueService {
         return this.queueMessageEdited;
       case WAHAEvents.MESSAGE_REVOKED:
         return this.queueMessageRevoked;
+      case WAHAEvents.MESSAGE_ACK:
+        return this.queueMessageAck;
       case WAHAEvents.SESSION_STATUS:
         return this.queueSessionStatus;
       default:
