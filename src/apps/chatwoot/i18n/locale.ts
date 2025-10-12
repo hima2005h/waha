@@ -80,7 +80,9 @@ export class Template<K extends TKey> {
   constructor(private readonly template: string) {}
 
   render(data: TemplatePayloads[K]): string {
-    return Mustache.render(this.template, data);
+    const text = Mustache.render(this.template, data);
+    // Remove /n at the end if any
+    return text.replace(/\n$/, '');
   }
 
   r(data: TemplatePayloads[K]): string {
