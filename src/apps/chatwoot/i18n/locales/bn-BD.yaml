@@ -1,5 +1,11 @@
 # Bengali translations for ChatWoot integration
 locale.name: '🇧🇩 বাংলা (Bengali)'
+
+# বেস লোকেল কোড - এটি একটি বৈধ BCP 47 লোকেল হতে হবে
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA এটি সংখ্যা, মুদ্রা এবং তারিখ/সময়ের ফরম্যাটিংয়ে ব্যবহার করে।
+locale.base: 'bn-BD'
+
 app.inbox.contact.name: 'হোয়াটসঅ্যাপ ইন্টিগ্রেশন (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

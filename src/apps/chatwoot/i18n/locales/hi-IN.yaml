@@ -1,5 +1,11 @@
 # Hindi translations for ChatWoot integration
 locale.name: '🇮🇳 हिंदी (Hindi)'
+
+# बेस लोकैल कोड - यह एक मान्य BCP 47 लोकैल होना चाहिए
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA इसे संख्याएँ, मुद्रा और दिनांक/समय प्रदर्शित करने के लिए उपयोग करता है।
+locale.base: 'hi-IN'
+
 app.inbox.contact.name: 'व्हाट्सएप इंटीग्रेशन (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

@@ -1,5 +1,11 @@
 # Hebrew translations for ChatWoot integration
 locale.name: '🇮🇱 עברית (Hebrew)'
+
+# קוד הלוקאל הבסיסי - חייב להיות לוקאל תקין לפי BCP 47
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA משתמש בכך להצגת מספרים, מטבע ותאריך/שעה
+locale.base: 'he-IL'
+
 app.inbox.contact.name: 'אינטגרציית וואטסאפ (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

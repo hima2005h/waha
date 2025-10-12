@@ -1,5 +1,11 @@
 # Spanish translations for ChatWoot integration
 locale.name: '🇪🇸 Español (Spanish)'
+
+# Código de locale base - debe ser un locale BCP 47 válido
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA lo utiliza para formatear números, moneda y fecha/hora
+locale.base: 'es-ES'
+
 app.inbox.contact.name: 'Integración de WhatsApp (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

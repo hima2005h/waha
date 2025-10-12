@@ -1,5 +1,11 @@
 # Arabic translations for ChatWoot integration
 locale.name: '🇦🇪 العربية (Arabic)'
+
+# رمز اللغة الأساسي - يجب أن يكون محليًا صالحًا وفق BCP 47
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# تستخدمه WAHA لعرض الأرقام والعملات والتاريخ/الوقت
+locale.base: 'ar-AE'
+
 app.inbox.contact.name: 'تكامل واتساب (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

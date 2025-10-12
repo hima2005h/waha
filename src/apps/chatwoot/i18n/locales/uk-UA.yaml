@@ -1,5 +1,11 @@
 # Ukrainian translations for ChatWoot integration
 locale.name: '🇺🇦 Українська (Ukrainian)'
+
+# Базовий код локалі - має бути чинною локаллю BCP 47
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA використовує його для форматування чисел, валют і дати/часу
+locale.base: 'uk-UA'
+
 app.inbox.contact.name: 'Інтеграція WhatsApp (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

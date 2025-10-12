@@ -1,5 +1,11 @@
 # Russian translations for ChatWoot integration
 locale.name: '🇷🇺 Русский (Russian)'
+
+# Базовый код локали - должен быть корректной локалью BCP 47
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA использует его для форматирования чисел, валют и даты/времени
+locale.base: 'ru-RU'
+
 app.inbox.contact.name: 'WhatsApp Интеграция (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

@@ -1,5 +1,11 @@
 # Punjabi translations for ChatWoot integration
 locale.name: '🇵🇰 ਪੰਜਾਬੀ (Punjabi)'
+
+# ਅਧਾਰਭੂਤ ਲੋਕੇਲ ਕੋਡ - ਇਹ ਇੱਕ ਵੈਧ BCP 47 ਲੋਕੇਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA ਇਸਨੂੰ ਅੰਕ, ਕਰੰਸੀ ਅਤੇ ਤਾਰੀਖ/ਸਮੇਂ ਦੀ ਨਮਾਇਸ਼ ਲਈ ਵਰਤਦਾ ਹੈ
+locale.base: 'pa-PK'
+
 app.inbox.contact.name: 'ਵਟਸਐਪ ਇੰਟੀਗ੍ਰੇਸ਼ਨ (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

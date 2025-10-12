@@ -1,5 +1,11 @@
 # Urdu translations for ChatWoot integration
 locale.name: '🇵🇰 اردو (Urdu)'
+
+# بنیادی لوکل کوڈ - یہ ایک معتبر BCP 47 لوکل ہونا چاہیے
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA اسے نمبرز، کرنسی اور تاریخ/وقت کی نمائندگی کے لیے استعمال کرتا ہے۔
+locale.base: 'ur-PK'
+
 app.inbox.contact.name: 'واٹس ایپ انٹیگریشن (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 

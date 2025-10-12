@@ -1,5 +1,11 @@
 # Persian translations for ChatWoot integration
 locale.name: '🇮🇷 فارسی (Persian)'
+
+# کد محلی پایه - باید یک محلی معتبر BCP 47 باشد
+# https://en.wikipedia.org/wiki/IETF_language_tag
+# WAHA از آن برای نمایش اعداد، ارز و تاریخ/زمان استفاده می‌کند
+locale.base: 'fa-IR'
+
 app.inbox.contact.name: 'ادغام واتساپ (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
