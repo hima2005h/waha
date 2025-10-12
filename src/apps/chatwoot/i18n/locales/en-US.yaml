@@ -150,7 +150,6 @@ whatsapp.to.chatwoot.message.poll: |-
   📊 **Poll**
 
   **{{name}}**
-
   {{#options}}
   - {{optionName}}
   {{/options}}

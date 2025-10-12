@@ -276,7 +276,6 @@ whatsapp.to.chatwoot.message.poll: |-
   📊 **Enquete**
 
   **{{name}}**
-
   {{#options}}
   - {{optionName}}
   {{/options}}
