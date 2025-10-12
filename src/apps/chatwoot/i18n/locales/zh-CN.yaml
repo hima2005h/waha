@@ -241,9 +241,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **地址：** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **网站：** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **网站：** {{url}}
+  {{/url}}
 
   🔗 **在地图上查看：** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -261,9 +261,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **地址：** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **网站：** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **网站：** {{url}}
+  {{/url}}
 
   🔗 **在地图上查看：** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

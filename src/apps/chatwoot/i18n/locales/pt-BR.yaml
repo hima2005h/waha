@@ -242,9 +242,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Endereço:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Site:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Site:** {{url}}
+  {{/url}}
 
   🔗 **Ver no mapa:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -262,9 +262,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Endereço:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Site:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Site:** {{url}}
+  {{/url}}
 
   🔗 **Ver no mapa:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

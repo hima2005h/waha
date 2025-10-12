@@ -239,9 +239,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **پتہ:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **ویب سائٹ:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **ویب سائٹ:** {{url}}
+  {{/url}}
 
   🔗 **نقشے پر دیکھیں:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -259,9 +259,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **پتہ:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **ویب سائٹ:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **ویب سائٹ:** {{url}}
+  {{/url}}
 
   🔗 **نقشے پر دیکھیں:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

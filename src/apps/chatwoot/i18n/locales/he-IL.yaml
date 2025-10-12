@@ -239,9 +239,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **כתובת:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **אתר אינטרנט:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **אתר אינטרנט:** {{url}}
+  {{/url}}
 
   🔗 **הצג במפה:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -259,9 +259,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **כתובת:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **אתר אינטרנט:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **אתר אינטרנט:** {{url}}
+  {{/url}}
 
   🔗 **הצג במפה:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

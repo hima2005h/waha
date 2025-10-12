@@ -239,9 +239,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Адреса:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Вебсайт:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Вебсайт:** {{url}}
+  {{/url}}
 
   🔗 **Переглянути на карті:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -259,9 +259,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Адреса:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Вебсайт:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Вебсайт:** {{url}}
+  {{/url}}
 
   🔗 **Переглянути на карті:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

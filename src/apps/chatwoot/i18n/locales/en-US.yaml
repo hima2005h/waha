@@ -116,9 +116,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Address:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Website:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Website:** {{url}}
+  {{/url}}
 
   🔗 **View on map:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -136,9 +136,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Address:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Website:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Website:** {{url}}
+  {{/url}}
 
   🔗 **View on map:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

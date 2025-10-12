@@ -239,9 +239,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Adres:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Web sitesi:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Web sitesi:** {{url}}
+  {{/url}}
 
   🔗 **Haritada görüntüle:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -259,9 +259,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **Adres:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **Web sitesi:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **Web sitesi:** {{url}}
+  {{/url}}
 
   🔗 **Haritada görüntüle:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}

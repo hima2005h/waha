@@ -239,9 +239,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **العنوان:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **الموقع الإلكتروني:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **الموقع الإلكتروني:** {{url}}
+  {{/url}}
 
   🔗 **عرض على الخريطة:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
@@ -259,9 +259,9 @@ whatsapp.to.chatwoot.message.location: |-
   📍 **العنوان:** {{address}}
   {{/address}}
 
-  {{#URL}}
-  🌐 **الموقع الإلكتروني:** {{URL}}
-  {{/URL}}
+  {{#url}}
+  🌐 **الموقع الإلكتروني:** {{url}}
+  {{/url}}
 
   🔗 **عرض على الخريطة:** https://www.google.com/maps?q={{degreesLatitude}},{{degreesLongitude}}
   {{#caption}}{{caption}}{{/caption}}
