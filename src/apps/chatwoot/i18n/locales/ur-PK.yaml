@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **رائے شماری**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **ایونٹ**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **مقام:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **آغاز:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **اختتام:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **شمولیت کا لنک:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - کاپی اور پیسٹ**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **PIX کلید:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **قسم:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **رقم:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **حوالہ:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX کاپی اور پیسٹ بھیج دیا گیا**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **ChatWoot میں اس قسم کا پیغام معاونت یافتہ نہیں ہے۔**
   📱 اسے دیکھنے کے لیے براہ کرم **WhatsApp** کھولیں۔

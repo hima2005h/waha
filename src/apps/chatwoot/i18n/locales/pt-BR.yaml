@@ -284,12 +284,7 @@ whatsapp.to.chatwoot.message.poll: |-
 whatsapp.to.chatwoot.message.event: |-
   {{#message}}
   {{#eventMessage}}
-  {{#isCanceled}}
-  ❌ **Evento Cancelado**
-  {{/isCanceled}}
-  {{^isCanceled}}
   📅 **Evento**
-  {{/isCanceled}}
 
   **{{name}}**
 
@@ -310,7 +305,7 @@ whatsapp.to.chatwoot.message.event: |-
   {{/endTime}}
 
   {{#joinLink}}
-  🔗 **Link de participação:** {{joinLink}}
+  🔗 **Link de participação:** [{{joinLink}}]({{joinLink}})
   {{/joinLink}}
   {{/eventMessage}}
   {{/message}}
@@ -319,10 +314,16 @@ whatsapp.to.chatwoot.message.pix: |-
   💳 **PIX - Copia e Cola**
 
   {{#pixData}}
+  {{#merchantName}}
   **{{merchantName}}**
+  {{/merchantName}}
 
+  {{#key}}
   **Chave PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
   **Tipo:** {{keyType}}
+  {{/keyType}}
   {{#totalAmount}}
   **Valor:** {{totalAmountFormatted}}
   {{/totalAmount}}

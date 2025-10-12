@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **Опитування**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **Подія**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **Місце:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **Початок:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **Завершення:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **Посилання для приєднання:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - Копіювати та Вставити**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **Ключ PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **Тип:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **Сума:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **Референс:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX Копіювати та Вставити надіслано**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Цей тип повідомлення не підтримується в ChatWoot.**
   📱 Будь ласка, відкрийте **WhatsApp**, щоб переглянути.

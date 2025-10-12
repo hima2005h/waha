@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **Anket**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **Etkinlik**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **Konum:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **Başlangıç:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **Bitiş:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **Katılma bağlantısı:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - Kopyala ve Yapıştır**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **PIX Anahtarı:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **Tür:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **Tutar:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **Referans:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX Kopyala ve Yapıştır gönderildi**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Bu mesaj türü ChatWoot’ta desteklenmiyor.**
   📱 Görüntülemek için lütfen **WhatsApp’ı** açın.

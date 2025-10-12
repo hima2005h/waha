@@ -195,12 +195,7 @@ whatsapp.to.chatwoot.message.pix: |-
   **Type:** {{keyType}}
   {{/keyType}}
   {{#totalAmount}}
-  **Amount:** {{currency}} {{totalAmount}}
-  {{/totalAmount}}
-  {{^totalAmount}}
-  {{#currency}}
-  **Currency:** {{currency}}
-  {{/currency}}
+  **Amount:** {{totalAmountFormatted}}
   {{/totalAmount}}
   {{#referenceId}}
   **Reference:** {{referenceId}}

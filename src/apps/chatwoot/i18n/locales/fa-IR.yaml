@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **نظرسنجی**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **رویداد**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **مکان:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **شروع:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **پایان:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **لینک پیوستن:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - کپی و چسباندن**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **کلید PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **نوع:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **مبلغ:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **شناسه مرجع:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX کپی و چسباندن ارسال شد**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **این نوع پیام در ChatWoot پشتیبانی نمی‌شود.**
   📱 لطفاً برای مشاهده آن **WhatsApp** را باز کنید.

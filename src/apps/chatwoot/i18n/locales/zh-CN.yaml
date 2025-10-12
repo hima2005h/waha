@@ -270,6 +270,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **投票**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **活动**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **地点：** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **开始时间：** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **结束时间：** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **加入链接：** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - 复制粘贴**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **PIX 密钥：** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **类型：** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **金额：** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **参考：** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX 复制粘贴已发送**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **ChatWoot 不支持此消息类型。**
   📱 请打开 **WhatsApp** 查看。

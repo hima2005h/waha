@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **ਸਰਵੇਖਣ**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **ਇਵੈਂਟ**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **ਸਥਾਨ:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **ਸ਼ੁਰੂਆਤ:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **ਖਾਤਮਾ:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **ਜੁੜਨ ਲਈ ਲਿੰਕ:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - ਕਾਪੀ ਅਤੇ ਪੇਸਟ**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **PIX ਕੁੰਜੀ:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **ਕਿਸਮ:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **ਰਕਮ:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **ਹਵਾਲਾ:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX ਕਾਪੀ ਅਤੇ ਪੇਸਟ ਭੇਜਿਆ ਗਿਆ**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **ਇਹ ਸੁਨੇਹੇ ਦੀ ਕਿਸਮ ChatWoot ਵਿੱਚ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।**
   📱 ਇਸਨੂੰ ਦੇਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ **WhatsApp** ਖੋਲ੍ਹੋ।

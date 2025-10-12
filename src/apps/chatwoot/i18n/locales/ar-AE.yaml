@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **استطلاع**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **حدث**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **الموقع:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **البدء:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **الانتهاء:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **رابط الانضمام:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - نسخ ولصق**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **مفتاح PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **النوع:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **المبلغ:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **المرجع:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **تم إرسال PIX نسخ ولصق**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **هذا النوع من الرسائل غير مدعوم في ChatWoot.**
   📱 يرجى فتح **WhatsApp** لعرضه.

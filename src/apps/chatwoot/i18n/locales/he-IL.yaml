@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **סקר**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **אירוע**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **מיקום:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **התחלה:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **סיום:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **קישור הצטרפות:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - העתק והדבק**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **מפתח PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **סוג:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **סכום:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **אסמכתא:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX העתק והדבק נשלח**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **סוג הודעה זה אינו נתמך ב-ChatWoot.**
   📱 אנא פתח/י את **WhatsApp** כדי לצפות בזה.

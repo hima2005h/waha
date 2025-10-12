@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **Sondage**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **Événement**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **Lieu :** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **Début :** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **Fin :** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **Lien de participation :** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - Copier et Coller**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **Clé PIX :** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **Type :** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **Montant :** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **Référence :** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX Copier et Coller envoyé**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Ce type de message n’est pas pris en charge dans ChatWoot.**
   📱 Veuillez ouvrir **WhatsApp** pour l’afficher.

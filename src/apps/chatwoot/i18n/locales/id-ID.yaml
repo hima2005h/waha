@@ -268,6 +268,65 @@ whatsapp.to.chatwoot.message.location: |-
   {{/liveLocationMessage}}
   {{/message}}
 
+whatsapp.to.chatwoot.message.poll: |-
+  {{#poll}}
+  📊 **Jajak Pendapat**
+
+  **{{name}}**
+  {{#options}}
+  - {{optionName}}
+  {{/options}}
+  {{/poll}}
+
+whatsapp.to.chatwoot.message.event: |-
+  {{#message}}
+  {{#eventMessage}}
+  📅 **Acara**
+
+  **{{name}}**
+  {{#description}}
+  {{description}}
+  {{/description}}
+
+  {{#location.name}}
+  📍 **Lokasi:** {{location.name}}
+  {{/location.name}}
+  {{#startTime}}
+  🕐 **Mulai:** {{startTime}}
+  {{/startTime}}
+  {{#endTime}}
+  🕐 **Selesai:** {{endTime}}
+  {{/endTime}}
+  {{#joinLink}}
+  🔗 **Tautan bergabung:** [{{joinLink}}]({{joinLink}})
+  {{/joinLink}}
+  {{/eventMessage}}
+  {{/message}}
+
+whatsapp.to.chatwoot.message.pix: |-
+  💳 **PIX - Salin dan Tempel**
+
+  {{#pixData}}
+  {{#merchantName}}
+  **{{merchantName}}**
+  {{/merchantName}}
+
+  {{#key}}
+  **Kunci PIX:** {{key}}
+  {{/key}}
+  {{#keyType}}
+  **Jenis:** {{keyType}}
+  {{/keyType}}
+  {{#totalAmount}}
+  **Jumlah:** {{totalAmountFormatted}}
+  {{/totalAmount}}
+  {{#referenceId}}
+  **Referensi:** {{referenceId}}
+  {{/referenceId}}
+
+  💳 **PIX Salin dan Tempel terkirim**
+  {{/pixData}}
+
 whatsapp.to.chatwoot.message.unsupported: |-
   ⚠️ **Jenis pesan ini tidak didukung di ChatWoot.**
   📱 Silakan buka **WhatsApp** untuk melihatnya.
