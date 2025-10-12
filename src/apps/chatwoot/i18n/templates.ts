@@ -127,6 +127,7 @@ export interface PixTemplatePayload {
   keyType?: string;
   currency?: string;
   totalAmount?: number;
+  totalAmountFormatted?: string;
   referenceId?: string;
 }
 

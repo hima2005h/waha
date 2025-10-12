@@ -1,31 +1,13 @@
 import { ILogger } from '@waha/apps/app_sdk/ILogger';
 import { ChatWootMessagePartial } from '@waha/apps/chatwoot/consumers/waha/base';
 import { Locale } from '@waha/apps/chatwoot/i18n/locale';
-import { TKey } from '@waha/apps/chatwoot/i18n/templates';
+import { PixTemplatePayload, TKey } from '@waha/apps/chatwoot/i18n/templates';
 import { MessageToChatWootConverter } from '@waha/apps/chatwoot/messages/to/chatwoot';
-import {
-  camelCaseKeysDeep,
-  isEmptyString,
-} from '@waha/apps/chatwoot/messages/to/chatwoot/utils/proto';
+import { isEmptyString } from '@waha/apps/chatwoot/messages/to/chatwoot/utils/proto';
 import { WhatsappToMarkdown } from '@waha/apps/chatwoot/messages/to/chatwoot/utils/markdown';
 import * as lodash from 'lodash';
 import type { proto } from '@adiwajshing/baileys';
 import { WAMessage } from '@waha/structures/responses.dto';
-
-interface PixTemplateData {
-  merchantName?: string;
-  key?: string;
-  keyType?: string;
-  currency?: string;
-  totalAmount?: number;
-  totalAmountFormatted?: string;
-  referenceId?: string;
-}
-
-interface NativeFlowButton {
-  name?: string;
-  buttonParamsJson?: string;
-}
 
 export class PixMessage implements MessageToChatWootConverter {
   constructor(
@@ -62,7 +44,9 @@ export class PixMessage implements MessageToChatWootConverter {
     };
   }
 
-  private extractPixData(protoMessage: proto.Message): PixTemplateData | null {
+  private extractPixData(
+    protoMessage: proto.Message,
+  ): PixTemplatePayload | null {
     const buttons = this.resolveNativeFlowButtons(protoMessage);
     if (!buttons || buttons.length === 0) {
       return null;
@@ -97,7 +81,7 @@ export class PixMessage implements MessageToChatWootConverter {
       params?.total_amount?.value,
       params?.total_amount?.offset,
     );
-    const data: PixTemplateData = {
+    const data: PixTemplatePayload = {
       merchantName: pixCode.merchant_name,
       key: pixCode.key,
       keyType: pixCode.key_type,
