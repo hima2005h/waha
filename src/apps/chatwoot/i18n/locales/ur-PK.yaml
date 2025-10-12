@@ -9,6 +9,15 @@ locale.base: 'ur-PK'
 app.inbox.contact.name: 'واٹس ایپ انٹیگریشن (WAHA)'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
+datetime:
+  locales: ur-PK
+  day: 2-digit
+  month: 2-digit
+  year: numeric
+  hour: 2-digit
+  minute: 2-digit
+  # timeZone: 'Asia/Karachi'
+
 job.report.error: |-
   ⚠️ **{{{header}}}**
   {{#attempts.nextDelay}}
