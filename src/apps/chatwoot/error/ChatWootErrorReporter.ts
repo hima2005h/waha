@@ -39,6 +39,12 @@ export class ChatWootErrorReporter {
     }
     const template = this.l.key(TKey.JOB_REPORT_ERROR);
     const nextDelay = NextAttemptDelayInWholeSeconds(this.job);
+    if (nextDelay) {
+      // TODO: Add a way to enable it back in config
+      // https://github.com/devlikeapro/waha/issues/1395
+      // There's retries more left - ignore it for now
+      return;
+    }
     const attempts = {
       current: this.job.attemptsMade + 1,
       max: this.job.opts?.attempts || 1,
@@ -77,6 +83,10 @@ export class ChatWootErrorReporter {
     type: MessageType,
     replyTo?: number,
   ): Promise<void> {
+    // TODO: Add a way to enable it back in config
+    // https://github.com/devlikeapro/waha/issues/1395
+    return null;
+
     const template = this.l.key(TKey.JOB_REPORT_SUCCEEDED);
     const attempts = {
       current: this.job.attemptsMade + 1,
