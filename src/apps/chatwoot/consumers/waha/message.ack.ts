@@ -62,7 +62,13 @@ export class WAHAMessageAckConsumer extends ChatWootWAHABaseConsumer {
       session,
       container.Locale(),
     );
-    await handler.handle(event);
+    try {
+      await handler.handle(event);
+    } catch (e) {
+      // TODO: Investigate errors
+      // https://github.com/devlikeapro/waha/issues/1492
+      this.logger.error(e);
+    }
   }
 }
 
