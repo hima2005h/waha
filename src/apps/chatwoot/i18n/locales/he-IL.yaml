@@ -6,7 +6,7 @@ locale.name: '🇮🇱 עברית (Hebrew)'
 # WAHA משתמש בכך להצגת מספרים, מטבע ותאריך/שעה
 locale.base: 'he-IL'
 
-app.inbox.contact.name: 'אינטגרציית וואטסאפ (WAHA)'
+app.inbox.contact.name: 'אינטגרציית וואטסאפ'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # "אפשרויות" של date.toLocaleString

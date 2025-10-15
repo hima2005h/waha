@@ -6,7 +6,7 @@ locale.name: '🇧🇷🇵🇹 Português (Portuguese)'
 # A WAHA usa isso para formatar números, moeda e data/hora
 locale.base: 'pt-BR'
 
-app.inbox.contact.name: 'Integração WhatsApp (WAHA)'
+app.inbox.contact.name: 'Integração WhatsApp'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # "opções" de date.toLocaleString

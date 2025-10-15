@@ -6,7 +6,7 @@ locale.name: '🇷🇺 Русский (Russian)'
 # WAHA использует его для форматирования чисел, валют и даты/времени
 locale.base: 'ru-RU'
 
-app.inbox.contact.name: 'WhatsApp Интеграция (WAHA)'
+app.inbox.contact.name: 'WhatsApp Интеграция'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # "параметры" из date.toLocaleString

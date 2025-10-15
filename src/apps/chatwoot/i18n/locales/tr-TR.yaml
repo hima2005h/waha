@@ -6,7 +6,7 @@ locale.name: '🇹🇷 Türkçe (Turkish)'
 # WAHA bunu sayı, para birimi ve tarih/saat gösterimi için kullanır
 locale.base: 'tr-TR'
 
-app.inbox.contact.name: 'WhatsApp Entegrasyonu (WAHA)'
+app.inbox.contact.name: 'WhatsApp Entegrasyonu'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # date.toLocaleString için "options"

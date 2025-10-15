@@ -6,7 +6,7 @@ locale.name: '🇩🇪 Deutsch (German)'
 # WAHA nutzt ihn zur Darstellung von Zahlen, Währungen sowie Datum und Uhrzeit
 locale.base: 'de-DE'
 
-app.inbox.contact.name: 'WhatsApp Integration (WAHA)'
+app.inbox.contact.name: 'WhatsApp Integration'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # "Optionen" von date.toLocaleString

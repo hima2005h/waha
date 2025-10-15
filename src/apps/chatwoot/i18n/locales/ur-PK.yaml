@@ -6,7 +6,7 @@ locale.name: '🇵🇰 اردو (Urdu)'
 # WAHA اسے نمبرز، کرنسی اور تاریخ/وقت کی نمائندگی کے لیے استعمال کرتا ہے۔
 locale.base: 'ur-PK'
 
-app.inbox.contact.name: 'واٹس ایپ انٹیگریشن (WAHA)'
+app.inbox.contact.name: 'واٹس ایپ انٹیگریشن'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # date.toLocaleString کی "options"

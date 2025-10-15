@@ -6,7 +6,7 @@ locale.name: '🇮🇳 हिंदी (Hindi)'
 # WAHA इसे संख्याएँ, मुद्रा और दिनांक/समय प्रदर्शित करने के लिए उपयोग करता है।
 locale.base: 'hi-IN'
 
-app.inbox.contact.name: 'व्हाट्सएप इंटीग्रेशन (WAHA)'
+app.inbox.contact.name: 'व्हाट्सएप इंटीग्रेशन'
 app.inbox.contact.avatar.url: 'https://raw.githubusercontent.com/devlikeapro/waha/core/logo.png'
 
 # date.toLocaleString की "options"
