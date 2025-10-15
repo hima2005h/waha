@@ -41,11 +41,6 @@ if [ -n "$key" ]; then
     # If already hashed, use it as is
     export WAHA_API_KEY="$key"
   else
-    # Display warning about using plain text API key
-    echo "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
-    echo "WARNING: Plain text API key detected. Converting to hashed format for security."
-    echo "For better security, use WAHA_API_KEY=sha512:{SHA512_HASH_FOR_YOUR_API_KEY}"
-    echo "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
     # Hash the key using sha512sum
     HASHED_KEY=$(echo -n "$key" | sha512sum | awk '{print $1}')
     export WAHA_API_KEY="sha512:$HASHED_KEY"
