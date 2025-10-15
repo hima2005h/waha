@@ -18,6 +18,9 @@ import { SwaggerConfiguratorCore } from './core/SwaggerConfiguratorCore';
 import { AllExceptionsFilter } from './nestjs/AllExceptionsFilter';
 import { getWAHAVersion, VERSION, WAHAVersion } from './version';
 import { loadESMModules } from '@waha/vendor/esm';
+import { setGlobalDispatcher, Agent } from 'undici';
+
+setGlobalDispatcher(new Agent({ connect: { family: 4 } }));
 
 const logger: Logger = pino({
   level: getPinoLogLevel(),
