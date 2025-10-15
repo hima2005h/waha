@@ -7,7 +7,7 @@ __metadata:
 
 "@adiwajshing/baileys@github:devlikeapro/Baileys#fork-master-2025-10-10":
   version: 7.0.0-rc.5
-  resolution: "@adiwajshing/baileys@https://github.com/devlikeapro/Baileys.git#commit=dad2730017ab6a24a48d3010796e8338928d0f43"
+  resolution: "@adiwajshing/baileys@https://github.com/devlikeapro/Baileys.git#commit=dc9b6b7589ba1d71ec85cff4a789b5709a60a714"
   dependencies:
     "@cacheable/node-cache": ^1.4.0
     "@hapi/boom": ^9.1.3
@@ -31,7 +31,7 @@ __metadata:
       optional: true
     link-preview-js:
       optional: true
-  checksum: 453dc477eee6c8df1d9aaaddcebfc5ce8b1cca72e958c6d7b742d0ef4afa3fcf1c6db06aba331d7a99596e64499af8e6ade81de0feadb4369fc567e74ddf7fa9
+  checksum: d79aca449353f170374e6647efe09a2e871219e0af176d62796f68860ad619ce715736380250521e304d3ca28c5af4baa397ee0a8875468f8c7ad026e95028b6
   languageName: node
   linkType: hard
 
@@ -12327,6 +12327,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici@npm:^7.16.0":
+  version: 7.16.0
+  resolution: "undici@npm:7.16.0"
+  checksum: dca60e323e44c2d408e0d1f5eb540632ad4e75631d5b6fcd7791876bab54e0e263a66e5606eaa717d436b2db5988c2f4af912dfa221ce53e3fc7fcb7d224c9cd
+  languageName: node
+  linkType: hard
+
 "unicorn-magic@npm:^0.3.0":
   version: 0.3.0
   resolution: "unicorn-magic@npm:0.3.0"
@@ -12593,6 +12600,7 @@ __metadata:
     tsconfig-paths: ^4.1.0
     typescript: 5.9.2
     ulid: ^2.3.0
+    undici: ^7.16.0
     whatsapp-web.js: "github:devlikeapro/whatsapp-web.js#fork-main-2025-09-10"
     write-file-atomic: ^6.0.0
     yaml: ^2.7.1
