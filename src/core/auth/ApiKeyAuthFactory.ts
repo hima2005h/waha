@@ -6,11 +6,15 @@ import {
   NoAuth,
   PlainApiKeyAuth,
 } from '@waha/core/auth/auth';
+import { ReportGeneratedValue } from '@waha/core/auth/config';
 
 export function ApiKeyAuthFactory(
   config: WhatsappConfigService,
   logger: LoggerService,
 ): IApiKeyAuth {
+  setTimeout(() => {
+    ReportGeneratedValue();
+  }, 4000);
   const apiKey = config.getApiKey();
   if (!apiKey) {
     setTimeout(() => {

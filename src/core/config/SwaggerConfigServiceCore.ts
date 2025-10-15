@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 import { parseBool } from '../../helpers';
+import { Auth } from '@waha/core/auth/config';
 
 @Injectable()
 export class SwaggerConfigServiceCore {
@@ -26,14 +27,8 @@ export class SwaggerConfigServiceCore {
   }
 
   get credentials(): [string, string] | undefined {
-    const user = this.configService.get<string>(
-      'WHATSAPP_SWAGGER_USERNAME',
-      undefined,
-    );
-    const password = this.configService.get<string>(
-      'WHATSAPP_SWAGGER_PASSWORD',
-      undefined,
-    );
+    const user = Auth.swagger.username.value;
+    const password = Auth.swagger.password.value;
     if (!user && !password) {
       return null;
     }

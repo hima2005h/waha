@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 import { parseBool } from '../../helpers';
+import { Auth } from '@waha/core/auth/config';
 
 @Injectable()
 export class DashboardConfigServiceCore {
@@ -20,8 +21,8 @@ export class DashboardConfigServiceCore {
   }
 
   get credentials(): [string, string] | null {
-    const user = this.configService.get('WAHA_DASHBOARD_USERNAME', '');
-    const password = this.configService.get('WAHA_DASHBOARD_PASSWORD', '');
+    const user = Auth.dashboard.username.value || '';
+    const password = Auth.dashboard.password.value || '';
     if (!user && !password) {
       return null;
     }

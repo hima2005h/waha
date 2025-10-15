@@ -11,13 +11,14 @@ import {
 } from '@waha/structures/chatting.dto';
 import { SessionInfo } from '@waha/structures/sessions.dto';
 import axios, { AxiosInstance } from 'axios';
+import { Auth } from '@waha/core/auth/config';
 
 export class WAHASelf {
   public client: AxiosInstance;
 
   constructor() {
     // Set 'X-Api-Key'
-    const key = process.env.WAHA_API_KEY_PLAIN;
+    const key = Auth.keyplain.value;
     const port =
       parseInt(process.env.PORT) ||
       parseInt(process.env.WHATSAPP_API_PORT) ||

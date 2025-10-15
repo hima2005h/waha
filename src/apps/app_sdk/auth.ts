@@ -2,10 +2,11 @@ import * as process from 'node:process';
 
 import { parseBool } from '@waha/helpers';
 import * as basicAuth from 'express-basic-auth';
+import { Auth } from '@waha/core/auth/config';
 
 export function BullAuthMiddleware() {
-  let username = process.env.WAHA_DASHBOARD_USERNAME || '';
-  let password = process.env.WAHA_DASHBOARD_PASSWORD || '';
+  let username = Auth.dashboard.username.value || '';
+  let password = Auth.dashboard.password.value || '';
   if (process.env.WAHA_DASHBOARD_ENABLED) {
     const enabled = parseBool(process.env.WAHA_DASHBOARD_ENABLED);
     if (!enabled) {

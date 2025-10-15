@@ -13,6 +13,7 @@ import { ChatwootLocalesController } from '@waha/apps/chatwoot/api/chatwoot.loca
 import { ChatWootExports } from '@waha/apps/chatwoot/chatwoot.module';
 import { parseBool } from '@waha/helpers';
 import { RMutexModule } from '@waha/modules/rmutex';
+import { Auth } from '@waha/core/auth/config';
 
 const IMPORTS = [
   BullModule.forRoot({
@@ -93,11 +94,11 @@ const AppsDisabled = {
 };
 
 function checkApiKey() {
-  const key = process.env.WHATSAPP_API_KEY || process.env.WAHA_API_KEY;
+  const key = Auth.key.value;
   if (!key) {
     return;
   }
-  const plain = process.env.WAHA_API_KEY_PLAIN;
+  const plain = Auth.keyplain.value;
   if (!plain) {
     throw Error(
       'WAHA_API_KEY set, please provide WAHA_API_KEY_PLAIN when WAHA_APPS_ENABLED',
