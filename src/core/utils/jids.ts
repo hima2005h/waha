@@ -1,4 +1,4 @@
-import type { WAMessageKey } from '@adiwajshing/baileys';
+import { jidNormalizedUser, WAMessageKey } from '@adiwajshing/baileys';
 import { ensureSuffix } from '@waha/core/abc/session.abc';
 
 export function isJidNewsletter(jid: string) {
@@ -135,13 +135,10 @@ export function toCusFormat(remoteJid) {
     return remoteJid;
   }
   if (isLidUser(remoteJid)) {
-    return remoteJid;
+    return jidNormalizedUser(remoteJid);
   }
   if (isJidNewsletter(remoteJid)) {
     return remoteJid;
-  }
-  if (!remoteJid) {
-    return;
   }
   if (remoteJid == 'me') {
     return remoteJid;

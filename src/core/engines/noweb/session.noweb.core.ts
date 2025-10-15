@@ -73,7 +73,7 @@ import { QR } from '@waha/core/QR';
 import { AckToStatus, StatusToAck } from '@waha/core/utils/acks';
 import { ExtractMessageKeysForRead } from '@waha/core/utils/convertors';
 import { parseMessageIdSerialized } from '@waha/core/utils/ids';
-import { isJidNewsletter, toJID } from '@waha/core/utils/jids';
+import { isJidNewsletter, toCusFormat, toJID } from '@waha/core/utils/jids';
 import { DistinctAck } from '@waha/core/utils/reactive';
 import { flipObject, splitAt } from '@waha/helpers';
 import { PairingCodeResponse } from '@waha/structures/auth.dto';
@@ -2631,37 +2631,6 @@ export class NOWEBEngineMediaProcessor implements IMediaEngineProcessor<any> {
     const content = extractMessageContent(message.message);
     return content?.documentMessage?.fileName || null;
   }
-}
-
-/**
- * Convert from 11111111111@s.whatsapp.net to 11111111111@c.us
- */
-export function toCusFormat(remoteJid) {
-  if (!remoteJid) {
-    return remoteJid;
-  }
-  if (isJidGroup(remoteJid)) {
-    return remoteJid;
-  }
-  if (isJidBroadcast(remoteJid)) {
-    return remoteJid;
-  }
-  if (isLidUser(remoteJid)) {
-    return remoteJid;
-  }
-  if (isJidNewsletter(remoteJid)) {
-    return remoteJid;
-  }
-  if (!remoteJid) {
-    return;
-  }
-  if (remoteJid == 'me') {
-    return remoteJid;
-  }
-  let number = remoteJid.split('@')[0];
-  // remove :{device} part
-  number = number.split(':')[0];
-  return ensureSuffix(number);
 }
 
 export const ALL_JID = 'all@s.whatsapp.net';
