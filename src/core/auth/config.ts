@@ -1,6 +1,4 @@
 import { parseBool } from '@waha/helpers';
-import { CacheSync } from '@waha/utils/Cache';
-import { LoggerService } from '@nestjs/common';
 
 export interface SValue {
   param: string;
