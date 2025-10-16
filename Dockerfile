@@ -195,6 +195,11 @@ COPY --from=build /git/node_modules ./node_modules
 COPY --from=build /git/dist ./dist
 COPY --from=dashboard /dashboard ./dist/dashboard
 COPY --from=gows /go/gows/bin/gows /app/gows
+COPY .env.example ./.env.example
+COPY scripts/init-waha.js ./scripts/init-waha.js
+RUN chmod +x ./scripts/init-waha.js \
+  && printf '%s\n' '#!/bin/sh' 'exec node /app/scripts/init-waha.js "$@"' > /usr/local/bin/init-waha \
+  && chmod +x /usr/local/bin/init-waha
 ENV WAHA_GOWS_PATH=/app/gows
 ENV WAHA_GOWS_SOCKET=/tmp/gows.sock
 

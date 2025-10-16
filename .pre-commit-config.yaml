@@ -73,4 +73,5 @@ repos:
               ^src/core/engines/webjs/_lodash.js|
               ^tests/perf/.*|
               ^scripts/.*|
+              ^scripts/init-waha.js|
           )$
