@@ -68,6 +68,7 @@ import {
 } from '@waha/core/exceptions';
 import { toVcardV3 } from '@waha/core/vcard';
 import { createAgentProxy } from '@waha/core/helpers.proxy';
+import type { Agent } from 'https';
 import { IMediaEngineProcessor } from '@waha/core/media/IMediaEngineProcessor';
 import { QR } from '@waha/core/QR';
 import { AckToStatus, StatusToAck } from '@waha/core/utils/acks';
@@ -178,8 +179,6 @@ import { exclude } from '@waha/utils/reactive/ops/exclude';
 import { SingleDelayedJobRunner } from '@waha/utils/SingleDelayedJobRunner';
 import { SinglePeriodicJobRunner } from '@waha/utils/SinglePeriodicJobRunner';
 import { StatusTracker } from '@waha/utils/StatusTracker';
-import * as Buffer from 'buffer';
-import { Agent } from 'https';
 import * as lodash from 'lodash';
 import * as NodeCache from 'node-cache';
 import {
@@ -199,6 +198,7 @@ import { INowebStore } from './store/INowebStore';
 import { NowebPersistentStore } from './store/NowebPersistentStore';
 import { NowebStorageFactoryCore } from './store/NowebStorageFactoryCore';
 import { ensureNumber, extractMediaContent } from './utils';
+import { Agents } from '@waha/core/engines/noweb/types';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const promiseRetry = require('promise-retry');
 
@@ -307,7 +307,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     await this.sock?.logout();
   }
 
-  getSocketConfig(agent, state): Partial<SocketConfig> {
+  getSocketConfig(agents: Agents | undefined, state): Partial<SocketConfig> {
     const fullSyncEnabled = this.sessionConfig?.noweb?.store?.fullSync || false;
     const browser = ['Ubuntu', 'Chrome', '20.0.04'] as WABrowserDescription;
     let markOnlineOnConnect = this.sessionConfig?.noweb?.markOnline;
@@ -315,8 +315,11 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       markOnlineOnConnect = true;
     }
     return {
-      agent: agent,
-      fetchAgent: agent,
+      agent: agents?.socket,
+      // Baileys types still expect a Node https.Agent here,
+      // but 'undici' fetch requires a Dispatcher.
+      // Cast keeps the compiler satisfied while we pass the ProxyAgent at runtime.
+      fetchAgent: agents?.fetch as unknown as Agent,
       auth: state,
       printQRInTerminal: false,
       browser: browser,
@@ -346,9 +349,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
       this.authNOWEBStore = store;
     }
     const { state, saveCreds } = this.authNOWEBStore;
-    const agent = this.makeAgent();
+    const agents = this.makeProxyAgents();
     const socketConfig: SocketConfig = this.getSocketConfig(
-      agent,
+      agents,
       state,
     ) as SocketConfig;
     const sock = makeWASocket(socketConfig);
@@ -356,7 +359,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     return sock;
   }
 
-  protected makeAgent(): Agent {
+  protected makeProxyAgents(): Agents | undefined {
     if (!this.proxyConfig) {
       return undefined;
     }

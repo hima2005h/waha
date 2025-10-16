@@ -1,10 +1,11 @@
-import { Agent } from 'https';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { URL } from 'url';
+import { ProxyAgent } from 'undici';
 
 import { WhatsappConfigService } from '../config.service';
 import { ProxyConfig } from '../structures/sessions.dto';
 import { WhatsappSession } from './abc/session.abc';
+import { Agents } from '@waha/core/engines/noweb/types';
 
 export function getProxyConfig(
   config: WhatsappConfigService,
@@ -63,11 +64,15 @@ function getAuthenticatedUrl(
  * Return https Agent proxy for the config
  * @param proxyConfig
  */
-export function createAgentProxy(proxyConfig: ProxyConfig): Agent | undefined {
+export function createAgentProxy(proxyConfig: ProxyConfig): Agents | undefined {
   const url = getAuthenticatedUrl(
     proxyConfig.server,
     proxyConfig.username || '',
     proxyConfig.password || '',
   );
-  return new HttpsProxyAgent(url);
+
+  const socketAgent = new HttpsProxyAgent(url);
+  const fetchAgent = new ProxyAgent({ uri: url });
+
+  return { socket: socketAgent, fetch: fetchAgent };
 }
