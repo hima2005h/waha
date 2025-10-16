@@ -19,6 +19,7 @@ import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
 import { isJidCusFormat } from '@waha/utils/wa';
 import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
+import { toCusFormat } from '@waha/core/utils/jids';
 
 @Processor(QueueName.WAHA_MESSAGE_ACK, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageAckConsumer extends ChatWootWAHABaseConsumer {
@@ -37,15 +38,23 @@ export class WAHAMessageAckConsumer extends ChatWootWAHABaseConsumer {
     if (!isJidCusFormat(chatId) && !isLidUser(chatId)) {
       return false;
     }
+
     const payload = event.payload;
-    if (payload.fromMe) {
-      // Ignore from me
-      return;
-    }
     // Only READ and PLAYED
-    return (
-      payload.ack === WAMessageAck.READ || payload.ack == WAMessageAck.PLAYED
-    );
+    const read = payload.ack === WAMessageAck.READ;
+    const played = payload.ack == WAMessageAck.PLAYED;
+    if (!read && !played) {
+      return true;
+    }
+    // Only not from me
+    const sender = toCusFormat(payload._data?.Sender) || payload.from;
+    const me = this.manager.getSession(event.session).getSessionMeInfo();
+    if (sender == me.id || sender === me.lid) {
+      this.logger.debug('Ignore from me ack');
+      // Ignore from me
+      return false;
+    }
+    return true;
   }
 
   GetChatId(event: WAHAWebhookMessageAck): string {
