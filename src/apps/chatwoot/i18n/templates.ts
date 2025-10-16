@@ -56,6 +56,7 @@ export enum TKey {
   WA_TO_CW_MESSAGE_PIX = 'whatsapp.to.chatwoot.message.pix',
   WA_TO_CW_MESSAGE_UNSUPPORTED = 'whatsapp.to.chatwoot.message.unsupported',
   WA_TO_CW_MESSAGE_FACEBOOK_AD = 'whatsapp.to.chatwoot.message.facebook.ad',
+  WA_TO_CW_MESSAGE_LIST = 'whatsapp.to.chatwoot.message.list',
 
   //
   // App Inbox
@@ -173,6 +174,10 @@ export type TemplatePayloads = {
     message: {
       eventMessage: Record<string, unknown>;
     };
+  };
+  [TKey.WA_TO_CW_MESSAGE_LIST]: {
+    payload: WAMessage;
+    message: proto.Message;
   };
   [TKey.WA_TO_CW_MESSAGE_PIX]: {
     payload: WAMessage;

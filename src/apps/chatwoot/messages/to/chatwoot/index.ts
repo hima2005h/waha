@@ -12,6 +12,7 @@ export { FacebookAdMessage } from './FacebookAdMessage';
 export { PollMessage } from './PollMessage';
 export { EventMessage } from './EventMessage';
 export { PixMessage } from './PixMessage';
+export { ListMessage } from './ListMessage';
 
 export type Awaitable<T> = T | Promise<T>;
 

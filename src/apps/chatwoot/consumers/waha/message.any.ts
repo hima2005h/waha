@@ -24,6 +24,7 @@ import {
   LocationMessage,
   MessageToChatWootConverter,
   PollMessage,
+  ListMessage,
   ShareContactMessage,
   TextMessage,
   UnsupportedMessage,
@@ -99,6 +100,12 @@ class MessageAnyHandler extends MessageBaseHandler<WAMessage> {
     }
 
     converter = new PollMessage(this.l);
+    msg = await converter.convert(payload, protoMessage);
+    if (msg) {
+      return msg;
+    }
+
+    converter = new ListMessage(this.l);
     msg = await converter.convert(payload, protoMessage);
     if (msg) {
       return msg;

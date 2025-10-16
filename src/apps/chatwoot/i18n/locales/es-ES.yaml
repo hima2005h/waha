@@ -286,6 +286,34 @@ whatsapp.to.chatwoot.message.poll: |-
   {{/options}}
   {{/poll}}
 
+whatsapp.to.chatwoot.message.list: |-
+  {{#message.listMessage}}
+  {{#title}}
+  *{{{title}}}*
+  {{/title}}
+  {{#description}}
+  {{{description}}}
+  {{/description}}
+  {{#footerText}}
+  {{{footerText}}}
+  {{/footerText}}
+
+  {{#buttonText}}
+  {{{buttonText}}}
+  {{/buttonText}}
+  {{#sections}}
+  {{#title}}
+  {{{title}}}:
+  {{/title}}
+  {{#rows}}
+  {{#title}}
+  - {{{title}}}
+  {{/title}}
+  {{/rows}}
+
+  {{/sections}}
+  {{/message.listMessage}}
+
 whatsapp.to.chatwoot.message.event: |-
   {{#message}}
   {{#eventMessage}}
