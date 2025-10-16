@@ -76,7 +76,7 @@
     "joi": "^17.13.3",
     "knex": "^3.1.0",
     "libphonenumber-js": "^1.10.36",
-    "libsignal": "github:devlikeapro/libsignal-node#fork-master",
+    "libsignal": "github:WhiskeySockets/libsignal-node#master",
     "link-preview-js": "^3.0.4",
     "lodash": "^4.17.21",
     "long": "^5.3.2",
@@ -115,7 +115,6 @@
     "ws": "^8.18.0",
     "puppeteer": "^24.19.0",
     "whatwg-url": "13.0.0",
-    "libsignal": "github:devlikeapro/libsignal-node#fork-master",
     "axios": "^1.9.0"
   },
   "devDependencies": {

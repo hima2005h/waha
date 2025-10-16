@@ -8536,13 +8536,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libsignal@github:devlikeapro/libsignal-node#fork-master":
+"libsignal@git+https://github.com/whiskeysockets/libsignal-node":
   version: 2.0.1
-  resolution: "libsignal@https://github.com/devlikeapro/libsignal-node.git#commit=83bc9236ee3d96ae1747cf3ca2e505b10cf97250"
+  resolution: "libsignal@https://github.com/whiskeysockets/libsignal-node.git#commit=e81ecfc32eb74951d789ab37f7e341ab66d5fff1"
   dependencies:
     curve25519-js: ^0.0.4
     protobufjs: 6.8.8
-  checksum: 3ee39bc7cbd123fa2c1f84ff53ab4e3dacfb5a00d10944960fd72156b24a5eb5af1fa5ca31b9f25b26aab107c712d8c295c85b0bed26ad6eba6d0e3f26f38927
+  checksum: bf7a7b93000c826958d3ba6de72545675d39579a7befff56e3db561d985267e402fdf485127f6f4b1c12855a99966867f28517123fbb4b882d7ef39e83057c3d
+  languageName: node
+  linkType: hard
+
+"libsignal@github:WhiskeySockets/libsignal-node#master":
+  version: 2.0.1
+  resolution: "libsignal@https://github.com/WhiskeySockets/libsignal-node.git#commit=e81ecfc32eb74951d789ab37f7e341ab66d5fff1"
+  dependencies:
+    curve25519-js: ^0.0.4
+    protobufjs: 6.8.8
+  checksum: bf7a7b93000c826958d3ba6de72545675d39579a7befff56e3db561d985267e402fdf485127f6f4b1c12855a99966867f28517123fbb4b882d7ef39e83057c3d
   languageName: node
   linkType: hard
 
@@ -12565,7 +12575,7 @@ __metadata:
     joi: ^17.13.3
     knex: ^3.1.0
     libphonenumber-js: ^1.10.36
-    libsignal: "github:devlikeapro/libsignal-node#fork-master"
+    libsignal: "github:WhiskeySockets/libsignal-node#master"
     link-preview-js: ^3.0.4
     lodash: ^4.17.21
     long: ^5.3.2
