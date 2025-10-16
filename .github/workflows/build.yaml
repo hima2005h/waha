@@ -129,6 +129,7 @@ jobs:
           docker run -d \
             --name smoke \
             --rm -p3000:3000 \
+            -e WAHA_API_KEY=test \
             ${{ vars.DOCKER_IMAGE }}:${{ matrix.tag }}
 
           sleep 3
