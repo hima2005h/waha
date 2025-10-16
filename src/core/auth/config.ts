@@ -136,16 +136,20 @@ export function ReportGeneratedValue() {
   if (values.length === 0) {
     return;
   }
-  console.warn('👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇');
-  console.warn('====== YOUR GENERATED CREDENTIALS ======');
+  console.warn('');
+  console.warn('⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️ ⬇️');
+  console.warn('Generated credentials (persist to .env or WAHA_* env vars)');
   console.warn(
-    'Save those variable into .env file or set environment variables to use it the next time, otherwise it is random values on each start',
+    'Save these values to your environment (.env or WAHA_*) to reuse them; new keys are generated on every start otherwise.',
   );
+  console.warn('');
+  console.warn("cat <<'EOF' > .env");
   console.warn('');
   for (const key of values) {
     console.warn(`${key.param}=${key.value}`);
   }
+  console.warn('EOF');
   console.warn('');
-  console.warn('====== YOUR GENERATED CREDENTIALS ======');
-  console.warn('☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️ ');
+  console.warn('Generated credentials ready to copy');
+  console.warn('⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️ ⬆️');
 }
