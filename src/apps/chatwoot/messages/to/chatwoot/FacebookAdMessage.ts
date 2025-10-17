@@ -11,7 +11,8 @@ import { WhatsappToMarkdown } from '@waha/apps/chatwoot/messages/to/chatwoot/uti
 import { WAMessage } from '@waha/structures/responses.dto';
 import type { proto } from '@adiwajshing/baileys';
 import * as lodash from 'lodash';
-import { fetchBuffer } from '@waha/core/abc/session.abc';
+
+import { fetchBuffer } from '@waha/utils/fetch';
 
 export class FacebookAdMessage implements MessageToChatWootConverter {
   constructor(

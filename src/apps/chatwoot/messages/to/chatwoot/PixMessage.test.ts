@@ -116,8 +116,7 @@ describe('PixMessage - pt-BR', () => {
 ****Tipo:**** PHONE
 ****Referência:**** 4TB11111111
 
-💳 ****PIX Copia e Cola enviado****
-`;
+💳 ****PIX Copia e Cola enviado****`;
 
     expect(protoMessage).not.toBeNull();
     expect(result).not.toBeNull();
@@ -237,8 +236,7 @@ describe('PixMessage - pt-BR', () => {
 ****Valor:**** R$\u00A025,12
 ****Referência:**** 4TB11111111
 
-💳 ****PIX Copia e Cola enviado****
-`;
+💳 ****PIX Copia e Cola enviado****`;
 
     expect(protoMessage).not.toBeNull();
     expect(result).not.toBeNull();

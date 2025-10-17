@@ -5,8 +5,8 @@ import {
 import { MessagesForRead } from '@waha/core/utils/convertors';
 import {
   IgnoreJidConfig,
-  isJidNewsletter,
   isJidBroadcast,
+  isJidNewsletter,
   JidFilter,
 } from '@waha/core/utils/jids';
 import {
@@ -43,7 +43,6 @@ import { complete } from '@waha/utils/reactive/complete';
 import { SwitchObservable } from '@waha/utils/reactive/SwitchObservable';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { Agent as HttpsAgent } from 'https';
 import * as fs from 'fs';
 import * as lodash from 'lodash';
 import * as NodeCache from 'node-cache';
@@ -129,6 +128,7 @@ import {
 import { IMediaManager } from '../media/IMediaManager';
 import { QR } from '../QR';
 import { DataStore } from './DataStore';
+import { fetchBuffer } from '@waha/utils/fetch';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const qrcode = require('qrcode-terminal');
@@ -1079,21 +1079,6 @@ export abstract class WhatsappSession {
   public fetch(url: string): Promise<Buffer> {
     return fetchBuffer(url);
   }
-}
-
-const InsecureHttpsAgent = new HttpsAgent({
-  rejectUnauthorized: false,
-});
-
-export async function fetchBuffer(url: string): Promise<Buffer> {
-  return axios
-    .get(url, {
-      responseType: 'arraybuffer',
-      httpsAgent: InsecureHttpsAgent,
-    })
-    .then((res) => {
-      return Buffer.from(res.data);
-    });
 }
 
 export function getGroupInviteLink(code: string) {
