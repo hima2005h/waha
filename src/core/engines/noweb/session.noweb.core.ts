@@ -199,6 +199,7 @@ import { NowebPersistentStore } from './store/NowebPersistentStore';
 import { NowebStorageFactoryCore } from './store/NowebStorageFactoryCore';
 import { ensureNumber, extractMediaContent } from './utils';
 import { Agents } from '@waha/core/engines/noweb/types';
+import { IsEditedMessage } from '@waha/core/utils/pwa';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const promiseRetry = require('promise-retry');
 
@@ -608,14 +609,9 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     // https://github.com/WhiskeySockets/Baileys/pull/855/
     this.sock.ev.on('messages.upsert', ({ messages }) => {
       for (const message of messages) {
-        const content = normalizeMessageContent(message.message);
-        const protocolMsg = content?.protocolMessage;
-        if (
-          protocolMsg !== null &&
-          protocolMsg !== undefined &&
-          protocolMsg.editedMessage &&
-          protocolMsg.key
-        ) {
+        if (IsEditedMessage(message.message)) {
+          const content = normalizeMessageContent(message.message);
+          const protocolMsg = content?.protocolMessage;
           this.sock?.ev.emit('messages.update', [
             {
               key: {
@@ -1897,22 +1893,15 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     this.events2.get(WAHAEvents.MESSAGE_REVOKED).switch(messagesRevoked$);
 
     // Handle edited messages
-    // @ts-ignore
     const messagesEdited$ = messagesUpsert$.pipe(
-      filter(
-        (message) =>
-          // @ts-ignore
-          message.message?.protocolMessage?.type ===
-            proto.Message.ProtocolMessage.Type.MESSAGE_EDIT &&
-          message.message?.protocolMessage?.editedMessage !== undefined,
-      ),
+      filter((message) => IsEditedMessage(message.message)),
       mergeMap(async (message): Promise<WAMessageEditedBody> => {
         const waMessage = this.toWAMessage(message);
         // Extract the body from editedMessage using extractBody function
-        const body =
-          extractBody(message.message.protocolMessage.editedMessage) || '';
+        const content = normalizeMessageContent(message.message);
+        const body = extractBody(content.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
-        const editedMessageId = message.message.protocolMessage.key?.id;
+        const editedMessageId = content.protocolMessage.key?.id;
         return {
           ...waMessage,
           body: body,
@@ -2208,11 +2197,7 @@ export class WhatsappSessionNoWebCore extends WhatsappSession {
     )
       return;
     // Ignore edit, we have a dedicated event for that
-    if (
-      message.message?.protocolMessage?.type ===
-      proto.Message.ProtocolMessage.Type.MESSAGE_EDIT
-    )
-      return;
+    if (IsEditedMessage(message.message)) return;
     if (
       message.message?.protocolMessage?.type ===
       proto.Message.ProtocolMessage.Type.EPHEMERAL_SYNC_RESPONSE

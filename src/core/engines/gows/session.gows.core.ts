@@ -1,4 +1,4 @@
-import type { WAMessageKey } from '@adiwajshing/baileys';
+import { normalizeMessageContent, WAMessageKey } from '@adiwajshing/baileys';
 import { proto } from '@adiwajshing/baileys';
 import * as grpc from '@grpc/grpc-js';
 import { connectivityState } from '@grpc/grpc-js';
@@ -167,6 +167,7 @@ import {
   isLabelUpsertEvent,
 } from './labels.gows';
 import esm from '@waha/vendor/esm';
+import { IsEditedMessage } from '@waha/core/utils/pwa';
 
 enum WhatsMeowEvent {
   CONNECTED = 'gows.ConnectedEventData',
@@ -492,20 +493,15 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
 
     // Handle edited messages
     const messagesEdited$ = messages$.pipe(
-      filter((msg) => {
-        return (
-          msg?.Message?.protocolMessage?.type ===
-            proto.Message.ProtocolMessage.Type.MESSAGE_EDIT &&
-          msg?.Message?.protocolMessage?.editedMessage !== undefined
-        );
-      }),
+      filter((message) => IsEditedMessage(message.Message)),
       mergeMap(async (message): Promise<WAMessageEditedBody> => {
         const waMessage = await this.toWAMessage(message);
+        const content = normalizeMessageContent(message.Message);
         // Extract the body from editedMessage using extractBody function
-        const body =
-          extractBody(message.Message.protocolMessage.editedMessage) || '';
+        const body = extractBody(content.protocolMessage.editedMessage) || '';
         // Extract the original message ID from protocolMessage.key
-        const editedMessageId = message.Message.protocolMessage.key?.ID;
+        // @ts-ignore
+        const editedMessageId = content.protocolMessage.key?.ID;
         return {
           ...waMessage,
           body: body,
@@ -1950,17 +1946,18 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     // if there is no text or media message
     if (!message) return;
     if (!message.Message) return;
-    // Ignore reactions, we have a dedicated handler for that
-    if (message.Message.reactionMessage) return;
-    // Ignore poll votes, we have a dedicated handler for that
-    if (message.Message.pollUpdateMessage) return;
-    // Ignore event response, we have a dedicated handler for that
-    if (message.Message.encEventResponseMessage) return;
-    // Ignore protocol messages
-    if (message.Message.protocolMessage) return;
 
-    const normalizedContent = esm.b.normalizeMessageContent(message.Message);
-    const contentType = esm.b.getContentType(normalizedContent);
+    const content = esm.b.normalizeMessageContent(message.Message);
+    // Ignore reactions, we have a dedicated handler for that
+    if (content.reactionMessage) return;
+    // Ignore poll votes, we have a dedicated handler for that
+    if (content.pollUpdateMessage) return;
+    // Ignore event response, we have a dedicated handler for that
+    if (content.encEventResponseMessage) return;
+    // Ignore protocol messages
+    if (content.protocolMessage) return;
+
+    const contentType = esm.b.getContentType(content);
     // Ignore device sent message
     if (contentType == 'deviceSentMessage') {
       return;
