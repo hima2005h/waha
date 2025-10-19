@@ -225,6 +225,12 @@ export class MeInfo {
   })
   lid?: string;
 
+  @ApiProperty({
+    example: '123123:123@s.whatsapp.net',
+    description: 'Your id with device number',
+  })
+  jid?: string;
+
   pushName: string;
 }
 
