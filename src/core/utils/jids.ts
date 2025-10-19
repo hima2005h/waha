@@ -1,4 +1,4 @@
-import { jidNormalizedUser, WAMessageKey } from '@adiwajshing/baileys';
+import type { WAMessageKey } from '@adiwajshing/baileys';
 import { ensureSuffix } from '@waha/core/abc/session.abc';
 
 export function isJidNewsletter(jid: string) {
@@ -34,6 +34,10 @@ export function isPnUser(jid: string) {
     typeof jid === 'string' &&
     (jid.endsWith('@s.whatsapp.net') || jid.endsWith('@c.us'))
   );
+}
+
+function normalizeJid(jid: string): string {
+  return jid.replace(/:\d+(?=@)/, '');
 }
 
 /**
@@ -135,7 +139,7 @@ export function toCusFormat(remoteJid) {
     return remoteJid;
   }
   if (isLidUser(remoteJid)) {
-    return jidNormalizedUser(remoteJid);
+    return normalizeJid(remoteJid);
   }
   if (isJidNewsletter(remoteJid)) {
     return remoteJid;

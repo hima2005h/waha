@@ -13,13 +13,11 @@ import { Locale } from '@waha/apps/chatwoot/i18n/locale';
 import { WAHASessionAPI } from '@waha/apps/chatwoot/session/WAHASelf';
 import { SessionManager } from '@waha/core/abc/manager.abc';
 import { RMutexService } from '@waha/modules/rmutex/rmutex.service';
-import { WAHAEvents, WAMessageAck } from '@waha/structures/enums.dto';
+import { WAHAEvents } from '@waha/structures/enums.dto';
 import { WAHAWebhookMessageAck } from '@waha/structures/webhooks.dto';
 import { Job } from 'bullmq';
 import { PinoLogger } from 'nestjs-pino';
-import { isJidCusFormat } from '@waha/utils/wa';
-import { isLidUser } from '@adiwajshing/baileys/lib/WABinary/jid-utils';
-import { toCusFormat } from '@waha/core/utils/jids';
+import { ShouldMarkAsReadInChatWoot } from '@waha/apps/chatwoot/consumers/waha/message.ack.utils';
 
 @Processor(QueueName.WAHA_MESSAGE_ACK, { concurrency: JOB_CONCURRENCY })
 export class WAHAMessageAckConsumer extends ChatWootWAHABaseConsumer {
@@ -31,30 +29,8 @@ export class WAHAMessageAckConsumer extends ChatWootWAHABaseConsumer {
     super(manager, log, rmutex, 'WAHAMessageAckConsumer');
   }
 
-  ShouldProcess(event: WAHAWebhookMessageAck): boolean {
-    // Mark as seen only if it's DM
-    // Ignore groups and other multiple participants chats
-    const chatId = this.GetChatId(event);
-    if (!isJidCusFormat(chatId) && !isLidUser(chatId)) {
-      return false;
-    }
-
-    const payload = event.payload;
-    // Only READ and PLAYED
-    const read = payload.ack === WAMessageAck.READ;
-    const played = payload.ack == WAMessageAck.PLAYED;
-    if (!read && !played) {
-      return true;
-    }
-    // Only not from me
-    const sender = toCusFormat(payload._data?.Sender) || payload.from;
-    const me = this.manager.getSession(event.session).getSessionMeInfo();
-    if (sender == me.id || sender === me.lid) {
-      this.logger.debug('Ignore from me ack');
-      // Ignore from me
-      return false;
-    }
-    return true;
+  ShouldProcess(event: any): boolean {
+    return ShouldMarkAsReadInChatWoot(event);
   }
 
   GetChatId(event: WAHAWebhookMessageAck): string {
