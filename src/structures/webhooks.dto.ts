@@ -153,7 +153,7 @@ export class WAHAWebhook<Payload = any> {
     },
     description: 'Metadata for the session.',
   })
-  metadata?: Map<string, string>;
+  metadata?: Record<string, string>;
 
   @ApiProperty({
     example: WAHAEngine.WEBJS,

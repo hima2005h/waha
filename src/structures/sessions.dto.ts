@@ -150,7 +150,7 @@ export class SessionConfig {
   })
   @IsDynamicObject()
   @IsOptional()
-  metadata?: Map<string, string>;
+  metadata?: Record<string, string>;
 
   @ApiProperty({
     example: null,
