@@ -1,4 +1,5 @@
-import type { proto, WAMessageKey } from '@adiwajshing/baileys';
+import type { WAMessageKey } from '@adiwajshing/baileys';
+import { proto } from '@adiwajshing/baileys';
 import * as grpc from '@grpc/grpc-js';
 import { connectivityState } from '@grpc/grpc-js';
 import { UnprocessableEntityException } from '@nestjs/common';
@@ -493,7 +494,8 @@ export class WhatsappSessionGoWSCore extends WhatsappSession {
     const messagesEdited$ = messages$.pipe(
       filter((msg) => {
         return (
-          msg?.Message?.protocolMessage?.type === 14 &&
+          msg?.Message?.protocolMessage?.type ===
+            proto.Message.ProtocolMessage.Type.MESSAGE_EDIT &&
           msg?.Message?.protocolMessage?.editedMessage !== undefined
         );
       }),
