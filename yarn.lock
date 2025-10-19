@@ -5,9 +5,9 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@adiwajshing/baileys@github:devlikeapro/Baileys#fork-master-2025-10-10":
+"@adiwajshing/baileys@github:devlikeapro/Baileys#fork-master-2025-10-19":
   version: 7.0.0-rc.5
-  resolution: "@adiwajshing/baileys@https://github.com/devlikeapro/Baileys.git#commit=8299ab4006096dac4fd4c76109599290ecd87830"
+  resolution: "@adiwajshing/baileys@https://github.com/devlikeapro/Baileys.git#commit=df07435e41a5b6062c51a4a74393558cecf8fc50"
   dependencies:
     "@cacheable/node-cache": ^1.4.0
     "@hapi/boom": ^9.1.3
@@ -31,7 +31,7 @@ __metadata:
       optional: true
     link-preview-js:
       optional: true
-  checksum: c678f241d941916718b598a39b32523795f9a9878343e24bf0fd4eb5ef5140cbf623b8e848d905c8507d9074185cb3c7eb11c3b1d9866068652f5eacc29fefc0
+  checksum: 065a0a3e086e307ef805321355914c97282d279e7cbe2350118562373c0d36aaf877b0789d7e339f45f9c24e31a425f699b2f905411500522d0dc95a31c8986a
   languageName: node
   linkType: hard
 
@@ -12511,7 +12511,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "waha@workspace:."
   dependencies:
-    "@adiwajshing/baileys": "github:devlikeapro/Baileys#fork-master-2025-10-10"
+    "@adiwajshing/baileys": "github:devlikeapro/Baileys#fork-master-2025-10-19"
     "@adiwajshing/keyed-db": ^0.2.4
     "@aws-sdk/client-s3": ^3.633.0
     "@aws-sdk/s3-request-presigner": ^3.633.0
